@@ -17,7 +17,7 @@ Para responder, a análise deverá considerar:
 - Possíveis outliers ou problemas de qualidade dos dados;
 - Pelo menos três recomendações práticas para a gestão comercial.
 
-Os alunos deverão definir e justificar os critérios utilizados para diferenciar vendas válidas, cancelamentos, devoluções e registros anômalos.
+Os cientistas de dados deverão definir e justificar os critérios utilizados para diferenciar vendas válidas, cancelamentos, devoluções e registros anômalos.
 
 ::: {.callout-tip}
 ## Ponto de partida

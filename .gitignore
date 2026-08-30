@@ -5,7 +5,7 @@
 *_cache/
 
 # Projeto isolado (repositorio proprio: projeto-vendas)
-/projeto-vendas/
+/projetos/
 
 # Python
 __pycache__/

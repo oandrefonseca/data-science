@@ -6,7 +6,8 @@ Site Quarto com o material da disciplina de Ciência de Dados: roteiros prático
 
 ```
 .
-├── _quarto.yml          # configuracao do site (tema, navegacao)
+├── _quarto.yml          # configuracao do site (sidebar, tema, execucao)
+├── styles.css            # customizacoes de CSS
 ├── index.qmd             # pagina inicial
 └── aulas/
     ├── roteiro-aula1-ferramentas-ambiente-versionamento.qmd
@@ -14,7 +15,7 @@ Site Quarto com o material da disciplina de Ciência de Dados: roteiros prático
     └── trabalho-final-analise-vendas.qmd
 ```
 
-O `projeto-vendas/`, criado pelos alunos ao longo dos roteiros, é um projeto à parte (repositório próprio) e não faz parte deste site.
+Os projetos criados pelos alunos ao longo dos roteiros (como o `projeto-vendas`) ficam em `projetos/`, cada um com repositório próprio, e não fazem parte deste site.
 
 ## Rodando localmente
 

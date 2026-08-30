@@ -2,36 +2,50 @@ project:
   type: website
   output-dir: _site
   render:
-    - "*.qmd"
-    - "aulas/*.qmd"
-    - "!projeto-vendas/"
-
-lang: pt
+    - index.qmd
+    - aulas/*.qmd
 
 website:
   title: "Ciência de Dados"
-  description: "Material da disciplina de Ciência de Dados"
-  page-navigation: true
-  navbar:
-    left:
-      - href: index.qmd
-        text: Início
-      - href: aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd
-        text: "Aula 1"
-      - href: aulas/roteiro-aula2-introducao-dados-tabulares.qmd
-        text: "Aula 2"
-      - href: aulas/trabalho-final-analise-vendas.qmd
-        text: "Trabalho Final"
-    search: true
-  page-footer:
-    center: "Disciplina de Ciência de Dados"
+  site-url: https://oandrefonseca.github.io/data-science/
+  search: true
+  repo-url: https://github.com/oandrefonseca/data-science
+  repo-branch: main
+  repo-actions: [source, issue]
+  sidebar:
+    style: docked
+    collapse-level: 1
+    contents:
+      - index.qmd
+      - section: "Roteiros de aula"
+        contents:
+          - text: "1. Ferramentas, Ambiente e Versionamento"
+            href: aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd
+          - text: "2. Introdução aos Dados Tabulares"
+            href: aulas/roteiro-aula2-introducao-dados-tabulares.qmd
+      - text: "Trabalho Final"
+        href: aulas/trabalho-final-analise-vendas.qmd
+
+language:
+  title-block-author-single: "Autor"
+
+execute:
+  enabled: false
+  freeze: true
 
 format:
   html:
+    theme:
+      light: cosmo
+      dark: darkly
+    css: styles.css
     toc: true
-    toc-title: "Conteúdo"
+    toc-depth: 3
     code-fold: false
-    theme: cosmo
+    code-copy: true
+    code-overflow: scroll
+    code-line-numbers: false
+    fig-align: center
+    link-external-newwindow: true
 
-execute:
-  eval: false
+lang: pt-BR

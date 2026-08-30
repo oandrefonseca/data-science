@@ -1,0 +1,20 @@
+# Quarto
+/.quarto/
+/_site/
+*_files/
+*_cache/
+
+# Projeto isolado (repositorio proprio: projeto-vendas)
+/projeto-vendas/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# SO
+.DS_Store
+
+# Claude Code (config local, nao compartilhada)
+.claude/settings.local.json

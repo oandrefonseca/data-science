@@ -1,0 +1,428 @@
+---
+title: "Aula 2 - Introdução aos Dados Tabulares"
+subtitle: "Roteiro de aula - Disciplina de Ciência de Dados"
+---
+
+# Por que essa aula existe?
+
+Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.
+
+Antes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.
+
+Mas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.
+
+O plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.
+
+## Objetivos de aprendizagem
+
+Ao final deste roteiro, você será capaz de:
+
+1. Definir dados tabulares e identificar seus elementos: observações (linhas), variáveis (colunas) e valores;
+2. Classificar variáveis por tipo (numéricas contínuas e discretas, categóricas nominais e ordinais, temporais) e explicar por que o tipo importa para a análise;
+3. Reconhecer os principais formatos de arquivo tabular (CSV, Excel, Parquet) e seus problemas típicos;
+4. Criar e manipular Series e DataFrames com o pandas;
+5. Carregar um dataset real e executar o ritual de inspeção inicial: head, shape, info, describe, value_counts e contagem de ausentes;
+6. Selecionar colunas e filtrar linhas por condições para responder perguntas de negócio;
+7. Diagnosticar problemas comuns de qualidade em dados reais, sem ainda tratá-los.
+
+::: {.callout-tip}
+## Como usar este roteiro
+
+Este roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criado, com o ambiente virtual e o Git funcionando. As células devem ser executadas na ordem. Ao final, três perguntas ajudam a consolidar o aprendizado: tente respondê-las antes de expandir as explicações.
+:::
+
+# 1. Retomando o projeto
+
+Um profissional não começa o dia de trabalho abrindo um arquivo solto: ele abre o projeto. Vamos praticar exatamente isso, reativando os hábitos da aula passada:
+
+```{python}
+# Onde paramos? O git log conta a historia ate aqui:
+!cd ~/projeto-vendas && git log --oneline
+
+# E o estado atual? Espera-se uma area de trabalho limpa:
+!cd ~/projeto-vendas && git status
+```
+
+Se o log mostra os três commits da Aula 1 e o status diz que não há nada a commitar, o projeto está exatamente como o deixamos. Essa verificação de trinta segundos no início de cada sessão de trabalho evita sustos e é o primeiro reflexo profissional do dia.
+
+O ambiente também precisa de um complemento. Hoje vamos ler um arquivo Excel, e o pandas precisa de uma biblioteca auxiliar para isso, a openpyxl. Como aprendemos: instalar no ambiente, registrar a versão, commitar a receita:
+
+```{python}
+# Instalamos a nova dependencia dentro do ambiente do projeto
+!cd ~/projeto-vendas && uv pip install openpyxl
+
+# Atualizamos a receita com as versoes exatas...
+!cd ~/projeto-vendas && uv pip freeze > requirements.txt
+
+# ...e registramos a mudanca no historico. Ciclo completo.
+!cd ~/projeto-vendas && git add requirements.txt
+!cd ~/projeto-vendas && git commit -m "Adiciona openpyxl para leitura de arquivos Excel"
+```
+
+Repare que o ciclo da Aula 1 já está virando rotina: mudou o ambiente, atualizou a receita, commitou. Agora sim, vamos à teoria.
+
+# 2. O que são dados tabulares
+
+Uma tabela é uma estrutura de dados com uma gramática precisa, e vale a pena nomear as partes, porque esse vocabulário será usado o curso inteiro:
+
+- Cada linha é uma observação (ou registro, ou instância): uma unidade do fenômeno que estamos estudando. Em uma tabela de vendas, cada linha é uma venda; em uma tabela de alunos, cada linha é um aluno.
+- Cada coluna é uma variável (ou atributo, ou campo): uma característica medida sobre todas as observações. Preço, data, nome do produto, país do cliente.
+- Cada célula é um valor: a medida de uma variável para uma observação específica.
+
+Essa organização, com uma variável por coluna, uma observação por linha e um valor por célula, tem nome na literatura: dados organizados, ou tidy data, no termo consagrado em inglês. Parece óbvio, mas o mundo real está cheio de tabelas que violam esses princípios: planilhas com anos espalhados em colunas, cabeçalhos mesclados, totais no meio dos dados. Reconhecer quando uma tabela está organizada, e quando não está, é uma habilidade em si, e voltaremos a ela quando aprendermos a reestruturar tabelas. Por ora, guarde o princípio.
+
+## Tipos de variáveis
+
+Nem toda coluna é igual, e a diferença mais importante entre elas é o tipo da variável. O tipo determina o que faz sentido fazer com ela: que estatística calcular, que gráfico desenhar, que modelo aplicar.
+
+| Tipo | Definição | Exemplos | O que faz sentido |
+|---|---|---|---|
+| Numérica contínua | Números que podem assumir qualquer valor em um intervalo | Preço, altura, temperatura | Média, mediana, soma, histograma |
+| Numérica discreta | Números inteiros de contagem | Quantidade de itens, número de filhos | Média, soma, contagem |
+| Categórica nominal | Categorias sem ordem natural | País, cor, nome do produto | Contagem, moda, proporção |
+| Categórica ordinal | Categorias com ordem natural | Escolaridade, avaliação (ruim, boa, ótima) | Contagem, mediana, comparação de ordem |
+| Temporal | Datas e horários | Data da venda, timestamp | Ordenação, extração de mês e ano, séries temporais |
+
+Duas armadilhas clássicas merecem aviso prévio. A primeira: nem tudo que parece número é numérico. Um CEP, um CPF, um código de produto são compostos de dígitos, mas são categorias: somar dois CEPs não significa nada, e calcular a média de códigos de cliente é um absurdo estatístico. A pergunta certa não é "isso tem dígitos?", e sim "faz sentido fazer aritmética com isso?". A segunda: uma nota de 1 a 5 parece numérica, mas é ordinal: a distância entre 1 e 2 não é necessariamente igual à distância entre 4 e 5. Tratá-la como número puro é uma simplificação que às vezes é aceitável e às vezes distorce a análise; o importante é fazer isso conscientemente, não por acidente. Guarde essas duas armadilhas: as duas vão aparecer, na prática, ainda nesta aula.
+
+## Formatos de arquivo
+
+Tabelas viajam entre sistemas dentro de arquivos, e os formatos mais comuns têm personalidades diferentes:
+
+- CSV (comma-separated values): texto puro com um separador entre os valores. Universal, legível, versionável, mas frágil: não guarda tipos (tudo é texto até prova em contrário) e sofre com um problema particularmente brasileiro. Em países que usam vírgula como separador decimal, como o Brasil, o CSV frequentemente usa ponto e vírgula como separador de campos, e o pandas precisa ser avisado disso (parâmetros sep e decimal do read_csv). Um CSV brasileiro lido com as configurações padrão americanas vira uma coluna única ilegível, e esse erro recebe todo iniciante de braços abertos.
+- Excel (xlsx): o formato das planilhas, onipresente no mundo corporativo. Guarda tipos, múltiplas abas e formatação, mas é pesado e lento de ler em arquivos grandes, além de permitir as travessuras que quebram o princípio tidy: células mescladas, totais no meio, cores com significado.
+- Parquet: formato binário colunar, padrão da engenharia de dados moderna. Rápido, compacto e preserva tipos, mas não é legível por humanos. Vamos usá-lo mais adiante no curso.
+
+A regra prática: receba os dados no formato que vierem, mas conheça o custo de cada um. Hoje receberemos um Excel, e você vai sentir o custo na pele: o arquivo demora a abrir.
+
+# 3. Pandas em escala pequena: Series e DataFrame
+
+O pandas é a biblioteca que traz as tabelas para dentro do Python, e suas duas estruturas centrais têm nomes que você usará todos os dias: a Series, que é uma coluna (uma sequência de valores com um índice), e o DataFrame, que é a tabela inteira (um conjunto de Series que compartilham o mesmo índice).
+
+Antes de enfrentar meio milhão de linhas, vamos construir uma tabela de brinquedo em que cada valor é visível a olho nu. É uma estratégia deliberada: em escala pequena, você confere cada resultado manualmente e constrói confiança no que cada comando faz.
+
+A partir daqui, abra um notebook novo na pasta notebooks/ do projeto (sugestão de nome: 01-introducao-tabulares.ipynb) e acompanhe executando as células. Note que as células a seguir são Python puro, sem o ponto de exclamação: saímos do terminal e entramos na linguagem.
+
+```{python}
+import pandas as pd
+
+# Um DataFrame construido a mao: cinco vendas ficticias
+vendas = pd.DataFrame({
+    "produto": ["Caneca", "Camiseta", "Caneca", "Adesivo", "Camiseta"],
+    "quantidade": [2, 1, 4, 10, 3],
+    "preco_unitario": [35.0, 79.9, 35.0, 5.5, 79.9],
+    "pais": ["Brasil", "Brasil", "Portugal", "Brasil", "Argentina"],
+})
+
+vendas
+```
+
+Cada linha é uma observação (uma venda), cada coluna é uma variável, e a coluna sem nome à esquerda é o índice, o identificador de cada linha, que o pandas criou automaticamente. Exercite a classificação da seção anterior: produto e pais são categóricas nominais, quantidade é numérica discreta, preco_unitario é numérica contínua.
+
+As três operações fundamentais, em miniatura:
+
+```{python}
+# 1. Selecionar uma coluna: o resultado e uma Series
+vendas["preco_unitario"]
+```
+
+```{python}
+# 2. Criar uma coluna nova a partir das existentes
+vendas["faturamento"] = vendas["quantidade"] * vendas["preco_unitario"]
+vendas
+```
+
+```{python}
+# 3. Filtrar linhas por uma condicao
+vendas[vendas["pais"] == "Brasil"]
+```
+
+O filtro da terceira célula merece um comentário, porque ele é a operação mais importante do pandas. A expressão interna, vendas["pais"] == "Brasil", produz uma Series de True e False, um valor por linha; ao colocá-la entre colchetes, o DataFrame devolve apenas as linhas marcadas com True. Esse mecanismo se chama filtro booleano, e condições podem ser combinadas com o operador & (e) e o operador | (ou), cada condição entre parênteses:
+
+```{python}
+# Vendas do Brasil COM faturamento acima de 50
+vendas[(vendas["pais"] == "Brasil") & (vendas["faturamento"] > 50)]
+```
+
+Um aviso que economiza horas de frustração: dentro de filtros do pandas, use & e |, e não as palavras and e or do Python. As palavras funcionam para valores únicos, mas quebram com Series inteiras, e a mensagem de erro que aparece não ajuda em nada. Todo mundo tropeça nisso uma vez; que a sua vez seja agora, em ambiente controlado.
+
+Por fim, o resumo estatístico:
+
+```{python}
+# describe: estatisticas descritivas das colunas numericas
+vendas.describe()
+```
+
+Cinco linhas dão para conferir de cabeça: a média das quantidades bate? O mínimo e o máximo dos preços fazem sentido? Essa conferência manual é impossível com meio milhão de linhas, e é exatamente por isso que o describe existe: ele é o olhar panorâmico quando os olhos não alcançam mais os dados. Hora de testá-lo em escala real.
+
+# 4. O dataset: Online Retail
+
+Chegou o momento. O dataset que acompanhará as próximas aulas é o Online Retail, mantido pelo repositório de aprendizado de máquina da Universidade da Califórnia em Irvine (UCI), um dos acervos de datasets mais tradicionais da área. Ele contém todas as transações de um varejo online do Reino Unido entre dezembro de 2010 e dezembro de 2011: uma empresa que vende presentes e artigos variados, com muitos clientes atacadistas. São 541.909 registros, e cada linha é um item vendido dentro de uma nota fiscal.
+
+O dicionário de variáveis, segundo a documentação oficial:
+
+| Variável | Descrição |
+|---|---|
+| InvoiceNo | Número da nota fiscal, com 6 dígitos. Se começa com a letra C, indica um cancelamento |
+| StockCode | Código do produto |
+| Description | Nome do produto |
+| Quantity | Quantidade do item na transação |
+| InvoiceDate | Data e hora da transação |
+| UnitPrice | Preço unitário, em libras esterlinas |
+| CustomerID | Código do cliente, com 5 dígitos |
+| Country | País de residência do cliente |
+
+Exercite mais uma vez a classificação de tipos, agora com atenção às armadilhas da seção 2: InvoiceNo, StockCode e CustomerID são compostos de dígitos, mas são identificadores, ou seja, categóricos nominais; Quantity é numérica discreta; UnitPrice é numérica contínua; InvoiceDate é temporal; Description e Country são categóricas nominais.
+
+Dois registros de responsabilidade antes de baixar. Primeiro, a licença: o dataset é distribuído sob Creative Commons Attribution 4.0, que permite uso e adaptação desde que a fonte seja creditada, e a citação oficial é Chen, D. (2015), Online Retail, UCI Machine Learning Repository. Usar dados alheios com licença verificada e crédito dado é prática profissional básica, e vamos registrar isso no README do projeto. Segundo, um detalhe que guarde para mais tarde: a página oficial do dataset afirma que ele não possui valores ausentes. Guarde essa informação; ela voltará ainda nesta aula.
+
+## Baixando os dados para o lugar certo
+
+O arquivo vem compactado e tem cerca de 23 MB. E para onde ele vai? Para a pasta data/, criada justamente para isso na Aula 1. Voltamos ao terminal por um instante:
+
+```{python}
+# Baixamos o arquivo compactado para a pasta data/ do projeto
+!cd ~/projeto-vendas && curl -L -o data/online_retail.zip "https://archive.ics.uci.edu/static/public/352/online+retail.zip"
+
+# Descompactamos e renomeamos para um nome sem espacos
+!cd ~/projeto-vendas && unzip -o data/online_retail.zip -d data/
+!cd ~/projeto-vendas && mv "data/Online Retail.xlsx" data/online_retail.xlsx
+
+# Conferindo:
+!cd ~/projeto-vendas && ls -lh data/
+```
+
+E agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:
+
+```{python}
+!cd ~/projeto-vendas && git status
+```
+
+Nada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está no .gitignore que escrevemos na Aula 1, e a decisão daquele dia acaba de se provar correta: 23 MB de dados brutos não pertencem ao histórico de código. Mas isso cria uma responsabilidade nova, e ela vai reaparecer nas perguntas do final da aula: se os dados não viajam com o repositório, o repositório precisa ensinar como obtê-los. Vamos cumprir essa responsabilidade agora, documentando a origem no README:
+
+```{python}
+# Documentamos a fonte dos dados e as instrucoes de obtencao no README
+!cd ~/projeto-vendas && printf "\n## Dados\n\nDataset Online Retail (UCI Machine Learning Repository, id 352).\nLicenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.\nDownload: https://archive.ics.uci.edu/dataset/352/online+retail\nApos baixar, descompacte em data/ e renomeie para online_retail.xlsx\n" >> README.md
+
+# Ciclo de sempre: add, commit
+!cd ~/projeto-vendas && git add README.md
+!cd ~/projeto-vendas && git commit -m "Documenta a fonte e as instrucoes de download dos dados"
+```
+
+# 5. O ritual de inspeção inicial
+
+De volta ao notebook e ao Python. Vamos abrir o arquivo, com um aviso de gerenciamento de expectativa: ler meio milhão de linhas de um Excel é lento, e a célula abaixo pode levar um ou dois minutos. Sinta o custo do formato; é proposital.
+
+```{python}
+from pathlib import Path
+import pandas as pd
+
+caminho = Path.home() / "projeto-vendas" / "data" / "online_retail.xlsx"
+
+# Paciencia: arquivos Excel grandes sao lentos de ler
+retail = pd.read_excel(caminho)
+```
+
+A partir de agora, execute o ritual que um profissional aplica a todo dataset novo, na ordem, antes de confiar em qualquer número. São cinco passos.
+
+Passo 1: olhe os dados de verdade.
+
+```{python}
+# As primeiras linhas...
+retail.head()
+```
+
+```{python}
+# ...e as ultimas. Fins de arquivo escondem surpresas: totais, lixo, linhas vazias.
+retail.tail()
+```
+
+Passo 2: meça o tamanho e confira os tipos.
+
+```{python}
+# Quantas linhas e colunas?
+retail.shape
+```
+
+```{python}
+# Tipos, contagem de valores nao nulos e memoria, tudo de uma vez
+retail.info()
+```
+
+Leia a saída do info com olhos de detetive, porque ela já entrega dois achados. Primeiro, os tipos que o pandas adivinhou: InvoiceDate virou datetime (ótimo), Quantity é inteiro, UnitPrice é float. Mas observe CustomerID: virou float64. Um código de cliente com casas decimais? Estranho, e não é acidente: guarde para a pergunta 1 do final. Segundo, compare a contagem de valores não nulos entre as colunas: se o total de linhas é 541.909 e alguma coluna tem menos que isso, há valores ausentes nela, diga o que disser a documentação.
+
+Passo 3: quantifique os ausentes explicitamente.
+
+```{python}
+# Quantos valores ausentes por coluna?
+retail.isna().sum()
+```
+
+Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os números na sua tela dizem outra coisa: a coluna CustomerID tem dezenas de milhares de vazios, e Description também tem os seus. Este é um dos aprendizados mais valiosos da aula, e ele não é sobre pandas: metadados mentem, às vezes por desatualização, às vezes por descuido. A única fonte confiável sobre os dados são os próprios dados, verificados por você.
+
+Passo 4: resuma as variáveis numéricas.
+
+```{python}
+retail.describe()
+```
+
+Não deslize os olhos pela tabela: interrogue-a. O mínimo de Quantity é um número negativo enorme. Quantidade negativa em uma venda? O mínimo de UnitPrice é zero, e itens gratuitos em um varejo também levantam a sobrancelha. O máximo de Quantity, na casa das dezenas de milhares em uma única linha, sugere ou atacado pesado ou erro de digitação. O describe não responde nada disso; o trabalho dele é apontar onde cavar.
+
+Passo 5: conte as categorias.
+
+```{python}
+# De quais paises vem as vendas? As 10 maiores origens:
+retail["Country"].value_counts().head(10)
+```
+
+```{python}
+# E quantos paises distintos ha no total?
+retail["Country"].nunique()
+```
+
+O value_counts é o describe das variáveis categóricas: mostra a distribuição e denuncia problemas como categorias duplicadas com grafias diferentes. Aqui, como esperado de um varejo britânico, o Reino Unido domina com folga.
+
+Ritual completo. Em cinco passos, sem nenhuma análise sofisticada, você já sabe o tamanho, os tipos, os ausentes, as faixas de valores e as categorias dominantes, e já tem uma lista de suspeitas para investigar. É mais do que muita análise apressada descobre em uma semana.
+
+# 6. Interrogando os dados: seleção e filtragem
+
+Inspeção feita, começam as perguntas de negócio. As ferramentas são as mesmas da tabela de brinquedo, agora em escala real.
+
+```{python}
+# Pergunta: quais vendas foram para a Alemanha?
+vendas_alemanha = retail[retail["Country"] == "Germany"]
+vendas_alemanha.shape
+```
+
+```{python}
+# Pergunta: ha transacoes de alto valor unitario (acima de 100 libras)
+# fora do Reino Unido?
+caras_fora_uk = retail[(retail["UnitPrice"] > 100) & (retail["Country"] != "United Kingdom")]
+caras_fora_uk[["InvoiceNo", "Description", "UnitPrice", "Country"]].head()
+```
+
+A segunda célula mostra um padrão que você usará constantemente: filtrar as linhas e, no mesmo movimento, selecionar apenas as colunas relevantes, passando uma lista de nomes entre colchetes. O resultado é uma resposta enxuta, e não uma parede de colunas.
+
+Para seleção posicional e por rótulo, o pandas oferece dois acessores que valem apresentar desde já: o loc seleciona por rótulos e condições (retail.loc[retail["Country"] == "France", ["InvoiceNo", "UnitPrice"]]), e o iloc seleciona por posições numéricas (retail.iloc[0:5, 0:3] pega as cinco primeiras linhas e as três primeiras colunas). A distinção fica mais importante nas próximas aulas; hoje, basta saber que existem e o que cada um faz.
+
+Agora, três perguntas de negócio para você responder sozinho, no notebook, antes de seguir. Elas usam apenas o que já foi visto:
+
+1. Quantas transações registram o país como Brazil? (Descubra: o Brasil aparece neste dataset?)
+2. Quantas linhas têm Quantity negativa? E qual a cara delas? (Filtre e examine com head.)
+3. Existe alguma linha com UnitPrice igual a zero e CustomerID ausente ao mesmo tempo? (Dica: combine um filtro de igualdade com o método isna() da coluna.)
+
+A segunda pergunta é a ponte para a seção final.
+
+# 7. A caça aos problemas: diagnóstico de qualidade
+
+Todo achado estranho da inspeção merece agora um exame direto. Importante: nesta aula, apenas diagnosticamos; decidir o que fazer com cada problema (remover? corrigir? preencher?) é o tema da próxima aula, e é uma decisão de análise, não um reflexo automático.
+
+Suspeita 1: as quantidades negativas.
+
+```{python}
+# Quantas linhas tem quantidade negativa, e como elas sao?
+negativas = retail[retail["Quantity"] < 0]
+print(len(negativas), "linhas com quantidade negativa")
+negativas.head()
+```
+
+Olhe a coluna InvoiceNo das linhas exibidas: as notas começam com a letra C. O dicionário de variáveis explica: C indica cancelamento. As quantidades negativas não são erro de digitação; são devoluções registradas como quantidade negativa, uma convenção comum em sistemas comerciais. Eis uma lição central: um valor estranho nem sempre é um defeito; às vezes é uma regra de negócio que você ainda não conhecia. Antes de apagar qualquer coisa, entenda o que ela significa.
+
+```{python}
+# Confirmando a hipotese: todas as notas de quantidade negativa comecam com C?
+notas_negativas = retail.loc[retail["Quantity"] < 0, "InvoiceNo"].astype(str)
+print("Comecam com C:", notas_negativas.str.startswith("C").sum())
+print("Total de negativas:", len(notas_negativas))
+```
+
+Suspeita 2: os preços zerados.
+
+```{python}
+preco_zero = retail[retail["UnitPrice"] == 0]
+print(len(preco_zero), "linhas com preco zero")
+preco_zero[["InvoiceNo", "Description", "Quantity", "CustomerID"]].head()
+```
+
+Suspeita 3: registros duplicados.
+
+```{python}
+# Linhas identicas em todas as colunas
+print(retail.duplicated().sum(), "linhas duplicadas")
+```
+
+Duplicatas em dados transacionais podem ser erro de sistema ou podem ser legítimas (o mesmo cliente comprando o mesmo item duas vezes no mesmo minuto é raro, mas não impossível). De novo: diagnóstico agora, decisão depois.
+
+Feche a sessão de trabalho como um profissional: salve o notebook e registre-o no histórico.
+
+```{python}
+# De volta ao terminal, o commit que encerra a sessao:
+!cd ~/projeto-vendas && git add notebooks/
+!cd ~/projeto-vendas && git commit -m "Adiciona inspecao inicial e diagnostico do Online Retail"
+!cd ~/projeto-vendas && git log --oneline
+```
+
+Leia o log completo: seis commits, e cada um narra uma etapa real do projeto, das duas aulas. O repositório está contando a história direitinho.
+
+Recapitulando o que você conquistou:
+
+- Nomeou a gramática das tabelas (observações, variáveis, valores) e o princípio dos dados organizados;
+- Classificou variáveis por tipo e conheceu as duas armadilhas clássicas: dígitos que não são números e ordinais disfarçadas de numéricas;
+- Comparou os formatos CSV, Excel e Parquet, incluindo o problema do CSV brasileiro;
+- Operou Series e DataFrames em escala pequena: seleção, coluna derivada, filtro booleano e describe;
+- Baixou um dataset real para a pasta certa, documentou a fonte e a licença no README e viu o .gitignore da Aula 1 trabalhar a seu favor;
+- Executou o ritual de inspeção em cinco passos e flagrou a documentação oficial em contradição com os dados;
+- Diagnosticou quantidades negativas (e descobriu que eram cancelamentos), preços zerados e duplicatas, sem sair apagando nada.
+
+# Perguntas para consolidar
+
+Três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação.
+
+## Pergunta 1: o cliente com casas decimais
+
+O info revelou que a coluna CustomerID foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)
+
+::: {.callout-note collapse="true"}
+## Explicação
+
+A causa é a combinação de dois fatos. Primeiro, a coluna CustomerID tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.
+
+O aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, CustomerID nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.
+:::
+
+## Pergunta 2: a documentação contra os dados
+
+A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em CustomerID e milhares em Description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?
+
+::: {.callout-note collapse="true"}
+## Explicação
+
+Os dados vencem, sempre. A documentação é um relato sobre os dados, escrito por alguém, em algum momento, com algum grau de cuidado; os dados são o fato. Quando os dois divergem, a documentação está desatualizada, incompleta ou simplesmente errada, e qualquer análise construída sobre a afirmação falsa herda o erro.
+
+O hábito profissional é o ceticismo verificador: leia toda a documentação disponível (ela é valiosa, como o dicionário de variáveis provou ao explicar os cancelamentos), mas trate cada afirmação verificável como uma hipótese a testar, não como um fato estabelecido. O ritual de inspeção da aula é exatamente esse teste: barato, rápido e sistemático. Note a assimetria: verificar custou uma linha de código; confiar cegamente custaria uma análise inteira baseada na premissa de que todas as vendas têm cliente identificado, o que é falso para cerca de um quarto do dataset.
+
+E há uma lição de espelho: um dia você será a pessoa que escreve a documentação. O README que atualizamos hoje é o começo dessa responsabilidade, e mantê-lo fiel aos dados é o mesmo dever, visto do outro lado.
+:::
+
+## Pergunta 3: o repositório sem os dados
+
+Sua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?
+
+::: {.callout-note collapse="true"}
+## Explicação
+
+O caminho dela reúne as duas aulas do curso. Primeiro, a fundação da Aula 1: entrar na pasta do projeto clonado, criar o ambiente com uv venv e instalar as dependências exatas com uv pip install -r requirements.txt, o que já inclui o pandas e a openpyxl registrados hoje. Depois, a novidade desta aula: seguir as instruções da seção Dados do README, baixar o arquivo da UCI, descompactar em data/ e renomear para online_retail.xlsx. A partir daí, os notebooks rodam identicamente nas duas máquinas.
+
+O README cumpre o papel de receita dos dados, exatamente como o requirements.txt é a receita do ambiente. O padrão é o mesmo da Aula 1: o repositório não transporta artefatos pesados ou recriáveis (nem a cozinha, nem os ingredientes brutos), transporta as receitas que permitem reconstruir tudo, e receitas são leves, legíveis e versionáveis. Sim, o projeto continua reprodutível, porque reprodutibilidade não significa embalar tudo junto; significa garantir que qualquer pessoa reconstrua o todo a partir do que o repositório ensina.
+
+Em projetos maduros, essa receita manual evolui: um script de download automatizado, ou ferramentas de versionamento de dados como o DVC, que registram inclusive qual versão exata dos dados foi usada em cada análise. O princípio, porém, você já domina: código e receitas no Git, artefatos reconstruíveis fora dele.
+:::
+
+# Para casa
+
+1. Responda, no seu notebook, às três perguntas de negócio da seção 6, com um filtro para cada uma e uma frase de interpretação em uma célula de texto. Commite o notebook ao terminar.
+2. Produza a ficha de reconhecimento do dataset: uma célula de texto no notebook resumindo, com suas palavras, o tamanho, os tipos de cada variável (com a classificação da seção 2), os ausentes e os três problemas de qualidade diagnosticados. Essa ficha será o ponto de partida da próxima aula.
+3. Explore por conta própria: escolha uma pergunta sobre o dataset que desperte a sua curiosidade (um produto, um país, um período) e tente respondê-la só com filtros e seleções. Traga o achado para discutirmos em aula.
+
+> Dados reais não são sujos por acidente: eles são o retrato fiel de processos humanos imperfeitos. Limpá-los sem entendê-los é apagar a história que eles contam.
+
+Até a próxima aula, quando deixaremos de apenas diagnosticar e começaremos a tratar: valores ausentes, tipos, duplicatas e as decisões de limpeza que toda análise honesta precisa documentar.

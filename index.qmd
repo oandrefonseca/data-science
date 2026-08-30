@@ -1,0 +1,23 @@
+---
+title: "Ciência de Dados"
+subtitle: "Material da disciplina"
+---
+
+Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada aula é construída como um projeto real, com um roteiro em Quarto que combina explicação e código executável.
+
+## Roteiros de aula
+
+- [Aula 1 - Ferramentas, Ambiente e Versionamento](aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd)\
+  Estrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.
+
+- [Aula 2 - Introdução aos Dados Tabulares](aulas/roteiro-aula2-introducao-dados-tabulares.qmd)\
+  Conceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.
+
+- [Trabalho Final - Análise de Vendas](aulas/trabalho-final-analise-vendas.qmd)\
+  Enunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.
+
+::: {.callout-tip}
+## Como usar este material
+
+Os roteiros seguem a ordem das aulas e constroem, passo a passo, um projeto real chamado `projeto-vendas`. Recomenda-se executar as aulas na ordem, acompanhando pelo terminal e por um notebook próprio.
+:::

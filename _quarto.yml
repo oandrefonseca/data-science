@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "aulas/*.qmd"
+    - "!projeto-vendas/"
+
+lang: pt
+
+website:
+  title: "Ciência de Dados"
+  description: "Material da disciplina de Ciência de Dados"
+  page-navigation: true
+  navbar:
+    left:
+      - href: index.qmd
+        text: Início
+      - href: aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd
+        text: "Aula 1"
+      - href: aulas/roteiro-aula2-introducao-dados-tabulares.qmd
+        text: "Aula 2"
+      - href: aulas/trabalho-final-analise-vendas.qmd
+        text: "Trabalho Final"
+    search: true
+  page-footer:
+    center: "Disciplina de Ciência de Dados"
+
+format:
+  html:
+    toc: true
+    toc-title: "Conteúdo"
+    code-fold: false
+    theme: cosmo
+
+execute:
+  eval: false

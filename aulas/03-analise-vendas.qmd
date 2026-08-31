@@ -56,13 +56,12 @@ O gestor de vendas da empresa precisa entender o desempenho comercial do último
 
 Para responder, a análise deverá considerar:
 
-- Evolução mensal do faturamento e identificação de sazonalidade;
 - Produtos com maior faturamento, volume e frequência de compra;
 - Países e clientes mais relevantes para o negócio;
 - Valor médio dos pedidos;
 - Impacto financeiro de cancelamentos e devoluções;
 - Possíveis outliers ou problemas de qualidade dos dados;
-- Pelo menos três recomendações práticas para a gestão comercial.
+- Evolução mensal do faturamento e identificação de sazonalidade;
 
 Os cientistas de dados deverão definir e justificar os critérios utilizados para diferenciar vendas válidas, cancelamentos, devoluções e registros anômalos.
 
@@ -278,9 +277,13 @@ print(f"Faturamento bruto: £ {sales['revenue'].sum():,.2f}")
 
 ```
 
-# 7. Indicadores de pedidos e produtos
+# 7. Indicadores de pedidos, produtos, países e clientes
 
-Com as vendas válidas isoladas, os indicadores de negócio pedidos no enunciado, ticket médio e produtos de maior faturamento, saem de duas agregações: uma por pedido (`invoice_no`) e outra por produto (`stock_code`).
+Com as vendas válidas isoladas, podemos mudar a unidade de análise conforme a pergunta: pedidos, produtos, países ou clientes. Cada tabela abaixo tem uma linha por entidade analisada e reúne as métricas necessárias para responder ao enunciado.
+
+## Valor médio dos pedidos
+
+Primeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.
 
 ```{python}
 
@@ -289,7 +292,7 @@ orders = (
     .groupby("invoice_no", as_index=False)  # <1>
     .agg(
         order_date=("invoice_date", "min"),
-        customer=("customer_id", "first"),
+        customer_id=("customer_id", "first"),
         country=("country", "first"),
         item_quantity=("quantity", "sum"),
         order_value=("revenue", "sum"),
@@ -303,8 +306,15 @@ orders = (
 
 ```{python}
 
-print(f"Ticket medio: £ {orders['order_value'].mean():,.2f}")
-print(f"Ticket mediano: £ {orders['order_value'].median():,.2f}")
+order_value_summary = pd.Series(
+    {
+        "ticket_medio": orders["order_value"].mean(),
+        "ticket_mediano": orders["order_value"].median(),
+    },
+    name="valor_em_libras",
+)
+
+order_value_summary.round(2).to_frame()
 
 ```
 
@@ -317,6 +327,16 @@ orders["order_value"].describe(percentiles=order_percentiles).round(2)
 
 ```
 
+O ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.
+
+## Produtos com maior faturamento, volume e frequência
+
+Para comparar produtos, usamos três métricas diferentes:
+
+- `revenue`: faturamento gerado;
+- `units_sold`: unidades vendidas;
+- `order_count`: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.
+
 ```{python}
 
 products = (
@@ -328,7 +348,6 @@ products = (
         revenue=("revenue", "sum"),
         order_count=("invoice_no", "nunique"),
     )
-    .sort_values("revenue", ascending=False)
 )
 
 ```
@@ -337,7 +356,74 @@ Produtos com maior faturamento:
 
 ```{python}
 
-display(products.head(10).round(2))
+top_products_by_revenue = products.nlargest(10, "revenue")
+top_products_by_revenue.round(2)
+
+```
+
+Produtos com maior volume vendido:
+
+```{python}
+
+top_products_by_volume = products.nlargest(10, "units_sold")
+top_products_by_volume.round(2)
+
+```
+
+Produtos com maior frequência de compra:
+
+```{python}
+
+top_products_by_frequency = products.nlargest(10, "order_count")
+top_products_by_frequency.round(2)
+
+```
+
+Os três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.
+
+## Países mais relevantes para o negócio
+
+A relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.
+
+```{python}
+
+countries = (
+    sales
+    .groupby("country", as_index=False)
+    .agg(
+        revenue=("revenue", "sum"),
+        order_count=("invoice_no", "nunique"),
+        customer_count=("customer_id", "nunique"),
+        units_sold=("quantity", "sum"),
+    )
+)
+
+top_countries = countries.nlargest(10, "revenue")
+top_countries.round(2)
+
+```
+
+## Clientes mais relevantes para o negócio
+
+Como registros sem `customer_id` não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.
+
+```{python}
+
+identified_sales = sales.dropna(subset=["customer_id"])
+
+customers = (
+    identified_sales
+    .groupby("customer_id", as_index=False)
+    .agg(
+        revenue=("revenue", "sum"),
+        order_count=("invoice_no", "nunique"),
+        units_sold=("quantity", "sum"),
+        country=("country", "first"),
+    )
+)
+
+top_customers = customers.nlargest(10, "revenue")
+top_customers.round(2)
 
 ```
 
@@ -368,10 +454,11 @@ Recapitulando o que este roteiro entrega:
 - Retomou o projeto-vendas e os dados exatamente como a Aula 2 os deixou;
 - Refez a visão geral e o diagnóstico de qualidade da base completa;
 - Propôs um critério inicial de vendas válidas, separando-as dos cancelamentos;
-- Calculou os primeiros indicadores de negócio: faturamento, ticket médio e produtos mais relevantes;
+- Calculou o ticket médio e comparou os produtos por faturamento, volume e frequência de compra;
+- Identificou os países e clientes mais relevantes por meio de métricas comerciais explícitas;
 - Quantificou o impacto financeiro de cancelamentos e devoluções.
 
-O que ainda falta é o que transforma um script em uma análise: sazonalidade mensal, países e clientes mais relevantes, investigação dos outliers e, principalmente, as recomendações práticas para a gestão comercial que o enunciado pede.
+O que ainda falta é o que transforma um script em uma análise completa: sazonalidade mensal, investigação dos outliers e, principalmente, as recomendações práticas para a gestão comercial que o enunciado pede.
 
 # Perguntas para consolidar
 
@@ -409,7 +496,7 @@ Preço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajus
 
 # Para casa
 
-1. Complete, no seu notebook, os pontos do enunciado que este roteiro ainda não cobre: evolução mensal do faturamento, países e clientes mais relevantes e a investigação direta dos outliers levantados nas perguntas acima;
+1. Complete, no seu notebook, os pontos do enunciado que este roteiro ainda não cobre: evolução mensal do faturamento e investigação direta dos outliers levantados nas perguntas acima;
 2. Escreva, em células de texto, os critérios que você usou para definir venda válida, cancelamento e registro anômalo, e por quê;
 3. Encerre com pelo menos três recomendações práticas para a gestão comercial, apoiadas nos números que você calculou;
 4. Antes de considerar o notebook pronto, use Restart Kernel and Run All, como a Aula 1 ensinou, e só então commite no `projeto-vendas` com uma mensagem descritiva.

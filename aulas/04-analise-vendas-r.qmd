@@ -253,14 +253,18 @@ sales_summary
 
 ```
 
-# 7. Indicadores de pedidos e produtos
+# 7. Indicadores de pedidos, produtos, países e clientes
 
-Com as vendas válidas isoladas, ticket médio e produtos de maior faturamento saem de duas agregações: uma por pedido (`invoice_no`) e outra por produto (`stock_code`).
+Com as vendas válidas isoladas, podemos mudar a unidade de análise conforme a pergunta: pedidos, produtos, países ou clientes. Cada tabela abaixo tem uma linha por entidade analisada e reúne as métricas necessárias para responder ao enunciado.
+
+## Valor médio dos pedidos
+
+Primeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.
 
 ```{r}
 
 orders <- sales |>
-  group_by(invoice_no) |>
+  group_by(invoice_no) |> # <1>
   summarise(
     order_date = min(invoice_date),
     customer_id = first(customer_id),
@@ -268,13 +272,22 @@ orders <- sales |>
     item_quantity = sum(quantity),
     order_value = sum(revenue),
     .groups = "drop"
-  )
+  ) # <2>
 
-orders |>
+```
+
+1. Cada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.
+2. `summarise()` documenta como cada coluna do pedido é obtida a partir das linhas de itens.
+
+```{r}
+
+order_value_summary <- orders |>
   summarise(
     ticket_medio = mean(order_value),
     ticket_mediano = median(order_value)
   )
+
+order_value_summary
 
 ```
 
@@ -290,6 +303,16 @@ orders |>
 
 ```
 
+O ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.
+
+## Produtos com maior faturamento, volume e frequência
+
+Para comparar produtos, usamos três métricas diferentes:
+
+- `revenue`: faturamento gerado;
+- `units_sold`: unidades vendidas;
+- `order_count`: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.
+
 ```{r}
 
 products <- sales |>
@@ -300,8 +323,7 @@ products <- sales |>
     revenue = sum(revenue),
     order_count = n_distinct(invoice_no),
     .groups = "drop"
-  ) |>
-  arrange(desc(revenue))
+  )
 
 ```
 
@@ -310,7 +332,76 @@ Produtos com maior faturamento:
 ```{r}
 
 products |>
-  slice_head(n = 10)
+  slice_max(revenue, n = 10, with_ties = FALSE)
+
+```
+
+Produtos com maior volume vendido:
+
+```{r}
+
+products |>
+  slice_max(units_sold, n = 10, with_ties = FALSE)
+
+```
+
+Produtos com maior frequência de compra:
+
+```{r}
+
+products |>
+  slice_max(order_count, n = 10, with_ties = FALSE)
+
+```
+
+Os três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.
+
+## Países mais relevantes para o negócio
+
+A relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.
+
+```{r}
+
+countries <- sales |>
+  group_by(country) |>
+  summarise(
+    revenue = sum(revenue),
+    order_count = n_distinct(invoice_no),
+    customer_count = n_distinct(customer_id, na.rm = TRUE),
+    units_sold = sum(quantity),
+    .groups = "drop"
+  )
+
+top_countries <- countries |>
+  slice_max(revenue, n = 10, with_ties = FALSE)
+
+top_countries
+
+```
+
+## Clientes mais relevantes para o negócio
+
+Como registros sem `customer_id` não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.
+
+```{r}
+
+identified_sales <- sales |>
+  filter(!is.na(customer_id))
+
+customers <- identified_sales |>
+  group_by(customer_id) |>
+  summarise(
+    revenue = sum(revenue),
+    order_count = n_distinct(invoice_no),
+    units_sold = sum(quantity),
+    country = first(country),
+    .groups = "drop"
+  )
+
+top_customers <- customers |>
+  slice_max(revenue, n = 10, with_ties = FALSE)
+
+top_customers
 
 ```
 
@@ -369,10 +460,8 @@ Uma leitura comum em gestão comercial é a curva de Pareto: uma fração pequen
 
 ```{r}
 
-customer_revenue <- sales |>
-  filter(!is.na(customer_id)) |>
-  group_by(customer_id) |>
-  summarise(revenue = sum(revenue), .groups = "drop") |>
+customer_revenue <- customers |>
+  select(customer_id, revenue) |>
   arrange(desc(revenue)) |>
   mutate(
     customer_rank = row_number(),
@@ -428,58 +517,14 @@ Vale notar o que falta nos dados: se um dia da semana não aparece na tabela aci
 
 Recapitulando o que este roteiro entrega:
 
-- Reproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, indicadores de pedidos e produtos, e impacto de cancelamentos;
+- Reproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, valor médio dos pedidos, rankings de produtos, países e clientes, e impacto de cancelamentos;
 - Foi além do enunciado original com três perguntas novas: produtos líderes por trimestre no Reino Unido, concentração de receita por cliente e sazonalidade por dia da semana.
 
 O que ainda falta é o mesmo que faltava na Aula 3: sazonalidade mensal completa, investigação direta dos outliers e as recomendações práticas para a gestão comercial.
 
-# Perguntas para consolidar
-
-As mesmas quatro perguntas testam se os critérios usados aqui, os mesmos da Aula 3, continuam sólidos ao serem reescritos em outra linguagem.
-
-## Pergunta 1: cancelamento é a mesma coisa que devolução?
-
-O critério de vendas válidas da seção 6 trata toda linha com `is_cancelled` verdadeiro ou `quantity` negativa da mesma forma. Isso é preciso o suficiente para separar cancelamentos de devoluções?
-
-::: {.callout-note collapse="true"}
-## Como pensar sobre isso
-
-O mesmo raciocínio da Aula 3 vale aqui, a linguagem não muda o argumento: `invoice_no` começando com `C` é a convenção do sistema para cancelamento, registrado no mesmo momento da venda; uma devolução, no mundo real, costuma ser um evento separado. Verifique nos próprios dados, com `filter(quantity < 0, !is_cancelled)`, se existem linhas com quantidade negativa que não têm `invoice_no` começando com `C`. Se existirem, elas são a diferença entre as duas categorias.
-:::
-
-## Pergunta 2: quando um outlier é erro e quando é atacado legítimo?
-
-A seção 5 mostra valores de `quantity` na casa das dezenas de milhares em uma única linha. Descartar essas linhas do faturamento por serem outliers, sem checar mais nada, é seguro?
-
-::: {.callout-note collapse="true"}
-## Como pensar sobre isso
-
-Antes de descartar uma linha como erro, agrupe por `customer_id` e `country`: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é padrão de atacado, não erro de digitação. `sales |> filter(customer_id == <id suspeito>) |> arrange(desc(quantity))` responde isso rápido.
-:::
-
-## Pergunta 3: qual recorte de "vendas válidas" você vai defender?
-
-Além de cancelamentos, a seção 6 também exclui `quantity` igual a zero e `unit_price` igual a zero. Existem linhas com preço zero e `customer_id` ausente ao mesmo tempo?
-
-::: {.callout-note collapse="true"}
-## Como pensar sobre isso
-
-Preço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de venda. `retail |> filter(unit_price == 0, is.na(customer_id)) |> nrow()` mede o tamanho do problema antes de decidir o que fazer com ele.
-:::
-
-## Pergunta 4: a concentração de receita muda quem você prioriza?
-
-A seção 9 mostrou quantos clientes respondem por 80% do faturamento das vendas válidas. Esse número depende do recorte de vendas válidas escolhido na seção 6, o mesmo recorte questionado nas perguntas 1 a 3.
-
-::: {.callout-note collapse="true"}
-## Como pensar sobre isso
-
-Se o recorte de vendas válidas mudar, por exemplo, ao reclassificar parte dos outliers de atacado como vendas legítimas, o faturamento de alguns clientes muda, e a lista de quem sustenta 80% da receita pode mudar junto. Rode a mesma conta da seção 9 depois de decidir sua resposta às perguntas 1 a 3, e compare: os clientes prioritários continuam os mesmos?
-:::
-
 # Para casa
 
-1. Complete, no seu notebook, os pontos que este roteiro ainda não cobre: sazonalidade mensal completa, países e clientes mais relevantes de forma mais ampla, e a investigação direta dos outliers levantados nas perguntas acima;
+1. Complete, no seu notebook, os pontos que este roteiro ainda não cobre: sazonalidade mensal completa e a investigação direta dos outliers levantados nas perguntas acima;
 2. Escreva, em células de texto, os critérios que você usou para definir venda válida, cancelamento e registro anômalo, e compare com as respostas que você deu na Aula 3: mudaram?
 3. Encerre com pelo menos três recomendações práticas para a gestão comercial, apoiadas nos números que você calculou;
 4. Antes de considerar o notebook pronto, rode a partir de uma sessão R limpa (Restart R and Run All Chunks, o equivalente R ao Restart Kernel and Run All), e só então commite no `projeto-vendas` com uma mensagem descritiva.

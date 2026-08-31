@@ -206,7 +206,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visão-geral-da-base" id="toc-visão-geral-da-base" class="nav-link" data-scroll-target="#visão-geral-da-base">4. Visão geral da base</a></li>
   <li><a href="#qualidade-dos-dados" id="toc-qualidade-dos-dados" class="nav-link" data-scroll-target="#qualidade-dos-dados">5. Qualidade dos dados</a></li>
   <li><a href="#isolando-as-vendas-válidas" id="toc-isolando-as-vendas-válidas" class="nav-link" data-scroll-target="#isolando-as-vendas-válidas">6. Isolando as vendas válidas</a></li>
-  <li><a href="#indicadores-de-pedidos-e-produtos" id="toc-indicadores-de-pedidos-e-produtos" class="nav-link" data-scroll-target="#indicadores-de-pedidos-e-produtos">7. Indicadores de pedidos e produtos</a></li>
+  <li><a href="#indicadores-de-pedidos-produtos-países-e-clientes" id="toc-indicadores-de-pedidos-produtos-países-e-clientes" class="nav-link" data-scroll-target="#indicadores-de-pedidos-produtos-países-e-clientes">7. Indicadores de pedidos, produtos, países e clientes</a>
+  <ul class="collapse">
+  <li><a href="#valor-médio-dos-pedidos" id="toc-valor-médio-dos-pedidos" class="nav-link" data-scroll-target="#valor-médio-dos-pedidos">Valor médio dos pedidos</a></li>
+  <li><a href="#produtos-com-maior-faturamento-volume-e-frequência" id="toc-produtos-com-maior-faturamento-volume-e-frequência" class="nav-link" data-scroll-target="#produtos-com-maior-faturamento-volume-e-frequência">Produtos com maior faturamento, volume e frequência</a></li>
+  <li><a href="#países-mais-relevantes-para-o-negócio" id="toc-países-mais-relevantes-para-o-negócio" class="nav-link" data-scroll-target="#países-mais-relevantes-para-o-negócio">Países mais relevantes para o negócio</a></li>
+  <li><a href="#clientes-mais-relevantes-para-o-negócio" id="toc-clientes-mais-relevantes-para-o-negócio" class="nav-link" data-scroll-target="#clientes-mais-relevantes-para-o-negócio">Clientes mais relevantes para o negócio</a></li>
+  </ul></li>
   <li><a href="#cancelamentos-e-devoluções" id="toc-cancelamentos-e-devoluções" class="nav-link" data-scroll-target="#cancelamentos-e-devoluções">8. Cancelamentos e devoluções</a></li>
   <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
   <ul class="collapse">
@@ -279,16 +285,16 @@ Como usar este roteiro
 <section id="retomando-o-projeto" class="level1">
 <h1>1. Retomando o projeto</h1>
 <p>Como sempre, comece verificando onde o projeto parou:</p>
-<div id="1bce8c1c" class="cell" data-execution_count="1">
+<div id="ab66193b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Onde paramos? O git log conta a historia ate aqui:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># E o estado atual? Espera-se uma area de trabalho limpa:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>efe6751 (HEAD -&gt; master) Adiciona pandas e registra dependencias em requirements.txt
-2e321b9 Adiciona .gitignore para ambiente, dados e segredos
-2ccc4f3 Adiciona README com a descricao do projeto
+<pre><code>bbe6150 (HEAD -&gt; master) Adiciona pandas e registra dependencias em requirements.txt
+1b4999b Adiciona .gitignore para ambiente, dados e segredos
+2ce3f11 Adiciona README com a descricao do projeto
 On branch master
 Changes not staged for commit:
   (use "git add &lt;file&gt;..." to update what will be committed)
@@ -306,69 +312,70 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 <p>O gestor de vendas da empresa precisa entender o desempenho comercial do último ano e identificar oportunidades para aumentar o faturamento. Com base no histórico de transações, quais produtos, clientes, países e períodos devem ser priorizados em nossa estratégia de vendas, e quais fatores estão prejudicando o resultado, como cancelamentos e devoluções?</p>
 <p>Para responder, a análise deverá considerar:</p>
 <ul>
-<li>Evolução mensal do faturamento e identificação de sazonalidade;</li>
 <li>Produtos com maior faturamento, volume e frequência de compra;</li>
 <li>Países e clientes mais relevantes para o negócio;</li>
 <li>Valor médio dos pedidos;</li>
 <li>Impacto financeiro de cancelamentos e devoluções;</li>
 <li>Possíveis outliers ou problemas de qualidade dos dados;</li>
-<li>Pelo menos três recomendações práticas para a gestão comercial.</li>
+<li>Evolução mensal do faturamento e identificação de sazonalidade;</li>
 </ul>
 <p>Os cientistas de dados deverão definir e justificar os critérios utilizados para diferenciar vendas válidas, cancelamentos, devoluções e registros anômalos.</p>
 </section>
 <section id="preparando-os-dados" class="level1">
 <h1>3. Preparando os dados</h1>
 <p>O ponto de partida é o mesmo carregamento da Aula 2, com duas colunas novas calculadas a partir das originais: a receita de cada item e um sinalizador de cancelamento, derivado do prefixo <code>C</code> no número da fatura, exatamente como você confirmou na aula passada.</p>
-<div id="94eee390" class="cell" data-execution_count="2">
+<div id="9f8d0133" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">"projeto-vendas"</span>) <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"online_retail.xlsx"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>retail <span class="op">=</span> pd.read_excel(path)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> Path(<span class="st">"projeto-vendas"</span>) <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"online_retail.xlsx"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>column_names <span class="op">=</span> {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"InvoiceNo"</span>: <span class="st">"invoice_no"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"StockCode"</span>: <span class="st">"stock_code"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Description"</span>: <span class="st">"description"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Quantity"</span>: <span class="st">"quantity"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"InvoiceDate"</span>: <span class="st">"invoice_date"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UnitPrice"</span>: <span class="st">"unit_price"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CustomerID"</span>: <span class="st">"customer_id"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Country"</span>: <span class="st">"country"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>retail <span class="op">=</span> pd.read_excel(data_path).rename(columns<span class="op">=</span>column_names)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Com a base carregada, as mesmas duas colunas calculadas da Aula 2:</p>
-<div id="164ea275" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Garante que a data esteja no formato correto</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"InvoiceDate"</span>] <span class="op">=</span> pd.to_datetime(retail[<span class="st">"InvoiceDate"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Receita de cada item da fatura</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"Revenue"</span>] <span class="op">=</span> retail[<span class="st">"Quantity"</span>] <span class="op">*</span> retail[<span class="st">"UnitPrice"</span>]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Identificacao de faturas canceladas (InvoiceNo comecando com "C")</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"IsCancelled"</span>] <span class="op">=</span> (</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    retail[<span class="st">"InvoiceNo"</span>]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    .astype(<span class="bu">str</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.upper()</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.startswith(<span class="st">"C"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e0c8998e" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"invoice_date"</span>] <span class="op">=</span> pd.to_datetime(retail[<span class="st">"invoice_date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"revenue"</span>] <span class="op">=</span> retail[<span class="st">"quantity"</span>] <span class="op">*</span> retail[<span class="st">"unit_price"</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"is_cancelled"</span>] <span class="op">=</span> retail[<span class="st">"invoice_no"</span>].<span class="bu">str</span>.startswith(<span class="st">"C"</span>, na<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="32447ef0" class="cell" data-execution_count="4">
+<div id="d58a9e93" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Arquivo carregado com sucesso."</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dimensao da base: </span><span class="sc">{</span>retail<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dimensão da base: </span><span class="sc">{</span>retail<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">:,}</span><span class="ss"> linhas × </span><span class="sc">{</span>retail<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> colunas"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Arquivo carregado com sucesso.
-Dimensao da base: (541909, 10)</code></pre>
+Dimensão da base: 541,909 linhas × 10 colunas</code></pre>
 </div>
 </div>
 </section>
 <section id="visão-geral-da-base" class="level1">
 <h1>4. Visão geral da base</h1>
 <p>Antes de qualquer indicador de negócio, refaça o retrato geral que a Aula 2 ensinou a tirar: tamanho, tipos e uma primeira olhada nos números.</p>
-<div id="5aa30698" class="cell" data-execution_count="5">
+<div id="e3fdc48a" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"VISAO GERAL"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Numero de linhas: </span><span class="sc">{</span>retail<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">:,}</span><span class="ss">"</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Numero de colunas originais: </span><span class="sc">{</span>retail<span class="sc">.</span>shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data inicial: </span><span class="sc">{</span>retail[<span class="st">'InvoiceDate'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data final: </span><span class="sc">{</span>retail[<span class="st">'InvoiceDate'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data inicial: </span><span class="sc">{</span>retail[<span class="st">'invoice_date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data final: </span><span class="sc">{</span>retail[<span class="st">'invoice_date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de faturas: </span><span class="sc">{</span>retail[<span class="st">'InvoiceNo'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de clientes: </span><span class="sc">{</span>retail[<span class="st">'CustomerID'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de produtos: </span><span class="sc">{</span>retail[<span class="st">'StockCode'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de paises: </span><span class="sc">{</span>retail[<span class="st">'Country'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de faturas: </span><span class="sc">{</span>retail[<span class="st">'invoice_no'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de clientes: </span><span class="sc">{</span>retail[<span class="st">'customer_id'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de produtos: </span><span class="sc">{</span>retail[<span class="st">'stock_code'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantidade de paises: </span><span class="sc">{</span>retail[<span class="st">'country'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================================================
 VISAO GERAL
@@ -384,24 +391,24 @@ Quantidade de paises: 38</code></pre>
 </div>
 </div>
 <p>Colunas e tipos de dados:</p>
-<div id="b5b530ec" class="cell" data-execution_count="6">
+<div id="1107aabe" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(retail.dtypes)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>InvoiceNo              object
-StockCode              object
-Description            object
-Quantity                int64
-InvoiceDate    datetime64[ns]
-UnitPrice             float64
-CustomerID            float64
-Country                object
-Revenue               float64
-IsCancelled              bool
+<pre><code>invoice_no              object
+stock_code              object
+description             object
+quantity                 int64
+invoice_date    datetime64[ns]
+unit_price             float64
+customer_id            float64
+country                 object
+revenue                float64
+is_cancelled              bool
 dtype: object</code></pre>
 </div>
 </div>
 <p>Primeiras linhas:</p>
-<div id="33706ada" class="cell" data-execution_count="7">
+<div id="4b67e51c" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>display(retail.head())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -411,16 +418,16 @@ dtype: object</code></pre>
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">InvoiceNo</th>
-<th data-quarto-table-cell-role="th">StockCode</th>
-<th data-quarto-table-cell-role="th">Description</th>
-<th data-quarto-table-cell-role="th">Quantity</th>
-<th data-quarto-table-cell-role="th">InvoiceDate</th>
-<th data-quarto-table-cell-role="th">UnitPrice</th>
-<th data-quarto-table-cell-role="th">CustomerID</th>
-<th data-quarto-table-cell-role="th">Country</th>
-<th data-quarto-table-cell-role="th">Revenue</th>
-<th data-quarto-table-cell-role="th">IsCancelled</th>
+<th data-quarto-table-cell-role="th">invoice_no</th>
+<th data-quarto-table-cell-role="th">stock_code</th>
+<th data-quarto-table-cell-role="th">description</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">invoice_date</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">customer_id</th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">is_cancelled</th>
 </tr>
 </thead>
 <tbody>
@@ -496,8 +503,8 @@ dtype: object</code></pre>
 </div>
 </div>
 <p>Estatísticas das variáveis numéricas:</p>
-<div id="16aef699" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>display(retail[[<span class="st">"Quantity"</span>, <span class="st">"UnitPrice"</span>, <span class="st">"Revenue"</span>]].describe().<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d44026cc" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>display(retail[[<span class="st">"quantity"</span>, <span class="st">"unit_price"</span>, <span class="st">"revenue"</span>]].describe().<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 
@@ -506,9 +513,9 @@ dtype: object</code></pre>
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Quantity</th>
-<th data-quarto-table-cell-role="th">UnitPrice</th>
-<th data-quarto-table-cell-role="th">Revenue</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">revenue</th>
 </tr>
 </thead>
 <tbody>
@@ -570,7 +577,7 @@ dtype: object</code></pre>
 <section id="qualidade-dos-dados" class="level1">
 <h1>5. Qualidade dos dados</h1>
 <p>Refaça também o diagnóstico da Aula 2, agora consolidado em um único quadro: ausentes, duplicatas e a contagem dos suspeitos já conhecidos (cancelamentos, quantidades e preços fora do esperado).</p>
-<div id="489999bf" class="cell" data-execution_count="9">
+<div id="ab94b925" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"QUALIDADE DOS DADOS"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -581,15 +588,19 @@ QUALIDADE DOS DADOS
 </div>
 </div>
 <p>Valores ausentes, coluna a coluna:</p>
-<div id="7e85e0d2" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>quality <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Valores ausentes"</span>: retail.isna().<span class="bu">sum</span>(),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Percentual ausente (%)"</span>: retail.isna().mean() <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>quality <span class="op">=</span> quality.sort_values(<span class="st">"Percentual ausente (%)"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>display(quality.<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2138d8ed" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>quality <span class="op">=</span> (</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"missing_values"</span>: retail.isna().<span class="bu">sum</span>(),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"missing_percentage"</span>: retail.isna().mean().mul(<span class="dv">100</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"missing_percentage"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    .rename_axis(<span class="st">"column"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>display(quality.<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 
@@ -598,58 +609,63 @@ QUALIDADE DOS DADOS
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Valores ausentes</th>
-<th data-quarto-table-cell-role="th">Percentual ausente (%)</th>
+<th data-quarto-table-cell-role="th">missing_values</th>
+<th data-quarto-table-cell-role="th">missing_percentage</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">column</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">CustomerID</td>
+<td data-quarto-table-cell-role="th">customer_id</td>
 <td>135080</td>
 <td>24.93</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Description</td>
+<td data-quarto-table-cell-role="th">description</td>
 <td>1454</td>
 <td>0.27</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">StockCode</td>
+<td data-quarto-table-cell-role="th">stock_code</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">InvoiceNo</td>
+<td data-quarto-table-cell-role="th">invoice_no</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">InvoiceDate</td>
+<td data-quarto-table-cell-role="th">invoice_date</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Quantity</td>
+<td data-quarto-table-cell-role="th">quantity</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">UnitPrice</td>
+<td data-quarto-table-cell-role="th">unit_price</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Country</td>
+<td data-quarto-table-cell-role="th">country</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Revenue</td>
+<td data-quarto-table-cell-role="th">revenue</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">IsCancelled</td>
+<td data-quarto-table-cell-role="th">is_cancelled</td>
 <td>0</td>
 <td>0.00</td>
 </tr>
@@ -660,19 +676,19 @@ QUALIDADE DOS DADOS
 </div>
 </div>
 <p>Duplicatas, considerando somente as colunas originais:</p>
-<div id="503df6f6" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>original_columns <span class="op">=</span> [</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"InvoiceNo"</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"StockCode"</span>,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Description"</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Quantity"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"InvoiceDate"</span>,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UnitPrice"</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CustomerID"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Country"</span></span>
+<div id="dce1d3f7" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>source_columns <span class="op">=</span> [</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invoice_no"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stock_code"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"description"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantity"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invoice_date"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit_price"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"customer_id"</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"country"</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>]</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>duplicate_count <span class="op">=</span> retail.duplicated(subset<span class="op">=</span>original_columns).<span class="bu">sum</span>()</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>duplicate_count <span class="op">=</span> retail.duplicated(subset<span class="op">=</span>source_columns).<span class="bu">sum</span>()</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linhas exatamente duplicadas: </span><span class="sc">{</span>duplicate_count<span class="sc">:,}</span><span class="ss">"</span>)</span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Percentual de duplicatas: </span><span class="sc">{</span>duplicate_count <span class="op">/</span> <span class="bu">len</span>(retail) <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -682,20 +698,23 @@ Percentual de duplicatas: 0.97%</code></pre>
 </div>
 </div>
 <p>Registros potencialmente problemáticos:</p>
-<div id="dfa71d19" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>issues <span class="op">=</span> pd.Series({</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Faturas canceladas"</span>: retail[<span class="st">"IsCancelled"</span>].<span class="bu">sum</span>(),</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Quantidade negativa"</span>: (retail[<span class="st">"Quantity"</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Quantidade igual a zero"</span>: (retail[<span class="st">"Quantity"</span>] <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preco negativo"</span>: (retail[<span class="st">"UnitPrice"</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preco igual a zero"</span>: (retail[<span class="st">"UnitPrice"</span>] <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(),</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Descricao ausente"</span>: retail[<span class="st">"Description"</span>].isna().<span class="bu">sum</span>(),</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cliente nao identificado"</span>: retail[<span class="st">"CustomerID"</span>].isna().<span class="bu">sum</span>(),</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Data invalida ou ausente"</span>: retail[<span class="st">"InvoiceDate"</span>].isna().<span class="bu">sum</span>()</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>display(issues.to_frame(<span class="st">"Quantidade"</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div id="17bf7f23" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>issues <span class="op">=</span> pd.Series(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Faturas canceladas"</span>: retail[<span class="st">"is_cancelled"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Quantidade negativa"</span>: retail[<span class="st">"quantity"</span>].lt(<span class="dv">0</span>).<span class="bu">sum</span>(),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Quantidade igual a zero"</span>: retail[<span class="st">"quantity"</span>].eq(<span class="dv">0</span>).<span class="bu">sum</span>(),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Preço negativo"</span>: retail[<span class="st">"unit_price"</span>].lt(<span class="dv">0</span>).<span class="bu">sum</span>(),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Preço igual a zero"</span>: retail[<span class="st">"unit_price"</span>].eq(<span class="dv">0</span>).<span class="bu">sum</span>(),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Descrição ausente"</span>: retail[<span class="st">"description"</span>].isna().<span class="bu">sum</span>(),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Cliente não identificado"</span>: retail[<span class="st">"customer_id"</span>].isna().<span class="bu">sum</span>(),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Data inválida ou ausente"</span>: retail[<span class="st">"invoice_date"</span>].isna().<span class="bu">sum</span>(),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"quantity"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>issues.to_frame()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
@@ -703,7 +722,7 @@ Percentual de duplicatas: 0.97%</code></pre>
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Quantidade</th>
+<th data-quarto-table-cell-role="th">quantity</th>
 </tr>
 </thead>
 <tbody>
@@ -720,23 +739,23 @@ Percentual de duplicatas: 0.97%</code></pre>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Preco negativo</td>
+<td data-quarto-table-cell-role="th">Preço negativo</td>
 <td>2</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Preco igual a zero</td>
+<td data-quarto-table-cell-role="th">Preço igual a zero</td>
 <td>2515</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Descricao ausente</td>
+<td data-quarto-table-cell-role="th">Descrição ausente</td>
 <td>1454</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Cliente nao identificado</td>
+<td data-quarto-table-cell-role="th">Cliente não identificado</td>
 <td>135080</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Data invalida ou ausente</td>
+<td data-quarto-table-cell-role="th">Data inválida ou ausente</td>
 <td>0</td>
 </tr>
 </tbody>
@@ -746,9 +765,10 @@ Percentual de duplicatas: 0.97%</code></pre>
 </div>
 </div>
 <p>Valores extremos, quantidade e preço unitário:</p>
-<div id="cf9f8888" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>display(retail[<span class="st">"Quantity"</span>].describe(percentiles<span class="op">=</span>[<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>]).<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div id="f95af96b" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>percentiles <span class="op">=</span> [<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"quantity"</span>].describe(percentiles<span class="op">=</span>percentiles).<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>count    541909.00
 mean          9.55
 std         218.08
@@ -759,12 +779,12 @@ min      -80995.00
 75%          10.00
 99%         100.00
 max       80995.00
-Name: Quantity, dtype: float64</code></pre>
+Name: quantity, dtype: float64</code></pre>
 </div>
 </div>
-<div id="80248eb0" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>display(retail[<span class="st">"UnitPrice"</span>].describe(percentiles<span class="op">=</span>[<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>]).<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div id="50db03da" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"unit_price"</span>].describe(percentiles<span class="op">=</span>percentiles).<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>count    541909.00
 mean          4.61
 std          96.76
@@ -775,32 +795,40 @@ min      -11062.06
 75%           4.13
 99%          18.00
 max       38970.00
-Name: UnitPrice, dtype: float64</code></pre>
+Name: unit_price, dtype: float64</code></pre>
 </div>
 </div>
 </section>
 <section id="isolando-as-vendas-válidas" class="level1">
 <h1>6. Isolando as vendas válidas</h1>
 <p>Aqui começa a parte que o enunciado pede e que a Aula 2 deliberadamente não respondeu: o que conta como venda válida? O corte abaixo é um ponto de partida razoável, não a palavra final, exclui cancelamentos e linhas com quantidade ou preço não positivos, mas você pode (e deve) questioná-lo diante do que encontrar.</p>
-<div id="33851945" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>positive_sales_filter <span class="op">=</span> (</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    (<span class="op">~</span>retail[<span class="st">"IsCancelled"</span>])</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> (retail[<span class="st">"Quantity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> (retail[<span class="st">"UnitPrice"</span>] <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> retail.loc[positive_sales_filter].copy()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6bb381a0" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a>valid_sales_filter <span class="op">=</span> (</span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>retail[<span class="st">"is_cancelled"</span>]</span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> retail[<span class="st">"quantity"</span>].gt(<span class="dv">0</span>)</span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> retail[<span class="st">"unit_price"</span>].gt(<span class="dv">0</span>)</span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-7" class="code-annotation-target"><a href="#annotated-cell-15-7" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> retail.loc[valid_sales_filter].copy()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="7" data-code-annotation="1"><code>.copy()</code> cria um DataFrame independente para as vendas válidas e evita alterações acidentais em <code>retail</code> nas etapas seguintes.</span>
+</dd>
+</dl>
 </div>
-<div id="ba013148" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"VENDAS POSITIVAS"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linhas de vendas positivas: </span><span class="sc">{</span><span class="bu">len</span>(sales)<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pedidos validos: </span><span class="sc">{</span>sales[<span class="st">'InvoiceNo'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Clientes identificados: </span><span class="sc">{</span>sales[<span class="st">'CustomerID'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unidades vendidas: </span><span class="sc">{</span>sales[<span class="st">'Quantity'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Faturamento bruto: £ </span><span class="sc">{</span>sales[<span class="st">'Revenue'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2518371e" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"VENDAS POSITIVAS"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linhas de vendas positivas: </span><span class="sc">{</span><span class="bu">len</span>(sales)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pedidos validos: </span><span class="sc">{</span>sales[<span class="st">'invoice_no'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Clientes identificados: </span><span class="sc">{</span>sales[<span class="st">'customer_id'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unidades vendidas: </span><span class="sc">{</span>sales[<span class="st">'quantity'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Faturamento bruto: £ </span><span class="sc">{</span>sales[<span class="st">'revenue'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================================================
 VENDAS POSITIVAS
@@ -813,34 +841,78 @@ Faturamento bruto: £ 10,666,684.54</code></pre>
 </div>
 </div>
 </section>
-<section id="indicadores-de-pedidos-e-produtos" class="level1">
-<h1>7. Indicadores de pedidos e produtos</h1>
-<p>Com as vendas válidas isoladas, os indicadores de negócio pedidos no enunciado, ticket médio e produtos de maior faturamento, saem de duas agregações: uma por pedido (<code>InvoiceNo</code>) e outra por produto (<code>StockCode</code>).</p>
-<div id="8e76316f" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> (</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"InvoiceNo"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        OrderDate<span class="op">=</span>(<span class="st">"InvoiceDate"</span>, <span class="st">"min"</span>),</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        Customer<span class="op">=</span>(<span class="st">"CustomerID"</span>, <span class="st">"first"</span>),</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        Country<span class="op">=</span>(<span class="st">"Country"</span>, <span class="st">"first"</span>),</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        ItemQuantity<span class="op">=</span>(<span class="st">"Quantity"</span>, <span class="st">"sum"</span>),</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        OrderValue<span class="op">=</span>(<span class="st">"Revenue"</span>, <span class="st">"sum"</span>)</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="indicadores-de-pedidos-produtos-países-e-clientes" class="level1">
+<h1>7. Indicadores de pedidos, produtos, países e clientes</h1>
+<p>Com as vendas válidas isoladas, podemos mudar a unidade de análise conforme a pergunta: pedidos, produtos, países ou clientes. Cada tabela abaixo tem uma linha por entidade analisada e reúne as métricas necessárias para responder ao enunciado.</p>
+<section id="valor-médio-dos-pedidos" class="level2">
+<h2 class="anchored" data-anchor-id="valor-médio-dos-pedidos">Valor médio dos pedidos</h2>
+<p>Primeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.</p>
+<div id="363709ed" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="annotated-cell-17"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> (</span>
+<span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-3" class="code-annotation-target"><a href="#annotated-cell-17-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"invoice_no"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="annotated-cell-17-4"><a href="#annotated-cell-17-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="annotated-cell-17-5"><a href="#annotated-cell-17-5" aria-hidden="true" tabindex="-1"></a>        order_date<span class="op">=</span>(<span class="st">"invoice_date"</span>, <span class="st">"min"</span>),</span>
+<span id="annotated-cell-17-6"><a href="#annotated-cell-17-6" aria-hidden="true" tabindex="-1"></a>        customer_id<span class="op">=</span>(<span class="st">"customer_id"</span>, <span class="st">"first"</span>),</span>
+<span id="annotated-cell-17-7"><a href="#annotated-cell-17-7" aria-hidden="true" tabindex="-1"></a>        country<span class="op">=</span>(<span class="st">"country"</span>, <span class="st">"first"</span>),</span>
+<span id="annotated-cell-17-8"><a href="#annotated-cell-17-8" aria-hidden="true" tabindex="-1"></a>        item_quantity<span class="op">=</span>(<span class="st">"quantity"</span>, <span class="st">"sum"</span>),</span>
+<span id="annotated-cell-17-9"><a href="#annotated-cell-17-9" aria-hidden="true" tabindex="-1"></a>        order_value<span class="op">=</span>(<span class="st">"revenue"</span>, <span class="st">"sum"</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-17-10" class="code-annotation-target"><a href="#annotated-cell-17-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-17-11"><a href="#annotated-cell-17-11" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-17" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-17" data-code-lines="3" data-code-annotation="1">Cada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.</span>
+</dd>
+<dt data-target-cell="annotated-cell-17" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-17" data-code-lines="10" data-code-annotation="2">A agregação nomeada documenta, para cada nova coluna, a variável de origem e a função aplicada.</span>
+</dd>
+</dl>
 </div>
-<div id="52194928" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ticket medio: £ </span><span class="sc">{</span>orders[<span class="st">'OrderValue'</span>]<span class="sc">.</span>mean()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ticket mediano: £ </span><span class="sc">{</span>orders[<span class="st">'OrderValue'</span>]<span class="sc">.</span>median()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ticket medio: £ 534.40
-Ticket mediano: £ 303.84</code></pre>
+</div>
+<div id="3ecd0e01" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>order_value_summary <span class="op">=</span> pd.Series(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ticket_medio"</span>: orders[<span class="st">"order_value"</span>].mean(),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ticket_mediano"</span>: orders[<span class="st">"order_value"</span>].median(),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"valor_em_libras"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>order_value_summary.<span class="bu">round</span>(<span class="dv">2</span>).to_frame()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">valor_em_libras</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ticket_medio</td>
+<td>534.40</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ticket_mediano</td>
+<td>303.84</td>
+</tr>
+</tbody>
+</table>
+
+</div>
 </div>
 </div>
 <p>Distribuição do valor dos pedidos:</p>
-<div id="f0896387" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>display(orders[<span class="st">"OrderValue"</span>].describe(percentiles<span class="op">=</span>[<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>, <span class="fl">0.99</span>]).<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div id="a2782707" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>order_percentiles <span class="op">=</span> [<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>, <span class="fl">0.99</span>]</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>orders[<span class="st">"order_value"</span>].describe(percentiles<span class="op">=</span>order_percentiles).<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>count     19960.00
 mean        534.40
 std        1780.49
@@ -851,26 +923,36 @@ min           0.38
 90%         940.89
 99%        4821.17
 max      168469.60
-Name: OrderValue, dtype: float64</code></pre>
+Name: order_value, dtype: float64</code></pre>
 </div>
 </div>
-<div id="4f70e975" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>products <span class="op">=</span> (</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"Description"</span>])</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">"StockCode"</span>, <span class="st">"Description"</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        UnitsSold<span class="op">=</span>(<span class="st">"Quantity"</span>, <span class="st">"sum"</span>),</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        Revenue<span class="op">=</span>(<span class="st">"Revenue"</span>, <span class="st">"sum"</span>),</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        OrderCount<span class="op">=</span>(<span class="st">"InvoiceNo"</span>, <span class="st">"nunique"</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"Revenue"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.</p>
+</section>
+<section id="produtos-com-maior-faturamento-volume-e-frequência" class="level2">
+<h2 class="anchored" data-anchor-id="produtos-com-maior-faturamento-volume-e-frequência">Produtos com maior faturamento, volume e frequência</h2>
+<p>Para comparar produtos, usamos três métricas diferentes:</p>
+<ul>
+<li><code>revenue</code>: faturamento gerado;</li>
+<li><code>units_sold</code>: unidades vendidas;</li>
+<li><code>order_count</code>: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.</li>
+</ul>
+<div id="82d54ec1" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>products <span class="op">=</span> (</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"description"</span>])</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">"stock_code"</span>, <span class="st">"description"</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        units_sold<span class="op">=</span>(<span class="st">"quantity"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        revenue<span class="op">=</span>(<span class="st">"revenue"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        order_count<span class="op">=</span>(<span class="st">"invoice_no"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Produtos com maior faturamento:</p>
-<div id="7512ae97" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>display(products.head(<span class="dv">10</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div id="96ffe1d3" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>top_products_by_revenue <span class="op">=</span> products.nlargest(<span class="dv">10</span>, <span class="st">"revenue"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>top_products_by_revenue.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
 <div>
 
 
@@ -878,11 +960,11 @@ Name: OrderValue, dtype: float64</code></pre>
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">StockCode</th>
-<th data-quarto-table-cell-role="th">Description</th>
-<th data-quarto-table-cell-role="th">UnitsSold</th>
-<th data-quarto-table-cell-role="th">Revenue</th>
-<th data-quarto-table-cell-role="th">OrderCount</th>
+<th data-quarto-table-cell-role="th">stock_code</th>
+<th data-quarto-table-cell-role="th">description</th>
+<th data-quarto-table-cell-role="th">units_sold</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">order_count</th>
 </tr>
 </thead>
 <tbody>
@@ -972,22 +1054,477 @@ Name: OrderValue, dtype: float64</code></pre>
 </div>
 </div>
 </div>
+<p>Produtos com maior volume vendido:</p>
+<div id="402c2fae" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>top_products_by_volume <span class="op">=</span> products.nlargest(<span class="dv">10</span>, <span class="st">"units_sold"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>top_products_by_volume.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">stock_code</th>
+<th data-quarto-table-cell-role="th">description</th>
+<th data-quarto-table-cell-role="th">units_sold</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">order_count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2590</td>
+<td>23843</td>
+<td>PAPER CRAFT , LITTLE BIRDIE</td>
+<td>80995</td>
+<td>168469.60</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2045</td>
+<td>23166</td>
+<td>MEDIUM CERAMIC TOP STORAGE JAR</td>
+<td>78033</td>
+<td>81700.92</td>
+<td>247</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2769</td>
+<td>84077</td>
+<td>WORLD WAR 2 GLIDERS ASSTD DESIGNS</td>
+<td>55047</td>
+<td>13841.85</td>
+<td>535</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3761</td>
+<td>85099B</td>
+<td>JUMBO BAG RED RETROSPOT</td>
+<td>48474</td>
+<td>94340.05</td>
+<td>2089</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3773</td>
+<td>85123A</td>
+<td>WHITE HANGING HEART T-LIGHT HOLDER</td>
+<td>37599</td>
+<td>104340.29</td>
+<td>2189</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1051</td>
+<td>22197</td>
+<td>POPCORN HOLDER</td>
+<td>36761</td>
+<td>34298.87</td>
+<td>803</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2875</td>
+<td>84879</td>
+<td>ASSORTED COLOUR BIRD ORNAMENT</td>
+<td>36461</td>
+<td>59094.93</td>
+<td>1455</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">370</td>
+<td>21212</td>
+<td>PACK OF 72 RETROSPOT CAKE CASES</td>
+<td>36419</td>
+<td>21259.10</td>
+<td>1320</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1951</td>
+<td>23084</td>
+<td>RABBIT NIGHT LIGHT</td>
+<td>30788</td>
+<td>66964.99</td>
+<td>994</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1327</td>
+<td>22492</td>
+<td>MINI PAINT SET VINTAGE</td>
+<td>26633</td>
+<td>16937.82</td>
+<td>380</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Produtos com maior frequência de compra:</p>
+<div id="b3ec8e40" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>top_products_by_frequency <span class="op">=</span> products.nlargest(<span class="dv">10</span>, <span class="st">"order_count"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>top_products_by_frequency.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">stock_code</th>
+<th data-quarto-table-cell-role="th">description</th>
+<th data-quarto-table-cell-role="th">units_sold</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">order_count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3773</td>
+<td>85123A</td>
+<td>WHITE HANGING HEART T-LIGHT HOLDER</td>
+<td>37599</td>
+<td>104340.29</td>
+<td>2189</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3761</td>
+<td>85099B</td>
+<td>JUMBO BAG RED RETROSPOT</td>
+<td>48474</td>
+<td>94340.05</td>
+<td>2089</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1262</td>
+<td>22423</td>
+<td>REGENCY CAKESTAND 3 TIER</td>
+<td>13879</td>
+<td>174484.74</td>
+<td>1988</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2669</td>
+<td>47566</td>
+<td>PARTY BUNTING</td>
+<td>18295</td>
+<td>99504.33</td>
+<td>1685</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">101</td>
+<td>20725</td>
+<td>LUNCH BAG RED RETROSPOT</td>
+<td>19353</td>
+<td>35752.01</td>
+<td>1564</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2875</td>
+<td>84879</td>
+<td>ASSORTED COLOUR BIRD ORNAMENT</td>
+<td>36461</td>
+<td>59094.93</td>
+<td>1455</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1552</td>
+<td>22720</td>
+<td>SET OF 3 CAKE TINS PANTRY DESIGN</td>
+<td>7493</td>
+<td>38158.39</td>
+<td>1385</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">370</td>
+<td>21212</td>
+<td>PACK OF 72 RETROSPOT CAKE CASES</td>
+<td>36419</td>
+<td>21259.10</td>
+<td>1320</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">104</td>
+<td>20727</td>
+<td>LUNCH BAG BLACK SKULL.</td>
+<td>12240</td>
+<td>22421.21</td>
+<td>1273</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1295</td>
+<td>22457</td>
+<td>NATURAL SLATE HEART CHALKBOARD</td>
+<td>9172</td>
+<td>28147.96</td>
+<td>1249</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Os três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.</p>
+</section>
+<section id="países-mais-relevantes-para-o-negócio" class="level2">
+<h2 class="anchored" data-anchor-id="países-mais-relevantes-para-o-negócio">Países mais relevantes para o negócio</h2>
+<p>A relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.</p>
+<div id="6b3e9ce3" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> (</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"country"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        revenue<span class="op">=</span>(<span class="st">"revenue"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        order_count<span class="op">=</span>(<span class="st">"invoice_no"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>        customer_count<span class="op">=</span>(<span class="st">"customer_id"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        units_sold<span class="op">=</span>(<span class="st">"quantity"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>top_countries <span class="op">=</span> countries.nlargest(<span class="dv">10</span>, <span class="st">"revenue"</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>top_countries.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">order_count</th>
+<th data-quarto-table-cell-role="th">customer_count</th>
+<th data-quarto-table-cell-role="th">units_sold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">36</td>
+<td>United Kingdom</td>
+<td>9025222.08</td>
+<td>18019</td>
+<td>3920</td>
+<td>4662390</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>Netherlands</td>
+<td>285446.34</td>
+<td>94</td>
+<td>9</td>
+<td>200361</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>EIRE</td>
+<td>283453.96</td>
+<td>288</td>
+<td>3</td>
+<td>147173</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>Germany</td>
+<td>228867.14</td>
+<td>457</td>
+<td>94</td>
+<td>119261</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>France</td>
+<td>209715.11</td>
+<td>392</td>
+<td>87</td>
+<td>112103</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Australia</td>
+<td>138521.31</td>
+<td>57</td>
+<td>9</td>
+<td>83901</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">31</td>
+<td>Spain</td>
+<td>61577.11</td>
+<td>90</td>
+<td>30</td>
+<td>27940</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">33</td>
+<td>Switzerland</td>
+<td>57089.90</td>
+<td>54</td>
+<td>21</td>
+<td>30629</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Belgium</td>
+<td>41196.34</td>
+<td>98</td>
+<td>25</td>
+<td>23237</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">32</td>
+<td>Sweden</td>
+<td>38378.33</td>
+<td>36</td>
+<td>8</td>
+<td>36083</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="clientes-mais-relevantes-para-o-negócio" class="level2">
+<h2 class="anchored" data-anchor-id="clientes-mais-relevantes-para-o-negócio">Clientes mais relevantes para o negócio</h2>
+<p>Como registros sem <code>customer_id</code> não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.</p>
+<div id="bf6d9eaa" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>identified_sales <span class="op">=</span> sales.dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> (</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    identified_sales</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"customer_id"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        revenue<span class="op">=</span>(<span class="st">"revenue"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        order_count<span class="op">=</span>(<span class="st">"invoice_no"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        units_sold<span class="op">=</span>(<span class="st">"quantity"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        country<span class="op">=</span>(<span class="st">"country"</span>, <span class="st">"first"</span>),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>top_customers <span class="op">=</span> customers.nlargest(<span class="dv">10</span>, <span class="st">"revenue"</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>top_customers.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">customer_id</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+<th data-quarto-table-cell-role="th">order_count</th>
+<th data-quarto-table-cell-role="th">units_sold</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1689</td>
+<td>14646.0</td>
+<td>280206.02</td>
+<td>73</td>
+<td>196915</td>
+<td>Netherlands</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4201</td>
+<td>18102.0</td>
+<td>259657.30</td>
+<td>60</td>
+<td>64124</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3728</td>
+<td>17450.0</td>
+<td>194550.79</td>
+<td>46</td>
+<td>69993</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3008</td>
+<td>16446.0</td>
+<td>168472.50</td>
+<td>2</td>
+<td>80997</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1879</td>
+<td>14911.0</td>
+<td>143825.06</td>
+<td>201</td>
+<td>80265</td>
+<td>EIRE</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">55</td>
+<td>12415.0</td>
+<td>124914.53</td>
+<td>21</td>
+<td>77374</td>
+<td>Australia</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1333</td>
+<td>14156.0</td>
+<td>117379.63</td>
+<td>55</td>
+<td>57885</td>
+<td>EIRE</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3771</td>
+<td>17511.0</td>
+<td>91062.38</td>
+<td>31</td>
+<td>64549</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2702</td>
+<td>16029.0</td>
+<td>81024.84</td>
+<td>63</td>
+<td>40208</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">0</td>
+<td>12346.0</td>
+<td>77183.60</td>
+<td>1</td>
+<td>74215</td>
+<td>United Kingdom</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="cancelamentos-e-devoluções" class="level1">
 <h1>8. Cancelamentos e devoluções</h1>
 <p>Por fim, o enunciado pede o impacto financeiro de cancelamentos e devoluções, o lado espelhado das vendas válidas: tudo o que foi excluído do faturamento bruto calculado na seção 6.</p>
-<div id="37f7869e" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>cancellations <span class="op">=</span> retail.loc[</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    retail[<span class="st">"IsCancelled"</span>] <span class="op">|</span> (retail[<span class="st">"Quantity"</span>] <span class="op">&lt;</span> <span class="dv">0</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>].copy()</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>refunded_amount <span class="op">=</span> <span class="bu">abs</span>(retail.loc[retail[<span class="st">"Revenue"</span>] <span class="op">&lt;</span> <span class="dv">0</span>, <span class="st">"Revenue"</span>].<span class="bu">sum</span>())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="70387b89" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cancellation_filter <span class="op">=</span> retail[<span class="st">"is_cancelled"</span>] <span class="op">|</span> retail[<span class="st">"quantity"</span>].lt(<span class="dv">0</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>cancellations <span class="op">=</span> retail.loc[cancellation_filter].copy()</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>refunded_amount <span class="op">=</span> <span class="bu">abs</span>(retail.loc[retail[<span class="st">"revenue"</span>] <span class="op">&lt;</span> <span class="dv">0</span>, <span class="st">"revenue"</span>].<span class="bu">sum</span>())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="376aebe0" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Faturas canceladas: </span><span class="sc">{</span>retail<span class="sc">.</span>loc[retail[<span class="st">'IsCancelled'</span>], <span class="st">'InvoiceNo'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linhas com quantidade negativa: </span><span class="sc">{</span>(retail[<span class="st">'Quantity'</span>] <span class="op">&lt;</span> <span class="dv">0</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Valor absoluto das devolucoes/ajustes: £ </span><span class="sc">{</span>refunded_amount<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Receita liquida de toda a base: £ </span><span class="sc">{</span>retail[<span class="st">'Revenue'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cb672af1" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Faturas canceladas: </span><span class="sc">{</span>retail<span class="sc">.</span>loc[retail[<span class="st">'is_cancelled'</span>], <span class="st">'invoice_no'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linhas com quantidade negativa: </span><span class="sc">{</span>(retail[<span class="st">'quantity'</span>] <span class="op">&lt;</span> <span class="dv">0</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Valor absoluto das devolucoes/ajustes: £ </span><span class="sc">{</span>refunded_amount<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Receita liquida de toda a base: £ </span><span class="sc">{</span>retail[<span class="st">'revenue'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Faturas canceladas: 3,836
 Linhas com quantidade negativa: 10,624
@@ -1000,17 +1537,18 @@ Receita liquida de toda a base: £ 9,747,747.93</code></pre>
 <li>Retomou o projeto-vendas e os dados exatamente como a Aula 2 os deixou;</li>
 <li>Refez a visão geral e o diagnóstico de qualidade da base completa;</li>
 <li>Propôs um critério inicial de vendas válidas, separando-as dos cancelamentos;</li>
-<li>Calculou os primeiros indicadores de negócio: faturamento, ticket médio e produtos mais relevantes;</li>
+<li>Calculou o ticket médio e comparou os produtos por faturamento, volume e frequência de compra;</li>
+<li>Identificou os países e clientes mais relevantes por meio de métricas comerciais explícitas;</li>
 <li>Quantificou o impacto financeiro de cancelamentos e devoluções.</li>
 </ul>
-<p>O que ainda falta é o que transforma um script em uma análise: sazonalidade mensal, países e clientes mais relevantes, investigação dos outliers e, principalmente, as recomendações práticas para a gestão comercial que o enunciado pede.</p>
+<p>O que ainda falta é o que transforma um script em uma análise completa: sazonalidade mensal, investigação dos outliers e, principalmente, as recomendações práticas para a gestão comercial que o enunciado pede.</p>
 </section>
 <section id="perguntas-para-consolidar" class="level1">
 <h1>Perguntas para consolidar</h1>
 <p>Três perguntas para testar seus critérios antes de considerar a análise pronta. Elas não têm uma resposta única certa: o que importa é que você consiga justificar a escolha que fez.</p>
 <section id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" class="level2">
 <h2 class="anchored" data-anchor-id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução">Pergunta 1: cancelamento é a mesma coisa que devolução?</h2>
-<p>O critério de vendas válidas da seção 6 trata toda linha com <code>IsCancelled</code> verdadeiro ou <code>Quantity</code> negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?</p>
+<p>O critério de vendas válidas da seção 6 trata toda linha com <code>is_cancelled</code> verdadeiro ou <code>quantity</code> negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1023,14 +1561,14 @@ Como pensar sobre isso
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Releia o dicionário de variáveis da Aula 2: <code>InvoiceNo</code> começando com <code>C</code> é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com <code>C</code>. Verifique nos próprios dados se todas as linhas com <code>Quantity</code> negativa têm <code>InvoiceNo</code> começando com <code>C</code>, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.</p>
+<p>Releia o dicionário de variáveis da Aula 2: <code>invoice_no</code> começando com <code>C</code> é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com <code>C</code>. Verifique nos próprios dados se todas as linhas com <code>quantity</code> negativa têm <code>invoice_no</code> começando com <code>C</code>, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" class="level2">
 <h2 class="anchored" data-anchor-id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo">Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</h2>
-<p>O describe da seção 5 mostra valores de <code>Quantity</code> na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?</p>
+<p>O describe da seção 5 mostra valores de <code>quantity</code> na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1043,14 +1581,14 @@ Como pensar sobre isso
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>A documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o <code>CustomerID</code> e o <code>Country</code> dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.</p>
+<p>A documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o <code>customer_id</code> e o <code>country</code> dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" class="level2">
 <h2 class="anchored" data-anchor-id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender">Pergunta 3: qual recorte de “vendas válidas” você vai defender?</h2>
-<p>Além de cancelamentos, a seção 6 também exclui <code>Quantity</code> igual a zero e <code>UnitPrice</code> igual a zero. Existem linhas com preço zero e <code>CustomerID</code> ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?</p>
+<p>Além de cancelamentos, a seção 6 também exclui <code>quantity</code> igual a zero e <code>unit_price</code> igual a zero. Existem linhas com preço zero e <code>customer_id</code> ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1072,7 +1610,7 @@ Como pensar sobre isso
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>
 <ol type="1">
-<li>Complete, no seu notebook, os pontos do enunciado que este roteiro ainda não cobre: evolução mensal do faturamento, países e clientes mais relevantes e a investigação direta dos outliers levantados nas perguntas acima;</li>
+<li>Complete, no seu notebook, os pontos do enunciado que este roteiro ainda não cobre: evolução mensal do faturamento e investigação direta dos outliers levantados nas perguntas acima;</li>
 <li>Escreva, em células de texto, os critérios que você usou para definir venda válida, cancelamento e registro anômalo, e por quê;</li>
 <li>Encerre com pelo menos três recomendações práticas para a gestão comercial, apoiadas nos números que você calculou;</li>
 <li>Antes de considerar o notebook pronto, use Restart Kernel and Run All, como a Aula 1 ensinou, e só então commite no <code>projeto-vendas</code> com uma mensagem descritiva.</li>

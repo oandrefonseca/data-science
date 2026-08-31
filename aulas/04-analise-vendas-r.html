@@ -204,20 +204,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visão-geral-da-base" id="toc-visão-geral-da-base" class="nav-link" data-scroll-target="#visão-geral-da-base">4. Visão geral da base</a></li>
   <li><a href="#qualidade-dos-dados" id="toc-qualidade-dos-dados" class="nav-link" data-scroll-target="#qualidade-dos-dados">5. Qualidade dos dados</a></li>
   <li><a href="#isolando-as-vendas-válidas" id="toc-isolando-as-vendas-válidas" class="nav-link" data-scroll-target="#isolando-as-vendas-válidas">6. Isolando as vendas válidas</a></li>
-  <li><a href="#indicadores-de-pedidos-e-produtos" id="toc-indicadores-de-pedidos-e-produtos" class="nav-link" data-scroll-target="#indicadores-de-pedidos-e-produtos">7. Indicadores de pedidos e produtos</a></li>
+  <li><a href="#indicadores-de-pedidos-produtos-países-e-clientes" id="toc-indicadores-de-pedidos-produtos-países-e-clientes" class="nav-link" data-scroll-target="#indicadores-de-pedidos-produtos-países-e-clientes">7. Indicadores de pedidos, produtos, países e clientes</a>
+  <ul class="collapse">
+  <li><a href="#valor-médio-dos-pedidos" id="toc-valor-médio-dos-pedidos" class="nav-link" data-scroll-target="#valor-médio-dos-pedidos">Valor médio dos pedidos</a></li>
+  <li><a href="#produtos-com-maior-faturamento-volume-e-frequência" id="toc-produtos-com-maior-faturamento-volume-e-frequência" class="nav-link" data-scroll-target="#produtos-com-maior-faturamento-volume-e-frequência">Produtos com maior faturamento, volume e frequência</a></li>
+  <li><a href="#países-mais-relevantes-para-o-negócio" id="toc-países-mais-relevantes-para-o-negócio" class="nav-link" data-scroll-target="#países-mais-relevantes-para-o-negócio">Países mais relevantes para o negócio</a></li>
+  <li><a href="#clientes-mais-relevantes-para-o-negócio" id="toc-clientes-mais-relevantes-para-o-negócio" class="nav-link" data-scroll-target="#clientes-mais-relevantes-para-o-negócio">Clientes mais relevantes para o negócio</a></li>
+  </ul></li>
   <li><a href="#cancelamentos-e-devoluções" id="toc-cancelamentos-e-devoluções" class="nav-link" data-scroll-target="#cancelamentos-e-devoluções">8. Cancelamentos e devoluções</a></li>
   <li><a href="#indo-além-novas-perguntas-de-negócio" id="toc-indo-além-novas-perguntas-de-negócio" class="nav-link" data-scroll-target="#indo-além-novas-perguntas-de-negócio">9. Indo além: novas perguntas de negócio</a>
   <ul class="collapse">
   <li><a href="#produtos-mais-vendidos-por-trimestre-no-reino-unido" id="toc-produtos-mais-vendidos-por-trimestre-no-reino-unido" class="nav-link" data-scroll-target="#produtos-mais-vendidos-por-trimestre-no-reino-unido">Produtos mais vendidos por trimestre, no Reino Unido</a></li>
   <li><a href="#concentração-de-receita-quantos-clientes-sustentam-o-faturamento" id="toc-concentração-de-receita-quantos-clientes-sustentam-o-faturamento" class="nav-link" data-scroll-target="#concentração-de-receita-quantos-clientes-sustentam-o-faturamento">Concentração de receita: quantos clientes sustentam o faturamento?</a></li>
   <li><a href="#sazonalidade-por-dia-da-semana" id="toc-sazonalidade-por-dia-da-semana" class="nav-link" data-scroll-target="#sazonalidade-por-dia-da-semana">Sazonalidade por dia da semana</a></li>
-  </ul></li>
-  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
-  <ul class="collapse">
-  <li><a href="#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" id="toc-pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" class="nav-link" data-scroll-target="#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução">Pergunta 1: cancelamento é a mesma coisa que devolução?</a></li>
-  <li><a href="#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" id="toc-pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" class="nav-link" data-scroll-target="#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo">Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</a></li>
-  <li><a href="#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" id="toc-pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" class="nav-link" data-scroll-target="#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender">Pergunta 3: qual recorte de “vendas válidas” você vai defender?</a></li>
-  <li><a href="#pergunta-4-a-concentração-de-receita-muda-quem-você-prioriza" id="toc-pergunta-4-a-concentração-de-receita-muda-quem-você-prioriza" class="nav-link" data-scroll-target="#pergunta-4-a-concentração-de-receita-muda-quem-você-prioriza">Pergunta 4: a concentração de receita muda quem você prioriza?</a></li>
   </ul></li>
   <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
   </ul>
@@ -260,9 +259,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
 <p>Ao final deste roteiro, você será capaz de:</p>
 <ol type="1">
-<li>Reconhecer as equivalências entre pandas e tidyverse: <code>groupby().agg()</code> e <code>group_by() %&gt;% summarise()</code>, filtros booleanos e <code>filter()</code>, <code>pd.to_datetime</code> e as funções do pacote <code>lubridate</code>;</li>
+<li>Reconhecer as equivalências entre pandas e tidyverse: <code>groupby().agg()</code> e <code>group_by() |&gt; summarise()</code>, filtros booleanos e <code>filter()</code>, <code>pd.to_datetime</code> e as funções do pacote <code>lubridate</code>;</li>
 <li>Reproduzir em R os indicadores de negócio calculados em Python na Aula 3: faturamento, ticket médio, produtos mais relevantes e impacto de cancelamentos;</li>
-<li>Escrever pipelines tidyverse (<code>%&gt;%</code>) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;</li>
+<li>Escrever pipelines tidyverse (<code>|&gt;</code>) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;</li>
 <li>Comparar criticamente os resultados das duas linguagens sobre os mesmos dados, como forma de validar a tradução.</li>
 </ol>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -282,7 +281,7 @@ Como usar este roteiro
 <section id="configurando-o-ambiente-r" class="level2">
 <h2 class="anchored" data-anchor-id="configurando-o-ambiente-r">Configurando o ambiente R</h2>
 <p>A Aula 1 isolou o ambiente Python por projeto com <code>uv venv</code>, e registrou versões exatas em <code>requirements.txt</code>. Aqui simplificamos deliberadamente: instalamos os pacotes uma vez, de forma global na máquina, sem isolar por projeto.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"readxl"</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"readxl"</span>, <span class="st">"lubridate"</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -310,9 +309,9 @@ Uma simplificação, não um esquecimento
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># E o estado atual? Espera-se uma area de trabalho limpa:</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>efe6751 Adiciona pandas e registra dependencias em requirements.txt
-2e321b9 Adiciona .gitignore para ambiente, dados e segredos
-2ccc4f3 Adiciona README com a descricao do projeto
+<pre><code>bbe6150 Adiciona pandas e registra dependencias em requirements.txt
+1b4999b Adiciona .gitignore para ambiente, dados e segredos
+2ce3f11 Adiciona README com a descricao do projeto
 On branch master
 Changes not staged for commit:
   (use "git add &lt;file&gt;..." to update what will be committed)
@@ -343,7 +342,8 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 <h1>3. Preparando os dados</h1>
 <p>O carregamento e a preparação replicam exatamente a Aula 3: a mesma coluna de receita por item e o mesmo sinalizador de cancelamento, derivado do prefixo <code>C</code> no número da fatura.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.2.0     ✔ readr     2.2.0
@@ -356,124 +356,85 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"projeto-vendas"</span>, <span class="st">"data"</span>, <span class="st">"online_retail.xlsx"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"projeto-vendas"</span>, <span class="st">"data"</span>, <span class="st">"online_retail.xlsx"</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>retail <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(path)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>retail <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(data_path) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">invoice_no =</span> InvoiceNo,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">stock_code =</span> StockCode,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">description =</span> Description,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantity =</span> Quantity,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">invoice_date =</span> InvoiceDate,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">unit_price =</span> UnitPrice,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">customer_id =</span> CustomerID,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> Country</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">invoice_date =</span> <span class="fu">as.POSIXct</span>(invoice_date),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> quantity <span class="sc">*</span> unit_price,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_cancelled =</span> <span class="fu">str_starts</span>(<span class="fu">str_to_upper</span>(invoice_no), <span class="st">"C"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Com a base carregada, as mesmas duas colunas calculadas da Aula 3:</p>
+<p>Os nomes das colunas são padronizados em <code>snake_case</code>, convenção adotada no restante do código. Com a base carregada, confirmamos suas dimensões:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>retail <span class="ot">&lt;-</span> retail <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Garante que a data esteja no formato correto</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">InvoiceDate =</span> <span class="fu">as.POSIXct</span>(InvoiceDate),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Receita de cada item da fatura</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Revenue =</span> Quantity <span class="sc">*</span> UnitPrice,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Identificacao de faturas canceladas (InvoiceNo comecando com "C")</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">IsCancelled =</span> <span class="fu">str_starts</span>(<span class="fu">str_to_upper</span>(InvoiceNo), <span class="st">"C"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Arquivo carregado com sucesso.</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arquivo carregado com sucesso.</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"Dimensão da base: {nrow(retail)} linhas x {ncol(retail)} colunas</span><span class="sc">\n</span><span class="st">"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">""</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Arquivo carregado com sucesso.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Dimensao da base: %d linhas x %d colunas</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(retail), <span class="fu">ncol</span>(retail)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Dimensao da base: 541909 linhas x 10 colunas</code></pre>
+<pre><code>Arquivo carregado com sucesso.
+Dimensão da base: 541909 linhas x 10 colunas</code></pre>
 </div>
 </div>
 </section>
 <section id="visão-geral-da-base" class="level1">
 <h1>4. Visão geral da base</h1>
-<p>Antes de qualquer indicador de negócio, o mesmo retrato geral tirado na Aula 3: tamanho, tipos e uma primeira olhada nos números.</p>
+<p>Antes de qualquer indicador de negócio, o mesmo retrato geral tirado na Aula 3: tamanho, tipos e uma primeira olhada nos números. Estrutura e tipos de dados:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"VISAO GERAL</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>VISAO GERAL</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Numero de linhas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">nrow</span>(retail), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Numero de linhas: 541,909</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Numero de colunas originais: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">ncol</span>(retail) <span class="sc">-</span> <span class="dv">2</span>L))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Numero de colunas originais: 8</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Data inicial: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">min</span>(retail<span class="sc">$</span>InvoiceDate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Data inicial: 2010-12-01 08:26:00</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Data final: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">max</span>(retail<span class="sc">$</span>InvoiceDate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Data final: 2011-12-09 12:50:00</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Quantidade de faturas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(retail<span class="sc">$</span>InvoiceNo), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Quantidade de faturas: 25,900</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Quantidade de clientes: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(retail<span class="sc">$</span>CustomerID, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Quantidade de clientes: 4,372</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Quantidade de produtos: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(retail<span class="sc">$</span>StockCode), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Quantidade de produtos: 4,070</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Quantidade de paises: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(retail<span class="sc">$</span>Country), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Quantidade de paises: 38</code></pre>
-</div>
-</div>
-<p>Estrutura e tipos de dados:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(retail)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(retail)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 541,909
 Columns: 10
-$ InvoiceNo   &lt;chr&gt; "536365", "536365", "536365", "536365", "536365", "536365"…
-$ StockCode   &lt;chr&gt; "85123A", "71053", "84406B", "84029G", "84029E", "22752", …
-$ Description &lt;chr&gt; "WHITE HANGING HEART T-LIGHT HOLDER", "WHITE METAL LANTERN…
-$ Quantity    &lt;dbl&gt; 6, 6, 8, 6, 6, 2, 6, 6, 6, 32, 6, 6, 8, 6, 6, 3, 2, 3, 3, …
-$ InvoiceDate &lt;dttm&gt; 2010-12-01 08:26:00, 2010-12-01 08:26:00, 2010-12-01 08:2…
-$ UnitPrice   &lt;dbl&gt; 2.55, 3.39, 2.75, 3.39, 3.39, 7.65, 4.25, 1.85, 1.85, 1.69…
-$ CustomerID  &lt;dbl&gt; 17850, 17850, 17850, 17850, 17850, 17850, 17850, 17850, 17…
-$ Country     &lt;chr&gt; "United Kingdom", "United Kingdom", "United Kingdom", "Uni…
-$ Revenue     &lt;dbl&gt; 15.30, 20.34, 22.00, 20.34, 20.34, 15.30, 25.50, 11.10, 11…
-$ IsCancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FA…</code></pre>
+$ invoice_no   &lt;chr&gt; "536365", "536365", "536365", "536365", "536365", "536365…
+$ stock_code   &lt;chr&gt; "85123A", "71053", "84406B", "84029G", "84029E", "22752",…
+$ description  &lt;chr&gt; "WHITE HANGING HEART T-LIGHT HOLDER", "WHITE METAL LANTER…
+$ quantity     &lt;dbl&gt; 6, 6, 8, 6, 6, 2, 6, 6, 6, 32, 6, 6, 8, 6, 6, 3, 2, 3, 3,…
+$ invoice_date &lt;dttm&gt; 2010-12-01 08:26:00, 2010-12-01 08:26:00, 2010-12-01 08:…
+$ unit_price   &lt;dbl&gt; 2.55, 3.39, 2.75, 3.39, 3.39, 7.65, 4.25, 1.85, 1.85, 1.6…
+$ customer_id  &lt;dbl&gt; 17850, 17850, 17850, 17850, 17850, 17850, 17850, 17850, 1…
+$ country      &lt;chr&gt; "United Kingdom", "United Kingdom", "United Kingdom", "Un…
+$ revenue      &lt;dbl&gt; 15.30, 20.34, 22.00, 20.34, 20.34, 15.30, 25.50, 11.10, 1…
+$ is_cancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, F…</code></pre>
 </div>
 </div>
 <p>Primeiras linhas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(retail))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>retail <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">6</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 10
-  InvoiceNo StockCode Description         Quantity InvoiceDate         UnitPrice
-  &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;                  &lt;dbl&gt; &lt;dttm&gt;                  &lt;dbl&gt;
-1 536365    85123A    WHITE HANGING HEAR…        6 2010-12-01 08:26:00      2.55
-2 536365    71053     WHITE METAL LANTERN        6 2010-12-01 08:26:00      3.39
-3 536365    84406B    CREAM CUPID HEARTS…        8 2010-12-01 08:26:00      2.75
-4 536365    84029G    KNITTED UNION FLAG…        6 2010-12-01 08:26:00      3.39
-5 536365    84029E    RED WOOLLY HOTTIE …        6 2010-12-01 08:26:00      3.39
-6 536365    22752     SET 7 BABUSHKA NES…        2 2010-12-01 08:26:00      7.65
-# ℹ 4 more variables: CustomerID &lt;dbl&gt;, Country &lt;chr&gt;, Revenue &lt;dbl&gt;,
-#   IsCancelled &lt;lgl&gt;</code></pre>
+  invoice_no stock_code description      quantity invoice_date        unit_price
+  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;               &lt;dbl&gt; &lt;dttm&gt;                   &lt;dbl&gt;
+1 536365     85123A     WHITE HANGING H…        6 2010-12-01 08:26:00       2.55
+2 536365     71053      WHITE METAL LAN…        6 2010-12-01 08:26:00       3.39
+3 536365     84406B     CREAM CUPID HEA…        8 2010-12-01 08:26:00       2.75
+4 536365     84029G     KNITTED UNION F…        6 2010-12-01 08:26:00       3.39
+5 536365     84029E     RED WOOLLY HOTT…        6 2010-12-01 08:26:00       3.39
+6 536365     22752      SET 7 BABUSHKA …        2 2010-12-01 08:26:00       7.65
+# ℹ 4 more variables: customer_id &lt;dbl&gt;, country &lt;chr&gt;, revenue &lt;dbl&gt;,
+#   is_cancelled &lt;lgl&gt;</code></pre>
 </div>
 </div>
 <p>Estatísticas das variáveis numéricas:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(retail <span class="sc">%&gt;%</span> <span class="fu">select</span>(Quantity, UnitPrice, Revenue)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>retail <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(quantity, unit_price, revenue) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Quantity            UnitPrice             Revenue          
+<pre><code>    quantity            unit_price            revenue          
  Min.   :-80995.000   Min.   :-11062.060   Min.   :-168469.60  
  1st Qu.:     1.000   1st Qu.:     1.250   1st Qu.:      3.40  
  Median :     3.000   Median :     2.080   Median :      9.75  
@@ -486,112 +447,106 @@ $ IsCancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
 <section id="qualidade-dos-dados" class="level1">
 <h1>5. Qualidade dos dados</h1>
 <p>Refaça também o diagnóstico da Aula 3, consolidado em um único quadro: ausentes, duplicatas e a contagem dos suspeitos já conhecidos.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"QUALIDADE DOS DADOS</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>QUALIDADE DOS DADOS</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-</div>
 <p>Valores ausentes, coluna a coluna:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>quality <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Coluna =</span> <span class="fu">names</span>(retail),</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ValoresAusentes =</span> <span class="fu">map_int</span>(retail, <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.x))),</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">PercentualAusente =</span> <span class="fu">map_dbl</span>(retail, <span class="sc">~</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(.x)) <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(PercentualAusente))</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(quality <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">PercentualAusente =</span> <span class="fu">round</span>(PercentualAusente, <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>quality <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">coluna =</span> <span class="fu">names</span>(retail),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">valores_ausentes =</span> <span class="fu">map_int</span>(retail, \(column) <span class="fu">sum</span>(<span class="fu">is.na</span>(column))),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">percentual_ausente =</span> <span class="fu">map_dbl</span>(retail, \(column) <span class="fu">mean</span>(<span class="fu">is.na</span>(column)) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(percentual_ausente)) <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percentual_ausente =</span> <span class="fu">round</span>(percentual_ausente, <span class="dv">2</span>))</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>quality</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 3
-   Coluna      ValoresAusentes PercentualAusente
-   &lt;chr&gt;                 &lt;int&gt;             &lt;dbl&gt;
- 1 CustomerID           135080             24.9 
- 2 Description            1454              0.27
- 3 InvoiceNo                 0              0   
- 4 StockCode                 0              0   
- 5 Quantity                  0              0   
- 6 InvoiceDate               0              0   
- 7 UnitPrice                 0              0   
- 8 Country                   0              0   
- 9 Revenue                   0              0   
-10 IsCancelled               0              0   </code></pre>
+   coluna       valores_ausentes percentual_ausente
+   &lt;chr&gt;                   &lt;int&gt;              &lt;dbl&gt;
+ 1 customer_id            135080              24.9 
+ 2 description              1454               0.27
+ 3 invoice_no                  0               0   
+ 4 stock_code                  0               0   
+ 5 quantity                    0               0   
+ 6 invoice_date                0               0   
+ 7 unit_price                  0               0   
+ 8 country                     0               0   
+ 9 revenue                     0               0   
+10 is_cancelled                0               0   </code></pre>
 </div>
 </div>
 <p>Duplicatas, considerando somente as colunas originais:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>original_columns <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"InvoiceNo"</span>, <span class="st">"StockCode"</span>, <span class="st">"Description"</span>, <span class="st">"Quantity"</span>,</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"InvoiceDate"</span>, <span class="st">"UnitPrice"</span>, <span class="st">"CustomerID"</span>, <span class="st">"Country"</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>duplicate_count <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">duplicated</span>(retail[, original_columns]))</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Linhas exatamente duplicadas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(duplicate_count, <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>original_columns <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"invoice_no"</span>, <span class="st">"stock_code"</span>, <span class="st">"description"</span>, <span class="st">"quantity"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"invoice_date"</span>, <span class="st">"unit_price"</span>, <span class="st">"customer_id"</span>, <span class="st">"country"</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>duplicate_count <span class="ot">&lt;-</span> retail <span class="sc">|&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(original_columns)) <span class="sc">|&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duplicated</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Linhas exatamente duplicadas: {scales::comma(duplicate_count)}</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Percentual de duplicatas: {scales::number(duplicate_count / nrow(retail), accuracy = 0.0001, scale = 100, suffix = '%')}</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Linhas exatamente duplicadas: 5,268</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Percentual de duplicatas: %.2f%%</span><span class="sc">\n</span><span class="st">"</span>, duplicate_count <span class="sc">/</span> <span class="fu">nrow</span>(retail) <span class="sc">*</span> <span class="dv">100</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Percentual de duplicatas: 0.97%</code></pre>
+<pre><code>Linhas exatamente duplicadas: 5,268
+Percentual de duplicatas: 0.9721%</code></pre>
 </div>
 </div>
 <p>Registros potencialmente problemáticos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>issues <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metrica =</span> <span class="fu">c</span>(</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Faturas canceladas"</span>, <span class="st">"Quantidade negativa"</span>, <span class="st">"Quantidade igual a zero"</span>,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preco negativo"</span>, <span class="st">"Preco igual a zero"</span>, <span class="st">"Descricao ausente"</span>,</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cliente nao identificado"</span>, <span class="st">"Data invalida ou ausente"</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Quantidade =</span> <span class="fu">c</span>(</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>IsCancelled),</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>Quantity <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>Quantity <span class="sc">==</span> <span class="dv">0</span>),</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>UnitPrice <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>UnitPrice <span class="sc">==</span> <span class="dv">0</span>),</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>Description)),</span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>CustomerID)),</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>InvoiceDate))</span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(issues)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>issues <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrica =</span> <span class="fu">c</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Faturas canceladas"</span>, <span class="st">"Quantidade negativa"</span>, <span class="st">"Quantidade igual a zero"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Preço negativo"</span>, <span class="st">"Preço igual a zero"</span>, <span class="st">"Descrição ausente"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cliente não identificado"</span>, <span class="st">"Data inválida ou ausente"</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">quantidade =</span> <span class="fu">c</span>(</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>is_cancelled),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>quantity <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>quantity <span class="sc">==</span> <span class="dv">0</span>),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>unit_price <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(retail<span class="sc">$</span>unit_price <span class="sc">==</span> <span class="dv">0</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>description)),</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>customer_id)),</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(retail<span class="sc">$</span>invoice_date))</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>issues</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 2
-  Metrica                  Quantidade
+  metrica                  quantidade
   &lt;chr&gt;                         &lt;int&gt;
 1 Faturas canceladas             9288
 2 Quantidade negativa           10624
 3 Quantidade igual a zero           0
-4 Preco negativo                    2
-5 Preco igual a zero             2515
-6 Descricao ausente              1454
-7 Cliente nao identificado     135080
-8 Data invalida ou ausente          0</code></pre>
+4 Preço negativo                    2
+5 Preço igual a zero             2515
+6 Descrição ausente              1454
+7 Cliente não identificado     135080
+8 Data inválida ou ausente          0</code></pre>
 </div>
 </div>
 <p>Valores extremos, quantidade e preço unitário:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">round</span>(<span class="fu">quantile</span>(retail<span class="sc">$</span>Quantity, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>percentiles <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>retail <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantidade =</span> <span class="fu">list</span>(<span class="fu">round</span>(<span class="fu">quantile</span>(quantity, percentiles, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>)),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">preco_unitario =</span> <span class="fu">list</span>(<span class="fu">round</span>(<span class="fu">quantile</span>(unit_price, percentiles, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"variavel"</span>, <span class="at">values_to =</span> <span class="st">"valores"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(valores, <span class="at">names_sep =</span> <span class="st">"_"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1% 25% 50% 75% 99% 
- -2   1   3  10 100 </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">round</span>(<span class="fu">quantile</span>(retail<span class="sc">$</span>UnitPrice, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   1%   25%   50%   75%   99% 
- 0.19  1.25  2.08  4.13 18.00 </code></pre>
+<pre><code># A tibble: 2 × 6
+  variavel  `valores_1%` `valores_25%` `valores_50%` `valores_75%` `valores_99%`
+  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+1 quantida…        -2             1             3            10              100
+2 preco_un…         0.19          1.25          2.08          4.13            18</code></pre>
 </div>
 </div>
 </section>
@@ -599,134 +554,269 @@ $ IsCancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
 <h1>6. Isolando as vendas válidas</h1>
 <p>O mesmo corte definido na Aula 3: exclui cancelamentos e linhas com quantidade ou preço não positivos.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>sales <span class="ot">&lt;-</span> retail <span class="sc">%&gt;%</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>IsCancelled, Quantity <span class="sc">&gt;</span> <span class="dv">0</span>, UnitPrice <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sales <span class="ot">&lt;-</span> retail <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>is_cancelled, quantity <span class="sc">&gt;</span> <span class="dv">0</span>, unit_price <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>sales_summary <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">linhas =</span> <span class="fu">n</span>(),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">pedidos =</span> <span class="fu">n_distinct</span>(invoice_no),</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">clientes =</span> <span class="fu">n_distinct</span>(customer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">unidades =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">faturamento_bruto =</span> <span class="fu">sum</span>(revenue)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>sales_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"VENDAS POSITIVAS</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>VENDAS POSITIVAS</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strrep</span>(<span class="st">"="</span>, <span class="dv">60</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>============================================================ </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Linhas de vendas positivas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">nrow</span>(sales), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linhas de vendas positivas: 530,104</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Pedidos validos: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(sales<span class="sc">$</span>InvoiceNo), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Pedidos validos: 19,960</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Clientes identificados: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(sales<span class="sc">$</span>CustomerID, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Clientes identificados: 4,338</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Unidades vendidas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">sum</span>(sales<span class="sc">$</span>Quantity), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Unidades vendidas: 5,588,376</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Faturamento bruto: £ %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">sum</span>(sales<span class="sc">$</span>Revenue), <span class="dv">2</span>), <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">nsmall =</span> <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Faturamento bruto: £ 10,666,684.54</code></pre>
+<pre><code># A tibble: 1 × 5
+  linhas pedidos clientes unidades faturamento_bruto
+   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt;             &lt;dbl&gt;
+1 530104   19960     4338  5588376         10666685.</code></pre>
 </div>
 </div>
 </section>
-<section id="indicadores-de-pedidos-e-produtos" class="level1">
-<h1>7. Indicadores de pedidos e produtos</h1>
-<p>Com as vendas válidas isoladas, ticket médio e produtos de maior faturamento saem de duas agregações: uma por pedido (<code>InvoiceNo</code>) e outra por produto (<code>StockCode</code>).</p>
+<section id="indicadores-de-pedidos-produtos-países-e-clientes" class="level1">
+<h1>7. Indicadores de pedidos, produtos, países e clientes</h1>
+<p>Com as vendas válidas isoladas, podemos mudar a unidade de análise conforme a pergunta: pedidos, produtos, países ou clientes. Cada tabela abaixo tem uma linha por entidade analisada e reúne as métricas necessárias para responder ao enunciado.</p>
+<section id="valor-médio-dos-pedidos" class="level2">
+<h2 class="anchored" data-anchor-id="valor-médio-dos-pedidos">Valor médio dos pedidos</h2>
+<p>Primeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>orders <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(InvoiceNo) <span class="sc">%&gt;%</span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">OrderDate =</span> <span class="fu">min</span>(InvoiceDate),</span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Customer =</span> <span class="fu">first</span>(CustomerID),</span>
-<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Country =</span> <span class="fu">first</span>(Country),</span>
-<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ItemQuantity =</span> <span class="fu">sum</span>(Quantity),</span>
-<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">OrderValue =</span> <span class="fu">sum</span>(Revenue),</span>
-<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a>orders <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-2" class="code-annotation-target"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(invoice_no) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_date =</span> <span class="fu">min</span>(invoice_date),</span>
+<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">customer_id =</span> <span class="fu">first</span>(customer_id),</span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">first</span>(country),</span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">item_quantity =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_value =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-10" class="code-annotation-target"><a href="#annotated-cell-14-10" aria-hidden="true" tabindex="-1"></a>  )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="2" data-code-annotation="1">Cada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="10" data-code-annotation="2"><code>summarise()</code> documenta como cada coluna do pedido é obtida a partir das linhas de itens.</span>
+</dd>
+</dl>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Ticket medio: £ %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(orders<span class="sc">$</span>OrderValue), <span class="dv">2</span>), <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">nsmall =</span> <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>order_value_summary <span class="ot">&lt;-</span> orders <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">ticket_medio =</span> <span class="fu">mean</span>(order_value),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ticket_mediano =</span> <span class="fu">median</span>(order_value)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>order_value_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Ticket medio: £ 534.40</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Ticket mediano: £ %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">median</span>(orders<span class="sc">$</span>OrderValue), <span class="dv">2</span>), <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">nsmall =</span> <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ticket mediano: £ 303.84</code></pre>
+<pre><code># A tibble: 1 × 2
+  ticket_medio ticket_mediano
+         &lt;dbl&gt;          &lt;dbl&gt;
+1         534.           304.</code></pre>
 </div>
 </div>
 <p>Distribuição do valor dos pedidos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">round</span>(<span class="fu">quantile</span>(orders<span class="sc">$</span>OrderValue, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>, <span class="fl">0.99</span>)), <span class="dv">2</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>orders <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">percentil =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>, <span class="dv">99</span>),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">valor_pedido =</span> <span class="fu">round</span>(<span class="fu">quantile</span>(order_value, percentil <span class="sc">/</span> <span class="dv">100</span>), <span class="dv">2</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    25%     50%     75%     90%     99% 
- 152.51  303.84  495.62  940.89 4821.17 </code></pre>
+<pre><code># A tibble: 5 × 2
+  percentil valor_pedido
+      &lt;dbl&gt;        &lt;dbl&gt;
+1        25         153.
+2        50         304.
+3        75         496.
+4        90         941.
+5        99        4821.</code></pre>
 </div>
 </div>
+<p>O ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.</p>
+</section>
+<section id="produtos-com-maior-faturamento-volume-e-frequência" class="level2">
+<h2 class="anchored" data-anchor-id="produtos-com-maior-faturamento-volume-e-frequência">Produtos com maior faturamento, volume e frequência</h2>
+<p>Para comparar produtos, usamos três métricas diferentes:</p>
+<ul>
+<li><code>revenue</code>: faturamento gerado;</li>
+<li><code>units_sold</code>: unidades vendidas;</li>
+<li><code>order_count</code>: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Description)) <span class="sc">%&gt;%</span></span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(StockCode, Description) <span class="sc">%&gt;%</span></span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">UnitsSold =</span> <span class="fu">sum</span>(Quantity),</span>
-<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Revenue =</span> <span class="fu">sum</span>(Revenue),</span>
-<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">OrderCount =</span> <span class="fu">n_distinct</span>(InvoiceNo),</span>
-<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Revenue))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(description)) <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(stock_code, description) <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">units_sold =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_count =</span> <span class="fu">n_distinct</span>(invoice_no),</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Produtos com maior faturamento:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(products, <span class="dv">10</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>products <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(revenue, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 5
-   StockCode Description                        UnitsSold Revenue OrderCount
-   &lt;chr&gt;     &lt;chr&gt;                                  &lt;dbl&gt;   &lt;dbl&gt;      &lt;int&gt;
- 1 DOT       DOTCOM POSTAGE                           706 206249.        706
- 2 22423     REGENCY CAKESTAND 3 TIER               13879 174485.       1988
- 3 23843     PAPER CRAFT , LITTLE BIRDIE            80995 168470.          1
- 4 85123A    WHITE HANGING HEART T-LIGHT HOLDER     37599 104340.       2189
- 5 47566     PARTY BUNTING                          18295  99504.       1685
- 6 85099B    JUMBO BAG RED RETROSPOT                48474  94340.       2089
- 7 23166     MEDIUM CERAMIC TOP STORAGE JAR         78033  81701.        247
- 8 M         Manual                                  7224  78110.        289
- 9 POST      POSTAGE                                 3150  78102.       1126
-10 23084     RABBIT NIGHT LIGHT                     30788  66965.        994</code></pre>
+   stock_code description                        units_sold revenue order_count
+   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;
+ 1 DOT        DOTCOM POSTAGE                            706 206249.         706
+ 2 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988
+ 3 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1
+ 4 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189
+ 5 47566      PARTY BUNTING                           18295  99504.        1685
+ 6 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089
+ 7 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247
+ 8 M          Manual                                   7224  78110.         289
+ 9 POST       POSTAGE                                  3150  78102.        1126
+10 23084      RABBIT NIGHT LIGHT                      30788  66965.         994</code></pre>
 </div>
 </div>
+<p>Produtos com maior volume vendido:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>products <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(units_sold, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   stock_code description                        units_sold revenue order_count
+   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;
+ 1 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1
+ 2 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247
+ 3 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS       55047  13842.         535
+ 4 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089
+ 5 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189
+ 6 22197      POPCORN HOLDER                          36761  34299.         803
+ 7 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455
+ 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320
+ 9 23084      RABBIT NIGHT LIGHT                      30788  66965.         994
+10 22492      MINI PAINT SET VINTAGE                  26633  16938.         380</code></pre>
+</div>
+</div>
+<p>Produtos com maior frequência de compra:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>products <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(order_count, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   stock_code description                        units_sold revenue order_count
+   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;
+ 1 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189
+ 2 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089
+ 3 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988
+ 4 47566      PARTY BUNTING                           18295  99504.        1685
+ 5 20725      LUNCH BAG RED RETROSPOT                 19353  35752.        1564
+ 6 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455
+ 7 22720      SET OF 3 CAKE TINS PANTRY DESIGN         7493  38158.        1385
+ 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320
+ 9 20727      LUNCH BAG  BLACK SKULL.                 12240  22421.        1273
+10 22457      NATURAL SLATE HEART CHALKBOARD           9172  28148.        1249</code></pre>
+</div>
+</div>
+<p>Os três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.</p>
+</section>
+<section id="países-mais-relevantes-para-o-negócio" class="level2">
+<h2 class="anchored" data-anchor-id="países-mais-relevantes-para-o-negócio">Países mais relevantes para o negócio</h2>
+<p>A relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_count =</span> <span class="fu">n_distinct</span>(invoice_no),</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">customer_count =</span> <span class="fu">n_distinct</span>(customer_id, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">units_sold =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>top_countries <span class="ot">&lt;-</span> countries <span class="sc">|&gt;</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(revenue, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>top_countries</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   country         revenue order_count customer_count units_sold
+   &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;          &lt;int&gt;      &lt;dbl&gt;
+ 1 United Kingdom 9025222.       18019           3920    4662390
+ 2 Netherlands     285446.          94              9     200361
+ 3 EIRE            283454.         288              3     147173
+ 4 Germany         228867.         457             94     119261
+ 5 France          209715.         392             87     112103
+ 6 Australia       138521.          57              9      83901
+ 7 Spain            61577.          90             30      27940
+ 8 Switzerland      57090.          54             21      30629
+ 9 Belgium          41196.          98             25      23237
+10 Sweden           38378.          36              8      36083</code></pre>
+</div>
+</div>
+</section>
+<section id="clientes-mais-relevantes-para-o-negócio" class="level2">
+<h2 class="anchored" data-anchor-id="clientes-mais-relevantes-para-o-negócio">Clientes mais relevantes para o negócio</h2>
+<p>Como registros sem <code>customer_id</code> não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>identified_sales <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(customer_id))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>customers <span class="ot">&lt;-</span> identified_sales <span class="sc">|&gt;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(customer_id) <span class="sc">|&gt;</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">order_count =</span> <span class="fu">n_distinct</span>(invoice_no),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">units_sold =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">first</span>(country),</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>top_customers <span class="ot">&lt;-</span> customers <span class="sc">|&gt;</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(revenue, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>top_customers</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   customer_id revenue order_count units_sold country       
+         &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;         
+ 1       14646 280206.          73     196915 Netherlands   
+ 2       18102 259657.          60      64124 United Kingdom
+ 3       17450 194551.          46      69993 United Kingdom
+ 4       16446 168472.           2      80997 United Kingdom
+ 5       14911 143825.         201      80265 EIRE          
+ 6       12415 124915.          21      77374 Australia     
+ 7       14156 117380.          55      57885 EIRE          
+ 8       17511  91062.          31      64549 United Kingdom
+ 9       16029  81025.          63      40208 United Kingdom
+10       12346  77184.           1      74215 United Kingdom</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="cancelamentos-e-devoluções" class="level1">
 <h1>8. Cancelamentos e devoluções</h1>
 <p>O lado espelhado das vendas válidas: tudo o que foi excluído do faturamento bruto calculado na seção 6.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>cancellations <span class="ot">&lt;-</span> retail <span class="sc">%&gt;%</span></span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(IsCancelled <span class="sc">|</span> Quantity <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>refunded_amount <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">sum</span>(retail<span class="sc">$</span>Revenue[retail<span class="sc">$</span>Revenue <span class="sc">&lt;</span> <span class="dv">0</span>]))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Faturas canceladas: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">n_distinct</span>(retail<span class="sc">$</span>InvoiceNo[retail<span class="sc">$</span>IsCancelled]), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cancellations <span class="ot">&lt;-</span> retail <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_cancelled <span class="sc">|</span> quantity <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>cancellation_summary <span class="ot">&lt;-</span> retail <span class="sc">|&gt;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">faturas_canceladas =</span> <span class="fu">n_distinct</span>(invoice_no[is_cancelled]),</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">linhas_quantidade_negativa =</span> <span class="fu">sum</span>(quantity <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">valor_devolucoes_ajustes =</span> <span class="fu">abs</span>(<span class="fu">sum</span>(revenue[revenue <span class="sc">&lt;</span> <span class="dv">0</span>])),</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">receita_liquida =</span> <span class="fu">sum</span>(revenue)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>cancellation_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Faturas canceladas: 3,836</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Linhas com quantidade negativa: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">sum</span>(retail<span class="sc">$</span>Quantity <span class="sc">&lt;</span> <span class="dv">0</span>), <span class="at">big.mark =</span> <span class="st">","</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linhas com quantidade negativa: 10,624</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Valor absoluto das devolucoes/ajustes: £ %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">round</span>(refunded_amount, <span class="dv">2</span>), <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">nsmall =</span> <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Valor absoluto das devolucoes/ajustes: £ 918,936.61</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Receita liquida de toda a base: £ %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">sum</span>(retail<span class="sc">$</span>Revenue), <span class="dv">2</span>), <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">nsmall =</span> <span class="dv">2</span>)))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Receita liquida de toda a base: £ 9,747,747.93</code></pre>
+<pre><code># A tibble: 1 × 4
+  faturas_canceladas linhas_quantidade_negativa valor_devolucoes_ajustes
+               &lt;int&gt;                      &lt;int&gt;                    &lt;dbl&gt;
+1               3836                      10624                  918937.
+# ℹ 1 more variable: receita_liquida &lt;dbl&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -737,84 +827,84 @@ $ IsCancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
 <h2 class="anchored" data-anchor-id="produtos-mais-vendidos-por-trimestre-no-reino-unido">Produtos mais vendidos por trimestre, no Reino Unido</h2>
 <p>A maior parte das vendas vem do Reino Unido, sede da empresa. Faz sentido perguntar: quais produtos lideram em unidades vendidas, trimestre a trimestre, só nesse mercado?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>uk_quarterly_top_products <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">"United Kingdom"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Quarter =</span> <span class="fu">paste0</span>(<span class="fu">year</span>(InvoiceDate), <span class="st">"-Q"</span>, <span class="fu">quarter</span>(InvoiceDate))) <span class="sc">%&gt;%</span></span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Quarter, StockCode, Description) <span class="sc">%&gt;%</span></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">UnitsSold =</span> <span class="fu">sum</span>(Quantity),</span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Revenue =</span> <span class="fu">sum</span>(Revenue),</span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(UnitsSold, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">by =</span> Quarter) <span class="sc">%&gt;%</span></span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Quarter, <span class="fu">desc</span>(UnitsSold))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(uk_quarterly_top_products)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>uk_quarterly_top_products <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"United Kingdom"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">quarter =</span> <span class="fu">paste0</span>(<span class="fu">year</span>(invoice_date), <span class="st">"-Q"</span>, <span class="fu">quarter</span>(invoice_date))) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(quarter, stock_code, description) <span class="sc">|&gt;</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">units_sold =</span> <span class="fu">sum</span>(quantity),</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(units_sold, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">by =</span> quarter, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(quarter, <span class="fu">desc</span>(units_sold))</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>uk_quarterly_top_products</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 25 × 5
-   Quarter StockCode Description                        UnitsSold Revenue
-   &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                                  &lt;dbl&gt;   &lt;dbl&gt;
- 1 2010-Q4 84077     WORLD WAR 2 GLIDERS ASSTD DESIGNS       4571    993.
- 2 2010-Q4 85123A    WHITE HANGING HEART T-LIGHT HOLDER      3633  10110.
- 3 2010-Q4 22834     HAND WARMER BABUSHKA DESIGN             3322   4482.
- 4 2010-Q4 21212     PACK OF 72 RETROSPOT CAKE CASES         3266   2266.
- 5 2010-Q4 22693     GROW A FLYTRAP OR SUNFLOWER IN TIN      2617   2509.
- 6 2011-Q1 23166     MEDIUM CERAMIC TOP STORAGE JAR         74215  77184.
- 7 2011-Q1 85099B    JUMBO BAG RED RETROSPOT                10224  19241.
- 8 2011-Q1 85123A    WHITE HANGING HEART T-LIGHT HOLDER      8874  24541.
- 9 2011-Q1 84077     WORLD WAR 2 GLIDERS ASSTD DESIGNS       8609   2067.
-10 2011-Q1 17003     BROCADE RING PURSE                      6903   1484.
+   quarter stock_code description                        units_sold revenue
+   &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 2010-Q4 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        4571    993.
+ 2 2010-Q4 85123A     WHITE HANGING HEART T-LIGHT HOLDER       3633  10110.
+ 3 2010-Q4 22834      HAND WARMER BABUSHKA DESIGN              3322   4482.
+ 4 2010-Q4 21212      PACK OF 72 RETROSPOT CAKE CASES          3266   2266.
+ 5 2010-Q4 22693      GROW A FLYTRAP OR SUNFLOWER IN TIN       2617   2509.
+ 6 2011-Q1 23166      MEDIUM CERAMIC TOP STORAGE JAR          74215  77184.
+ 7 2011-Q1 85099B     JUMBO BAG RED RETROSPOT                 10224  19241.
+ 8 2011-Q1 85123A     WHITE HANGING HEART T-LIGHT HOLDER       8874  24541.
+ 9 2011-Q1 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        8609   2067.
+10 2011-Q1 17003      BROCADE RING PURSE                       6903   1484.
 # ℹ 15 more rows</code></pre>
 </div>
 </div>
-<p><code>Country == "United Kingdom"</code> só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.</p>
+<p><code>country == "United Kingdom"</code> só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.</p>
 </section>
 <section id="concentração-de-receita-quantos-clientes-sustentam-o-faturamento" class="level2">
 <h2 class="anchored" data-anchor-id="concentração-de-receita-quantos-clientes-sustentam-o-faturamento">Concentração de receita: quantos clientes sustentam o faturamento?</h2>
 <p>Uma leitura comum em gestão comercial é a curva de Pareto: uma fração pequena de clientes costuma responder por boa parte da receita. Vale checar se isso se confirma aqui.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>customer_revenue <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(CustomerID)) <span class="sc">%&gt;%</span></span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Revenue =</span> <span class="fu">sum</span>(Revenue), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Revenue)) <span class="sc">%&gt;%</span></span>
-<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">CustomerRank =</span> <span class="fu">row_number</span>(),</span>
-<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">CumShare =</span> <span class="fu">cumsum</span>(Revenue) <span class="sc">/</span> <span class="fu">sum</span>(Revenue)</span>
-<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>customers_for_80pct <span class="ot">&lt;-</span> <span class="fu">min</span>(customer_revenue<span class="sc">$</span>CustomerRank[customer_revenue<span class="sc">$</span>CumShare <span class="sc">&gt;=</span> <span class="fl">0.8</span>])</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>total_customers <span class="ot">&lt;-</span> <span class="fu">nrow</span>(customer_revenue)</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"%s de %s clientes (%.1f%%) respondem por 80%% do faturamento das vendas validas.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(customers_for_80pct, <span class="at">big.mark =</span> <span class="st">","</span>),</span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(total_customers, <span class="at">big.mark =</span> <span class="st">","</span>),</span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span> <span class="sc">*</span> customers_for_80pct <span class="sc">/</span> total_customers</span>
-<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>customer_revenue <span class="ot">&lt;-</span> customers <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(customer_id, revenue) <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(revenue)) <span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">customer_rank =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">cumulative_share =</span> <span class="fu">cumsum</span>(revenue) <span class="sc">/</span> <span class="fu">sum</span>(revenue)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>customers_for_80pct <span class="ot">&lt;-</span> customer_revenue <span class="sc">|&gt;</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cumulative_share <span class="sc">&gt;=</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(customer_rank)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>total_customers <span class="ot">&lt;-</span> <span class="fu">nrow</span>(customer_revenue)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"{customers_for_80pct} de {total_customers} clientes "</span>,</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"({scales::percent(customers_for_80pct / total_customers, accuracy = 0.1)}) "</span>,</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"respondem por 80% do faturamento das vendas válidas.</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>1,133 de 4,338 clientes (26.1%) respondem por 80% do faturamento das vendas validas.</code></pre>
+<pre><code>1133 de 4338 clientes (26.1%) respondem por 80% do faturamento das vendas válidas.</code></pre>
 </div>
 </div>
 <p>Clientes com maior faturamento:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(customer_revenue, <span class="dv">10</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>customer_revenue <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 4
-   CustomerID Revenue CustomerRank CumShare
-        &lt;dbl&gt;   &lt;dbl&gt;        &lt;int&gt;    &lt;dbl&gt;
- 1      14646 280206.            1   0.0314
- 2      18102 259657.            2   0.0606
- 3      17450 194551.            3   0.0824
- 4      16446 168472.            4   0.101 
- 5      14911 143825.            5   0.117 
- 6      12415 124915.            6   0.131 
- 7      14156 117380.            7   0.145 
- 8      17511  91062.            8   0.155 
- 9      16029  81025.            9   0.164 
-10      12346  77184.           10   0.173 </code></pre>
+   customer_id revenue customer_rank cumulative_share
+         &lt;dbl&gt;   &lt;dbl&gt;         &lt;int&gt;            &lt;dbl&gt;
+ 1       14646 280206.             1           0.0314
+ 2       18102 259657.             2           0.0606
+ 3       17450 194551.             3           0.0824
+ 4       16446 168472.             4           0.101 
+ 5       14911 143825.             5           0.117 
+ 6       12415 124915.             6           0.131 
+ 7       14156 117380.             7           0.145 
+ 8       17511  91062.             8           0.155 
+ 9       16029  81025.             9           0.164 
+10       12346  77184.            10           0.173 </code></pre>
 </div>
 </div>
 </section>
@@ -822,128 +912,43 @@ $ IsCancelled &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
 <h2 class="anchored" data-anchor-id="sazonalidade-por-dia-da-semana">Sazonalidade por dia da semana</h2>
 <p>A seção 4 já apontou sazonalidade mensal como pergunta em aberto. Antes de chegar lá, um recorte mais fino: existe um dia da semana melhor para vendas?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>weekday_revenue <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Weekday =</span> <span class="fu">wday</span>(InvoiceDate, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>, <span class="at">week_start =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Weekday) <span class="sc">%&gt;%</span></span>
-<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Orders =</span> <span class="fu">n_distinct</span>(InvoiceNo),</span>
-<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Revenue =</span> <span class="fu">sum</span>(Revenue),</span>
-<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgRevenuePerOrder =</span> Revenue <span class="sc">/</span> Orders,</span>
-<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Weekday)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(weekday_revenue)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>weekday_revenue <span class="ot">&lt;-</span> sales <span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weekday =</span> <span class="fu">wday</span>(invoice_date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>, <span class="at">week_start =</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(weekday) <span class="sc">|&gt;</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">orders =</span> <span class="fu">n_distinct</span>(invoice_no),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">revenue =</span> <span class="fu">sum</span>(revenue),</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_revenue_per_order =</span> revenue <span class="sc">/</span> orders,</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(weekday)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>weekday_revenue</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-  Weekday   Orders  Revenue AvgRevenuePerOrder
-  &lt;ord&gt;      &lt;int&gt;    &lt;dbl&gt;              &lt;dbl&gt;
-1 Monday      3126 1779575.               569.
-2 Tuesday     3554 2178633.               613.
-3 Wednesday   3690 1851148.               502.
-4 Thursday    4246 2203161.               519.
-5 Friday      3140 1840340.               586.
-6 Sunday      2204  813828.               369.</code></pre>
+  weekday   orders  revenue avg_revenue_per_order
+  &lt;ord&gt;      &lt;int&gt;    &lt;dbl&gt;                 &lt;dbl&gt;
+1 Monday      3126 1779575.                  569.
+2 Tuesday     3554 2178633.                  613.
+3 Wednesday   3690 1851148.                  502.
+4 Thursday    4246 2203161.                  519.
+5 Friday      3140 1840340.                  586.
+6 Sunday      2204  813828.                  369.</code></pre>
 </div>
 </div>
 <p>Vale notar o que falta nos dados: se um dia da semana não aparece na tabela acima, é porque não há faturas registradas nele, o que já é, por si só, um achado sobre a operação.</p>
 <p>Recapitulando o que este roteiro entrega:</p>
 <ul>
-<li>Reproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, indicadores de pedidos e produtos, e impacto de cancelamentos;</li>
+<li>Reproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, valor médio dos pedidos, rankings de produtos, países e clientes, e impacto de cancelamentos;</li>
 <li>Foi além do enunciado original com três perguntas novas: produtos líderes por trimestre no Reino Unido, concentração de receita por cliente e sazonalidade por dia da semana.</li>
 </ul>
 <p>O que ainda falta é o mesmo que faltava na Aula 3: sazonalidade mensal completa, investigação direta dos outliers e as recomendações práticas para a gestão comercial.</p>
 </section>
 </section>
-<section id="perguntas-para-consolidar" class="level1">
-<h1>Perguntas para consolidar</h1>
-<p>As mesmas quatro perguntas testam se os critérios usados aqui, os mesmos da Aula 3, continuam sólidos ao serem reescritos em outra linguagem.</p>
-<section id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução">Pergunta 1: cancelamento é a mesma coisa que devolução?</h2>
-<p>O critério de vendas válidas da seção 6 trata toda linha com <code>IsCancelled</code> verdadeiro ou <code>Quantity</code> negativa da mesma forma. Isso é preciso o suficiente para separar cancelamentos de devoluções?</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>O mesmo raciocínio da Aula 3 vale aqui, a linguagem não muda o argumento: <code>InvoiceNo</code> começando com <code>C</code> é a convenção do sistema para cancelamento, registrado no mesmo momento da venda; uma devolução, no mundo real, costuma ser um evento separado. Verifique nos próprios dados, com <code>filter(Quantity &lt; 0, !IsCancelled)</code>, se existem linhas com quantidade negativa que não têm <code>InvoiceNo</code> começando com <code>C</code>. Se existirem, elas são a diferença entre as duas categorias.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo">Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</h2>
-<p>A seção 5 mostra valores de <code>Quantity</code> na casa das dezenas de milhares em uma única linha. Descartar essas linhas do faturamento por serem outliers, sem checar mais nada, é seguro?</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Antes de descartar uma linha como erro, agrupe por <code>CustomerID</code> e <code>Country</code>: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é padrão de atacado, não erro de digitação. <code>sales %&gt;% filter(CustomerID == &lt;id suspeito&gt;) %&gt;% arrange(desc(Quantity))</code> responde isso rápido.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender">Pergunta 3: qual recorte de “vendas válidas” você vai defender?</h2>
-<p>Além de cancelamentos, a seção 6 também exclui <code>Quantity</code> igual a zero e <code>UnitPrice</code> igual a zero. Existem linhas com preço zero e <code>CustomerID</code> ausente ao mesmo tempo?</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Preço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de venda. <code>retail %&gt;% filter(UnitPrice == 0, is.na(CustomerID)) %&gt;% nrow()</code> mede o tamanho do problema antes de decidir o que fazer com ele.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pergunta-4-a-concentração-de-receita-muda-quem-você-prioriza" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-4-a-concentração-de-receita-muda-quem-você-prioriza">Pergunta 4: a concentração de receita muda quem você prioriza?</h2>
-<p>A seção 9 mostrou quantos clientes respondem por 80% do faturamento das vendas válidas. Esse número depende do recorte de vendas válidas escolhido na seção 6, o mesmo recorte questionado nas perguntas 1 a 3.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Se o recorte de vendas válidas mudar, por exemplo, ao reclassificar parte dos outliers de atacado como vendas legítimas, o faturamento de alguns clientes muda, e a lista de quem sustenta 80% da receita pode mudar junto. Rode a mesma conta da seção 9 depois de decidir sua resposta às perguntas 1 a 3, e compare: os clientes prioritários continuam os mesmos?</p>
-</div>
-</div>
-</div>
-</section>
-</section>
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>
 <ol type="1">
-<li>Complete, no seu notebook, os pontos que este roteiro ainda não cobre: sazonalidade mensal completa, países e clientes mais relevantes de forma mais ampla, e a investigação direta dos outliers levantados nas perguntas acima;</li>
+<li>Complete, no seu notebook, os pontos que este roteiro ainda não cobre: sazonalidade mensal completa e a investigação direta dos outliers levantados nas perguntas acima;</li>
 <li>Escreva, em células de texto, os critérios que você usou para definir venda válida, cancelamento e registro anômalo, e compare com as respostas que você deu na Aula 3: mudaram?</li>
 <li>Encerre com pelo menos três recomendações práticas para a gestão comercial, apoiadas nos números que você calculou;</li>
 <li>Antes de considerar o notebook pronto, rode a partir de uma sessão R limpa (Restart R and Run All Chunks, o equivalente R ao Restart Kernel and Run All), e só então commite no <code>projeto-vendas</code> com uma mensagem descritiva.</li>

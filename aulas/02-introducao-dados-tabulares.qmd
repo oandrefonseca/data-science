@@ -43,6 +43,7 @@ Este roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criad
 Um profissional não começa o dia de trabalho abrindo um arquivo solto: ele abre o projeto. Vamos praticar exatamente isso, reativando os hábitos da aula passada:
 
 ```{python}
+
 #| eval: false
 
 # Onde paramos? O git log conta a historia ate aqui:
@@ -68,6 +69,7 @@ O ambiente também precisa de um complemento. Hoje vamos ler um arquivo Excel, e
 ```
 
 ```{python}
+
 #| eval: false
 
 # ...e registramos a mudanca no historico. Ciclo completo.
@@ -118,19 +120,20 @@ O pandas é a biblioteca que traz as tabelas para dentro do Python, e suas duas 
 
 Antes de enfrentar meio milhão de linhas, vamos construir uma tabela de brinquedo em que cada valor é visível a olho nu. É uma estratégia deliberada: em escala pequena, você confere cada resultado manualmente e constrói confiança no que cada comando faz.
 
-A partir daqui, abra um notebook novo na pasta notebooks/ do projeto (sugestão de nome: 01-introducao-tabulares.ipynb) e acompanhe executando as células. Note que as células a seguir são Python puro, sem o ponto de exclamação: saímos do terminal e entramos na linguagem.
+A partir daqui, abra um notebook novo na pasta `notebooks/` do projeto (sugestão de nome: `01-introducao-tabulares.ipynb`) e acompanhe executando as células. Note que as células a seguir são Python: saímos do terminal e entramos na linguagem.
 
 ```{python}
 
 import pandas as pd
 
-# Um DataFrame construido a mao: cinco vendas ficticias
-sales = pd.DataFrame({
-    "product": ["Caneca", "Camiseta", "Caneca", "Adesivo", "Camiseta"],
-    "quantity": [2, 1, 4, 10, 3],
-    "unit_price": [35.0, 79.9, 35.0, 5.5, 79.9],
-    "country": ["Brasil", "Brasil", "Portugal", "Brasil", "Argentina"],
-})
+sales = pd.DataFrame(
+    {
+        "product": ["Caneca", "Camiseta", "Caneca", "Adesivo", "Camiseta"],
+        "quantity": [2, 1, 4, 10, 3],
+        "unit_price": [35.0, 79.9, 35.0, 5.5, 79.9],
+        "country": ["Brasil", "Brasil", "Portugal", "Brasil", "Argentina"],
+    }
+)
 
 sales
 
@@ -142,14 +145,12 @@ As três operações fundamentais, em miniatura:
 
 ```{python}
 
-# 1. Selecionar uma coluna: o resultado e uma Series
 sales["unit_price"]
 
 ```
 
 ```{python}
 
-# 2. Criar uma coluna nova a partir das existentes
 sales["revenue"] = sales["quantity"] * sales["unit_price"]
 sales
 
@@ -157,17 +158,17 @@ sales
 
 ```{python}
 
-# 3. Filtrar linhas por uma condicao
-sales[sales["country"] == "Brasil"]
+brazil_filter = sales["country"].eq("Brasil")
+sales.loc[brazil_filter]
 
 ```
 
-O filtro da terceira célula merece um comentário, porque ele é a operação mais importante do pandas. A expressão interna, sales["country"] == "Brasil", produz uma Series de True e False, um valor por linha; ao colocá-la entre colchetes, o DataFrame devolve apenas as linhas marcadas com True. Esse mecanismo se chama filtro booleano, e condições podem ser combinadas com o operador & (e) e o operador | (ou), cada condição entre parênteses:
+O filtro da terceira célula merece um comentário, porque ele é uma das operações mais importantes do pandas. A expressão `sales["country"].eq("Brasil")` produz uma Series de `True` e `False`, um valor por linha. Em seguida, `.loc[brazil_filter]` devolve somente as linhas marcadas com `True`. Separar a condição em uma variável dá nome ao critério e facilita sua inspeção e reutilização. Condições podem ser combinadas com o operador `&` (e) e o operador `|` (ou):
 
 ```{python}
 
-# Vendas do Brasil COM faturamento acima de 50
-sales[(sales["country"] == "Brasil") & (sales["revenue"] > 50)]
+high_revenue_filter = sales["revenue"].gt(50)
+sales.loc[brazil_filter & high_revenue_filter]
 
 ```
 
@@ -177,8 +178,7 @@ Por fim, o resumo estatístico:
 
 ```{python}
 
-# describe: estatisticas descritivas das colunas numericas
-sales.describe()
+sales.describe().round(2)
 
 ```
 
@@ -192,16 +192,16 @@ O dicionário de variáveis, segundo a documentação oficial:
 
 | Variável | Descrição |
 |---|---|
-| InvoiceNo | Número da nota fiscal, com 6 dígitos. Se começa com a letra C, indica um cancelamento |
-| StockCode | Código do produto |
-| Description | Nome do produto |
-| Quantity | Quantidade do item na transação |
-| InvoiceDate | Data e hora da transação |
-| UnitPrice | Preço unitário, em libras esterlinas |
-| CustomerID | Código do cliente, com 5 dígitos |
-| Country | País de residência do cliente |
+| invoice_no | Número da nota fiscal, com 6 dígitos. Se começa com a letra C, indica um cancelamento |
+| stock_code | Código do produto |
+| description | Nome do produto |
+| quantity | Quantidade do item na transação |
+| invoice_date | Data e hora da transação |
+| unit_price | Preço unitário, em libras esterlinas |
+| customer_id | Código do cliente, com 5 dígitos |
+| country | País de residência do cliente |
 
-Exercite mais uma vez a classificação de tipos, agora com atenção às armadilhas da seção 2: InvoiceNo, StockCode e CustomerID são compostos de dígitos, mas são identificadores, ou seja, categóricos nominais; Quantity é numérica discreta; UnitPrice é numérica contínua; InvoiceDate é temporal; Description e Country são categóricas nominais.
+Exercite mais uma vez a classificação de tipos, agora com atenção às armadilhas da seção 2: invoice_no, stock_code e customer_id são compostos de dígitos, mas são identificadores, ou seja, categóricos nominais; quantity é numérica discreta; unit_price é numérica contínua; invoice_date é temporal; description e country são categóricas nominais.
 
 Dois registros de responsabilidade antes de baixar. Primeiro, a licença: o dataset é distribuído sob Creative Commons Attribution 4.0, que permite uso e adaptação desde que a fonte seja creditada, e a citação oficial é Chen, D. (2015), Online Retail, UCI Machine Learning Repository. Usar dados alheios com licença verificada e crédito dado é prática profissional básica, e vamos registrar isso no README do projeto. Segundo, um detalhe que guarde para mais tarde: a página oficial do dataset afirma que ele não possui valores ausentes. Guarde essa informação; ela voltará ainda nesta aula.
 
@@ -231,6 +231,7 @@ Conferindo:
 E agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:
 
 ```{python}
+
 #| eval: false
 
 !cd ./projeto-vendas && git status
@@ -247,6 +248,7 @@ Nada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está
 ```
 
 ```{python}
+
 #| eval: false
 
 # Ciclo de sempre: add, commit
@@ -262,14 +264,27 @@ De volta ao notebook e ao Python. Vamos abrir o arquivo, com um aviso de gerenci
 ```{python}
 
 from pathlib import Path
+
 import pandas as pd
 
-path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
+data_path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
 
-# Paciencia: arquivos Excel grandes sao lentos de ler
-retail = pd.read_excel(path)
+column_names = {
+    "InvoiceNo": "invoice_no",
+    "StockCode": "stock_code",
+    "Description": "description",
+    "Quantity": "quantity",
+    "InvoiceDate": "invoice_date",
+    "UnitPrice": "unit_price",
+    "CustomerID": "customer_id",
+    "Country": "country",
+}
+
+retail = pd.read_excel(data_path).rename(columns=column_names)  # <1>
 
 ```
+
+1. A renomeação acontece na leitura para que todo o restante da análise use a convenção Python `snake_case`, sem alterar o arquivo original.
 
 A partir de agora, execute o ritual que um profissional aplica a todo dataset novo, na ordem, antes de confiar em qualquer número. São cinco passos.
 
@@ -277,14 +292,12 @@ Passo 1: olhe os dados de verdade.
 
 ```{python}
 
-# As primeiras linhas...
 retail.head()
 
 ```
 
 ```{python}
 
-# ...e as ultimas. Fins de arquivo escondem surpresas: totais, lixo, linhas vazias.
 retail.tail()
 
 ```
@@ -293,30 +306,27 @@ Passo 2: meça o tamanho e confira os tipos.
 
 ```{python}
 
-# Quantas linhas e colunas?
 retail.shape
 
 ```
 
 ```{python}
 
-# Tipos, contagem de valores nao nulos e memoria, tudo de uma vez
 retail.info()
 
 ```
 
-Leia a saída do info com olhos de detetive, porque ela já entrega dois achados. Primeiro, os tipos que o pandas adivinhou: InvoiceDate virou datetime (ótimo), Quantity é inteiro, UnitPrice é float. Mas observe CustomerID: virou float64. Um código de cliente com casas decimais? Estranho, e não é acidente: guarde para a pergunta 1 do final. Segundo, compare a contagem de valores não nulos entre as colunas: se o total de linhas é 541.909 e alguma coluna tem menos que isso, há valores ausentes nela, diga o que disser a documentação.
+Leia a saída do info com olhos de detetive, porque ela já entrega dois achados. Primeiro, os tipos que o pandas adivinhou: invoice_date virou datetime (ótimo), quantity é inteiro, unit_price é float. Mas observe customer_id: virou float64. Um código de cliente com casas decimais? Estranho, e não é acidente: guarde para a pergunta 1 do final. Segundo, compare a contagem de valores não nulos entre as colunas: se o total de linhas é 541.909 e alguma coluna tem menos que isso, há valores ausentes nela, diga o que disser a documentação.
 
 Passo 3: quantifique os ausentes explicitamente.
 
 ```{python}
 
-# Quantos valores ausentes por coluna?
-retail.isna().sum()
+retail.isna().sum().sort_values(ascending=False)
 
 ```
 
-Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os números na sua tela dizem outra coisa: a coluna CustomerID tem dezenas de milhares de vazios, e Description também tem os seus. Este é um dos aprendizados mais valiosos da aula, e ele não é sobre pandas: metadados mentem, às vezes por desatualização, às vezes por descuido. A única fonte confiável sobre os dados são os próprios dados, verificados por você.
+Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os números na sua tela dizem outra coisa: a coluna customer_id tem dezenas de milhares de vazios, e description também tem os seus. Este é um dos aprendizados mais valiosos da aula, e ele não é sobre pandas: metadados mentem, às vezes por desatualização, às vezes por descuido. A única fonte confiável sobre os dados são os próprios dados, verificados por você.
 
 Passo 4: resuma as variáveis numéricas.
 
@@ -326,21 +336,19 @@ retail.describe()
 
 ```
 
-Não deslize os olhos pela tabela: interrogue-a. O mínimo de Quantity é um número negativo enorme. Quantidade negativa em uma venda? O mínimo de UnitPrice é zero, e itens gratuitos em um varejo também levantam a sobrancelha. O máximo de Quantity, na casa das dezenas de milhares em uma única linha, sugere ou atacado pesado ou erro de digitação. O describe não responde nada disso; o trabalho dele é apontar onde cavar.
+Não deslize os olhos pela tabela: interrogue-a. O mínimo de quantity é um número negativo enorme. Quantidade negativa em uma venda? O mínimo de unit_price é zero, e itens gratuitos em um varejo também levantam a sobrancelha. O máximo de quantity, na casa das dezenas de milhares em uma única linha, sugere ou atacado pesado ou erro de digitação. O describe não responde nada disso; o trabalho dele é apontar onde cavar.
 
 Passo 5: conte as categorias.
 
 ```{python}
 
-# De quais paises vem as vendas? As 10 maiores origens:
-retail["Country"].value_counts().head(10)
+retail["country"].value_counts().head(10)
 
 ```
 
 ```{python}
 
-# E quantos paises distintos ha no total?
-retail["Country"].nunique()
+retail["country"].nunique()
 
 ```
 
@@ -354,30 +362,38 @@ Inspeção feita, começam as perguntas de negócio. As ferramentas são as mesm
 
 ```{python}
 
-# Pergunta: quais vendas foram para a Alemanha?
-germany_sales = retail[retail["Country"] == "Germany"]
+germany_filter = retail["country"].eq("Germany")
+germany_sales = retail.loc[germany_filter].copy()
 germany_sales.shape
 
 ```
 
 ```{python}
 
-# Pergunta: ha transacoes de alto valor unitario (acima de 100 libras)
-# fora do Reino Unido?
-expensive_outside_uk = retail[(retail["UnitPrice"] > 100) & (retail["Country"] != "United Kingdom")]
-expensive_outside_uk[["InvoiceNo", "Description", "UnitPrice", "Country"]].head()
+expensive_outside_uk_filter = (
+    retail["unit_price"].gt(100)
+    & retail["country"].ne("United Kingdom")
+)
+
+result_columns = ["invoice_no", "description", "unit_price", "country"]
+expensive_outside_uk = retail.loc[
+    expensive_outside_uk_filter,
+    result_columns,
+].copy()
+
+expensive_outside_uk.head()
 
 ```
 
-A segunda célula mostra um padrão que você usará constantemente: filtrar as linhas e, no mesmo movimento, selecionar apenas as colunas relevantes, passando uma lista de nomes entre colchetes. O resultado é uma resposta enxuta, e não uma parede de colunas.
+A segunda célula mostra um padrão que você usará constantemente: construir uma máscara booleana com um nome descritivo e passá-la ao `.loc`, selecionando linhas e colunas explicitamente. O resultado é uma resposta enxuta, e não uma parede de colunas.
 
-Para seleção posicional e por rótulo, o pandas oferece dois acessores que valem apresentar desde já: o loc seleciona por rótulos e condições (retail.loc[retail["Country"] == "France", ["InvoiceNo", "UnitPrice"]]), e o iloc seleciona por posições numéricas (retail.iloc[0:5, 0:3] pega as cinco primeiras linhas e as três primeiras colunas). A distinção fica mais importante nas próximas aulas; hoje, basta saber que existem e o que cada um faz.
+Para seleção posicional e por rótulo, o pandas oferece dois acessores que valem apresentar desde já: o loc seleciona por rótulos e condições (retail.loc[retail["country"] == "France", ["invoice_no", "unit_price"]]), e o iloc seleciona por posições numéricas (retail.iloc[0:5, 0:3] pega as cinco primeiras linhas e as três primeiras colunas). A distinção fica mais importante nas próximas aulas; hoje, basta saber que existem e o que cada um faz.
 
 Agora, três perguntas de negócio para você responder sozinho, no notebook, antes de seguir. Elas usam apenas o que já foi visto:
 
 1. Quantas transações registram o país como Brazil? (Descubra: o Brasil aparece neste dataset?)
-2. Quantas linhas têm Quantity negativa? E qual a cara delas? (Filtre e examine com head.)
-3. Existe alguma linha com UnitPrice igual a zero e CustomerID ausente ao mesmo tempo? (Dica: combine um filtro de igualdade com o método isna() da coluna.)
+2. Quantas linhas têm quantity negativa? E qual a cara delas? (Filtre e examine com head.)
+3. Existe alguma linha com unit_price igual a zero e customer_id ausente ao mesmo tempo? (Dica: combine um filtro de igualdade com o método isna() da coluna.)
 
 A segunda pergunta é a ponte para a seção final.
 
@@ -389,9 +405,10 @@ Suspeita 1: as quantidades negativas.
 
 ```{python}
 
-# Quantas linhas tem quantidade negativa?
-negative_qty = retail[retail["Quantity"] < 0]
-print(len(negative_qty), "linhas com quantidade negativa")
+negative_quantity_filter = retail["quantity"].lt(0)
+negative_quantity = retail.loc[negative_quantity_filter].copy()
+
+print(f"{len(negative_quantity):,} linhas com quantidade negativa")
 
 ```
 
@@ -399,23 +416,24 @@ Como elas são:
 
 ```{python}
 
-negative_qty.head()
+negative_quantity.head()
 
 ```
 
-Olhe a coluna InvoiceNo das linhas exibidas: as notas começam com a letra C. O dicionário de variáveis explica: C indica cancelamento. As quantidades negativas não são erro de digitação; são devoluções registradas como quantidade negativa, uma convenção comum em sistemas comerciais. Eis uma lição central: um valor estranho nem sempre é um defeito; às vezes é uma regra de negócio que você ainda não conhecia. Antes de apagar qualquer coisa, entenda o que ela significa.
+Olhe a coluna `invoice_no` das linhas exibidas: muitas notas começam com a letra C. O dicionário de variáveis explica que esse prefixo indica cancelamento. A quantidade negativa pode representar uma devolução ou um ajuste, mas o prefixo não aparece em todos esses registros; por isso, o código abaixo mede a relação em vez de presumir que as categorias são equivalentes. Eis uma lição central: um valor estranho nem sempre é um defeito; às vezes é uma regra de negócio que você ainda não conhecia. Antes de apagar qualquer coisa, entenda o que ela significa.
 
 ```{python}
 
-# Confirmando a hipotese: todas as notas de quantidade negativa comecam com C?
-negative_invoices = retail.loc[retail["Quantity"] < 0, "InvoiceNo"].astype(str)
+negative_invoices = retail.loc[negative_quantity_filter, "invoice_no"]
 
 ```
 
 ```{python}
 
-print("Comecam com C:", negative_invoices.str.startswith("C").sum())
-print("Total de negativas:", len(negative_invoices))
+starts_with_c = negative_invoices.str.startswith("C", na=False)
+
+print(f"Começam com C: {starts_with_c.sum():,}")
+print(f"Total de negativas: {len(negative_invoices):,}")
 
 ```
 
@@ -423,14 +441,18 @@ Suspeita 2: os preços zerados.
 
 ```{python}
 
-zero_price = retail[retail["UnitPrice"] == 0]
-print(len(zero_price), "linhas com preco zero")
+zero_price_filter = retail["unit_price"].eq(0)
+zero_price = retail.loc[zero_price_filter].copy()
+
+print(f"{len(zero_price):,} linhas com preço zero")
 
 ```
 
 ```{python}
 
-zero_price[["InvoiceNo", "Description", "Quantity", "CustomerID"]].head()
+zero_price.loc[
+    :, ["invoice_no", "description", "quantity", "customer_id"]
+].head()
 
 ```
 
@@ -438,8 +460,8 @@ Suspeita 3: registros duplicados.
 
 ```{python}
 
-# Linhas identicas em todas as colunas
-print(retail.duplicated().sum(), "linhas duplicadas")
+duplicate_count = retail.duplicated().sum()
+print(f"{duplicate_count:,} linhas duplicadas")
 
 ```
 
@@ -448,6 +470,7 @@ Duplicatas em dados transacionais podem ser erro de sistema ou podem ser legíti
 Feche a sessão de trabalho como um profissional: salve o notebook e registre-o no histórico.
 
 ```{python}
+
 #| eval: false
 
 # De volta ao terminal, o commit que encerra a sessao:
@@ -475,19 +498,19 @@ Três perguntas para exercitar o que foi aprendido. Tente responder cada uma ant
 
 ## Pergunta 1: o cliente com casas decimais
 
-O info revelou que a coluna CustomerID foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)
+O info revelou que a coluna customer_id foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)
 
 ::: {.callout-note collapse="true"}
 ## Explicação
 
-A causa é a combinação de dois fatos. Primeiro, a coluna CustomerID tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.
+A causa é a combinação de dois fatos. Primeiro, a coluna customer_id tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.
 
-O aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, CustomerID nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.
+O aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, customer_id nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.
 :::
 
 ## Pergunta 2: a documentação contra os dados
 
-A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em CustomerID e milhares em Description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?
+A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em customer_id e milhares em description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?
 
 ::: {.callout-note collapse="true"}
 ## Explicação

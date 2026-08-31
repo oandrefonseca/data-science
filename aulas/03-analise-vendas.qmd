@@ -73,11 +73,23 @@ O ponto de partida é o mesmo carregamento da Aula 2, com duas colunas novas cal
 ```{python}
 
 from pathlib import Path
+
 import pandas as pd
 
-path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
+data_path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
 
-retail = pd.read_excel(path)
+column_names = {
+    "InvoiceNo": "invoice_no",
+    "StockCode": "stock_code",
+    "Description": "description",
+    "Quantity": "quantity",
+    "InvoiceDate": "invoice_date",
+    "UnitPrice": "unit_price",
+    "CustomerID": "customer_id",
+    "Country": "country",
+}
+
+retail = pd.read_excel(data_path).rename(columns=column_names)
 
 ```
 
@@ -85,26 +97,16 @@ Com a base carregada, as mesmas duas colunas calculadas da Aula 2:
 
 ```{python}
 
-# Garante que a data esteja no formato correto
-retail["InvoiceDate"] = pd.to_datetime(retail["InvoiceDate"], errors="coerce")
-
-# Receita de cada item da fatura
-retail["Revenue"] = retail["Quantity"] * retail["UnitPrice"]
-
-# Identificacao de faturas canceladas (InvoiceNo comecando com "C")
-retail["IsCancelled"] = (
-    retail["InvoiceNo"]
-    .astype(str)
-    .str.upper()
-    .str.startswith("C")
-)
+retail["invoice_date"] = pd.to_datetime(retail["invoice_date"], errors="coerce")
+retail["revenue"] = retail["quantity"] * retail["unit_price"]
+retail["is_cancelled"] = retail["invoice_no"].str.startswith("C", na=False)
 
 ```
 
 ```{python}
 
 print("Arquivo carregado com sucesso.")
-print(f"Dimensao da base: {retail.shape}")
+print(f"Dimensão da base: {retail.shape[0]:,} linhas × {retail.shape[1]} colunas")
 
 ```
 
@@ -120,13 +122,13 @@ print("=" * 60)
 
 print(f"Numero de linhas: {retail.shape[0]:,}")
 print(f"Numero de colunas originais: {retail.shape[1] - 2}")
-print(f"Data inicial: {retail['InvoiceDate'].min()}")
-print(f"Data final: {retail['InvoiceDate'].max()}")
+print(f"Data inicial: {retail['invoice_date'].min()}")
+print(f"Data final: {retail['invoice_date'].max()}")
 
-print(f"Quantidade de faturas: {retail['InvoiceNo'].nunique():,}")
-print(f"Quantidade de clientes: {retail['CustomerID'].nunique():,}")
-print(f"Quantidade de produtos: {retail['StockCode'].nunique():,}")
-print(f"Quantidade de paises: {retail['Country'].nunique():,}")
+print(f"Quantidade de faturas: {retail['invoice_no'].nunique():,}")
+print(f"Quantidade de clientes: {retail['customer_id'].nunique():,}")
+print(f"Quantidade de produtos: {retail['stock_code'].nunique():,}")
+print(f"Quantidade de paises: {retail['country'].nunique():,}")
 
 ```
 
@@ -150,7 +152,7 @@ Estatísticas das variáveis numéricas:
 
 ```{python}
 
-display(retail[["Quantity", "UnitPrice", "Revenue"]].describe().round(2))
+display(retail[["quantity", "unit_price", "revenue"]].describe().round(2))
 
 ```
 
@@ -170,12 +172,16 @@ Valores ausentes, coluna a coluna:
 
 ```{python}
 
-quality = pd.DataFrame({
-    "Valores ausentes": retail.isna().sum(),
-    "Percentual ausente (%)": retail.isna().mean() * 100
-})
-
-quality = quality.sort_values("Percentual ausente (%)", ascending=False)
+quality = (
+    pd.DataFrame(
+        {
+            "missing_values": retail.isna().sum(),
+            "missing_percentage": retail.isna().mean().mul(100),
+        }
+    )
+    .sort_values("missing_percentage", ascending=False)
+    .rename_axis("column")
+)
 
 display(quality.round(2))
 
@@ -185,18 +191,18 @@ Duplicatas, considerando somente as colunas originais:
 
 ```{python}
 
-original_columns = [
-    "InvoiceNo",
-    "StockCode",
-    "Description",
-    "Quantity",
-    "InvoiceDate",
-    "UnitPrice",
-    "CustomerID",
-    "Country"
+source_columns = [
+    "invoice_no",
+    "stock_code",
+    "description",
+    "quantity",
+    "invoice_date",
+    "unit_price",
+    "customer_id",
+    "country"
 ]
 
-duplicate_count = retail.duplicated(subset=original_columns).sum()
+duplicate_count = retail.duplicated(subset=source_columns).sum()
 
 print(f"Linhas exatamente duplicadas: {duplicate_count:,}")
 print(f"Percentual de duplicatas: {duplicate_count / len(retail) * 100:.2f}%")
@@ -207,18 +213,21 @@ Registros potencialmente problemáticos:
 
 ```{python}
 
-issues = pd.Series({
-    "Faturas canceladas": retail["IsCancelled"].sum(),
-    "Quantidade negativa": (retail["Quantity"] < 0).sum(),
-    "Quantidade igual a zero": (retail["Quantity"] == 0).sum(),
-    "Preco negativo": (retail["UnitPrice"] < 0).sum(),
-    "Preco igual a zero": (retail["UnitPrice"] == 0).sum(),
-    "Descricao ausente": retail["Description"].isna().sum(),
-    "Cliente nao identificado": retail["CustomerID"].isna().sum(),
-    "Data invalida ou ausente": retail["InvoiceDate"].isna().sum()
-})
+issues = pd.Series(
+    {
+        "Faturas canceladas": retail["is_cancelled"].sum(),
+        "Quantidade negativa": retail["quantity"].lt(0).sum(),
+        "Quantidade igual a zero": retail["quantity"].eq(0).sum(),
+        "Preço negativo": retail["unit_price"].lt(0).sum(),
+        "Preço igual a zero": retail["unit_price"].eq(0).sum(),
+        "Descrição ausente": retail["description"].isna().sum(),
+        "Cliente não identificado": retail["customer_id"].isna().sum(),
+        "Data inválida ou ausente": retail["invoice_date"].isna().sum(),
+    },
+    name="quantity",
+)
 
-display(issues.to_frame("Quantidade"))
+issues.to_frame()
 
 ```
 
@@ -226,13 +235,14 @@ Valores extremos, quantidade e preço unitário:
 
 ```{python}
 
-display(retail["Quantity"].describe(percentiles=[0.01, 0.25, 0.50, 0.75, 0.99]).round(2))
+percentiles = [0.01, 0.25, 0.50, 0.75, 0.99]
+retail["quantity"].describe(percentiles=percentiles).round(2)
 
 ```
 
 ```{python}
 
-display(retail["UnitPrice"].describe(percentiles=[0.01, 0.25, 0.50, 0.75, 0.99]).round(2))
+retail["unit_price"].describe(percentiles=percentiles).round(2)
 
 ```
 
@@ -242,15 +252,17 @@ Aqui começa a parte que o enunciado pede e que a Aula 2 deliberadamente não re
 
 ```{python}
 
-positive_sales_filter = (
-    (~retail["IsCancelled"])
-    & (retail["Quantity"] > 0)
-    & (retail["UnitPrice"] > 0)
+valid_sales_filter = (
+    ~retail["is_cancelled"]
+    & retail["quantity"].gt(0)
+    & retail["unit_price"].gt(0)
 )
 
-sales = retail.loc[positive_sales_filter].copy()
+sales = retail.loc[valid_sales_filter].copy()  # <1>
 
 ```
+
+1. `.copy()` cria um DataFrame independente para as vendas válidas e evita alterações acidentais em `retail` nas etapas seguintes.
 
 ```{python}
 
@@ -259,37 +271,40 @@ print("VENDAS POSITIVAS")
 print("=" * 60)
 
 print(f"Linhas de vendas positivas: {len(sales):,}")
-print(f"Pedidos validos: {sales['InvoiceNo'].nunique():,}")
-print(f"Clientes identificados: {sales['CustomerID'].nunique():,}")
-print(f"Unidades vendidas: {sales['Quantity'].sum():,}")
-print(f"Faturamento bruto: £ {sales['Revenue'].sum():,.2f}")
+print(f"Pedidos validos: {sales['invoice_no'].nunique():,}")
+print(f"Clientes identificados: {sales['customer_id'].nunique():,}")
+print(f"Unidades vendidas: {sales['quantity'].sum():,}")
+print(f"Faturamento bruto: £ {sales['revenue'].sum():,.2f}")
 
 ```
 
 # 7. Indicadores de pedidos e produtos
 
-Com as vendas válidas isoladas, os indicadores de negócio pedidos no enunciado, ticket médio e produtos de maior faturamento, saem de duas agregações: uma por pedido (`InvoiceNo`) e outra por produto (`StockCode`).
+Com as vendas válidas isoladas, os indicadores de negócio pedidos no enunciado, ticket médio e produtos de maior faturamento, saem de duas agregações: uma por pedido (`invoice_no`) e outra por produto (`stock_code`).
 
 ```{python}
 
 orders = (
     sales
-    .groupby("InvoiceNo", as_index=False)
+    .groupby("invoice_no", as_index=False)  # <1>
     .agg(
-        OrderDate=("InvoiceDate", "min"),
-        Customer=("CustomerID", "first"),
-        Country=("Country", "first"),
-        ItemQuantity=("Quantity", "sum"),
-        OrderValue=("Revenue", "sum")
-    )
+        order_date=("invoice_date", "min"),
+        customer=("customer_id", "first"),
+        country=("country", "first"),
+        item_quantity=("quantity", "sum"),
+        order_value=("revenue", "sum"),
+    )  # <2>
 )
 
 ```
 
+1. Cada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.
+2. A agregação nomeada documenta, para cada nova coluna, a variável de origem e a função aplicada.
+
 ```{python}
 
-print(f"Ticket medio: £ {orders['OrderValue'].mean():,.2f}")
-print(f"Ticket mediano: £ {orders['OrderValue'].median():,.2f}")
+print(f"Ticket medio: £ {orders['order_value'].mean():,.2f}")
+print(f"Ticket mediano: £ {orders['order_value'].median():,.2f}")
 
 ```
 
@@ -297,7 +312,8 @@ Distribuição do valor dos pedidos:
 
 ```{python}
 
-display(orders["OrderValue"].describe(percentiles=[0.25, 0.50, 0.75, 0.90, 0.99]).round(2))
+order_percentiles = [0.25, 0.50, 0.75, 0.90, 0.99]
+orders["order_value"].describe(percentiles=order_percentiles).round(2)
 
 ```
 
@@ -305,14 +321,14 @@ display(orders["OrderValue"].describe(percentiles=[0.25, 0.50, 0.75, 0.90, 0.99]
 
 products = (
     sales
-    .dropna(subset=["Description"])
-    .groupby(["StockCode", "Description"], as_index=False)
+    .dropna(subset=["description"])
+    .groupby(["stock_code", "description"], as_index=False)
     .agg(
-        UnitsSold=("Quantity", "sum"),
-        Revenue=("Revenue", "sum"),
-        OrderCount=("InvoiceNo", "nunique")
+        units_sold=("quantity", "sum"),
+        revenue=("revenue", "sum"),
+        order_count=("invoice_no", "nunique"),
     )
-    .sort_values("Revenue", ascending=False)
+    .sort_values("revenue", ascending=False)
 )
 
 ```
@@ -331,20 +347,19 @@ Por fim, o enunciado pede o impacto financeiro de cancelamentos e devoluções, 
 
 ```{python}
 
-cancellations = retail.loc[
-    retail["IsCancelled"] | (retail["Quantity"] < 0)
-].copy()
+cancellation_filter = retail["is_cancelled"] | retail["quantity"].lt(0)
+cancellations = retail.loc[cancellation_filter].copy()
 
-refunded_amount = abs(retail.loc[retail["Revenue"] < 0, "Revenue"].sum())
+refunded_amount = abs(retail.loc[retail["revenue"] < 0, "revenue"].sum())
 
 ```
 
 ```{python}
 
-print(f"Faturas canceladas: {retail.loc[retail['IsCancelled'], 'InvoiceNo'].nunique():,}")
-print(f"Linhas com quantidade negativa: {(retail['Quantity'] < 0).sum():,}")
+print(f"Faturas canceladas: {retail.loc[retail['is_cancelled'], 'invoice_no'].nunique():,}")
+print(f"Linhas com quantidade negativa: {(retail['quantity'] < 0).sum():,}")
 print(f"Valor absoluto das devolucoes/ajustes: £ {refunded_amount:,.2f}")
-print(f"Receita liquida de toda a base: £ {retail['Revenue'].sum():,.2f}")
+print(f"Receita liquida de toda a base: £ {retail['revenue'].sum():,.2f}")
 
 ```
 
@@ -364,27 +379,27 @@ Três perguntas para testar seus critérios antes de considerar a análise pront
 
 ## Pergunta 1: cancelamento é a mesma coisa que devolução?
 
-O critério de vendas válidas da seção 6 trata toda linha com `IsCancelled` verdadeiro ou `Quantity` negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?
+O critério de vendas válidas da seção 6 trata toda linha com `is_cancelled` verdadeiro ou `quantity` negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-Releia o dicionário de variáveis da Aula 2: `InvoiceNo` começando com `C` é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com `C`. Verifique nos próprios dados se todas as linhas com `Quantity` negativa têm `InvoiceNo` começando com `C`, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.
+Releia o dicionário de variáveis da Aula 2: `invoice_no` começando com `C` é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com `C`. Verifique nos próprios dados se todas as linhas com `quantity` negativa têm `invoice_no` começando com `C`, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.
 :::
 
 ## Pergunta 2: quando um outlier é erro e quando é atacado legítimo?
 
-O describe da seção 5 mostra valores de `Quantity` na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?
+O describe da seção 5 mostra valores de `quantity` na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-A documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o `CustomerID` e o `Country` dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.
+A documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o `customer_id` e o `country` dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.
 :::
 
 ## Pergunta 3: qual recorte de "vendas válidas" você vai defender?
 
-Além de cancelamentos, a seção 6 também exclui `Quantity` igual a zero e `UnitPrice` igual a zero. Existem linhas com preço zero e `CustomerID` ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?
+Além de cancelamentos, a seção 6 também exclui `quantity` igual a zero e `unit_price` igual a zero. Existem linhas com preço zero e `customer_id` ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso

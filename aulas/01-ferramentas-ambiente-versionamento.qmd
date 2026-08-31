@@ -69,11 +69,10 @@ Vamos conferir o fogão. Execute a célula abaixo:
 
 ```{python}
 
-# Sua primeira celula de codigo: vamos verificar a versao do Python.
 import sys
 
-print("Versao do Python:", sys.version)
-print("Executavel em uso:", sys.executable)
+print(f"Versão do Python: {sys.version}")
+print(f"Executável em uso: {sys.executable}")
 
 ```
 
@@ -102,15 +101,12 @@ Bancada escolhida. Hora de começar o projeto.
 
 Todo projeto começa do mesmo jeito: uma pasta com um bom nome e uma estrutura mínima que separa as coisas. Vamos criar o nosso pelo terminal.
 
-Uma nota sobre o formato: nas células deste roteiro, o ponto de exclamação no início da linha indica que o comando é de terminal, e não código Python. Assim tudo fica registrado no próprio documento. No dia a dia, você digitará os mesmos comandos diretamente no terminal, com efeito idêntico. Repetimos o cd em cada célula porque cada célula abre uma sessão nova de terminal; no terminal de verdade, você entra na pasta uma vez e trabalha dentro dela.
+Uma nota sobre o formato: como este roteiro será executado no Jupyter, os comandos de terminal permanecem em células Python e começam com `!`. Esse prefixo instrui o notebook a enviar a linha ao shell, em vez de interpretá-la como Python. Repetimos o `cd` em cada célula porque cada comando abre uma sessão nova; no terminal de verdade, você entra na pasta uma vez e trabalha dentro dela.
 
 ```{python}
 
-# Criamos a pasta do projeto e uma estrutura minima:
-# data/ para dados, notebooks/ para analises, src/ para codigo reutilizavel.
-!mkdir -p ./projeto-vendas/data ./projeto-vendas/notebooks ./projeto-vendas/src
+!mkdir -p ./projeto-vendas/{data,notebooks,src}
 
-# Conferindo o resultado:
 !ls ./projeto-vendas
 
 ```
@@ -126,6 +122,7 @@ analise_final.ipynb
 analise_final_v2.ipynb
 analise_final_v2_AGORA_VAI.ipynb
 analise_final_v2_AGORA_VAI_revisado_prof.ipynb
+
 ```
 
 Todos nós já criamos. Isso é um sistema de versionamento, só que um sistema péssimo: não há como saber o que mudou de uma versão para outra, quem mudou, quando, nem por quê. O Git resolve esse problema de forma elegante. Ele é um sistema de controle de versão: um programa que registra fotografias do estado do projeto ao longo do tempo. Cada fotografia, chamada de commit, guarda o conteúdo dos arquivos naquele momento, além do autor, da data e de uma mensagem explicando a mudança. Com esse histórico, você pode voltar no tempo para qualquer versão, ver exatamente o que mudou entre duas fotografias e, mais adiante, colaborar com outras pessoas sem sobrescrever o trabalho de ninguém.
@@ -139,6 +136,7 @@ Diretorio de trabalho --(git add)--> Staging Area --(git commit)--> Repositorio
 (seus arquivos,        (a bancada:                  (o historico
  a bagunca do          o que vai entrar             permanente de
  dia a dia)            na proxima foto)             fotografias)
+
 ```
 
 Ou seja: editar e salvar um arquivo não o coloca no histórico. Primeiro você escolhe o que entra na próxima fotografia (git add), depois tira a fotografia (git commit). Essa etapa intermediária parece burocrática, mas é ela que permite montar commits organizados: você pode ter alterado cinco arquivos e decidir fotografar apenas dois agora, deixando os outros para um commit separado, com outra mensagem.
@@ -158,6 +156,7 @@ Comandos como git diff, git branch e git merge existem e são importantes, mas f
 Vamos dar memória ao projeto:
 
 ```{python}
+
 #| eval: false
 
 # Transformamos a pasta em repositorio Git
@@ -173,6 +172,7 @@ Vamos dar memória ao projeto:
 O git init criou uma pasta oculta chamada .git, onde todo o histórico ficará guardado. A partir de agora, o Git observa o projeto, mas nunca registra nada sem um comando explícito seu. Vamos criar o primeiro arquivo e perguntar ao Git o que ele está vendo:
 
 ```{python}
+
 #| eval: false
 
 # Criamos o README, o cartao de visitas de qualquer projeto
@@ -187,6 +187,7 @@ O git init criou uma pasta oculta chamada .git, onde todo o histórico ficará g
 Observe a saída com atenção: o Git enxergou o README.md, mas o classificou como untracked, ou seja, não rastreado. Ele está avisando que existe um arquivo novo, mas que você ainda não disse se ele deve entrar na próxima fotografia. O Git nunca decide isso por você. Vamos decidir:
 
 ```{python}
+
 #| eval: false
 
 # Colocamos o arquivo na staging area, a bancada da foto...
@@ -230,6 +231,7 @@ E qual é a mais usada atualmente? A resposta exige uma distinção. O pip ainda
 Decisão tomada. Vamos criar o ambiente do nosso projeto com o uv:
 
 ```{python}
+
 #| eval: false
 
 # Criamos o ambiente virtual: uma pasta .venv dentro do projeto
@@ -247,6 +249,7 @@ Nos comandos do dia a dia, no terminal, você ativaria o ambiente com source .ve
 Agora pergunte ao Git como ele está se sentindo a respeito:
 
 ```{python}
+
 #| eval: false
 
 !cd ./projeto-vendas && git status
@@ -260,6 +263,7 @@ Esse pequeno incidente ensina uma distinção importante: nem tudo o que está n
 A solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o Git deve ignorar por completo. Vamos criar o nosso e resolver o incidente:
 
 ```{python}
+
 #| eval: false
 
 # Criamos o .gitignore com as exclusoes classicas de projetos de dados
@@ -271,6 +275,7 @@ A solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o
 ```
 
 ```{python}
+
 #| eval: false
 
 # O .gitignore faz parte do projeto e deve ser versionado. Novo ciclo:
@@ -287,6 +292,7 @@ Repare no hábito se formando: cada etapa do projeto termina com um commit. É o
 Cozinha montada, hora de comprar os ingredientes. Vamos instalar o pandas, a biblioteca central da próxima aula, dentro do ambiente do projeto:
 
 ```{python}
+
 #| eval: false
 
 # O uv detecta o .venv da pasta e instala DENTRO dele
@@ -302,6 +308,7 @@ Observe a saída do uv pip list: cada biblioteca aparece acompanhada de um núme
 E onde se registra isso? Em um arquivo dentro do repositório:
 
 ```{python}
+
 #| eval: false
 
 # Congelamos as versoes exatas do ambiente em um arquivo
@@ -321,6 +328,7 @@ Note a divisão de papéis, que resolve o incidente da seção anterior de forma
 E claro, etapa concluída, commit:
 
 ```{python}
+
 #| eval: false
 
 !cd ./projeto-vendas && git add requirements.txt
@@ -336,6 +344,7 @@ Uma confissão para fechar a seção: fizemos cada passo manualmente, de propós
 Vamos encerrar pedindo ao projeto que conte a própria história:
 
 ```{python}
+
 #| eval: false
 
 !cd ./projeto-vendas && git log --oneline

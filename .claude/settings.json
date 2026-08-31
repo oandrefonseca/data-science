@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '/```\\\\{python\\\\}/{f=1;next}/```/{f=0}f' 01-ferramentas-ambiente-versionamento.qmd)",
+      "Bash(awk '/```\\\\{python\\\\}/{f=1;next}/```/{f=0}f' 02-introducao-dados-tabulares.qmd)"
+    ]
+  }
+}

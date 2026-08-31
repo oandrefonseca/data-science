@@ -18,9 +18,9 @@ R é essa outra ferramenta. Ela já apareceu de passagem na Aula 1, como linguag
 
 Ao final deste roteiro, você será capaz de:
 
-1. Reconhecer as equivalências entre pandas e tidyverse: `groupby().agg()` e `group_by() %>% summarise()`, filtros booleanos e `filter()`, `pd.to_datetime` e as funções do pacote `lubridate`;
+1. Reconhecer as equivalências entre pandas e tidyverse: `groupby().agg()` e `group_by() |> summarise()`, filtros booleanos e `filter()`, `pd.to_datetime` e as funções do pacote `lubridate`;
 2. Reproduzir em R os indicadores de negócio calculados em Python na Aula 3: faturamento, ticket médio, produtos mais relevantes e impacto de cancelamentos;
-3. Escrever pipelines tidyverse (`%>%`) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;
+3. Escrever pipelines tidyverse (`|>`) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;
 4. Comparar criticamente os resultados das duas linguagens sobre os mesmos dados, como forma de validar a tradução.
 
 ::: {.callout-tip}
@@ -34,7 +34,8 @@ Este roteiro pressupõe o projeto-vendas das Aulas 1 a 3 funcionando, com o Onli
 A Aula 1 isolou o ambiente Python por projeto com `uv venv`, e registrou versões exatas em `requirements.txt`. Aqui simplificamos deliberadamente: instalamos os pacotes uma vez, de forma global na máquina, sem isolar por projeto.
 
 ```r
-install.packages(c("tidyverse", "readxl"))
+install.packages(c("tidyverse", "readxl", "lubridate"))
+
 ```
 
 ::: {.callout-note}
@@ -81,35 +82,40 @@ O carregamento e a preparação replicam exatamente a Aula 3: a mesma coluna de 
 
 ```{r}
 
-library(tidyverse)
 library(readxl)
+library(tidyverse)
+library(lubridate)
 
-path <- file.path("projeto-vendas", "data", "online_retail.xlsx")
+data_path <- file.path("projeto-vendas", "data", "online_retail.xlsx")
 
-retail <- read_excel(path)
-
-```
-
-Com a base carregada, as mesmas duas colunas calculadas da Aula 3:
-
-```{r}
-
-retail <- retail %>%
+retail <- read_excel(data_path) |>
+  rename(
+    invoice_no = InvoiceNo,
+    stock_code = StockCode,
+    description = Description,
+    quantity = Quantity,
+    invoice_date = InvoiceDate,
+    unit_price = UnitPrice,
+    customer_id = CustomerID,
+    country = Country
+  ) |>
   mutate(
-    # Garante que a data esteja no formato correto
-    InvoiceDate = as.POSIXct(InvoiceDate),
-    # Receita de cada item da fatura
-    Revenue = Quantity * UnitPrice,
-    # Identificacao de faturas canceladas (InvoiceNo comecando com "C")
-    IsCancelled = str_starts(str_to_upper(InvoiceNo), "C")
+    invoice_date = as.POSIXct(invoice_date),
+    revenue = quantity * unit_price,
+    is_cancelled = str_starts(str_to_upper(invoice_no), "C")
   )
 
 ```
 
+Os nomes das colunas são padronizados em `snake_case`, convenção adotada no restante do código. Com a base carregada, confirmamos suas dimensões:
+
 ```{r}
 
-cat("Arquivo carregado com sucesso.\n")
-cat(sprintf("Dimensao da base: %d linhas x %d colunas\n", nrow(retail), ncol(retail)))
+cat(
+  "Arquivo carregado com sucesso.\n",
+  glue::glue("Dimensão da base: {nrow(retail)} linhas x {ncol(retail)} colunas\n"),
+  sep = ""
+)
 
 ```
 
@@ -127,7 +133,8 @@ Primeiras linhas:
 
 ```{r}
 
-print(head(retail))
+retail |>
+  slice_head(n = 6)
 
 ```
 
@@ -135,8 +142,9 @@ Estatísticas das variáveis numéricas:
 
 ```{r}
 
-print(summary(retail %>% 
-  select(Quantity, UnitPrice, Revenue)))
+retail |>
+  select(quantity, unit_price, revenue) |>
+  summary()
 
 ```
 
@@ -144,26 +152,19 @@ print(summary(retail %>%
 
 Refaça também o diagnóstico da Aula 3, consolidado em um único quadro: ausentes, duplicatas e a contagem dos suspeitos já conhecidos.
 
-```{r}
-
-cat(strrep("=", 60), "\n")
-cat("QUALIDADE DOS DADOS\n")
-cat(strrep("=", 60), "\n")
-
-```
-
 Valores ausentes, coluna a coluna:
 
 ```{r}
 
 quality <- tibble(
-  Coluna = names(retail),
-  ValoresAusentes = map_int(retail, ~ sum(is.na(.x))),
-  PercentualAusente = map_dbl(retail, ~ mean(is.na(.x)) * 100)
-) %>%
-  arrange(desc(PercentualAusente))
+  coluna = names(retail),
+  valores_ausentes = map_int(retail, \(column) sum(is.na(column))),
+  percentual_ausente = map_dbl(retail, \(column) mean(is.na(column)) * 100)
+) |>
+  arrange(desc(percentual_ausente)) |>
+  mutate(percentual_ausente = round(percentual_ausente, 2))
 
-print(quality %>% mutate(PercentualAusente = round(PercentualAusente, 2)))
+quality
 
 ```
 
@@ -172,14 +173,19 @@ Duplicatas, considerando somente as colunas originais:
 ```{r}
 
 original_columns <- c(
-  "InvoiceNo", "StockCode", "Description", "Quantity",
-  "InvoiceDate", "UnitPrice", "CustomerID", "Country"
+  "invoice_no", "stock_code", "description", "quantity",
+  "invoice_date", "unit_price", "customer_id", "country"
 )
 
-duplicate_count <- sum(duplicated(retail[, original_columns]))
+duplicate_count <- retail |>
+  select(all_of(original_columns)) |>
+  duplicated() |>
+  sum()
 
-cat(sprintf("Linhas exatamente duplicadas: %s\n", format(duplicate_count, big.mark = ",")))
-cat(sprintf("Percentual de duplicatas: %.2f%%\n", duplicate_count / nrow(retail) * 100))
+cat(glue::glue(
+  "Linhas exatamente duplicadas: {scales::comma(duplicate_count)}\n",
+  "Percentual de duplicatas: {scales::number(duplicate_count / nrow(retail), accuracy = 0.0001, scale = 100, suffix = '%')}\n"
+))
 
 ```
 
@@ -188,24 +194,24 @@ Registros potencialmente problemáticos:
 ```{r}
 
 issues <- tibble(
-  Metrica = c(
+  metrica = c(
     "Faturas canceladas", "Quantidade negativa", "Quantidade igual a zero",
-    "Preco negativo", "Preco igual a zero", "Descricao ausente",
-    "Cliente nao identificado", "Data invalida ou ausente"
+    "Preço negativo", "Preço igual a zero", "Descrição ausente",
+    "Cliente não identificado", "Data inválida ou ausente"
   ),
-  Quantidade = c(
-    sum(retail$IsCancelled),
-    sum(retail$Quantity < 0),
-    sum(retail$Quantity == 0),
-    sum(retail$UnitPrice < 0),
-    sum(retail$UnitPrice == 0),
-    sum(is.na(retail$Description)),
-    sum(is.na(retail$CustomerID)),
-    sum(is.na(retail$InvoiceDate))
+  quantidade = c(
+    sum(retail$is_cancelled),
+    sum(retail$quantity < 0),
+    sum(retail$quantity == 0),
+    sum(retail$unit_price < 0),
+    sum(retail$unit_price == 0),
+    sum(is.na(retail$description)),
+    sum(is.na(retail$customer_id)),
+    sum(is.na(retail$invoice_date))
   )
 )
 
-print(issues)
+issues
 
 ```
 
@@ -213,13 +219,15 @@ Valores extremos, quantidade e preço unitário:
 
 ```{r}
 
-print(round(quantile(retail$Quantity, probs = c(0.01, 0.25, 0.50, 0.75, 0.99), na.rm = TRUE), 2))
+percentiles <- c(0.01, 0.25, 0.50, 0.75, 0.99)
 
-```
-
-```{r}
-
-print(round(quantile(retail$UnitPrice, probs = c(0.01, 0.25, 0.50, 0.75, 0.99), na.rm = TRUE), 2))
+retail |>
+  summarise(
+    quantidade = list(round(quantile(quantity, percentiles, na.rm = TRUE), 2)),
+    preco_unitario = list(round(quantile(unit_price, percentiles, na.rm = TRUE), 2))
+  ) |>
+  pivot_longer(everything(), names_to = "variavel", values_to = "valores") |>
+  unnest_wider(valores, names_sep = "_")
 
 ```
 
@@ -229,48 +237,44 @@ O mesmo corte definido na Aula 3: exclui cancelamentos e linhas com quantidade o
 
 ```{r}
 
-sales <- retail %>%
-  filter(!IsCancelled, Quantity > 0, UnitPrice > 0)
+sales <- retail |>
+  filter(!is_cancelled, quantity > 0, unit_price > 0)
 
-```
+sales_summary <- sales |>
+  summarise(
+    linhas = n(),
+    pedidos = n_distinct(invoice_no),
+    clientes = n_distinct(customer_id, na.rm = TRUE),
+    unidades = sum(quantity),
+    faturamento_bruto = sum(revenue)
+  )
 
-```{r}
-
-cat(strrep("=", 60), "\n")
-cat("VENDAS POSITIVAS\n")
-cat(strrep("=", 60), "\n")
-
-cat(sprintf("Linhas de vendas positivas: %s\n", format(nrow(sales), big.mark = ",")))
-cat(sprintf("Pedidos validos: %s\n", format(n_distinct(sales$InvoiceNo), big.mark = ",")))
-cat(sprintf("Clientes identificados: %s\n", format(n_distinct(sales$CustomerID, na.rm = TRUE), big.mark = ",")))
-cat(sprintf("Unidades vendidas: %s\n", format(sum(sales$Quantity), big.mark = ",")))
-cat(sprintf("Faturamento bruto: £ %s\n", format(round(sum(sales$Revenue), 2), big.mark = ",", nsmall = 2)))
+sales_summary
 
 ```
 
 # 7. Indicadores de pedidos e produtos
 
-Com as vendas válidas isoladas, ticket médio e produtos de maior faturamento saem de duas agregações: uma por pedido (`InvoiceNo`) e outra por produto (`StockCode`).
+Com as vendas válidas isoladas, ticket médio e produtos de maior faturamento saem de duas agregações: uma por pedido (`invoice_no`) e outra por produto (`stock_code`).
 
 ```{r}
 
-orders <- sales %>%
-  group_by(InvoiceNo) %>%
+orders <- sales |>
+  group_by(invoice_no) |>
   summarise(
-    OrderDate = min(InvoiceDate),
-    Customer = first(CustomerID),
-    Country = first(Country),
-    ItemQuantity = sum(Quantity),
-    OrderValue = sum(Revenue),
+    order_date = min(invoice_date),
+    customer_id = first(customer_id),
+    country = first(country),
+    item_quantity = sum(quantity),
+    order_value = sum(revenue),
     .groups = "drop"
   )
 
-```
-
-```{r}
-
-cat(sprintf("Ticket medio: £ %s\n", format(round(mean(orders$OrderValue), 2), big.mark = ",", nsmall = 2)))
-cat(sprintf("Ticket mediano: £ %s\n", format(round(median(orders$OrderValue), 2), big.mark = ",", nsmall = 2)))
+orders |>
+  summarise(
+    ticket_medio = mean(order_value),
+    ticket_mediano = median(order_value)
+  )
 
 ```
 
@@ -278,22 +282,26 @@ Distribuição do valor dos pedidos:
 
 ```{r}
 
-print(round(quantile(orders$OrderValue, probs = c(0.25, 0.50, 0.75, 0.90, 0.99)), 2))
+orders |>
+  reframe(
+    percentil = c(25, 50, 75, 90, 99),
+    valor_pedido = round(quantile(order_value, percentil / 100), 2)
+  )
 
 ```
 
 ```{r}
 
-products <- sales %>%
-  filter(!is.na(Description)) %>%
-  group_by(StockCode, Description) %>%
+products <- sales |>
+  filter(!is.na(description)) |>
+  group_by(stock_code, description) |>
   summarise(
-    UnitsSold = sum(Quantity),
-    Revenue = sum(Revenue),
-    OrderCount = n_distinct(InvoiceNo),
+    units_sold = sum(quantity),
+    revenue = sum(revenue),
+    order_count = n_distinct(invoice_no),
     .groups = "drop"
-  ) %>%
-  arrange(desc(Revenue))
+  ) |>
+  arrange(desc(revenue))
 
 ```
 
@@ -301,7 +309,8 @@ Produtos com maior faturamento:
 
 ```{r}
 
-print(head(products, 10))
+products |>
+  slice_head(n = 10)
 
 ```
 
@@ -311,22 +320,18 @@ O lado espelhado das vendas válidas: tudo o que foi excluído do faturamento br
 
 ```{r}
 
-cancellations <- retail %>%
-  filter(IsCancelled | Quantity < 0)
+cancellations <- retail |>
+  filter(is_cancelled | quantity < 0)
 
-refunded_amount <- abs(sum(retail$Revenue[retail$Revenue < 0]))
+cancellation_summary <- retail |>
+  summarise(
+    faturas_canceladas = n_distinct(invoice_no[is_cancelled]),
+    linhas_quantidade_negativa = sum(quantity < 0),
+    valor_devolucoes_ajustes = abs(sum(revenue[revenue < 0])),
+    receita_liquida = sum(revenue)
+  )
 
-```
-
-```{r}
-
-cat(sprintf("Faturas canceladas: %s\n", format(n_distinct(retail$InvoiceNo[retail$IsCancelled]), big.mark = ",")))
-
-cat(sprintf("Linhas com quantidade negativa: %s\n", format(sum(retail$Quantity < 0), big.mark = ",")))
-
-cat(sprintf("Valor absoluto das devolucoes/ajustes: £ %s\n", format(round(refunded_amount, 2), big.mark = ",", nsmall = 2)))
-
-cat(sprintf("Receita liquida de toda a base: £ %s\n", format(round(sum(retail$Revenue), 2), big.mark = ",", nsmall = 2)))
+cancellation_summary
 
 ```
 
@@ -340,27 +345,23 @@ A maior parte das vendas vem do Reino Unido, sede da empresa. Faz sentido pergun
 
 ```{r}
 
-uk_quarterly_top_products <- sales %>%
-  filter(Country == "United Kingdom") %>%
-  mutate(Quarter = paste0(year(InvoiceDate), "-Q", quarter(InvoiceDate))) %>%
-  group_by(Quarter, StockCode, Description) %>%
+uk_quarterly_top_products <- sales |>
+  filter(country == "United Kingdom") |>
+  mutate(quarter = paste0(year(invoice_date), "-Q", quarter(invoice_date))) |>
+  group_by(quarter, stock_code, description) |>
   summarise(
-    UnitsSold = sum(Quantity),
-    Revenue = sum(Revenue),
+    units_sold = sum(quantity),
+    revenue = sum(revenue),
     .groups = "drop"
-  ) %>%
-  slice_max(UnitsSold, n = 5, by = Quarter) %>%
-  arrange(Quarter, desc(UnitsSold))
+  ) |>
+  slice_max(units_sold, n = 5, by = quarter, with_ties = FALSE) |>
+  arrange(quarter, desc(units_sold))
+
+uk_quarterly_top_products
 
 ```
 
-```{r}
-
-print(uk_quarterly_top_products)
-
-```
-
-`Country == "United Kingdom"` só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.
+`country == "United Kingdom"` só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.
 
 ## Concentração de receita: quantos clientes sustentam o faturamento?
 
@@ -368,28 +369,27 @@ Uma leitura comum em gestão comercial é a curva de Pareto: uma fração pequen
 
 ```{r}
 
-customer_revenue <- sales %>%
-  filter(!is.na(CustomerID)) %>%
-  group_by(CustomerID) %>%
-  summarise(Revenue = sum(Revenue), .groups = "drop") %>%
-  arrange(desc(Revenue)) %>%
+customer_revenue <- sales |>
+  filter(!is.na(customer_id)) |>
+  group_by(customer_id) |>
+  summarise(revenue = sum(revenue), .groups = "drop") |>
+  arrange(desc(revenue)) |>
   mutate(
-    CustomerRank = row_number(),
-    CumShare = cumsum(Revenue) / sum(Revenue)
+    customer_rank = row_number(),
+    cumulative_share = cumsum(revenue) / sum(revenue)
   )
 
-```
+customers_for_80pct <- customer_revenue |>
+  filter(cumulative_share >= 0.8) |>
+  slice_head(n = 1) |>
+  pull(customer_rank)
 
-```{r}
-
-customers_for_80pct <- min(customer_revenue$CustomerRank[customer_revenue$CumShare >= 0.8])
 total_customers <- nrow(customer_revenue)
 
-cat(sprintf(
-  "%s de %s clientes (%.1f%%) respondem por 80%% do faturamento das vendas validas.\n",
-  format(customers_for_80pct, big.mark = ","),
-  format(total_customers, big.mark = ","),
-  100 * customers_for_80pct / total_customers
+cat(glue::glue(
+  "{customers_for_80pct} de {total_customers} clientes ",
+  "({scales::percent(customers_for_80pct / total_customers, accuracy = 0.1)}) ",
+  "respondem por 80% do faturamento das vendas válidas.\n"
 ))
 
 ```
@@ -398,7 +398,8 @@ Clientes com maior faturamento:
 
 ```{r}
 
-print(head(customer_revenue, 10))
+customer_revenue |>
+  slice_head(n = 10)
 
 ```
 
@@ -408,22 +409,18 @@ A seção 4 já apontou sazonalidade mensal como pergunta em aberto. Antes de ch
 
 ```{r}
 
-weekday_revenue <- sales %>%
-  mutate(Weekday = wday(InvoiceDate, label = TRUE, abbr = FALSE, week_start = 1)) %>%
-  group_by(Weekday) %>%
+weekday_revenue <- sales |>
+  mutate(weekday = wday(invoice_date, label = TRUE, abbr = FALSE, week_start = 1)) |>
+  group_by(weekday) |>
   summarise(
-    Orders = n_distinct(InvoiceNo),
-    Revenue = sum(Revenue),
-    AvgRevenuePerOrder = Revenue / Orders,
+    orders = n_distinct(invoice_no),
+    revenue = sum(revenue),
+    avg_revenue_per_order = revenue / orders,
     .groups = "drop"
-  ) %>%
-  arrange(Weekday)
+  ) |>
+  arrange(weekday)
 
-```
-
-```{r}
-
-print(weekday_revenue)
+weekday_revenue
 
 ```
 
@@ -442,32 +439,32 @@ As mesmas quatro perguntas testam se os critérios usados aqui, os mesmos da Aul
 
 ## Pergunta 1: cancelamento é a mesma coisa que devolução?
 
-O critério de vendas válidas da seção 6 trata toda linha com `IsCancelled` verdadeiro ou `Quantity` negativa da mesma forma. Isso é preciso o suficiente para separar cancelamentos de devoluções?
+O critério de vendas válidas da seção 6 trata toda linha com `is_cancelled` verdadeiro ou `quantity` negativa da mesma forma. Isso é preciso o suficiente para separar cancelamentos de devoluções?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-O mesmo raciocínio da Aula 3 vale aqui, a linguagem não muda o argumento: `InvoiceNo` começando com `C` é a convenção do sistema para cancelamento, registrado no mesmo momento da venda; uma devolução, no mundo real, costuma ser um evento separado. Verifique nos próprios dados, com `filter(Quantity < 0, !IsCancelled)`, se existem linhas com quantidade negativa que não têm `InvoiceNo` começando com `C`. Se existirem, elas são a diferença entre as duas categorias.
+O mesmo raciocínio da Aula 3 vale aqui, a linguagem não muda o argumento: `invoice_no` começando com `C` é a convenção do sistema para cancelamento, registrado no mesmo momento da venda; uma devolução, no mundo real, costuma ser um evento separado. Verifique nos próprios dados, com `filter(quantity < 0, !is_cancelled)`, se existem linhas com quantidade negativa que não têm `invoice_no` começando com `C`. Se existirem, elas são a diferença entre as duas categorias.
 :::
 
 ## Pergunta 2: quando um outlier é erro e quando é atacado legítimo?
 
-A seção 5 mostra valores de `Quantity` na casa das dezenas de milhares em uma única linha. Descartar essas linhas do faturamento por serem outliers, sem checar mais nada, é seguro?
+A seção 5 mostra valores de `quantity` na casa das dezenas de milhares em uma única linha. Descartar essas linhas do faturamento por serem outliers, sem checar mais nada, é seguro?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-Antes de descartar uma linha como erro, agrupe por `CustomerID` e `Country`: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é padrão de atacado, não erro de digitação. `sales %>% filter(CustomerID == <id suspeito>) %>% arrange(desc(Quantity))` responde isso rápido.
+Antes de descartar uma linha como erro, agrupe por `customer_id` e `country`: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é padrão de atacado, não erro de digitação. `sales |> filter(customer_id == <id suspeito>) |> arrange(desc(quantity))` responde isso rápido.
 :::
 
 ## Pergunta 3: qual recorte de "vendas válidas" você vai defender?
 
-Além de cancelamentos, a seção 6 também exclui `Quantity` igual a zero e `UnitPrice` igual a zero. Existem linhas com preço zero e `CustomerID` ausente ao mesmo tempo?
+Além de cancelamentos, a seção 6 também exclui `quantity` igual a zero e `unit_price` igual a zero. Existem linhas com preço zero e `customer_id` ausente ao mesmo tempo?
 
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-Preço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de venda. `retail %>% filter(UnitPrice == 0, is.na(CustomerID)) %>% nrow()` mede o tamanho do problema antes de decidir o que fazer com ele.
+Preço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de venda. `retail |> filter(unit_price == 0, is.na(customer_id)) |> nrow()` mede o tamanho do problema antes de decidir o que fazer com ele.
 :::
 
 ## Pergunta 4: a concentração de receita muda quem você prioriza?

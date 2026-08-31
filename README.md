@@ -26,4 +26,10 @@ quarto preview
 
 ## Publicação
 
-O site é publicado no GitHub Pages a cada push na branch `main`, via o workflow em [.github/workflows/publish.yml](.github/workflows/publish.yml). Em **Settings > Pages**, a *source* do repositório deve estar configurada como **GitHub Actions**.
+O site é renderizado a cada push na branch `main` e publicado pelo workflow [`.github/workflows/publish.yml`](.github/workflows/publish.yml) na branch `gh-pages`.
+
+Em **Settings > Pages**, configure:
+
+- **Source:** Deploy from a branch
+- **Branch:** `gh-pages`
+- **Folder:** `/ (root)`

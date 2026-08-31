@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Aula 2 - Introdução aos Dados Tabulares – Ciência de Dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7d69db6120d0e6f5d3fcdc578475f3c9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-214e36352efd7a8a2f30576676d8f6f8.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/02-introducao-dados-tabulares.html">2. Introdução aos Dados Tabulares</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Ciência de Dados</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciência de Dados</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Roteiros de aula</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/01-ferramentas-ambiente-versionamento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Ferramentas, Ambiente e Versionamento</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/02-introducao-dados-tabulares.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">2. Introdução aos Dados Tabulares</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/03-analise-vendas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Análise de Vendas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/04-analise-vendas-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Análise de Vendas em R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link active" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
+  <li><a href="#retomando-o-projeto" id="toc-retomando-o-projeto" class="nav-link" data-scroll-target="#retomando-o-projeto">1. Retomando o projeto</a></li>
+  <li><a href="#o-que-são-dados-tabulares" id="toc-o-que-são-dados-tabulares" class="nav-link" data-scroll-target="#o-que-são-dados-tabulares">2. O que são dados tabulares</a>
+  <ul class="collapse">
+  <li><a href="#tipos-de-variáveis" id="toc-tipos-de-variáveis" class="nav-link" data-scroll-target="#tipos-de-variáveis">Tipos de variáveis</a></li>
+  <li><a href="#formatos-de-arquivo" id="toc-formatos-de-arquivo" class="nav-link" data-scroll-target="#formatos-de-arquivo">Formatos de arquivo</a></li>
+  </ul></li>
+  <li><a href="#pandas-em-escala-pequena-series-e-dataframe" id="toc-pandas-em-escala-pequena-series-e-dataframe" class="nav-link" data-scroll-target="#pandas-em-escala-pequena-series-e-dataframe">3. Pandas em escala pequena: Series e DataFrame</a></li>
+  <li><a href="#o-dataset-online-retail" id="toc-o-dataset-online-retail" class="nav-link" data-scroll-target="#o-dataset-online-retail">4. O dataset: Online Retail</a>
+  <ul class="collapse">
+  <li><a href="#baixando-os-dados-para-o-lugar-certo" id="toc-baixando-os-dados-para-o-lugar-certo" class="nav-link" data-scroll-target="#baixando-os-dados-para-o-lugar-certo">Baixando os dados para o lugar certo</a></li>
+  </ul></li>
+  <li><a href="#o-ritual-de-inspeção-inicial" id="toc-o-ritual-de-inspeção-inicial" class="nav-link" data-scroll-target="#o-ritual-de-inspeção-inicial">5. O ritual de inspeção inicial</a></li>
+  <li><a href="#interrogando-os-dados-seleção-e-filtragem" id="toc-interrogando-os-dados-seleção-e-filtragem" class="nav-link" data-scroll-target="#interrogando-os-dados-seleção-e-filtragem">6. Interrogando os dados: seleção e filtragem</a></li>
+  <li><a href="#a-caça-aos-problemas-diagnóstico-de-qualidade" id="toc-a-caça-aos-problemas-diagnóstico-de-qualidade" class="nav-link" data-scroll-target="#a-caça-aos-problemas-diagnóstico-de-qualidade">7. A caça aos problemas: diagnóstico de qualidade</a></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
+  <ul class="collapse">
+  <li><a href="#pergunta-1-o-cliente-com-casas-decimais" id="toc-pergunta-1-o-cliente-com-casas-decimais" class="nav-link" data-scroll-target="#pergunta-1-o-cliente-com-casas-decimais">Pergunta 1: o cliente com casas decimais</a></li>
+  <li><a href="#pergunta-2-a-documentação-contra-os-dados" id="toc-pergunta-2-a-documentação-contra-os-dados" class="nav-link" data-scroll-target="#pergunta-2-a-documentação-contra-os-dados">Pergunta 2: a documentação contra os dados</a></li>
+  <li><a href="#pergunta-3-o-repositório-sem-os-dados" id="toc-pergunta-3-o-repositório-sem-os-dados" class="nav-link" data-scroll-target="#pergunta-3-o-repositório-sem-os-dados">Pergunta 3: o repositório sem os dados</a></li>
+  </ul></li>
+  <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/02-introducao-dados-tabulares.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="02-introducao-dados-tabulares.ipynb" download="02-introducao-dados-tabulares.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/02-introducao-dados-tabulares.html">2. Introdução aos Dados Tabulares</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Aula 2 - Introdução aos Dados Tabulares</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">30 de agosto de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.</p>
+<p>Antes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.</p>
+<p>Mas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.</p>
+<p>O plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.</p>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
+<p>Ao final deste roteiro, você será capaz de:</p>
+<ol type="1">
+<li>Definir dados tabulares e identificar seus elementos: observações (linhas), variáveis (colunas) e valores;</li>
+<li>Classificar variáveis por tipo (numéricas contínuas e discretas, categóricas nominais e ordinais, temporais) e explicar por que o tipo importa para a análise;</li>
+<li>Reconhecer os principais formatos de arquivo tabular (CSV, Excel, Parquet) e seus problemas típicos;</li>
+<li>Criar e manipular Series e DataFrames com o pandas;</li>
+<li>Carregar um dataset real e executar o ritual de inspeção inicial: head, shape, info, describe, value_counts e contagem de ausentes;</li>
+<li>Selecionar colunas e filtrar linhas por condições para responder perguntas de negócio;</li>
+<li>Diagnosticar problemas comuns de qualidade em dados reais, sem ainda tratá-los.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como usar este roteiro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criado, com o ambiente virtual e o Git funcionando. As células devem ser executadas na ordem. Ao final, três perguntas ajudam a consolidar o aprendizado: tente respondê-las antes de expandir as explicações.</p>
+</div>
+</div>
+</section>
+<section id="retomando-o-projeto" class="level1">
+<h1>1. Retomando o projeto</h1>
+<p>Um profissional não começa o dia de trabalho abrindo um arquivo solto: ele abre o projeto. Vamos praticar exatamente isso, reativando os hábitos da aula passada:</p>
+<div id="046f4247" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Onde paramos? O git log conta a historia ate aqui:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># E o estado atual? Espera-se uma area de trabalho limpa:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Se o log mostra os três commits da Aula 1 e o status diz que não há nada a commitar, o projeto está exatamente como o deixamos. Essa verificação de trinta segundos no início de cada sessão de trabalho evita sustos e é o primeiro reflexo profissional do dia.</p>
+<p>O ambiente também precisa de um complemento. Hoje vamos ler um arquivo Excel, e o pandas precisa de uma biblioteca auxiliar para isso, a openpyxl. Como aprendemos: instalar no ambiente, registrar a versão, commitar a receita:</p>
+<div id="90f5ce27" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalamos a nova dependencia dentro do ambiente do projeto</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv pip install openpyxl</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Atualizamos a receita com as versoes exatas...</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv pip freeze <span class="op">&gt;</span> requirements.txt</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>⠋ Resolving dependencies...                                                     ⠋ Resolving dependencies...                                                     ⠙ Resolving dependencies...                                                     ⠙ openpyxl==3.1.5                                                               ⠹ openpyxl==3.1.5                                                               ⠹ et-xmlfile==2.0.0                                                             ⠹                                                                               Resolved 2 packages in 207ms
+░░░░░░░░░░░░░░░░░░░░ [0/0] Installing wheels...                                 ░░░░░░░░░░░░░░░░░░░░ [0/2] Installing wheels...                                 ░░░░░░░░░░░░░░░░░░░░ [0/2] et-xmlfile==2.0.0                                    ██████████░░░░░░░░░░ [1/2] et-xmlfile==2.0.0                                    ██████████░░░░░░░░░░ [1/2] openpyxl==3.1.5                                      ████████████████████ [2/2] openpyxl==3.1.5                                      Installed 2 packages in 25ms
+ + et-xmlfile==2.0.0
+ + openpyxl==3.1.5</code></pre>
+</div>
+</div>
+<div id="3f4e2d2f" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...e registramos a mudanca no historico. Ciclo completo.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add requirements.txt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Adiciona openpyxl para leitura de arquivos Excel"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Repare que o ciclo da Aula 1 já está virando rotina: mudou o ambiente, atualizou a receita, commitou. Agora sim, vamos à teoria.</p>
+</section>
+<section id="o-que-são-dados-tabulares" class="level1">
+<h1>2. O que são dados tabulares</h1>
+<p>Uma tabela é uma estrutura de dados com uma gramática precisa, e vale a pena nomear as partes, porque esse vocabulário será usado o curso inteiro:</p>
+<ul>
+<li>Cada linha é uma observação (ou registro, ou instância): uma unidade do fenômeno que estamos estudando. Em uma tabela de vendas, cada linha é uma venda; em uma tabela de alunos, cada linha é um aluno.</li>
+<li>Cada coluna é uma variável (ou atributo, ou campo): uma característica medida sobre todas as observações. Preço, data, nome do produto, país do cliente.</li>
+<li>Cada célula é um valor: a medida de uma variável para uma observação específica.</li>
+</ul>
+<p>Essa organização, com uma variável por coluna, uma observação por linha e um valor por célula, tem nome na literatura: dados organizados, ou tidy data, no termo consagrado em inglês. Parece óbvio, mas o mundo real está cheio de tabelas que violam esses princípios: planilhas com anos espalhados em colunas, cabeçalhos mesclados, totais no meio dos dados. Reconhecer quando uma tabela está organizada, e quando não está, é uma habilidade em si, e voltaremos a ela quando aprendermos a reestruturar tabelas. Por ora, guarde o princípio.</p>
+<section id="tipos-de-variáveis" class="level2">
+<h2 class="anchored" data-anchor-id="tipos-de-variáveis">Tipos de variáveis</h2>
+<p>Nem toda coluna é igual, e a diferença mais importante entre elas é o tipo da variável. O tipo determina o que faz sentido fazer com ela: que estatística calcular, que gráfico desenhar, que modelo aplicar.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Definição</th>
+<th>Exemplos</th>
+<th>O que faz sentido</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Numérica contínua</td>
+<td>Números que podem assumir qualquer valor em um intervalo</td>
+<td>Preço, altura, temperatura</td>
+<td>Média, mediana, soma, histograma</td>
+</tr>
+<tr class="even">
+<td>Numérica discreta</td>
+<td>Números inteiros de contagem</td>
+<td>Quantidade de itens, número de filhos</td>
+<td>Média, soma, contagem</td>
+</tr>
+<tr class="odd">
+<td>Categórica nominal</td>
+<td>Categorias sem ordem natural</td>
+<td>País, cor, nome do produto</td>
+<td>Contagem, moda, proporção</td>
+</tr>
+<tr class="even">
+<td>Categórica ordinal</td>
+<td>Categorias com ordem natural</td>
+<td>Escolaridade, avaliação (ruim, boa, ótima)</td>
+<td>Contagem, mediana, comparação de ordem</td>
+</tr>
+<tr class="odd">
+<td>Temporal</td>
+<td>Datas e horários</td>
+<td>Data da venda, timestamp</td>
+<td>Ordenação, extração de mês e ano, séries temporais</td>
+</tr>
+</tbody>
+</table>
+<p>Duas armadilhas clássicas merecem aviso prévio. A primeira: nem tudo que parece número é numérico. Um CEP, um CPF, um código de produto são compostos de dígitos, mas são categorias: somar dois CEPs não significa nada, e calcular a média de códigos de cliente é um absurdo estatístico. A pergunta certa não é “isso tem dígitos?”, e sim “faz sentido fazer aritmética com isso?”. A segunda: uma nota de 1 a 5 parece numérica, mas é ordinal: a distância entre 1 e 2 não é necessariamente igual à distância entre 4 e 5. Tratá-la como número puro é uma simplificação que às vezes é aceitável e às vezes distorce a análise; o importante é fazer isso conscientemente, não por acidente. Guarde essas duas armadilhas: as duas vão aparecer, na prática, ainda nesta aula.</p>
+</section>
+<section id="formatos-de-arquivo" class="level2">
+<h2 class="anchored" data-anchor-id="formatos-de-arquivo">Formatos de arquivo</h2>
+<p>Tabelas viajam entre sistemas dentro de arquivos, e os formatos mais comuns têm personalidades diferentes:</p>
+<ul>
+<li>CSV (comma-separated values): texto puro com um separador entre os valores. Universal, legível, versionável, mas frágil: não guarda tipos (tudo é texto até prova em contrário) e sofre com um problema particularmente brasileiro. Em países que usam vírgula como separador decimal, como o Brasil, o CSV frequentemente usa ponto e vírgula como separador de campos, e o pandas precisa ser avisado disso (parâmetros sep e decimal do read_csv). Um CSV brasileiro lido com as configurações padrão americanas vira uma coluna única ilegível, e esse erro recebe todo iniciante de braços abertos.</li>
+<li>Excel (xlsx): o formato das planilhas, onipresente no mundo corporativo. Guarda tipos, múltiplas abas e formatação, mas é pesado e lento de ler em arquivos grandes, além de permitir as travessuras que quebram o princípio tidy: células mescladas, totais no meio, cores com significado.</li>
+<li>Parquet: formato binário colunar, padrão da engenharia de dados moderna. Rápido, compacto e preserva tipos, mas não é legível por humanos. Vamos usá-lo mais adiante no curso.</li>
+</ul>
+<p>A regra prática: receba os dados no formato que vierem, mas conheça o custo de cada um. Hoje receberemos um Excel, e você vai sentir o custo na pele: o arquivo demora a abrir.</p>
+</section>
+</section>
+<section id="pandas-em-escala-pequena-series-e-dataframe" class="level1">
+<h1>3. Pandas em escala pequena: Series e DataFrame</h1>
+<p>O pandas é a biblioteca que traz as tabelas para dentro do Python, e suas duas estruturas centrais têm nomes que você usará todos os dias: a Series, que é uma coluna (uma sequência de valores com um índice), e o DataFrame, que é a tabela inteira (um conjunto de Series que compartilham o mesmo índice).</p>
+<p>Antes de enfrentar meio milhão de linhas, vamos construir uma tabela de brinquedo em que cada valor é visível a olho nu. É uma estratégia deliberada: em escala pequena, você confere cada resultado manualmente e constrói confiança no que cada comando faz.</p>
+<p>A partir daqui, abra um notebook novo na pasta notebooks/ do projeto (sugestão de nome: 01-introducao-tabulares.ipynb) e acompanhe executando as células. Note que as células a seguir são Python puro, sem o ponto de exclamação: saímos do terminal e entramos na linguagem.</p>
+<div id="79b2c1e3" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Um DataFrame construido a mao: cinco vendas ficticias</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"product"</span>: [<span class="st">"Caneca"</span>, <span class="st">"Camiseta"</span>, <span class="st">"Caneca"</span>, <span class="st">"Adesivo"</span>, <span class="st">"Camiseta"</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quantity"</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">3</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit_price"</span>: [<span class="fl">35.0</span>, <span class="fl">79.9</span>, <span class="fl">35.0</span>, <span class="fl">5.5</span>, <span class="fl">79.9</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"country"</span>: [<span class="st">"Brasil"</span>, <span class="st">"Brasil"</span>, <span class="st">"Portugal"</span>, <span class="st">"Brasil"</span>, <span class="st">"Argentina"</span>],</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>sales</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">product</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Caneca</td>
+<td>2</td>
+<td>35.0</td>
+<td>Brasil</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Camiseta</td>
+<td>1</td>
+<td>79.9</td>
+<td>Brasil</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Caneca</td>
+<td>4</td>
+<td>35.0</td>
+<td>Portugal</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Adesivo</td>
+<td>10</td>
+<td>5.5</td>
+<td>Brasil</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Camiseta</td>
+<td>3</td>
+<td>79.9</td>
+<td>Argentina</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Cada linha é uma observação (uma venda), cada coluna é uma variável, e a coluna sem nome à esquerda é o índice, o identificador de cada linha, que o pandas criou automaticamente. Exercite a classificação da seção anterior: product e country são categóricas nominais, quantity é numérica discreta, unit_price é numérica contínua.</p>
+<p>As três operações fundamentais, em miniatura:</p>
+<div id="63a65b11" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Selecionar uma coluna: o resultado e uma Series</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">"unit_price"</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>0    35.0
+1    79.9
+2    35.0
+3     5.5
+4    79.9
+Name: unit_price, dtype: float64</code></pre>
+</div>
+</div>
+<div id="4144dfc5" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Criar uma coluna nova a partir das existentes</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">"revenue"</span>] <span class="op">=</span> sales[<span class="st">"quantity"</span>] <span class="op">*</span> sales[<span class="st">"unit_price"</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sales</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">product</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Caneca</td>
+<td>2</td>
+<td>35.0</td>
+<td>Brasil</td>
+<td>70.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Camiseta</td>
+<td>1</td>
+<td>79.9</td>
+<td>Brasil</td>
+<td>79.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Caneca</td>
+<td>4</td>
+<td>35.0</td>
+<td>Portugal</td>
+<td>140.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Adesivo</td>
+<td>10</td>
+<td>5.5</td>
+<td>Brasil</td>
+<td>55.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Camiseta</td>
+<td>3</td>
+<td>79.9</td>
+<td>Argentina</td>
+<td>239.7</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="e24bed3e" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Filtrar linhas por uma condicao</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sales[sales[<span class="st">"country"</span>] <span class="op">==</span> <span class="st">"Brasil"</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">product</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Caneca</td>
+<td>2</td>
+<td>35.0</td>
+<td>Brasil</td>
+<td>70.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Camiseta</td>
+<td>1</td>
+<td>79.9</td>
+<td>Brasil</td>
+<td>79.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Adesivo</td>
+<td>10</td>
+<td>5.5</td>
+<td>Brasil</td>
+<td>55.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>O filtro da terceira célula merece um comentário, porque ele é a operação mais importante do pandas. A expressão interna, sales[“country”] == “Brasil”, produz uma Series de True e False, um valor por linha; ao colocá-la entre colchetes, o DataFrame devolve apenas as linhas marcadas com True. Esse mecanismo se chama filtro booleano, e condições podem ser combinadas com o operador &amp; (e) e o operador | (ou), cada condição entre parênteses:</p>
+<div id="cd72ed69" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vendas do Brasil COM faturamento acima de 50</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sales[(sales[<span class="st">"country"</span>] <span class="op">==</span> <span class="st">"Brasil"</span>) <span class="op">&amp;</span> (sales[<span class="st">"revenue"</span>] <span class="op">&gt;</span> <span class="dv">50</span>)]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">product</th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">country</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Caneca</td>
+<td>2</td>
+<td>35.0</td>
+<td>Brasil</td>
+<td>70.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Camiseta</td>
+<td>1</td>
+<td>79.9</td>
+<td>Brasil</td>
+<td>79.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Adesivo</td>
+<td>10</td>
+<td>5.5</td>
+<td>Brasil</td>
+<td>55.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Um aviso que economiza horas de frustração: dentro de filtros do pandas, use &amp; e |, e não as palavras and e or do Python. As palavras funcionam para valores únicos, mas quebram com Series inteiras, e a mensagem de erro que aparece não ajuda em nada. Todo mundo tropeça nisso uma vez; que a sua vez seja agora, em ambiente controlado.</p>
+<p>Por fim, o resumo estatístico:</p>
+<div id="9732af67" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># describe: estatisticas descritivas das colunas numericas</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sales.describe()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">quantity</th>
+<th data-quarto-table-cell-role="th">unit_price</th>
+<th data-quarto-table-cell-role="th">revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>5.000000</td>
+<td>5.000000</td>
+<td>5.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>4.000000</td>
+<td>47.060000</td>
+<td>116.920000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>3.535534</td>
+<td>32.307321</td>
+<td>75.851282</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>1.000000</td>
+<td>5.500000</td>
+<td>55.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>2.000000</td>
+<td>35.000000</td>
+<td>70.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>3.000000</td>
+<td>35.000000</td>
+<td>79.900000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>4.000000</td>
+<td>79.900000</td>
+<td>140.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>10.000000</td>
+<td>79.900000</td>
+<td>239.700000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Cinco linhas dão para conferir de cabeça: a média das quantidades bate? O mínimo e o máximo dos preços fazem sentido? Essa conferência manual é impossível com meio milhão de linhas, e é exatamente por isso que o describe existe: ele é o olhar panorâmico quando os olhos não alcançam mais os dados. Hora de testá-lo em escala real.</p>
+</section>
+<section id="o-dataset-online-retail" class="level1">
+<h1>4. O dataset: Online Retail</h1>
+<p>Chegou o momento. O dataset que acompanhará as próximas aulas é o Online Retail, mantido pelo repositório de aprendizado de máquina da Universidade da Califórnia em Irvine (UCI), um dos acervos de datasets mais tradicionais da área. Ele contém todas as transações de um varejo online do Reino Unido entre dezembro de 2010 e dezembro de 2011: uma empresa que vende presentes e artigos variados, com muitos clientes atacadistas. São 541.909 registros, e cada linha é um item vendido dentro de uma nota fiscal.</p>
+<p>O dicionário de variáveis, segundo a documentação oficial:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variável</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>InvoiceNo</td>
+<td>Número da nota fiscal, com 6 dígitos. Se começa com a letra C, indica um cancelamento</td>
+</tr>
+<tr class="even">
+<td>StockCode</td>
+<td>Código do produto</td>
+</tr>
+<tr class="odd">
+<td>Description</td>
+<td>Nome do produto</td>
+</tr>
+<tr class="even">
+<td>Quantity</td>
+<td>Quantidade do item na transação</td>
+</tr>
+<tr class="odd">
+<td>InvoiceDate</td>
+<td>Data e hora da transação</td>
+</tr>
+<tr class="even">
+<td>UnitPrice</td>
+<td>Preço unitário, em libras esterlinas</td>
+</tr>
+<tr class="odd">
+<td>CustomerID</td>
+<td>Código do cliente, com 5 dígitos</td>
+</tr>
+<tr class="even">
+<td>Country</td>
+<td>País de residência do cliente</td>
+</tr>
+</tbody>
+</table>
+<p>Exercite mais uma vez a classificação de tipos, agora com atenção às armadilhas da seção 2: InvoiceNo, StockCode e CustomerID são compostos de dígitos, mas são identificadores, ou seja, categóricos nominais; Quantity é numérica discreta; UnitPrice é numérica contínua; InvoiceDate é temporal; Description e Country são categóricas nominais.</p>
+<p>Dois registros de responsabilidade antes de baixar. Primeiro, a licença: o dataset é distribuído sob Creative Commons Attribution 4.0, que permite uso e adaptação desde que a fonte seja creditada, e a citação oficial é Chen, D. (2015), Online Retail, UCI Machine Learning Repository. Usar dados alheios com licença verificada e crédito dado é prática profissional básica, e vamos registrar isso no README do projeto. Segundo, um detalhe que guarde para mais tarde: a página oficial do dataset afirma que ele não possui valores ausentes. Guarde essa informação; ela voltará ainda nesta aula.</p>
+<section id="baixando-os-dados-para-o-lugar-certo" class="level2">
+<h2 class="anchored" data-anchor-id="baixando-os-dados-para-o-lugar-certo">Baixando os dados para o lugar certo</h2>
+<p>O arquivo vem compactado e tem cerca de 23 MB. E para onde ele vai? Para a pasta data/, criada justamente para isso na Aula 1. Voltamos ao terminal por um instante:</p>
+<div id="3938702f" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Baixamos o arquivo compactado para a pasta data/ do projeto</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> curl <span class="op">-</span>L <span class="op">-</span>o data<span class="op">/</span>online_retail.<span class="bu">zip</span> <span class="st">"https://archive.ics.uci.edu/static/public/352/online+retail.zip"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Descompactamos e renomeamos para um nome sem espacos</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> unzip <span class="op">-</span>o data<span class="op">/</span>online_retail.<span class="bu">zip</span> <span class="op">-</span>d data<span class="op">/</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> mv <span class="st">"data/Online Retail.xlsx"</span> data<span class="op">/</span>online_retail.xlsx</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 65398    0 65398    0     0  67734      0 --:--:-- --:--:-- --:--:-- 67699100  339k    0  339k    0     0   170k      0 --:--:--  0:00:01 --:--:--  170k100  787k    0  787k    0     0   277k      0 --:--:--  0:00:02 --:--:--  277k100 1403k    0 1403k    0     0   366k      0 --:--:--  0:00:03 --:--:--  366k100 1959k    0 1959k    0     0   406k      0 --:--:--  0:00:04 --:--:--  406k100 2435k    0 2435k    0     0   418k      0 --:--:--  0:00:05 --:--:--  489k100 3063k    0 3063k    0     0   448k      0 --:--:--  0:00:06 --:--:--  561k100 3655k    0 3655k    0     0   466k      0 --:--:--  0:00:07 --:--:--  573k100 4315k    0 4315k    0     0   487k      0 --:--:--  0:00:08 --:--:--  579k100 4911k    0 4911k    0     0   498k      0 --:--:--  0:00:09 --:--:--  586k100 5571k    0 5571k    0     0   515k      0 --:--:--  0:00:10 --:--:--  627k100 6322k    0 6322k    0     0   532k      0 --:--:--  0:00:11 --:--:--  646k100 7150k    0 7150k    0     0   557k      0 --:--:--  0:00:12 --:--:--  701k100 8358k    0 8358k    0     0   604k      0 --:--:--  0:00:13 --:--:--  812k100 9802k    0 9802k    0     0   660k      0 --:--:--  0:00:14 --:--:--  978k100 11.5M    0 11.5M    0     0   748k      0 --:--:--  0:00:15 --:--:-- 1253k100 14.1M    0 14.1M    0     0   862k      0 --:--:--  0:00:16 --:--:-- 1654k100 17.4M    0 17.4M    0     0  1003k      0 --:--:--  0:00:17 --:--:-- 2147k100 21.9M    0 21.9M    0     0  1195k      0 --:--:--  0:00:18 --:--:-- 2835k100 22.6M    0 22.6M    0     0  1222k      0 --:--:--  0:00:18 --:--:-- 3261k
+Archive:  data/online_retail.zip
+ extracting: data/Online Retail.xlsx  </code></pre>
+</div>
+</div>
+<p>Conferindo:</p>
+<div id="3ae46846" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> ls <span class="op">-</span>lh data<span class="op">/</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>total 46M
+-rwx------ 1 oandrefonseca oandrefonseca 23M May 22  2023 online_retail.xlsx
+-rw-rw-r-- 1 oandrefonseca oandrefonseca 23M Aug 30 21:27 online_retail.zip</code></pre>
+</div>
+</div>
+<p>E agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:</p>
+<div id="d17737c5" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está no .gitignore que escrevemos na Aula 1, e a decisão daquele dia acaba de se provar correta: 23 MB de dados brutos não pertencem ao histórico de código. Mas isso cria uma responsabilidade nova, e ela vai reaparecer nas perguntas do final da aula: se os dados não viajam com o repositório, o repositório precisa ensinar como obtê-los. Vamos cumprir essa responsabilidade agora, documentando a origem no README:</p>
+<div id="903df56a" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Documentamos a fonte dos dados e as instrucoes de obtencao no README</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> printf <span class="st">"</span><span class="ch">\n</span><span class="st">## Dados</span><span class="ch">\n\n</span><span class="st">Dataset Online Retail (UCI Machine Learning Repository, id 352).</span><span class="ch">\n</span><span class="st">Licenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.</span><span class="ch">\n</span><span class="st">Download: https://archive.ics.uci.edu/dataset/352/online+retail</span><span class="ch">\n</span><span class="st">Apos baixar, descompacte em data/ e renomeie para online_retail.xlsx</span><span class="ch">\n</span><span class="st">"</span> <span class="op">&gt;&gt;</span> README.md</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0e343bf7" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ciclo de sempre: add, commit</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add README.md</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Documenta a fonte e as instrucoes de download dos dados"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="o-ritual-de-inspeção-inicial" class="level1">
+<h1>5. O ritual de inspeção inicial</h1>
+<p>De volta ao notebook e ao Python. Vamos abrir o arquivo, com um aviso de gerenciamento de expectativa: ler meio milhão de linhas de um Excel é lento, e a célula abaixo pode levar um ou dois minutos. Sinta o custo do formato; é proposital.</p>
+<div id="b964f0fd" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">"projeto-vendas"</span>) <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"online_retail.xlsx"</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Paciencia: arquivos Excel grandes sao lentos de ler</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>retail <span class="op">=</span> pd.read_excel(path)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A partir de agora, execute o ritual que um profissional aplica a todo dataset novo, na ordem, antes de confiar em qualquer número. São cinco passos.</p>
+<p>Passo 1: olhe os dados de verdade.</p>
+<div id="c859e6c1" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As primeiras linhas...</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>retail.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">InvoiceNo</th>
+<th data-quarto-table-cell-role="th">StockCode</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">InvoiceDate</th>
+<th data-quarto-table-cell-role="th">UnitPrice</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+<th data-quarto-table-cell-role="th">Country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>536365</td>
+<td>85123A</td>
+<td>WHITE HANGING HEART T-LIGHT HOLDER</td>
+<td>6</td>
+<td>2010-12-01 08:26:00</td>
+<td>2.55</td>
+<td>17850.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>536365</td>
+<td>71053</td>
+<td>WHITE METAL LANTERN</td>
+<td>6</td>
+<td>2010-12-01 08:26:00</td>
+<td>3.39</td>
+<td>17850.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>536365</td>
+<td>84406B</td>
+<td>CREAM CUPID HEARTS COAT HANGER</td>
+<td>8</td>
+<td>2010-12-01 08:26:00</td>
+<td>2.75</td>
+<td>17850.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>536365</td>
+<td>84029G</td>
+<td>KNITTED UNION FLAG HOT WATER BOTTLE</td>
+<td>6</td>
+<td>2010-12-01 08:26:00</td>
+<td>3.39</td>
+<td>17850.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>536365</td>
+<td>84029E</td>
+<td>RED WOOLLY HOTTIE WHITE HEART.</td>
+<td>6</td>
+<td>2010-12-01 08:26:00</td>
+<td>3.39</td>
+<td>17850.0</td>
+<td>United Kingdom</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="da0df5ca" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ...e as ultimas. Fins de arquivo escondem surpresas: totais, lixo, linhas vazias.</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>retail.tail()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">InvoiceNo</th>
+<th data-quarto-table-cell-role="th">StockCode</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">InvoiceDate</th>
+<th data-quarto-table-cell-role="th">UnitPrice</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+<th data-quarto-table-cell-role="th">Country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">541904</td>
+<td>581587</td>
+<td>22613</td>
+<td>PACK OF 20 SPACEBOY NAPKINS</td>
+<td>12</td>
+<td>2011-12-09 12:50:00</td>
+<td>0.85</td>
+<td>12680.0</td>
+<td>France</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">541905</td>
+<td>581587</td>
+<td>22899</td>
+<td>CHILDREN'S APRON DOLLY GIRL</td>
+<td>6</td>
+<td>2011-12-09 12:50:00</td>
+<td>2.10</td>
+<td>12680.0</td>
+<td>France</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">541906</td>
+<td>581587</td>
+<td>23254</td>
+<td>CHILDRENS CUTLERY DOLLY GIRL</td>
+<td>4</td>
+<td>2011-12-09 12:50:00</td>
+<td>4.15</td>
+<td>12680.0</td>
+<td>France</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">541907</td>
+<td>581587</td>
+<td>23255</td>
+<td>CHILDRENS CUTLERY CIRCUS PARADE</td>
+<td>4</td>
+<td>2011-12-09 12:50:00</td>
+<td>4.15</td>
+<td>12680.0</td>
+<td>France</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">541908</td>
+<td>581587</td>
+<td>22138</td>
+<td>BAKING SET 9 PIECE RETROSPOT</td>
+<td>3</td>
+<td>2011-12-09 12:50:00</td>
+<td>4.95</td>
+<td>12680.0</td>
+<td>France</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Passo 2: meça o tamanho e confira os tipos.</p>
+<div id="ca3696b4" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantas linhas e colunas?</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>retail.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>(541909, 8)</code></pre>
+</div>
+</div>
+<div id="0e728a0f" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tipos, contagem de valores nao nulos e memoria, tudo de uma vez</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>retail.info()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 541909 entries, 0 to 541908
+Data columns (total 8 columns):
+ #   Column       Non-Null Count   Dtype         
+---  ------       --------------   -----         
+ 0   InvoiceNo    541909 non-null  object        
+ 1   StockCode    541909 non-null  object        
+ 2   Description  540455 non-null  object        
+ 3   Quantity     541909 non-null  int64         
+ 4   InvoiceDate  541909 non-null  datetime64[ns]
+ 5   UnitPrice    541909 non-null  float64       
+ 6   CustomerID   406829 non-null  float64       
+ 7   Country      541909 non-null  object        
+dtypes: datetime64[ns](1), float64(2), int64(1), object(4)
+memory usage: 33.1+ MB</code></pre>
+</div>
+</div>
+<p>Leia a saída do info com olhos de detetive, porque ela já entrega dois achados. Primeiro, os tipos que o pandas adivinhou: InvoiceDate virou datetime (ótimo), Quantity é inteiro, UnitPrice é float. Mas observe CustomerID: virou float64. Um código de cliente com casas decimais? Estranho, e não é acidente: guarde para a pergunta 1 do final. Segundo, compare a contagem de valores não nulos entre as colunas: se o total de linhas é 541.909 e alguma coluna tem menos que isso, há valores ausentes nela, diga o que disser a documentação.</p>
+<p>Passo 3: quantifique os ausentes explicitamente.</p>
+<div id="38a57c79" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantos valores ausentes por coluna?</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>retail.isna().<span class="bu">sum</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>InvoiceNo           0
+StockCode           0
+Description      1454
+Quantity            0
+InvoiceDate         0
+UnitPrice           0
+CustomerID     135080
+Country             0
+dtype: int64</code></pre>
+</div>
+</div>
+<p>Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os números na sua tela dizem outra coisa: a coluna CustomerID tem dezenas de milhares de vazios, e Description também tem os seus. Este é um dos aprendizados mais valiosos da aula, e ele não é sobre pandas: metadados mentem, às vezes por desatualização, às vezes por descuido. A única fonte confiável sobre os dados são os próprios dados, verificados por você.</p>
+<p>Passo 4: resuma as variáveis numéricas.</p>
+<div id="1a2a23ba" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>retail.describe()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">InvoiceDate</th>
+<th data-quarto-table-cell-role="th">UnitPrice</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>541909.000000</td>
+<td>541909</td>
+<td>541909.000000</td>
+<td>406829.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>9.552250</td>
+<td>2011-07-04 13:34:57.156386048</td>
+<td>4.611114</td>
+<td>15287.690570</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">min</td>
+<td>-80995.000000</td>
+<td>2010-12-01 08:26:00</td>
+<td>-11062.060000</td>
+<td>12346.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>1.000000</td>
+<td>2011-03-28 11:34:00</td>
+<td>1.250000</td>
+<td>13953.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>3.000000</td>
+<td>2011-07-19 17:17:00</td>
+<td>2.080000</td>
+<td>15152.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>10.000000</td>
+<td>2011-10-19 11:27:00</td>
+<td>4.130000</td>
+<td>16791.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">max</td>
+<td>80995.000000</td>
+<td>2011-12-09 12:50:00</td>
+<td>38970.000000</td>
+<td>18287.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>218.081158</td>
+<td>NaN</td>
+<td>96.759853</td>
+<td>1713.600303</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Não deslize os olhos pela tabela: interrogue-a. O mínimo de Quantity é um número negativo enorme. Quantidade negativa em uma venda? O mínimo de UnitPrice é zero, e itens gratuitos em um varejo também levantam a sobrancelha. O máximo de Quantity, na casa das dezenas de milhares em uma única linha, sugere ou atacado pesado ou erro de digitação. O describe não responde nada disso; o trabalho dele é apontar onde cavar.</p>
+<p>Passo 5: conte as categorias.</p>
+<div id="ef905109" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># De quais paises vem as vendas? As 10 maiores origens:</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"Country"</span>].value_counts().head(<span class="dv">10</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>Country
+United Kingdom    495478
+Germany             9495
+France              8557
+EIRE                8196
+Spain               2533
+Netherlands         2371
+Belgium             2069
+Switzerland         2002
+Portugal            1519
+Australia           1259
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<div id="abe68718" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># E quantos paises distintos ha no total?</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>retail[<span class="st">"Country"</span>].nunique()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>38</code></pre>
+</div>
+</div>
+<p>O value_counts é o describe das variáveis categóricas: mostra a distribuição e denuncia problemas como categorias duplicadas com grafias diferentes. Aqui, como esperado de um varejo britânico, o Reino Unido domina com folga.</p>
+<p>Ritual completo. Em cinco passos, sem nenhuma análise sofisticada, você já sabe o tamanho, os tipos, os ausentes, as faixas de valores e as categorias dominantes, e já tem uma lista de suspeitas para investigar. É mais do que muita análise apressada descobre em uma semana.</p>
+</section>
+<section id="interrogando-os-dados-seleção-e-filtragem" class="level1">
+<h1>6. Interrogando os dados: seleção e filtragem</h1>
+<p>Inspeção feita, começam as perguntas de negócio. As ferramentas são as mesmas da tabela de brinquedo, agora em escala real.</p>
+<div id="708966fe" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pergunta: quais vendas foram para a Alemanha?</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>germany_sales <span class="op">=</span> retail[retail[<span class="st">"Country"</span>] <span class="op">==</span> <span class="st">"Germany"</span>]</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>germany_sales.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>(9495, 8)</code></pre>
+</div>
+</div>
+<div id="8dfc82a0" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pergunta: ha transacoes de alto valor unitario (acima de 100 libras)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># fora do Reino Unido?</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>expensive_outside_uk <span class="op">=</span> retail[(retail[<span class="st">"UnitPrice"</span>] <span class="op">&gt;</span> <span class="dv">100</span>) <span class="op">&amp;</span> (retail[<span class="st">"Country"</span>] <span class="op">!=</span> <span class="st">"United Kingdom"</span>)]</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>expensive_outside_uk[[<span class="st">"InvoiceNo"</span>, <span class="st">"Description"</span>, <span class="st">"UnitPrice"</span>, <span class="st">"Country"</span>]].head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">InvoiceNo</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">UnitPrice</th>
+<th data-quarto-table-cell-role="th">Country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">39777</td>
+<td>539688</td>
+<td>CARRIAGE</td>
+<td>150.0</td>
+<td>France</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">45622</td>
+<td>C540271</td>
+<td>Manual</td>
+<td>1126.0</td>
+<td>Spain</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">54382</td>
+<td>540946</td>
+<td>VINTAGE BLUE KITCHEN CABINET</td>
+<td>125.0</td>
+<td>Cyprus</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">54395</td>
+<td>540946</td>
+<td>VINTAGE RED KITCHEN CABINET</td>
+<td>125.0</td>
+<td>Cyprus</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">70795</td>
+<td>542102</td>
+<td>VINTAGE RED KITCHEN CABINET</td>
+<td>125.0</td>
+<td>Singapore</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A segunda célula mostra um padrão que você usará constantemente: filtrar as linhas e, no mesmo movimento, selecionar apenas as colunas relevantes, passando uma lista de nomes entre colchetes. O resultado é uma resposta enxuta, e não uma parede de colunas.</p>
+<p>Para seleção posicional e por rótulo, o pandas oferece dois acessores que valem apresentar desde já: o loc seleciona por rótulos e condições (retail.loc[retail[“Country”] == “France”, [“InvoiceNo”, “UnitPrice”]]), e o iloc seleciona por posições numéricas (retail.iloc[0:5, 0:3] pega as cinco primeiras linhas e as três primeiras colunas). A distinção fica mais importante nas próximas aulas; hoje, basta saber que existem e o que cada um faz.</p>
+<p>Agora, três perguntas de negócio para você responder sozinho, no notebook, antes de seguir. Elas usam apenas o que já foi visto:</p>
+<ol type="1">
+<li>Quantas transações registram o país como Brazil? (Descubra: o Brasil aparece neste dataset?)</li>
+<li>Quantas linhas têm Quantity negativa? E qual a cara delas? (Filtre e examine com head.)</li>
+<li>Existe alguma linha com UnitPrice igual a zero e CustomerID ausente ao mesmo tempo? (Dica: combine um filtro de igualdade com o método isna() da coluna.)</li>
+</ol>
+<p>A segunda pergunta é a ponte para a seção final.</p>
+</section>
+<section id="a-caça-aos-problemas-diagnóstico-de-qualidade" class="level1">
+<h1>7. A caça aos problemas: diagnóstico de qualidade</h1>
+<p>Todo achado estranho da inspeção merece agora um exame direto. Importante: nesta aula, apenas diagnosticamos; decidir o que fazer com cada problema (remover? corrigir? preencher?) é o tema da próxima aula, e é uma decisão de análise, não um reflexo automático.</p>
+<p>Suspeita 1: as quantidades negativas.</p>
+<div id="1053de40" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantas linhas tem quantidade negativa?</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>negative_qty <span class="op">=</span> retail[retail[<span class="st">"Quantity"</span>] <span class="op">&lt;</span> <span class="dv">0</span>]</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(negative_qty), <span class="st">"linhas com quantidade negativa"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10624 linhas com quantidade negativa</code></pre>
+</div>
+</div>
+<p>Como elas são:</p>
+<div id="7716cf6b" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>negative_qty.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">InvoiceNo</th>
+<th data-quarto-table-cell-role="th">StockCode</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">InvoiceDate</th>
+<th data-quarto-table-cell-role="th">UnitPrice</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+<th data-quarto-table-cell-role="th">Country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">141</td>
+<td>C536379</td>
+<td>D</td>
+<td>Discount</td>
+<td>-1</td>
+<td>2010-12-01 09:41:00</td>
+<td>27.50</td>
+<td>14527.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">154</td>
+<td>C536383</td>
+<td>35004C</td>
+<td>SET OF 3 COLOURED FLYING DUCKS</td>
+<td>-1</td>
+<td>2010-12-01 09:49:00</td>
+<td>4.65</td>
+<td>15311.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">235</td>
+<td>C536391</td>
+<td>22556</td>
+<td>PLASTERS IN TIN CIRCUS PARADE</td>
+<td>-12</td>
+<td>2010-12-01 10:24:00</td>
+<td>1.65</td>
+<td>17548.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">236</td>
+<td>C536391</td>
+<td>21984</td>
+<td>PACK OF 12 PINK PAISLEY TISSUES</td>
+<td>-24</td>
+<td>2010-12-01 10:24:00</td>
+<td>0.29</td>
+<td>17548.0</td>
+<td>United Kingdom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">237</td>
+<td>C536391</td>
+<td>21983</td>
+<td>PACK OF 12 BLUE PAISLEY TISSUES</td>
+<td>-24</td>
+<td>2010-12-01 10:24:00</td>
+<td>0.29</td>
+<td>17548.0</td>
+<td>United Kingdom</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Olhe a coluna InvoiceNo das linhas exibidas: as notas começam com a letra C. O dicionário de variáveis explica: C indica cancelamento. As quantidades negativas não são erro de digitação; são devoluções registradas como quantidade negativa, uma convenção comum em sistemas comerciais. Eis uma lição central: um valor estranho nem sempre é um defeito; às vezes é uma regra de negócio que você ainda não conhecia. Antes de apagar qualquer coisa, entenda o que ela significa.</p>
+<div id="b18e8d48" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmando a hipotese: todas as notas de quantidade negativa comecam com C?</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>negative_invoices <span class="op">=</span> retail.loc[retail[<span class="st">"Quantity"</span>] <span class="op">&lt;</span> <span class="dv">0</span>, <span class="st">"InvoiceNo"</span>].astype(<span class="bu">str</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fdcdbbf2" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Comecam com C:"</span>, negative_invoices.<span class="bu">str</span>.startswith(<span class="st">"C"</span>).<span class="bu">sum</span>())</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Total de negativas:"</span>, <span class="bu">len</span>(negative_invoices))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Comecam com C: 9288
+Total de negativas: 10624</code></pre>
+</div>
+</div>
+<p>Suspeita 2: os preços zerados.</p>
+<div id="3029a0a6" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>zero_price <span class="op">=</span> retail[retail[<span class="st">"UnitPrice"</span>] <span class="op">==</span> <span class="dv">0</span>]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(zero_price), <span class="st">"linhas com preco zero"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2515 linhas com preco zero</code></pre>
+</div>
+</div>
+<div id="39fd4fd6" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>zero_price[[<span class="st">"InvoiceNo"</span>, <span class="st">"Description"</span>, <span class="st">"Quantity"</span>, <span class="st">"CustomerID"</span>]].head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">InvoiceNo</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">622</td>
+<td>536414</td>
+<td>NaN</td>
+<td>56</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1970</td>
+<td>536545</td>
+<td>NaN</td>
+<td>1</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1971</td>
+<td>536546</td>
+<td>NaN</td>
+<td>1</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1972</td>
+<td>536547</td>
+<td>NaN</td>
+<td>1</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1987</td>
+<td>536549</td>
+<td>NaN</td>
+<td>1</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Suspeita 3: registros duplicados.</p>
+<div id="ecd84e6b" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linhas identicas em todas as colunas</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(retail.duplicated().<span class="bu">sum</span>(), <span class="st">"linhas duplicadas"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5268 linhas duplicadas</code></pre>
+</div>
+</div>
+<p>Duplicatas em dados transacionais podem ser erro de sistema ou podem ser legítimas (o mesmo cliente comprando o mesmo item duas vezes no mesmo minuto é raro, mas não impossível). De novo: diagnóstico agora, decisão depois.</p>
+<p>Feche a sessão de trabalho como um profissional: salve o notebook e registre-o no histórico.</p>
+<div id="c511014b" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># De volta ao terminal, o commit que encerra a sessao:</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add notebooks<span class="op">/</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Adiciona inspecao inicial e diagnostico do Online Retail"</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Leia o log completo: seis commits, e cada um narra uma etapa real do projeto, das duas aulas. O repositório está contando a história direitinho.</p>
+<p>Recapitulando o que você conquistou:</p>
+<ul>
+<li>Nomeou a gramática das tabelas (observações, variáveis, valores) e o princípio dos dados organizados;</li>
+<li>Classificou variáveis por tipo e conheceu as duas armadilhas clássicas: dígitos que não são números e ordinais disfarçadas de numéricas;</li>
+<li>Comparou os formatos CSV, Excel e Parquet, incluindo o problema do CSV brasileiro;</li>
+<li>Operou Series e DataFrames em escala pequena: seleção, coluna derivada, filtro booleano e describe;</li>
+<li>Baixou um dataset real para a pasta certa, documentou a fonte e a licença no README e viu o .gitignore da Aula 1 trabalhar a seu favor;</li>
+<li>Executou o ritual de inspeção em cinco passos e flagrou a documentação oficial em contradição com os dados;</li>
+<li>Diagnosticou quantidades negativas (e descobriu que eram cancelamentos), preços zerados e duplicatas, sem sair apagando nada.</li>
+</ul>
+</section>
+<section id="perguntas-para-consolidar" class="level1">
+<h1>Perguntas para consolidar</h1>
+<p>Três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação.</p>
+<section id="pergunta-1-o-cliente-com-casas-decimais" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-1-o-cliente-com-casas-decimais">Pergunta 1: o cliente com casas decimais</h2>
+<p>O info revelou que a coluna CustomerID foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A causa é a combinação de dois fatos. Primeiro, a coluna CustomerID tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.</p>
+<p>O aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, CustomerID nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-2-a-documentação-contra-os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-2-a-documentação-contra-os-dados">Pergunta 2: a documentação contra os dados</h2>
+<p>A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em CustomerID e milhares em Description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Os dados vencem, sempre. A documentação é um relato sobre os dados, escrito por alguém, em algum momento, com algum grau de cuidado; os dados são o fato. Quando os dois divergem, a documentação está desatualizada, incompleta ou simplesmente errada, e qualquer análise construída sobre a afirmação falsa herda o erro.</p>
+<p>O hábito profissional é o ceticismo verificador: leia toda a documentação disponível (ela é valiosa, como o dicionário de variáveis provou ao explicar os cancelamentos), mas trate cada afirmação verificável como uma hipótese a testar, não como um fato estabelecido. O ritual de inspeção da aula é exatamente esse teste: barato, rápido e sistemático. Note a assimetria: verificar custou uma linha de código; confiar cegamente custaria uma análise inteira baseada na premissa de que todas as vendas têm cliente identificado, o que é falso para cerca de um quarto do dataset.</p>
+<p>E há uma lição de espelho: um dia você será a pessoa que escreve a documentação. O README que atualizamos hoje é o começo dessa responsabilidade, e mantê-lo fiel aos dados é o mesmo dever, visto do outro lado.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-3-o-repositório-sem-os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-3-o-repositório-sem-os-dados">Pergunta 3: o repositório sem os dados</h2>
+<p>Sua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O caminho dela reúne as duas aulas do curso. Primeiro, a fundação da Aula 1: entrar na pasta do projeto clonado, criar o ambiente com uv venv e instalar as dependências exatas com uv pip install -r requirements.txt, o que já inclui o pandas e a openpyxl registrados hoje. Depois, a novidade desta aula: seguir as instruções da seção Dados do README, baixar o arquivo da UCI, descompactar em data/ e renomear para online_retail.xlsx. A partir daí, os notebooks rodam identicamente nas duas máquinas.</p>
+<p>O README cumpre o papel de receita dos dados, exatamente como o requirements.txt é a receita do ambiente. O padrão é o mesmo da Aula 1: o repositório não transporta artefatos pesados ou recriáveis (nem a cozinha, nem os ingredientes brutos), transporta as receitas que permitem reconstruir tudo, e receitas são leves, legíveis e versionáveis. Sim, o projeto continua reprodutível, porque reprodutibilidade não significa embalar tudo junto; significa garantir que qualquer pessoa reconstrua o todo a partir do que o repositório ensina.</p>
+<p>Em projetos maduros, essa receita manual evolui: um script de download automatizado, ou ferramentas de versionamento de dados como o DVC, que registram inclusive qual versão exata dos dados foi usada em cada análise. O princípio, porém, você já domina: código e receitas no Git, artefatos reconstruíveis fora dele.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="para-casa" class="level1">
+<h1>Para casa</h1>
+<ol type="1">
+<li>Responda, no seu notebook, às três perguntas de negócio da seção 6, com um filtro para cada uma e uma frase de interpretação em uma célula de texto. Commite o notebook ao terminar.</li>
+<li>Produza a ficha de reconhecimento do dataset: uma célula de texto no notebook resumindo, com suas palavras, o tamanho, os tipos de cada variável (com a classificação da seção 2), os ausentes e os três problemas de qualidade diagnosticados. Essa ficha será o ponto de partida da próxima aula.</li>
+<li>Explore por conta própria: escolha uma pergunta sobre o dataset que desperte a sua curiosidade (um produto, um país, um período) e tente respondê-la só com filtros e seleções. Traga o achado para discutirmos em aula.</li>
+</ol>
+<blockquote class="blockquote">
+<p>Dados reais não são sujos por acidente: eles são o retrato fiel de processos humanos imperfeitos. Limpá-los sem entendê-los é apagar a história que eles contam.</p>
+</blockquote>
+<p>Até a próxima aula, quando deixaremos de apenas diagnosticar e começaremos a tratar: valores ausentes, tipos, duplicatas e as decisões de limpeza que toda análise honesta precisa documentar.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/data-science\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/02-introducao-dados-tabulares.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>

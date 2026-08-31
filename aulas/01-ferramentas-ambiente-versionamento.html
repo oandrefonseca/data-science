@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Aula 1 - Ferramentas, Ambiente e Versionamento – Ciência de Dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7d69db6120d0e6f5d3fcdc578475f3c9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-214e36352efd7a8a2f30576676d8f6f8.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">1. Ferramentas, Ambiente e Versionamento</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Ciência de Dados</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciência de Dados</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Roteiros de aula</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/01-ferramentas-ambiente-versionamento.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">1. Ferramentas, Ambiente e Versionamento</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/02-introducao-dados-tabulares.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Introdução aos Dados Tabulares</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/03-analise-vendas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Análise de Vendas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/04-analise-vendas-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Análise de Vendas em R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link active" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
+  <li><a href="#o-mapa-do-território-o-ecossistema-do-cientista-de-dados" id="toc-o-mapa-do-território-o-ecossistema-do-cientista-de-dados" class="nav-link" data-scroll-target="#o-mapa-do-território-o-ecossistema-do-cientista-de-dados">1. O mapa do território: o ecossistema do cientista de dados</a></li>
+  <li><a href="#a-bancada-de-trabalho-ides-para-ciência-de-dados" id="toc-a-bancada-de-trabalho-ides-para-ciência-de-dados" class="nav-link" data-scroll-target="#a-bancada-de-trabalho-ides-para-ciência-de-dados">2. A bancada de trabalho: IDEs para ciência de dados</a></li>
+  <li><a href="#nasce-o-projeto-terminal-e-estrutura-de-pastas" id="toc-nasce-o-projeto-terminal-e-estrutura-de-pastas" class="nav-link" data-scroll-target="#nasce-o-projeto-terminal-e-estrutura-de-pastas">3. Nasce o projeto: terminal e estrutura de pastas</a></li>
+  <li><a href="#nasce-a-memória-do-projeto-git-e-o-primeiro-commit" id="toc-nasce-a-memória-do-projeto-git-e-o-primeiro-commit" class="nav-link" data-scroll-target="#nasce-a-memória-do-projeto-git-e-o-primeiro-commit">4. Nasce a memória do projeto: Git e o primeiro commit</a></li>
+  <li><a href="#nasce-o-ambiente-isolamento-e-o-incidente-do-git-status" id="toc-nasce-o-ambiente-isolamento-e-o-incidente-do-git-status" class="nav-link" data-scroll-target="#nasce-o-ambiente-isolamento-e-o-incidente-do-git-status">5. Nasce o ambiente: isolamento e o incidente do git status</a>
+  <ul class="collapse">
+  <li><a href="#criar-o-ambiente-com-o-quê" id="toc-criar-o-ambiente-com-o-quê" class="nav-link" data-scroll-target="#criar-o-ambiente-com-o-quê">Criar o ambiente com o quê?</a></li>
+  <li><a href="#o-incidente" id="toc-o-incidente" class="nav-link" data-scroll-target="#o-incidente">O incidente</a></li>
+  </ul></li>
+  <li><a href="#o-projeto-ganha-dependências-instalação-e-registro-de-versões" id="toc-o-projeto-ganha-dependências-instalação-e-registro-de-versões" class="nav-link" data-scroll-target="#o-projeto-ganha-dependências-instalação-e-registro-de-versões">6. O projeto ganha dependências: instalação e registro de versões</a></li>
+  <li><a href="#fechamento-o-histórico-conta-a-história" id="toc-fechamento-o-histórico-conta-a-história" class="nav-link" data-scroll-target="#fechamento-o-histórico-conta-a-história">7. Fechamento: o histórico conta a história</a></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
+  <ul class="collapse">
+  <li><a href="#pergunta-1-o-colega-cético" id="toc-pergunta-1-o-colega-cético" class="nav-link" data-scroll-target="#pergunta-1-o-colega-cético">Pergunta 1: o colega cético</a></li>
+  <li><a href="#pergunta-2-ignorar-não-é-proteger" id="toc-pergunta-2-ignorar-não-é-proteger" class="nav-link" data-scroll-target="#pergunta-2-ignorar-não-é-proteger">Pergunta 2: ignorar não é proteger</a></li>
+  <li><a href="#pergunta-3-o-teste-definitivo-da-aula" id="toc-pergunta-3-o-teste-definitivo-da-aula" class="nav-link" data-scroll-target="#pergunta-3-o-teste-definitivo-da-aula">Pergunta 3: o teste definitivo da aula</a></li>
+  </ul></li>
+  <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/01-ferramentas-ambiente-versionamento.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="01-ferramentas-ambiente-versionamento.ipynb" download="01-ferramentas-ambiente-versionamento.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">1. Ferramentas, Ambiente e Versionamento</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Aula 1 - Ferramentas, Ambiente e Versionamento</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">30 de agosto de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.</p>
+<p>Você passou duas semanas construindo uma análise excelente. O notebook roda perfeitamente na sua máquina. Você envia o arquivo para um colega e recebe de volta a mensagem mais temida da computação:</p>
+<blockquote class="blockquote">
+<p>“Aqui não funcionou.”</p>
+</blockquote>
+<p>Ou pior: você mesmo, três meses depois, abre o próprio projeto e ele não roda mais. Alguma biblioteca foi atualizada, algo quebrou, e você não faz ideia de qual versão usava na época. O código está lá, intacto, mas o resultado sumiu.</p>
+<p>Esse tipo de situação não é um acidente raro. Ela é a consequência natural de trabalhar sem três práticas fundamentais: versionamento de código, isolamento de ambientes e registro de dependências. São exatamente essas três práticas que vamos construir nesta aula.</p>
+<p>Ciência de Dados é, antes de tudo, ciência. E ciência precisa ser reprodutível: outra pessoa, com acesso aos mesmos dados e ao mesmo procedimento, deve conseguir chegar aos mesmos resultados. Um resultado que só existe na sua máquina, em um estado que você não consegue recriar, não é um resultado científico. É um acidente feliz.</p>
+<p>Há ainda um argumento profissional. Quando você entrar em uma equipe de dados, ninguém vai perguntar se você sabe usar Git e ambientes virtuais. Isso é assumido como pré-requisito, da mesma forma que se assume que um cirurgião sabe lavar as mãos. As ferramentas desta aula são a infraestrutura invisível de todo projeto sério de dados: elas não aparecem no resultado final, mas sem elas o resultado final não se sustenta.</p>
+<p>A aula de hoje tem um formato diferente do usual. Em vez de estudar cada ferramenta em uma seção separada, vamos fazer o que um cientista de dados faz no primeiro dia de um projeto real: criar a pasta, iniciar o repositório, montar o ambiente e instalar as primeiras dependências, nessa ordem. Cada ferramenta será apresentada no momento exato em que o projeto precisar dela. Ao final, o próprio histórico do projeto contará a história da aula.</p>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
+<p>Ao final deste roteiro, você será capaz de:</p>
+<ol type="1">
+<li>Descrever o ecossistema de ferramentas do cientista de dados que trabalha com Python e o papel de cada componente;</li>
+<li>Conhecer as principais IDEs usadas em ciência de dados, em Python e em outras linguagens;</li>
+<li>Criar a estrutura de um projeto de dados pelo terminal;</li>
+<li>Explicar a importância do versionamento de código e executar o ciclo essencial do Git (init, status, add, commit, log), sabendo que também existem tecnologias para versionamento de dados e de modelos;</li>
+<li>Comparar os gerenciadores de pacotes e ambientes mais comuns (pip, venv, conda e uv) e escolher o adequado para cada situação;</li>
+<li>Criar e usar ambientes virtuais isolados, explicando por que o isolamento e o registro de dependências são essenciais para a reprodutibilidade.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como usar este roteiro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Leia as células de contexto com calma e execute as células de código na ordem em que aparecem. A ordem importa mais do que de costume: estamos construindo um projeto passo a passo, e cada etapa depende da anterior. Ao final do roteiro, três perguntas ajudam a consolidar o que foi aprendido. Tente respondê-las antes de expandir as explicações.</p>
+</div>
+</div>
+</section>
+<section id="o-mapa-do-território-o-ecossistema-do-cientista-de-dados" class="level1">
+<h1>1. O mapa do território: o ecossistema do cientista de dados</h1>
+<p>Antes de colocar a mão na massa, vale abrir o mapa. Quando alguém diz que trabalha com ciência de dados em Python, na verdade está falando de um conjunto de ferramentas que operam juntas, cada uma resolvendo um problema específico:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Camada</th>
+<th>Ferramenta</th>
+<th>Para que serve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linguagem</td>
+<td>Python</td>
+<td>A língua em que escrevemos análises e modelos</td>
+</tr>
+<tr class="even">
+<td>Bibliotecas</td>
+<td>NumPy, pandas, Matplotlib, scikit-learn</td>
+<td>Funcionalidades prontas: tabelas, gráficos, modelos</td>
+</tr>
+<tr class="odd">
+<td>Gerenciador de pacotes</td>
+<td>pip, conda, uv</td>
+<td>Instala e organiza as bibliotecas</td>
+</tr>
+<tr class="even">
+<td>Ambiente virtual</td>
+<td>venv, conda env, uv venv</td>
+<td>Isola as bibliotecas de cada projeto</td>
+</tr>
+<tr class="odd">
+<td>Ambiente de trabalho</td>
+<td>Jupyter, VS Code, IDEs</td>
+<td>Onde escrevemos e executamos o código</td>
+</tr>
+<tr class="even">
+<td>Terminal</td>
+<td>bash, PowerShell</td>
+<td>O painel de controle de todas as camadas</td>
+</tr>
+<tr class="odd">
+<td>Versionamento</td>
+<td>Git e GitHub</td>
+<td>Histórico e colaboração no código</td>
+</tr>
+</tbody>
+</table>
+<p>Uma analogia ajuda a fixar. Se o Python é o fogão, as bibliotecas são os ingredientes, o gerenciador de pacotes é o mercado onde você compra esses ingredientes, o ambiente virtual é uma cozinha separada para cada receita, a IDE é a sua bancada de trabalho, e o Git é o caderno de receitas que guarda todas as versões que você já testou, incluindo as que deram errado.</p>
+<p>Não tente memorizar a tabela agora. Ela é um mapa de referência: ao longo da aula, vamos visitar cada linha no momento em que o nosso projeto precisar dela, e ao final a tabela fará sentido por experiência própria, não por decoreba.</p>
+<p>Duas notas rápidas antes de seguir. Primeiro, sobre o terminal: ele é a interface de texto do sistema operacional, em que você digita comandos em vez de clicar em botões. Parece antiquado, mas é o padrão da área por um motivo prático: comandos de texto são precisos, automatizáveis e idênticos em qualquer máquina. Praticamente todas as ferramentas desta aula são operadas por ele. Segundo, sobre o Python: ele não é a linguagem mais rápida nem a mais elegante, mas venceu na área de dados pela sintaxe legível, pelo ecossistema científico construído ao longo de duas décadas e pelo efeito de rede: a maioria dos tutoriais, cursos e vagas da área usa Python. A linguagem R continua relevante em estatística e na academia, como veremos a seguir.</p>
+<p>Vamos conferir o fogão. Execute a célula abaixo:</p>
+<div id="69bba74f" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sua primeira celula de codigo: vamos verificar a versao do Python.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Versao do Python:"</span>, sys.version)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Executavel em uso:"</span>, sys.executable)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Versao do Python: 3.10.12 (main, Mar  3 2026, 11:56:32) [GCC 11.4.0]
+Executavel em uso: /usr/bin/python3</code></pre>
+</div>
+</div>
+<p>Guarde um detalhe da saída: o caminho do executável. É comum ter vários interpretadores Python instalados na mesma máquina, cada um com o seu próprio conjunto de bibliotecas, e boa parte dos erros de iniciante (o famoso ModuleNotFoundError logo após instalar um pacote) vem de instalar a biblioteca em um Python e rodar o código em outro. Saber qual executável está em uso é o primeiro passo de qualquer diagnóstico, e os ambientes virtuais, que criaremos daqui a pouco, existem justamente para eliminar essa ambiguidade.</p>
+</section>
+<section id="a-bancada-de-trabalho-ides-para-ciência-de-dados" class="level1">
+<h1>2. A bancada de trabalho: IDEs para ciência de dados</h1>
+<p>Antes de começar a obra, escolhemos a bancada. IDE, sigla em inglês para Integrated Development Environment, é o programa em que você escreve, executa e depura o seu código. Em ciência de dados, a escolha tem uma particularidade: trabalhamos intensamente com notebooks, documentos que misturam texto, código executável e resultados na mesma página, o que é excelente para exploração de dados e comunicação de resultados.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ferramenta</th>
+<th>Linguagem principal</th>
+<th>Perfil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jupyter Notebook / JupyterLab</td>
+<td>Python (e outras, via kernels)</td>
+<td>O ambiente clássico de notebooks. Ideal para exploração e ensino.</td>
+</tr>
+<tr class="even">
+<td>VS Code</td>
+<td>Todas</td>
+<td>O canivete suíço: leve, gratuito, com extensões para Python, notebooks, Git integrado e assistentes de IA. A escolha mais popular da atualidade.</td>
+</tr>
+<tr class="odd">
+<td>PyCharm</td>
+<td>Python</td>
+<td>IDE robusta e completa, muito usada em engenharia de software com Python. Depurador excelente.</td>
+</tr>
+<tr class="even">
+<td>Spyder</td>
+<td>Python</td>
+<td>Interface no estilo MATLAB e RStudio, com explorador de variáveis. Amigável para quem vem das ciências exatas.</td>
+</tr>
+<tr class="odd">
+<td>RStudio / Positron</td>
+<td>R (Positron: R e Python)</td>
+<td>A casa da comunidade R. O Positron é o sucessor moderno, poliglota, criado para ciência de dados.</td>
+</tr>
+<tr class="even">
+<td>Google Colab</td>
+<td>Python</td>
+<td>Notebooks na nuvem, sem instalar nada, com acesso gratuito a GPU. Excelente plano B e ótimo para estudar.</td>
+</tr>
+</tbody>
+</table>
+<p>Para este curso, a recomendação é simples: JupyterLab para explorar e VS Code como base de operações, já que ele reúne notebooks, terminal e Git em uma única janela. Mas a mensagem mais importante é outra: os conceitos desta aula funcionam de forma idêntica em qualquer IDE. Ferramenta é meio, não fim. Não gaste energia em debates sobre qual editor é superior; gaste energia dominando os conceitos, que são transferíveis.</p>
+<p>Um aviso prático sobre notebooks, já que vamos usá-los o semestre inteiro: as células podem ser executadas fora de ordem, e isso é uma armadilha para a reprodutibilidade. Se você executa a célula 10, volta e roda a 3, depois a 7, o estado da memória vira uma colcha de retalhos que a leitura de cima para baixo não explica. A proteção é um hábito: antes de considerar um notebook pronto, use a opção Restart Kernel and Run All e confira se ele roda inteiro, na ordem, sem erros. Guarde a regra: notebook bom é notebook que roda de cima a baixo depois de um restart.</p>
+<p>Bancada escolhida. Hora de começar o projeto.</p>
+</section>
+<section id="nasce-o-projeto-terminal-e-estrutura-de-pastas" class="level1">
+<h1>3. Nasce o projeto: terminal e estrutura de pastas</h1>
+<p>Todo projeto começa do mesmo jeito: uma pasta com um bom nome e uma estrutura mínima que separa as coisas. Vamos criar o nosso pelo terminal.</p>
+<p>Uma nota sobre o formato: nas células deste roteiro, o ponto de exclamação no início da linha indica que o comando é de terminal, e não código Python. Assim tudo fica registrado no próprio documento. No dia a dia, você digitará os mesmos comandos diretamente no terminal, com efeito idêntico. Repetimos o cd em cada célula porque cada célula abre uma sessão nova de terminal; no terminal de verdade, você entra na pasta uma vez e trabalha dentro dela.</p>
+<div id="d198ee12" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criamos a pasta do projeto e uma estrutura minima:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># data/ para dados, notebooks/ para analises, src/ para codigo reutilizavel.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .<span class="op">/</span>projeto<span class="op">-</span>vendas<span class="op">/</span>data .<span class="op">/</span>projeto<span class="op">-</span>vendas<span class="op">/</span>notebooks .<span class="op">/</span>projeto<span class="op">-</span>vendas<span class="op">/</span>src</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Conferindo o resultado:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls .<span class="op">/</span>projeto<span class="op">-</span>vendas</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>data  notebooks  README.md  requirements.txt  src</code></pre>
+</div>
+</div>
+<p>Simples assim: o projeto existe. Ele ainda não tem memória (qualquer mudança é irreversível) nem cozinha própria (nenhuma biblioteca isolada). São exatamente as duas próximas etapas, e a ordem entre elas não é por acaso: primeiro a memória, porque queremos que tudo o que acontecer a partir de agora já fique registrado.</p>
+</section>
+<section id="nasce-a-memória-do-projeto-git-e-o-primeiro-commit" class="level1">
+<h1>4. Nasce a memória do projeto: Git e o primeiro commit</h1>
+<p>Você já criou arquivos com nomes assim?</p>
+<pre><code>analise_final.ipynb
+analise_final_v2.ipynb
+analise_final_v2_AGORA_VAI.ipynb
+analise_final_v2_AGORA_VAI_revisado_prof.ipynb</code></pre>
+<p>Todos nós já criamos. Isso é um sistema de versionamento, só que um sistema péssimo: não há como saber o que mudou de uma versão para outra, quem mudou, quando, nem por quê. O Git resolve esse problema de forma elegante. Ele é um sistema de controle de versão: um programa que registra fotografias do estado do projeto ao longo do tempo. Cada fotografia, chamada de commit, guarda o conteúdo dos arquivos naquele momento, além do autor, da data e de uma mensagem explicando a mudança. Com esse histórico, você pode voltar no tempo para qualquer versão, ver exatamente o que mudou entre duas fotografias e, mais adiante, colaborar com outras pessoas sem sobrescrever o trabalho de ninguém.</p>
+<p>Um esclarecimento que evita confusão: Git e GitHub não são a mesma coisa. O Git é o programa de versionamento, que roda na sua máquina e funciona inteiramente offline. O GitHub é um serviço na internet que hospeda repositórios Git e adiciona recursos de colaboração. A relação é parecida com a das suas fotos com um álbum online: as fotos existem sem o álbum, mas o álbum facilita o compartilhamento. Hoje trabalhamos com o Git local; a publicação no GitHub é o tema da próxima aula.</p>
+<p>O modelo mental do Git tem três áreas, e entender essa separação evita a maior parte das confusões:</p>
+<pre><code>Diretorio de trabalho --(git add)--&gt; Staging Area --(git commit)--&gt; Repositorio
+(seus arquivos,        (a bancada:                  (o historico
+ a bagunca do          o que vai entrar             permanente de
+ dia a dia)            na proxima foto)             fotografias)</code></pre>
+<p>Ou seja: editar e salvar um arquivo não o coloca no histórico. Primeiro você escolhe o que entra na próxima fotografia (git add), depois tira a fotografia (git commit). Essa etapa intermediária parece burocrática, mas é ela que permite montar commits organizados: você pode ter alterado cinco arquivos e decidir fotografar apenas dois agora, deixando os outros para um commit separado, com outra mensagem.</p>
+<p>Nesta aula usaremos cinco comandos, que são o núcleo de todo o resto:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comando</th>
+<th>O que faz</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>git init</td>
+<td>Transforma uma pasta comum em repositório Git</td>
+</tr>
+<tr class="even">
+<td>git status</td>
+<td>Mostra o estado atual: o que mudou, o que está na staging</td>
+</tr>
+<tr class="odd">
+<td>git add arquivo</td>
+<td>Coloca mudanças na staging area, preparando a próxima foto</td>
+</tr>
+<tr class="even">
+<td>git commit -m “mensagem”</td>
+<td>Tira a foto: registra a versão no histórico</td>
+</tr>
+<tr class="odd">
+<td>git log</td>
+<td>Mostra o histórico de commits</td>
+</tr>
+</tbody>
+</table>
+<p>Comandos como git diff, git branch e git merge existem e são importantes, mas ficam para a próxima aula. Hoje o objetivo é transformar o ciclo status, add, commit em reflexo.</p>
+<p>Vamos dar memória ao projeto:</p>
+<div id="094e217d" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformamos a pasta em repositorio Git</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git init</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuracao de identidade: troque pelos SEUS dados.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Essa informacao sera gravada em cada commit que voce fizer.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git config user.name  <span class="st">"Seu Nome"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git config user.email <span class="st">"seu.email@exemplo.com"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O git init criou uma pasta oculta chamada .git, onde todo o histórico ficará guardado. A partir de agora, o Git observa o projeto, mas nunca registra nada sem um comando explícito seu. Vamos criar o primeiro arquivo e perguntar ao Git o que ele está vendo:</p>
+<div id="5ed449af" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criamos o README, o cartao de visitas de qualquer projeto</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> echo <span class="st">"# Projeto Vendas"</span> <span class="op">&gt;</span> README.md</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> echo <span class="st">"Analise desenvolvida na disciplina de Ciencia de Dados."</span> <span class="op">&gt;&gt;</span> README.md</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># O que o Git acha disso?</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Observe a saída com atenção: o Git enxergou o README.md, mas o classificou como untracked, ou seja, não rastreado. Ele está avisando que existe um arquivo novo, mas que você ainda não disse se ele deve entrar na próxima fotografia. O Git nunca decide isso por você. Vamos decidir:</p>
+<div id="6561585a" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colocamos o arquivo na staging area, a bancada da foto...</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add README.md</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ...e tiramos a foto, com uma mensagem descritiva.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Adiciona README com a descricao do projeto"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># O historico agora tem a sua primeira fotografia:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Você acabou de fazer o seu primeiro commit. O código alfanumérico no início da linha é o identificador único daquela fotografia. Esse ciclo, modificar, add, commit, é o batimento cardíaco do trabalho com Git, e vamos repeti-lo mais algumas vezes ainda hoje, a cada etapa do projeto. Uma boa prática desde já: commits pequenos e frequentes, com mensagens que descrevem a mudança. Mensagens vagas como “ajustes” tornam o histórico inútil, porque ninguém localiza nada nele depois.</p>
+<p>Uma última ideia antes de seguir: em ciência de dados, não é só o código que muda com o tempo. Os dados mudam (chegam registros novos, erros são corrigidos) e os modelos treinados também (novos hiperparâmetros, novos dados de treino). O Git não foi projetado para arquivos grandes e binários, mas o ecossistema tem ferramentas dedicadas: DVC e Git LFS versionam datasets ao lado do Git, e MLflow e Weights and Biases registram experimentos e versões de modelos. Guarde apenas a ideia central: em um projeto profissional, código, dados e modelos são versionados. Começamos pelo código porque ele é a base.</p>
+</section>
+<section id="nasce-o-ambiente-isolamento-e-o-incidente-do-git-status" class="level1">
+<h1>5. Nasce o ambiente: isolamento e o incidente do git status</h1>
+<p>O projeto tem memória. Agora ele precisa de uma cozinha própria: um lugar isolado para instalar bibliotecas sem interferir em nenhum outro projeto da máquina. Antes do comando, o motivo, contado em três atos:</p>
+<ul>
+<li>Em março, você desenvolveu o Projeto A, que utiliza pandas na versão 1.5.</li>
+<li>Em agosto, você começou o Projeto B e atualizou o pandas para a versão 2.2.</li>
+<li>Em setembro, você reabriu o Projeto A e ele quebrou: a atualização mudou comportamentos dos quais o código antigo dependia.</li>
+</ul>
+<p>O que aconteceu? Os dois projetos compartilhavam uma única instalação de Python e, portanto, uma única versão de cada biblioteca. Ao atualizar o pandas para um projeto, você alterou, sem perceber, o ambiente do outro. A solução é o ambiente virtual: uma pasta isolada com uma cópia do interpretador Python e um conjunto próprio de bibliotecas, nas versões exatas de que aquele projeto precisa. Um esclarecimento: ambiente virtual não é máquina virtual. Ele não emula um sistema operacional; é apenas uma pasta, criada em segundos e apagada com um simples delete. A regra prática da área é: um projeto, um ambiente, sem exceções.</p>
+<section id="criar-o-ambiente-com-o-quê" class="level2">
+<h2 class="anchored" data-anchor-id="criar-o-ambiente-com-o-quê">Criar o ambiente com o quê?</h2>
+<p>Aqui surge a primeira decisão de ferramenta da aula, e ela merece uma comparação honesta, porque o ecossistema Python tem várias opções com sobreposição parcial:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ferramenta</th>
+<th>O que é</th>
+<th>Pontos fortes</th>
+<th>Pontos fracos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pip</td>
+<td>O instalador de pacotes oficial do Python. Baixa pacotes do repositório PyPI.</td>
+<td>Vem junto com o Python; funciona em qualquer lugar; é o denominador comum do ecossistema.</td>
+<td>Só instala, não isola: precisa do venv como parceiro. Resolução de dependências lenta.</td>
+</tr>
+<tr class="even">
+<td>venv</td>
+<td>Módulo da biblioteca padrão que cria ambientes virtuais.</td>
+<td>Nativo, simples, sem instalar nada extra.</td>
+<td>Só cria o ambiente: não instala pacotes nem gerencia versões do Python.</td>
+</tr>
+<tr class="odd">
+<td>conda</td>
+<td>Gerenciador de pacotes e de ambientes, do ecossistema Anaconda.</td>
+<td>Instala também dependências que não são Python (CUDA, bibliotecas C, R). Por isso domina a computação científica e o deep learning.</td>
+<td>Mais pesado e mais lento; usa um ecossistema de pacotes paralelo ao PyPI.</td>
+</tr>
+<tr class="even">
+<td>uv</td>
+<td>Ferramenta moderna escrita em Rust, criada pela Astral.</td>
+<td>Entre 10 e 100 vezes mais rápido que o pip; unifica pacotes, ambientes, versões do Python e arquivos de lock em uma única ferramenta.</td>
+<td>Mais recente: algumas empresas ainda estão migrando; não substitui o conda para dependências nativas.</td>
+</tr>
+</tbody>
+</table>
+<p>E qual é a mais usada atualmente? A resposta exige uma distinção. O pip ainda é a ferramenta mais onipresente: vem instalado com o Python e todo o ecossistema é compatível com ele. O uv, porém, tornou-se o padrão recomendado para projetos novos: a comunidade migrou rapidamente para ele pela velocidade e por resolver sozinho o que antes exigia quatro ferramentas combinadas. Em projetos novos, é a ferramenta dominante da atualidade, e será o padrão deste curso. O conda continua sendo a escolha correta quando o projeto precisa de dependências fora do mundo Python, como drivers CUDA para deep learning com GPU. Em resumo: aprenda pip e venv porque são o fundamento; use uv no dia a dia; e saiba que o conda existe para quando o problema for maior do que o Python.</p>
+<p>Decisão tomada. Vamos criar o ambiente do nosso projeto com o uv:</p>
+<div id="b6bee936" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criamos o ambiente virtual: uma pasta .venv dentro do projeto</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv venv <span class="op">--</span>clear</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># O ambiente existe. Vamos conferir a pasta do projeto:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls <span class="op">-</span>a .<span class="op">/</span>projeto<span class="op">-</span>vendas</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nos comandos do dia a dia, no terminal, você ativaria o ambiente com source .venv/bin/activate (Linux e Mac) ou .venv\Scripts\Activate.ps1 (Windows), e o nome do ambiente apareceria entre parênteses no início da linha, como (.venv). Esse é o sinal de que você está na cozinha certa. Com o uv há um atalho ainda melhor, que veremos já já: o uv run executa qualquer comando dentro do ambiente sem precisar ativar nada.</p>
+</section>
+<section id="o-incidente" class="level2">
+<h2 class="anchored" data-anchor-id="o-incidente">O incidente</h2>
+<p>Agora pergunte ao Git como ele está se sentindo a respeito:</p>
+<div id="b9638964" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O Git está apontando para a pasta .venv como conteúdo novo, não rastreado. E se você fizesse um git add nela, centenas de arquivos de bibliotecas entrariam no histórico do projeto: arquivos que não são seus, que mudam a cada instalação e que qualquer pessoa recria em segundos. O repositório ficaria inchado e o histórico, poluído.</p>
+<p>Esse pequeno incidente ensina uma distinção importante: nem tudo o que está na pasta do projeto pertence ao histórico do projeto. Três categorias devem ficar de fora. Primeiro, artefatos recriáveis, como o próprio .venv e os caches da pasta <strong>pycache</strong>: são gerados a partir do código e não carregam informação própria. Segundo, credenciais e segredos, como senhas e chaves de API: uma vez commitados, ficam no histórico para sempre, mesmo que você apague o arquivo depois, e existem robôs varrendo o GitHub continuamente em busca de chaves vazadas. Terceiro, dados brutos grandes: incham o repositório e frequentemente contêm informação pessoal ou sensível, o que envolve questões legais como a LGPD; para eles existem as ferramentas de versionamento de dados que mencionamos, como o DVC.</p>
+<p>A solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o Git deve ignorar por completo. Vamos criar o nosso e resolver o incidente:</p>
+<div id="c8ba40ae" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criamos o .gitignore com as exclusoes classicas de projetos de dados</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> printf <span class="st">".venv/</span><span class="ch">\n</span><span class="st">__pycache__/</span><span class="ch">\n</span><span class="st">data/</span><span class="ch">\n</span><span class="st">*.env</span><span class="ch">\n</span><span class="st">.ipynb_checkpoints/</span><span class="ch">\n</span><span class="st">"</span> <span class="op">&gt;</span> .gitignore</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># O incidente foi resolvido? So o .gitignore deve aparecer como novo:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git status</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="23759048" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># O .gitignore faz parte do projeto e deve ser versionado. Novo ciclo:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add .gitignore</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Adiciona .gitignore para ambiente, dados e segredos"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Repare no hábito se formando: cada etapa do projeto termina com um commit. É o segundo do dia, e não será o último.</p>
+</section>
+</section>
+<section id="o-projeto-ganha-dependências-instalação-e-registro-de-versões" class="level1">
+<h1>6. O projeto ganha dependências: instalação e registro de versões</h1>
+<p>Cozinha montada, hora de comprar os ingredientes. Vamos instalar o pandas, a biblioteca central da próxima aula, dentro do ambiente do projeto:</p>
+<div id="0be3fef7" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># O uv detecta o .venv da pasta e instala DENTRO dele</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv pip install pandas</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Quais bibliotecas o ambiente tem agora? Observe as colunas: nome e versao.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv pip <span class="bu">list</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Observe a saída do uv pip list: cada biblioteca aparece acompanhada de um número de versão exato, por exemplo pandas 2.2.3, além das dependências que vieram junto, como o numpy. Esse detalhe é o coração da reprodutibilidade, porque bibliotecas mudam de comportamento entre versões: uma função pode ser renomeada, um parâmetro pode mudar de valor padrão, um bug pode ser corrigido, alterando o resultado numérico, ou introduzido. O mesmo código com pandas 1.5 e com pandas 2.2 pode produzir resultados diferentes, ou simplesmente não rodar. Dizer “usei pandas” não basta; é preciso registrar “usei pandas 2.2.3”.</p>
+<p>E onde se registra isso? Em um arquivo dentro do repositório:</p>
+<div id="9a7a16af" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Congelamos as versoes exatas do ambiente em um arquivo</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> uv pip freeze <span class="op">&gt;</span> requirements.txt</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># O que ficou registrado?</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> cat requirements.txt</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esse arquivo é a lista de ingredientes com as quantidades exatas da sua receita. Com ele no repositório, qualquer pessoa, incluindo o seu eu do futuro, recria o ambiente idêntico com um único comando (uv pip install -r requirements.txt) e obtém os mesmos resultados. Essa é a fórmula central da aula, agora materializada em arquivos concretos:</p>
+<blockquote class="blockquote">
+<p>Isolamento (a pasta .venv) + registro de versões (o requirements.txt) = reprodutibilidade.</p>
+</blockquote>
+<p>Note a divisão de papéis, que resolve o incidente da seção anterior de forma definitiva: o ambiente em si fica fora do histórico, porque é recriável; a receita para recriá-lo fica dentro do histórico, porque é ela que carrega a informação. Versionamos a receita, não a cozinha.</p>
+<p>E claro, etapa concluída, commit:</p>
+<div id="ffc87a78" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git add requirements.txt</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git commit <span class="op">-</span>m <span class="st">"Adiciona pandas e registra dependencias em requirements.txt"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Uma confissão para fechar a seção: fizemos cada passo manualmente, de propósito, para que você entendesse cada peça. No dia a dia, o uv automatiza boa parte disso: o comando uv init cria a pasta, o pyproject.toml (a descrição moderna do projeto) e o ambiente de uma vez, e o uv add pandas instala a biblioteca já registrando a versão exata em um arquivo de lock (uv.lock), mais preciso que o requirements.txt. A lógica, porém, é idêntica: criar, isolar, instalar, registrar. Você aprendeu o mecanismo; a automação agora é um atalho consciente, não uma caixa-preta. Experimente o uv init no exercício para casa.</p>
+</section>
+<section id="fechamento-o-histórico-conta-a-história" class="level1">
+<h1>7. Fechamento: o histórico conta a história</h1>
+<p>Vamos encerrar pedindo ao projeto que conte a própria história:</p>
+<div id="a63b22ad" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Leia as três linhas de baixo para cima. Elas são a ata desta aula:</p>
+<ol type="1">
+<li>“Adiciona README com a descricao do projeto”: o projeto nasceu e ganhou memória;</li>
+<li>“Adiciona .gitignore para ambiente, dados e segredos”: o ambiente virtual chegou, causou o incidente do git status e ensinou a diferença entre o que se versiona e o que se ignora;</li>
+<li>“Adiciona pandas e registra dependencias em requirements.txt”: o projeto ganhou a sua primeira dependência, com a versão devidamente registrada.</li>
+</ol>
+<p>Cada commit corresponde a uma etapa que você viveu. É assim que um repositório bem cuidado funciona: o git log de um bom projeto é legível como uma narrativa, e qualquer pessoa que chegue depois consegue reconstituir as decisões tomadas.</p>
+<p>Recapitulando o que você conquistou:</p>
+<ul>
+<li>Conheceu o mapa do ecossistema do cientista de dados e as principais IDEs da área, em Python e em outras linguagens;</li>
+<li>Criou um projeto do zero pelo terminal, com estrutura de pastas;</li>
+<li>Deu memória ao projeto com o Git e praticou o ciclo essencial (init, status, add, commit, log) três vezes, uma a cada etapa;</li>
+<li>Comparou pip, venv, conda e uv, e sabe que o uv é o padrão atual para projetos novos, que o pip é o fundamento universal e que o conda é a escolha para dependências científicas nativas;</li>
+<li>Criou um ambiente virtual isolado, viveu o incidente do .venv no git status e o resolveu com o .gitignore;</li>
+<li>Materializou a fórmula da reprodutibilidade: isolamento mais registro de versões, com o requirements.txt versionado no repositório;</li>
+<li>Descobriu que dados e modelos também são versionados, com ferramentas como DVC e MLflow, e que branch, merge e GitHub são os próximos capítulos.</li>
+</ul>
+</section>
+<section id="perguntas-para-consolidar" class="level1">
+<h1>Perguntas para consolidar</h1>
+<p>Agora que o projeto está de pé, três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação: o aprendizado acontece na tentativa, não na leitura da solução.</p>
+<section id="pergunta-1-o-colega-cético" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-1-o-colega-cético">Pergunta 1: o colega cético</h2>
+<p>Um colega afirma: “Ambiente virtual é exagero. Eu instalo tudo no Python global e nunca tive problema.” Ele trabalha sozinho e mantém um único projeto. Ele está errado? E o que muda quando ele tiver dois projetos, ou um colega de equipe?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Com um único projeto e trabalhando sozinho, ele de fato pode viver sem sentir dor por algum tempo. O problema é invisível até o dia em que deixa de ser. Considere três cenários:</p>
+<p>Dois projetos: no momento em que dois projetos precisarem de versões diferentes da mesma biblioteca, um deles quebra. Pior: atualizar uma biblioteca para o projeto novo pode quebrar silenciosamente o projeto antigo, e ele só vai descobrir semanas depois, quando reabrir o código.</p>
+<p>Um colega de equipe: sem um ambiente isolado e um arquivo de versões, o novo colega não tem como saber o que instalar. Ele vai instalar as versões mais recentes de tudo, que provavelmente não são as que o projeto usa, e o famoso “aqui não funcionou” está garantido.</p>
+<p>O futuro: mesmo sem colegas, o eu de daqui a seis meses é, na prática, outra pessoa, que não lembra de nada e precisará recriar o ambiente do zero.</p>
+<p>Ou seja: não é exagero, é um seguro contra um acidente que vai acontecer. E com ferramentas como o uv, criar um ambiente custa segundos. O seguro ficou barato demais para ser recusado.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-2-ignorar-não-é-proteger" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-2-ignorar-não-é-proteger">Pergunta 2: ignorar não é proteger</h2>
+<p>No nosso projeto, o .gitignore exclui a pasta data/ do versionamento. Suponha que você coloque um arquivo valioso, digamos data/vendas.csv, nessa pasta, e meses depois o apague por acidente. O Git consegue recuperá-lo, como recuperaria o README.md? O que isso ensina sobre a diferença entre ignorar e versionar, e qual seria a estratégia correta para proteger esse arquivo?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Não, o Git não consegue recuperar o vendas.csv. O README.md está no histórico: um simples git restore README.md o traz de volta, porque há fotografias dele guardadas. Já a pasta data/ está sendo ignorada: para o Git, o que está nela não existe, e nenhuma fotografia jamais a incluiu. Ignorar um arquivo significa abrir mão, para aquele arquivo, de toda a proteção que o versionamento oferece.</p>
+<p>Por isso a decisão sobre o que entra no .gitignore é uma decisão de engenharia, e não um detalhe burocrático. Segredos devem ficar de fora por proteção (uma chave commitada fica no histórico para sempre). Artefatos recriáveis, como o .venv, podem ficar de fora porque o requirements.txt permite regenerá-los. Mas dados valiosos não são nem segredo a esconder, nem artefato recriável: eles precisam de uma estratégia própria de proteção, que é backup e, em projetos maduros, versionamento de dados com ferramentas dedicadas, como o DVC e o Git LFS, que guardam os dados fora do repositório e mantêm no Git apenas referências leves.</p>
+<p>A síntese: versionamos a receita, ignoramos o que a receita recria, e protegemos os dados por outros meios.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-3-o-teste-definitivo-da-aula" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-3-o-teste-definitivo-da-aula">Pergunta 3: o teste definitivo da aula</h2>
+<p>Sua colega clonou o repositório do projeto-vendas na máquina dela. Ela recebeu o README.md, o .gitignore e o requirements.txt, mas não recebeu a pasta .venv, que está no .gitignore. Descreva, passo a passo, o que ela precisa fazer para executar o projeto com exatamente as mesmas versões de bibliotecas que você usou. Em seguida, responda: por que o fato de o .venv não viajar junto não é um defeito, e sim o próprio desenho da reprodutibilidade?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explicação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O caminho dela tem três passos, todos já vistos na aula:</p>
+<ol type="1">
+<li>Entrar na pasta do projeto clonado pelo terminal;</li>
+<li>Criar um ambiente virtual novo, com uv venv;</li>
+<li>Instalar as dependências registradas, com uv pip install -r requirements.txt.</li>
+</ol>
+<p>Pronto: o ambiente dela agora contém exatamente as mesmas bibliotecas, nas mesmas versões, que o seu, porque o requirements.txt registrou tudo com precisão. O código rodará sobre a mesma fundação nas duas máquinas.</p>
+<p>E por que o .venv não viajar junto é o desenho correto? Porque o ambiente é um artefato local e recriável: ele contém arquivos compilados para o sistema operacional de cada máquina (um .venv criado no Windows não funciona no Linux) e pode ser regenerado em segundos a partir da receita. O que precisa viajar é a informação, não o artefato: a receita (requirements.txt) é leve, universal e suficiente. Transportar a cozinha inteira seria pesado, frágil e desnecessário, quando a receita reconstrói a cozinha em qualquer lugar.</p>
+<p>Se você respondeu essa pergunta com segurança, você entendeu a aula inteira: o repositório carrega o código e as receitas; cada máquina reconstrói o resto. É exatamente assim que equipes de dados profissionais trabalham todos os dias.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="para-casa" class="level1">
+<h1>Para casa</h1>
+<ol type="1">
+<li>Refaça o projeto do zero, em uma pasta nova e sem consultar o roteiro, digitando os comandos diretamente no terminal, sem o ponto de exclamação. Se errar, ótimo: errar aqui é barato e pedagógico. Use o git status como bússola sempre que se perder.</li>
+<li>Experimente a automação: crie um segundo projeto com uv init, adicione o pandas com uv add pandas e compare os arquivos gerados (pyproject.toml e uv.lock) com o que fizemos manualmente. Tente identificar o que cada arquivo registra.</li>
+<li>Crie uma conta no GitHub, caso ainda não tenha. Na próxima aula vamos publicar o projeto-vendas lá e conhecer clone, push, pull, branch e merge.</li>
+</ol>
+<blockquote class="blockquote">
+<p>Ferramentas não fazem um bom cientista de dados, mas nenhum bom cientista de dados trabalha sem elas.</p>
+</blockquote>
+<p>Até a próxima aula, quando os dados finalmente entram em cena: Introdução aos Dados Tabulares.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/data-science\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/01-ferramentas-ambiente-versionamento.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>

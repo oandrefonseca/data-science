@@ -10,9 +10,10 @@ Site Quarto com o material da disciplina de Ciência de Dados: roteiros prático
 ├── styles.css            # customizacoes de CSS
 ├── index.qmd             # pagina inicial
 └── aulas/
-    ├── roteiro-aula1-ferramentas-ambiente-versionamento.qmd
-    ├── roteiro-aula2-introducao-dados-tabulares.qmd
-    └── trabalho-final-analise-vendas.qmd
+    ├── 01-ferramentas-ambiente-versionamento.qmd
+    ├── 02-introducao-dados-tabulares.qmd
+    ├── 03-analise-vendas.qmd
+    └── 04-analise-vendas-r.qmd
 ```
 
 Os projetos criados pelos alunos ao longo dos roteiros (como o `projeto-vendas`) ficam em `projetos/`, cada um com repositório próprio, e não fazem parte deste site.

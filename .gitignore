@@ -3,9 +3,13 @@
 /_site/
 *_files/
 *_cache/
+aulas/*.html
+aulas/*.ipynb
+aulas/*.quarto_ipynb
 
 # Projeto isolado (repositorio proprio: projeto-vendas)
 /projetos/
+/aulas/projeto-vendas/
 
 # Python
 __pycache__/

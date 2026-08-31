@@ -1,9 +1,16 @@
 ---
-title: "Aula 2 - Introdução aos Dados Tabulares"
-subtitle: "Roteiro de aula - Disciplina de Ciência de Dados"
+title: 'Aula 2 - Introdução aos Dados Tabulares'
+date: last-modified
+toc: true
+format:
+  html: default
+  ipynb: default
+jupyter: system-python3
+execute:
+  enabled: true
 ---
 
-# Por que essa aula existe?
+## Motivação
 
 Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.
 
@@ -36,11 +43,14 @@ Este roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criad
 Um profissional não começa o dia de trabalho abrindo um arquivo solto: ele abre o projeto. Vamos praticar exatamente isso, reativando os hábitos da aula passada:
 
 ```{python}
+#| eval: false
+
 # Onde paramos? O git log conta a historia ate aqui:
-!cd ~/projeto-vendas && git log --oneline
+!cd ./projeto-vendas && git log --oneline
 
 # E o estado atual? Espera-se uma area de trabalho limpa:
-!cd ~/projeto-vendas && git status
+!cd ./projeto-vendas && git status
+
 ```
 
 Se o log mostra os três commits da Aula 1 e o status diz que não há nada a commitar, o projeto está exatamente como o deixamos. Essa verificação de trinta segundos no início de cada sessão de trabalho evita sustos e é o primeiro reflexo profissional do dia.
@@ -48,15 +58,22 @@ Se o log mostra os três commits da Aula 1 e o status diz que não há nada a co
 O ambiente também precisa de um complemento. Hoje vamos ler um arquivo Excel, e o pandas precisa de uma biblioteca auxiliar para isso, a openpyxl. Como aprendemos: instalar no ambiente, registrar a versão, commitar a receita:
 
 ```{python}
+
 # Instalamos a nova dependencia dentro do ambiente do projeto
-!cd ~/projeto-vendas && uv pip install openpyxl
+!cd ./projeto-vendas && uv pip install openpyxl
 
 # Atualizamos a receita com as versoes exatas...
-!cd ~/projeto-vendas && uv pip freeze > requirements.txt
+!cd ./projeto-vendas && uv pip freeze > requirements.txt
+
+```
+
+```{python}
+#| eval: false
 
 # ...e registramos a mudanca no historico. Ciclo completo.
-!cd ~/projeto-vendas && git add requirements.txt
-!cd ~/projeto-vendas && git commit -m "Adiciona openpyxl para leitura de arquivos Excel"
+!cd ./projeto-vendas && git add requirements.txt
+!cd ./projeto-vendas && git commit -m "Adiciona openpyxl para leitura de arquivos Excel"
+
 ```
 
 Repare que o ciclo da Aula 1 já está virando rotina: mudou o ambiente, atualizou a receita, commitou. Agora sim, vamos à teoria.
@@ -104,44 +121,54 @@ Antes de enfrentar meio milhão de linhas, vamos construir uma tabela de brinque
 A partir daqui, abra um notebook novo na pasta notebooks/ do projeto (sugestão de nome: 01-introducao-tabulares.ipynb) e acompanhe executando as células. Note que as células a seguir são Python puro, sem o ponto de exclamação: saímos do terminal e entramos na linguagem.
 
 ```{python}
+
 import pandas as pd
 
 # Um DataFrame construido a mao: cinco vendas ficticias
-vendas = pd.DataFrame({
-    "produto": ["Caneca", "Camiseta", "Caneca", "Adesivo", "Camiseta"],
-    "quantidade": [2, 1, 4, 10, 3],
-    "preco_unitario": [35.0, 79.9, 35.0, 5.5, 79.9],
-    "pais": ["Brasil", "Brasil", "Portugal", "Brasil", "Argentina"],
+sales = pd.DataFrame({
+    "product": ["Caneca", "Camiseta", "Caneca", "Adesivo", "Camiseta"],
+    "quantity": [2, 1, 4, 10, 3],
+    "unit_price": [35.0, 79.9, 35.0, 5.5, 79.9],
+    "country": ["Brasil", "Brasil", "Portugal", "Brasil", "Argentina"],
 })
 
-vendas
+sales
+
 ```
 
-Cada linha é uma observação (uma venda), cada coluna é uma variável, e a coluna sem nome à esquerda é o índice, o identificador de cada linha, que o pandas criou automaticamente. Exercite a classificação da seção anterior: produto e pais são categóricas nominais, quantidade é numérica discreta, preco_unitario é numérica contínua.
+Cada linha é uma observação (uma venda), cada coluna é uma variável, e a coluna sem nome à esquerda é o índice, o identificador de cada linha, que o pandas criou automaticamente. Exercite a classificação da seção anterior: product e country são categóricas nominais, quantity é numérica discreta, unit_price é numérica contínua.
 
 As três operações fundamentais, em miniatura:
 
 ```{python}
+
 # 1. Selecionar uma coluna: o resultado e uma Series
-vendas["preco_unitario"]
+sales["unit_price"]
+
 ```
 
 ```{python}
+
 # 2. Criar uma coluna nova a partir das existentes
-vendas["faturamento"] = vendas["quantidade"] * vendas["preco_unitario"]
-vendas
+sales["revenue"] = sales["quantity"] * sales["unit_price"]
+sales
+
 ```
 
 ```{python}
+
 # 3. Filtrar linhas por uma condicao
-vendas[vendas["pais"] == "Brasil"]
+sales[sales["country"] == "Brasil"]
+
 ```
 
-O filtro da terceira célula merece um comentário, porque ele é a operação mais importante do pandas. A expressão interna, vendas["pais"] == "Brasil", produz uma Series de True e False, um valor por linha; ao colocá-la entre colchetes, o DataFrame devolve apenas as linhas marcadas com True. Esse mecanismo se chama filtro booleano, e condições podem ser combinadas com o operador & (e) e o operador | (ou), cada condição entre parênteses:
+O filtro da terceira célula merece um comentário, porque ele é a operação mais importante do pandas. A expressão interna, sales["country"] == "Brasil", produz uma Series de True e False, um valor por linha; ao colocá-la entre colchetes, o DataFrame devolve apenas as linhas marcadas com True. Esse mecanismo se chama filtro booleano, e condições podem ser combinadas com o operador & (e) e o operador | (ou), cada condição entre parênteses:
 
 ```{python}
+
 # Vendas do Brasil COM faturamento acima de 50
-vendas[(vendas["pais"] == "Brasil") & (vendas["faturamento"] > 50)]
+sales[(sales["country"] == "Brasil") & (sales["revenue"] > 50)]
+
 ```
 
 Um aviso que economiza horas de frustração: dentro de filtros do pandas, use & e |, e não as palavras and e or do Python. As palavras funcionam para valores únicos, mas quebram com Series inteiras, e a mensagem de erro que aparece não ajuda em nada. Todo mundo tropeça nisso uma vez; que a sua vez seja agora, em ambiente controlado.
@@ -149,8 +176,10 @@ Um aviso que economiza horas de frustração: dentro de filtros do pandas, use &
 Por fim, o resumo estatístico:
 
 ```{python}
+
 # describe: estatisticas descritivas das colunas numericas
-vendas.describe()
+sales.describe()
+
 ```
 
 Cinco linhas dão para conferir de cabeça: a média das quantidades bate? O mínimo e o máximo dos preços fazem sentido? Essa conferência manual é impossível com meio milhão de linhas, e é exatamente por isso que o describe existe: ele é o olhar panorâmico quando os olhos não alcançam mais os dados. Hora de testá-lo em escala real.
@@ -181,32 +210,49 @@ Dois registros de responsabilidade antes de baixar. Primeiro, a licença: o data
 O arquivo vem compactado e tem cerca de 23 MB. E para onde ele vai? Para a pasta data/, criada justamente para isso na Aula 1. Voltamos ao terminal por um instante:
 
 ```{python}
+
 # Baixamos o arquivo compactado para a pasta data/ do projeto
-!cd ~/projeto-vendas && curl -L -o data/online_retail.zip "https://archive.ics.uci.edu/static/public/352/online+retail.zip"
+!cd ./projeto-vendas && curl -L -o data/online_retail.zip "https://archive.ics.uci.edu/static/public/352/online+retail.zip"
 
 # Descompactamos e renomeamos para um nome sem espacos
-!cd ~/projeto-vendas && unzip -o data/online_retail.zip -d data/
-!cd ~/projeto-vendas && mv "data/Online Retail.xlsx" data/online_retail.xlsx
+!cd ./projeto-vendas && unzip -o data/online_retail.zip -d data/
+!cd ./projeto-vendas && mv "data/Online Retail.xlsx" data/online_retail.xlsx
 
-# Conferindo:
-!cd ~/projeto-vendas && ls -lh data/
+```
+
+Conferindo:
+
+```{python}
+
+!cd ./projeto-vendas && ls -lh data/
+
 ```
 
 E agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:
 
 ```{python}
-!cd ~/projeto-vendas && git status
+#| eval: false
+
+!cd ./projeto-vendas && git status
+
 ```
 
 Nada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está no .gitignore que escrevemos na Aula 1, e a decisão daquele dia acaba de se provar correta: 23 MB de dados brutos não pertencem ao histórico de código. Mas isso cria uma responsabilidade nova, e ela vai reaparecer nas perguntas do final da aula: se os dados não viajam com o repositório, o repositório precisa ensinar como obtê-los. Vamos cumprir essa responsabilidade agora, documentando a origem no README:
 
 ```{python}
+
 # Documentamos a fonte dos dados e as instrucoes de obtencao no README
-!cd ~/projeto-vendas && printf "\n## Dados\n\nDataset Online Retail (UCI Machine Learning Repository, id 352).\nLicenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.\nDownload: https://archive.ics.uci.edu/dataset/352/online+retail\nApos baixar, descompacte em data/ e renomeie para online_retail.xlsx\n" >> README.md
+!cd ./projeto-vendas && printf "\n## Dados\n\nDataset Online Retail (UCI Machine Learning Repository, id 352).\nLicenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.\nDownload: https://archive.ics.uci.edu/dataset/352/online+retail\nApos baixar, descompacte em data/ e renomeie para online_retail.xlsx\n" >> README.md
+
+```
+
+```{python}
+#| eval: false
 
 # Ciclo de sempre: add, commit
-!cd ~/projeto-vendas && git add README.md
-!cd ~/projeto-vendas && git commit -m "Documenta a fonte e as instrucoes de download dos dados"
+!cd ./projeto-vendas && git add README.md
+!cd ./projeto-vendas && git commit -m "Documenta a fonte e as instrucoes de download dos dados"
+
 ```
 
 # 5. O ritual de inspeção inicial
@@ -214,13 +260,15 @@ Nada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está
 De volta ao notebook e ao Python. Vamos abrir o arquivo, com um aviso de gerenciamento de expectativa: ler meio milhão de linhas de um Excel é lento, e a célula abaixo pode levar um ou dois minutos. Sinta o custo do formato; é proposital.
 
 ```{python}
+
 from pathlib import Path
 import pandas as pd
 
-caminho = Path.home() / "projeto-vendas" / "data" / "online_retail.xlsx"
+path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
 
 # Paciencia: arquivos Excel grandes sao lentos de ler
-retail = pd.read_excel(caminho)
+retail = pd.read_excel(path)
+
 ```
 
 A partir de agora, execute o ritual que um profissional aplica a todo dataset novo, na ordem, antes de confiar em qualquer número. São cinco passos.
@@ -228,25 +276,33 @@ A partir de agora, execute o ritual que um profissional aplica a todo dataset no
 Passo 1: olhe os dados de verdade.
 
 ```{python}
+
 # As primeiras linhas...
 retail.head()
+
 ```
 
 ```{python}
+
 # ...e as ultimas. Fins de arquivo escondem surpresas: totais, lixo, linhas vazias.
 retail.tail()
+
 ```
 
 Passo 2: meça o tamanho e confira os tipos.
 
 ```{python}
+
 # Quantas linhas e colunas?
 retail.shape
+
 ```
 
 ```{python}
+
 # Tipos, contagem de valores nao nulos e memoria, tudo de uma vez
 retail.info()
+
 ```
 
 Leia a saída do info com olhos de detetive, porque ela já entrega dois achados. Primeiro, os tipos que o pandas adivinhou: InvoiceDate virou datetime (ótimo), Quantity é inteiro, UnitPrice é float. Mas observe CustomerID: virou float64. Um código de cliente com casas decimais? Estranho, e não é acidente: guarde para a pergunta 1 do final. Segundo, compare a contagem de valores não nulos entre as colunas: se o total de linhas é 541.909 e alguma coluna tem menos que isso, há valores ausentes nela, diga o que disser a documentação.
@@ -254,8 +310,10 @@ Leia a saída do info com olhos de detetive, porque ela já entrega dois achados
 Passo 3: quantifique os ausentes explicitamente.
 
 ```{python}
+
 # Quantos valores ausentes por coluna?
 retail.isna().sum()
+
 ```
 
 Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os números na sua tela dizem outra coisa: a coluna CustomerID tem dezenas de milhares de vazios, e Description também tem os seus. Este é um dos aprendizados mais valiosos da aula, e ele não é sobre pandas: metadados mentem, às vezes por desatualização, às vezes por descuido. A única fonte confiável sobre os dados são os próprios dados, verificados por você.
@@ -263,7 +321,9 @@ Lembra da página oficial afirmando que o dataset não tem valores ausentes? Os 
 Passo 4: resuma as variáveis numéricas.
 
 ```{python}
+
 retail.describe()
+
 ```
 
 Não deslize os olhos pela tabela: interrogue-a. O mínimo de Quantity é um número negativo enorme. Quantidade negativa em uma venda? O mínimo de UnitPrice é zero, e itens gratuitos em um varejo também levantam a sobrancelha. O máximo de Quantity, na casa das dezenas de milhares em uma única linha, sugere ou atacado pesado ou erro de digitação. O describe não responde nada disso; o trabalho dele é apontar onde cavar.
@@ -271,13 +331,17 @@ Não deslize os olhos pela tabela: interrogue-a. O mínimo de Quantity é um nú
 Passo 5: conte as categorias.
 
 ```{python}
+
 # De quais paises vem as vendas? As 10 maiores origens:
 retail["Country"].value_counts().head(10)
+
 ```
 
 ```{python}
+
 # E quantos paises distintos ha no total?
 retail["Country"].nunique()
+
 ```
 
 O value_counts é o describe das variáveis categóricas: mostra a distribuição e denuncia problemas como categorias duplicadas com grafias diferentes. Aqui, como esperado de um varejo britânico, o Reino Unido domina com folga.
@@ -289,16 +353,20 @@ Ritual completo. Em cinco passos, sem nenhuma análise sofisticada, você já sa
 Inspeção feita, começam as perguntas de negócio. As ferramentas são as mesmas da tabela de brinquedo, agora em escala real.
 
 ```{python}
+
 # Pergunta: quais vendas foram para a Alemanha?
-vendas_alemanha = retail[retail["Country"] == "Germany"]
-vendas_alemanha.shape
+germany_sales = retail[retail["Country"] == "Germany"]
+germany_sales.shape
+
 ```
 
 ```{python}
+
 # Pergunta: ha transacoes de alto valor unitario (acima de 100 libras)
 # fora do Reino Unido?
-caras_fora_uk = retail[(retail["UnitPrice"] > 100) & (retail["Country"] != "United Kingdom")]
-caras_fora_uk[["InvoiceNo", "Description", "UnitPrice", "Country"]].head()
+expensive_outside_uk = retail[(retail["UnitPrice"] > 100) & (retail["Country"] != "United Kingdom")]
+expensive_outside_uk[["InvoiceNo", "Description", "UnitPrice", "Country"]].head()
+
 ```
 
 A segunda célula mostra um padrão que você usará constantemente: filtrar as linhas e, no mesmo movimento, selecionar apenas as colunas relevantes, passando uma lista de nomes entre colchetes. O resultado é uma resposta enxuta, e não uma parede de colunas.
@@ -320,34 +388,59 @@ Todo achado estranho da inspeção merece agora um exame direto. Importante: nes
 Suspeita 1: as quantidades negativas.
 
 ```{python}
-# Quantas linhas tem quantidade negativa, e como elas sao?
-negativas = retail[retail["Quantity"] < 0]
-print(len(negativas), "linhas com quantidade negativa")
-negativas.head()
+
+# Quantas linhas tem quantidade negativa?
+negative_qty = retail[retail["Quantity"] < 0]
+print(len(negative_qty), "linhas com quantidade negativa")
+
+```
+
+Como elas são:
+
+```{python}
+
+negative_qty.head()
+
 ```
 
 Olhe a coluna InvoiceNo das linhas exibidas: as notas começam com a letra C. O dicionário de variáveis explica: C indica cancelamento. As quantidades negativas não são erro de digitação; são devoluções registradas como quantidade negativa, uma convenção comum em sistemas comerciais. Eis uma lição central: um valor estranho nem sempre é um defeito; às vezes é uma regra de negócio que você ainda não conhecia. Antes de apagar qualquer coisa, entenda o que ela significa.
 
 ```{python}
+
 # Confirmando a hipotese: todas as notas de quantidade negativa comecam com C?
-notas_negativas = retail.loc[retail["Quantity"] < 0, "InvoiceNo"].astype(str)
-print("Comecam com C:", notas_negativas.str.startswith("C").sum())
-print("Total de negativas:", len(notas_negativas))
+negative_invoices = retail.loc[retail["Quantity"] < 0, "InvoiceNo"].astype(str)
+
+```
+
+```{python}
+
+print("Comecam com C:", negative_invoices.str.startswith("C").sum())
+print("Total de negativas:", len(negative_invoices))
+
 ```
 
 Suspeita 2: os preços zerados.
 
 ```{python}
-preco_zero = retail[retail["UnitPrice"] == 0]
-print(len(preco_zero), "linhas com preco zero")
-preco_zero[["InvoiceNo", "Description", "Quantity", "CustomerID"]].head()
+
+zero_price = retail[retail["UnitPrice"] == 0]
+print(len(zero_price), "linhas com preco zero")
+
+```
+
+```{python}
+
+zero_price[["InvoiceNo", "Description", "Quantity", "CustomerID"]].head()
+
 ```
 
 Suspeita 3: registros duplicados.
 
 ```{python}
+
 # Linhas identicas em todas as colunas
 print(retail.duplicated().sum(), "linhas duplicadas")
+
 ```
 
 Duplicatas em dados transacionais podem ser erro de sistema ou podem ser legítimas (o mesmo cliente comprando o mesmo item duas vezes no mesmo minuto é raro, mas não impossível). De novo: diagnóstico agora, decisão depois.
@@ -355,10 +448,13 @@ Duplicatas em dados transacionais podem ser erro de sistema ou podem ser legíti
 Feche a sessão de trabalho como um profissional: salve o notebook e registre-o no histórico.
 
 ```{python}
+#| eval: false
+
 # De volta ao terminal, o commit que encerra a sessao:
-!cd ~/projeto-vendas && git add notebooks/
-!cd ~/projeto-vendas && git commit -m "Adiciona inspecao inicial e diagnostico do Online Retail"
-!cd ~/projeto-vendas && git log --oneline
+!cd ./projeto-vendas && git add notebooks/
+!cd ./projeto-vendas && git commit -m "Adiciona inspecao inicial e diagnostico do Online Retail"
+!cd ./projeto-vendas && git log --oneline
+
 ```
 
 Leia o log completo: seis commits, e cada um narra uma etapa real do projeto, das duas aulas. O repositório está contando a história direitinho.

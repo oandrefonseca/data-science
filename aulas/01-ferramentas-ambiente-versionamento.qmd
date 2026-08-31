@@ -1,9 +1,16 @@
 ---
-title: "Aula 1 - Ferramentas, Ambiente e Versionamento"
-subtitle: "Roteiro de aula - Disciplina de Ciência de Dados"
+title: 'Aula 1 - Ferramentas, Ambiente e Versionamento'
+date: last-modified
+toc: true
+format:
+  html: default
+  ipynb: default
+jupyter: system-python3
+execute:
+  enabled: true
 ---
 
-# Por que essa aula existe?
+## Motivação
 
 Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.
 
@@ -61,11 +68,13 @@ Duas notas rápidas antes de seguir. Primeiro, sobre o terminal: ele é a interf
 Vamos conferir o fogão. Execute a célula abaixo:
 
 ```{python}
+
 # Sua primeira celula de codigo: vamos verificar a versao do Python.
 import sys
 
 print("Versao do Python:", sys.version)
 print("Executavel em uso:", sys.executable)
+
 ```
 
 Guarde um detalhe da saída: o caminho do executável. É comum ter vários interpretadores Python instalados na mesma máquina, cada um com o seu próprio conjunto de bibliotecas, e boa parte dos erros de iniciante (o famoso ModuleNotFoundError logo após instalar um pacote) vem de instalar a biblioteca em um Python e rodar o código em outro. Saber qual executável está em uso é o primeiro passo de qualquer diagnóstico, e os ambientes virtuais, que criaremos daqui a pouco, existem justamente para eliminar essa ambiguidade.
@@ -96,12 +105,14 @@ Todo projeto começa do mesmo jeito: uma pasta com um bom nome e uma estrutura m
 Uma nota sobre o formato: nas células deste roteiro, o ponto de exclamação no início da linha indica que o comando é de terminal, e não código Python. Assim tudo fica registrado no próprio documento. No dia a dia, você digitará os mesmos comandos diretamente no terminal, com efeito idêntico. Repetimos o cd em cada célula porque cada célula abre uma sessão nova de terminal; no terminal de verdade, você entra na pasta uma vez e trabalha dentro dela.
 
 ```{python}
+
 # Criamos a pasta do projeto e uma estrutura minima:
 # data/ para dados, notebooks/ para analises, src/ para codigo reutilizavel.
 !mkdir -p ./projeto-vendas/data ./projeto-vendas/notebooks ./projeto-vendas/src
 
 # Conferindo o resultado:
 !ls ./projeto-vendas
+
 ```
 
 Simples assim: o projeto existe. Ele ainda não tem memória (qualquer mudança é irreversível) nem cozinha própria (nenhuma biblioteca isolada). São exatamente as duas próximas etapas, e a ordem entre elas não é por acaso: primeiro a memória, porque queremos que tudo o que acontecer a partir de agora já fique registrado.
@@ -147,37 +158,46 @@ Comandos como git diff, git branch e git merge existem e são importantes, mas f
 Vamos dar memória ao projeto:
 
 ```{python}
+#| eval: false
+
 # Transformamos a pasta em repositorio Git
-!cd ~/projeto-vendas && git init
+!cd ./projeto-vendas && git init
 
 # Configuracao de identidade: troque pelos SEUS dados.
 # Essa informacao sera gravada em cada commit que voce fizer.
-!cd ~/projeto-vendas && git config user.name  "Seu Nome"
-!cd ~/projeto-vendas && git config user.email "seu.email@exemplo.com"
+!cd ./projeto-vendas && git config user.name  "Seu Nome"
+!cd ./projeto-vendas && git config user.email "seu.email@exemplo.com"
+
 ```
 
 O git init criou uma pasta oculta chamada .git, onde todo o histórico ficará guardado. A partir de agora, o Git observa o projeto, mas nunca registra nada sem um comando explícito seu. Vamos criar o primeiro arquivo e perguntar ao Git o que ele está vendo:
 
 ```{python}
+#| eval: false
+
 # Criamos o README, o cartao de visitas de qualquer projeto
-!cd ~/projeto-vendas && echo "# Projeto Vendas" > README.md
-!cd ~/projeto-vendas && echo "Analise desenvolvida na disciplina de Ciencia de Dados." >> README.md
+!cd ./projeto-vendas && echo "# Projeto Vendas" > README.md
+!cd ./projeto-vendas && echo "Analise desenvolvida na disciplina de Ciencia de Dados." >> README.md
 
 # O que o Git acha disso?
-!cd ~/projeto-vendas && git status
+!cd ./projeto-vendas && git status
+
 ```
 
 Observe a saída com atenção: o Git enxergou o README.md, mas o classificou como untracked, ou seja, não rastreado. Ele está avisando que existe um arquivo novo, mas que você ainda não disse se ele deve entrar na próxima fotografia. O Git nunca decide isso por você. Vamos decidir:
 
 ```{python}
+#| eval: false
+
 # Colocamos o arquivo na staging area, a bancada da foto...
-!cd ~/projeto-vendas && git add README.md
+!cd ./projeto-vendas && git add README.md
 
 # ...e tiramos a foto, com uma mensagem descritiva.
-!cd ~/projeto-vendas && git commit -m "Adiciona README com a descricao do projeto"
+!cd ./projeto-vendas && git commit -m "Adiciona README com a descricao do projeto"
 
 # O historico agora tem a sua primeira fotografia:
-!cd ~/projeto-vendas && git log --oneline
+!cd ./projeto-vendas && git log --oneline
+
 ```
 
 Você acabou de fazer o seu primeiro commit. O código alfanumérico no início da linha é o identificador único daquela fotografia. Esse ciclo, modificar, add, commit, é o batimento cardíaco do trabalho com Git, e vamos repeti-lo mais algumas vezes ainda hoje, a cada etapa do projeto. Uma boa prática desde já: commits pequenos e frequentes, com mensagens que descrevem a mudança. Mensagens vagas como "ajustes" tornam o histórico inútil, porque ninguém localiza nada nele depois.
@@ -210,11 +230,14 @@ E qual é a mais usada atualmente? A resposta exige uma distinção. O pip ainda
 Decisão tomada. Vamos criar o ambiente do nosso projeto com o uv:
 
 ```{python}
+#| eval: false
+
 # Criamos o ambiente virtual: uma pasta .venv dentro do projeto
-!cd ~/projeto-vendas && uv venv
+!cd ./projeto-vendas && uv venv --clear
 
 # O ambiente existe. Vamos conferir a pasta do projeto:
-!ls -a ~/projeto-vendas
+!ls -a ./projeto-vendas
+
 ```
 
 Nos comandos do dia a dia, no terminal, você ativaria o ambiente com source .venv/bin/activate (Linux e Mac) ou .venv\\Scripts\\Activate.ps1 (Windows), e o nome do ambiente apareceria entre parênteses no início da linha, como (.venv). Esse é o sinal de que você está na cozinha certa. Com o uv há um atalho ainda melhor, que veremos já já: o uv run executa qualquer comando dentro do ambiente sem precisar ativar nada.
@@ -224,7 +247,10 @@ Nos comandos do dia a dia, no terminal, você ativaria o ambiente com source .ve
 Agora pergunte ao Git como ele está se sentindo a respeito:
 
 ```{python}
-!cd ~/projeto-vendas && git status
+#| eval: false
+
+!cd ./projeto-vendas && git status
+
 ```
 
 O Git está apontando para a pasta .venv como conteúdo novo, não rastreado. E se você fizesse um git add nela, centenas de arquivos de bibliotecas entrariam no histórico do projeto: arquivos que não são seus, que mudam a cada instalação e que qualquer pessoa recria em segundos. O repositório ficaria inchado e o histórico, poluído.
@@ -234,18 +260,24 @@ Esse pequeno incidente ensina uma distinção importante: nem tudo o que está n
 A solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o Git deve ignorar por completo. Vamos criar o nosso e resolver o incidente:
 
 ```{python}
+#| eval: false
+
 # Criamos o .gitignore com as exclusoes classicas de projetos de dados
-!cd ~/projeto-vendas && printf ".venv/\n__pycache__/\ndata/\n*.env\n.ipynb_checkpoints/\n" > .gitignore
+!cd ./projeto-vendas && printf ".venv/\n__pycache__/\ndata/\n*.env\n.ipynb_checkpoints/\n" > .gitignore
 
 # O incidente foi resolvido? So o .gitignore deve aparecer como novo:
-!cd ~/projeto-vendas && git status
+!cd ./projeto-vendas && git status
+
 ```
 
 ```{python}
+#| eval: false
+
 # O .gitignore faz parte do projeto e deve ser versionado. Novo ciclo:
-!cd ~/projeto-vendas && git add .gitignore
-!cd ~/projeto-vendas && git commit -m "Adiciona .gitignore para ambiente, dados e segredos"
-!cd ~/projeto-vendas && git log --oneline
+!cd ./projeto-vendas && git add .gitignore
+!cd ./projeto-vendas && git commit -m "Adiciona .gitignore para ambiente, dados e segredos"
+!cd ./projeto-vendas && git log --oneline
+
 ```
 
 Repare no hábito se formando: cada etapa do projeto termina com um commit. É o segundo do dia, e não será o último.
@@ -255,11 +287,14 @@ Repare no hábito se formando: cada etapa do projeto termina com um commit. É o
 Cozinha montada, hora de comprar os ingredientes. Vamos instalar o pandas, a biblioteca central da próxima aula, dentro do ambiente do projeto:
 
 ```{python}
+#| eval: false
+
 # O uv detecta o .venv da pasta e instala DENTRO dele
-!cd ~/projeto-vendas && uv pip install pandas
+!cd ./projeto-vendas && uv pip install pandas
 
 # Quais bibliotecas o ambiente tem agora? Observe as colunas: nome e versao.
-!cd ~/projeto-vendas && uv pip list
+!cd ./projeto-vendas && uv pip list
+
 ```
 
 Observe a saída do uv pip list: cada biblioteca aparece acompanhada de um número de versão exato, por exemplo pandas 2.2.3, além das dependências que vieram junto, como o numpy. Esse detalhe é o coração da reprodutibilidade, porque bibliotecas mudam de comportamento entre versões: uma função pode ser renomeada, um parâmetro pode mudar de valor padrão, um bug pode ser corrigido, alterando o resultado numérico, ou introduzido. O mesmo código com pandas 1.5 e com pandas 2.2 pode produzir resultados diferentes, ou simplesmente não rodar. Dizer "usei pandas" não basta; é preciso registrar "usei pandas 2.2.3".
@@ -267,11 +302,14 @@ Observe a saída do uv pip list: cada biblioteca aparece acompanhada de um núme
 E onde se registra isso? Em um arquivo dentro do repositório:
 
 ```{python}
+#| eval: false
+
 # Congelamos as versoes exatas do ambiente em um arquivo
-!cd ~/projeto-vendas && uv pip freeze > requirements.txt
+!cd ./projeto-vendas && uv pip freeze > requirements.txt
 
 # O que ficou registrado?
-!cd ~/projeto-vendas && cat requirements.txt
+!cd ./projeto-vendas && cat requirements.txt
+
 ```
 
 Esse arquivo é a lista de ingredientes com as quantidades exatas da sua receita. Com ele no repositório, qualquer pessoa, incluindo o seu eu do futuro, recria o ambiente idêntico com um único comando (uv pip install -r requirements.txt) e obtém os mesmos resultados. Essa é a fórmula central da aula, agora materializada em arquivos concretos:
@@ -283,9 +321,12 @@ Note a divisão de papéis, que resolve o incidente da seção anterior de forma
 E claro, etapa concluída, commit:
 
 ```{python}
-!cd ~/projeto-vendas && git add requirements.txt
-!cd ~/projeto-vendas && git commit -m "Adiciona pandas e registra dependencias em requirements.txt"
-!cd ~/projeto-vendas && git log --oneline
+#| eval: false
+
+!cd ./projeto-vendas && git add requirements.txt
+!cd ./projeto-vendas && git commit -m "Adiciona pandas e registra dependencias em requirements.txt"
+!cd ./projeto-vendas && git log --oneline
+
 ```
 
 Uma confissão para fechar a seção: fizemos cada passo manualmente, de propósito, para que você entendesse cada peça. No dia a dia, o uv automatiza boa parte disso: o comando uv init cria a pasta, o pyproject.toml (a descrição moderna do projeto) e o ambiente de uma vez, e o uv add pandas instala a biblioteca já registrando a versão exata em um arquivo de lock (uv.lock), mais preciso que o requirements.txt. A lógica, porém, é idêntica: criar, isolar, instalar, registrar. Você aprendeu o mecanismo; a automação agora é um atalho consciente, não uma caixa-preta. Experimente o uv init no exercício para casa.
@@ -295,7 +336,10 @@ Uma confissão para fechar a seção: fizemos cada passo manualmente, de propós
 Vamos encerrar pedindo ao projeto que conte a própria história:
 
 ```{python}
-!cd ~/projeto-vendas && git log --oneline
+#| eval: false
+
+!cd ./projeto-vendas && git log --oneline
+
 ```
 
 Leia as três linhas de baixo para cima. Elas são a ata desta aula:

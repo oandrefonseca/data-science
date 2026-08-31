@@ -20,11 +20,13 @@ website:
       - section: "Roteiros de aula"
         contents:
           - text: "1. Ferramentas, Ambiente e Versionamento"
-            href: aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd
+            href: aulas/01-ferramentas-ambiente-versionamento.qmd
           - text: "2. Introdução aos Dados Tabulares"
-            href: aulas/roteiro-aula2-introducao-dados-tabulares.qmd
-      - text: "Trabalho Final"
-        href: aulas/trabalho-final-analise-vendas.qmd
+            href: aulas/02-introducao-dados-tabulares.qmd
+          - text: "3. Análise de Vendas"
+            href: aulas/03-analise-vendas.qmd
+          - text: "4. Análise de Vendas em R"
+            href: aulas/04-analise-vendas-r.qmd
 
 language:
   title-block-author-single: "Autor"

@@ -7,14 +7,17 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 
 ## Roteiros de aula
 
-- [Aula 1 - Ferramentas, Ambiente e Versionamento](aulas/roteiro-aula1-ferramentas-ambiente-versionamento.qmd)\
+- [Aula 1 - Ferramentas, Ambiente e Versionamento](aulas/01-ferramentas-ambiente-versionamento.qmd)\
   Estrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.
 
-- [Aula 2 - Introdução aos Dados Tabulares](aulas/roteiro-aula2-introducao-dados-tabulares.qmd)\
+- [Aula 2 - Introdução aos Dados Tabulares](aulas/02-introducao-dados-tabulares.qmd)\
   Conceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.
 
-- [Trabalho Final - Análise de Vendas](aulas/trabalho-final-analise-vendas.qmd)\
+- [Aula 3 - Trabalho Final: Análise de Vendas](aulas/03-analise-vendas.qmd)\
   Enunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.
+
+- [Aula 4 - Análise de Vendas em R](aulas/04-analise-vendas-r.qmd)\
+  Reproduz a análise da Aula 3 em R e tidyverse, e explora novas perguntas de negócio sobre o mesmo dataset.
 
 ::: {.callout-tip}
 ## Como usar este material

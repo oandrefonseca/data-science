@@ -27,6 +27,8 @@ website:
             href: aulas/03-analise-vendas.qmd
           - text: "4. Análise de Vendas em R"
             href: aulas/04-analise-vendas-r.qmd
+          - text: "5. Estatística Descritiva"
+            href: aulas/05-estatistica-descritiva.qmd
 
 language:
   title-block-author-single: "Autor"

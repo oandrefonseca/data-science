@@ -5,39 +5,40 @@ toc: true
 format:
   html: default
   ipynb: default
-jupyter: python3
+jupyter:
+  kernel: py-system
 execute:
   enabled: true
 ---
 
 ## Motivação
 
-Na Aula 3 você já calculou uma média: o ticket médio, `orders["order_value"].mean()`. Funcionou, o número saiu, e você seguiu em frente. Mas repare no que ficou por baixo do tapete: por que dividir a soma pelo número de pedidos é a forma "certa" de resumir o valor típico de uma venda? O que aconteceria com esse número se um único cliente atacadista fizesse um pedido cem vezes maior que o normal? E, alcançado esse número, ele deveria ser reportado sozinho ao gestor, ou junto de alguma medida de o quanto os pedidos variam entre si?
+Na Aula 3, você calculou o ticket médio com `orders["order_value"].mean()`. O resultado, porém, suscita questões importantes. Por que a divisão da soma dos valores pelo número de pedidos seria a forma adequada de representar uma venda típica? Como esse resultado se altera quando um cliente atacadista realiza um pedido cem vezes maior que o habitual? Além disso, a média deve ser apresentada isoladamente ao gestor ou acompanhada por uma medida da variação entre os pedidos?
 
-Essas perguntas têm nome, e o nome é estatística descritiva: o conjunto de ferramentas que resume uma distribuição de números em poucos valores representativos, sem tentar generalizar além dos dados observados. É diferente de estatística inferencial, que você verá mais adiante no curso e que usa uma amostra para tirar conclusões sobre uma população inteira. Hoje o objetivo é mais modesto e igualmente essencial: dado o Online Retail que você já conhece, aprender a descrevê-lo com precisão, medida a medida, e a escolher a medida certa para cada situação, principalmente quando os dados não se comportam bem.
+Essas questões pertencem à estatística descritiva, área que reúne métodos para sintetizar uma distribuição em medidas representativas, sem generalizar os resultados para além dos dados observados. A estatística inferencial, estudada posteriormente no curso, utiliza dados amostrais para formular conclusões sobre uma população. Nesta aula, o conjunto Online Retail será descrito por diferentes medidas, cuja adequação dependerá das características dos dados e da finalidade da análise.
 
-E o Online Retail não se comporta bem. Você já viu, na Aula 3, que a base tem clientes atacadistas comprando em volumes muito acima do padrão. Essa observação, feita ali de forma intuitiva, ganha hoje um vocabulário preciso: assimetria, outlier, robustez. Ao final desta aula, você vai revisitar o ticket médio da Aula 3 e conseguir dizer, com números, se ele é ou não a melhor forma de resumir o valor de um pedido para o gestor de vendas.
+Na Aula 3, observou-se que a base contém clientes atacadistas cujos volumes de compra superam amplamente o padrão. Essa constatação será examinada por meio dos conceitos de assimetria, valor atípico e robustez. Ao final da aula, você retomará o ticket médio e avaliará, com base nos resultados obtidos, se essa medida representa adequadamente o valor dos pedidos para o gestor de vendas.
 
 ## Objetivos de aprendizagem
 
 Ao final deste roteiro, você será capaz de:
 
-1. Distinguir população e amostra, e reconhecer por que a representatividade de uma amostra importa mais do que o seu tamanho;
-2. Calcular e interpretar as medidas de tendência central: média, mediana, moda e valor esperado;
-3. Calcular médias ponderada e aparada, e explicar quando cada uma é preferível à média simples;
-4. Calcular e interpretar as medidas de dispersão: desvio, variância, desvio-padrão, desvio absoluto médio, desvio absoluto mediano, percentis e amplitude interquartílica (IQR);
-5. Usar a assimetria (skewness) e a curtose (kurtosis) para descrever o formato de uma distribuição e antecipar a presença de outliers;
+1. Distinguir população e amostra e reconhecer por que a representatividade de uma amostra importa mais do que seu tamanho.
+2. Calcular e interpretar média, mediana, moda e valor esperado.
+3. Calcular médias ponderada e aparada e explicar quando cada uma é preferível à média simples.
+4. Calcular e interpretar desvio, variância, desvio-padrão, desvio absoluto médio, desvio absoluto mediano, percentis e amplitude interquartílica (IQR).
+5. Usar a assimetria (*skewness*) e a curtose (*kurtosis*) para descrever o formato de uma distribuição e identificar indícios de valores atípicos.
 6. Escolher, com justificativa, entre uma medida sensível a outliers e uma medida robusta, diante de uma distribuição real e assimétrica.
 
 ::: {.callout-tip}
 ## Como usar este roteiro
 
-Este roteiro pressupõe o projeto-vendas das aulas anteriores funcionando, com o Online Retail já baixado em `data/`. Ele recalcula, na seção 2, as mesmas tabelas `sales`, `orders` e `customers` construídas na Aula 3, para que cada medida estatística seja aplicada a dados de negócio reais, não a exemplos artificiais soltos. Nenhuma biblioteca nova é necessária: tudo aqui é pandas e numpy, já instalados. Ao final, três perguntas ajudam a testar se você sabe escolher a medida certa diante de uma distribuição real.
+Este roteiro pressupõe que o projeto `projeto-vendas`, desenvolvido nas aulas anteriores, esteja funcionando e que o conjunto Online Retail esteja disponível em `data/`. Na seção 2, são reconstruídas as tabelas `sales`, `orders` e `customers` elaboradas na Aula 3. As medidas estatísticas podem, assim, ser aplicadas a dados de negócio reais. Não é necessário instalar novas bibliotecas. Além de pandas e numpy, o roteiro utiliza scipy nos cálculos estatísticos e matplotlib e seaborn nas visualizações. Ao final, três questões propõem a escolha de medidas adequadas para uma distribuição real.
 :::
 
 # 1. Retomando o projeto
 
-Como sempre, comece verificando onde o projeto parou:
+Comece pela verificação do estado atual do projeto.
 
 ```{python}
 
@@ -49,11 +50,11 @@ Como sempre, comece verificando onde o projeto parou:
 
 ```
 
-Se o log mostra os commits das aulas anteriores e o status diz que não há nada a commitar, o ambiente e os dados estão prontos.
+Se o histórico exibir os *commits* das aulas anteriores e o status indicar que não há alterações pendentes, o ambiente e os dados estarão prontos.
 
 # 2. Preparando os dados
 
-O ponto de partida é o mesmo da Aula 3: carregar a base, calcular a receita por item e o sinalizador de cancelamento, e isolar as vendas válidas.
+O ponto de partida é o mesmo da Aula 3. Primeiro, carrega-se a base, calcula-se a receita por item, cria-se o indicador de cancelamento e isolam-se as vendas válidas. As bibliotecas são importadas em uma única etapa. Pandas e numpy apoiam a manipulação dos dados, scipy fornece as funções estatísticas da seção 6, e matplotlib e seaborn são empregados nas visualizações.
 
 ```{python}
 
@@ -61,6 +62,16 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import openpyxl
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+sns.set_theme(style="whitegrid")
+
+```
+
+```{python}
 
 data_path = Path("projeto-vendas") / "data" / "online_retail.xlsx"
 
@@ -81,6 +92,12 @@ retail["invoice_date"] = pd.to_datetime(retail["invoice_date"], errors="coerce")
 retail["revenue"] = retail["quantity"] * retail["unit_price"]
 retail["is_cancelled"] = retail["invoice_no"].str.startswith("C", na=False)
 
+retail.head(3)
+
+```
+
+```{python}
+
 valid_sales_filter = (
     ~retail["is_cancelled"]
     & retail["quantity"].gt(0)
@@ -88,10 +105,11 @@ valid_sales_filter = (
 )
 
 sales = retail.loc[valid_sales_filter].copy()
+sales.head(5)
 
 ```
 
-E as duas agregações da Aula 3 que vamos reutilizar hoje: uma linha por pedido (`orders`) e uma linha por cliente identificado (`customers`).
+Em seguida, são reconstruídas duas agregações da Aula 3. A tabela `orders` contém uma linha por pedido, enquanto `customers` contém uma linha por cliente identificado.
 
 ```{python}
 
@@ -107,6 +125,12 @@ orders = (
     )
 )
 
+orders.head(5)
+
+```
+
+```{python}
+
 customers = (
     sales
     .dropna(subset=["customer_id"])
@@ -121,39 +145,48 @@ customers = (
 print(f"Pedidos: {len(orders):,}")
 print(f"Clientes identificados: {len(customers):,}")
 
+customers.head(5)
+
 ```
 
 # 3. População e amostra
 
-Antes de calcular qualquer medida, vale nomear sobre o que ela está sendo calculada. Uma população é o conjunto completo que se deseja estudar; uma amostra é um subconjunto dela, usado quando estudar a população inteira é inviável ou caro. O Online Retail é, ele mesmo, uma pergunta de classificação: é a população de vendas da loja, ou uma amostra? A resposta depende do que você quer generalizar. Como um retrato completo das transações de dezembro de 2010 a dezembro de 2011, ele é a população daquele período. Como base para prever o comportamento da loja no ano seguinte, ele é apenas uma amostra, um ano entre muitos possíveis.
+Antes de calcular uma medida estatística, é necessário definir o conjunto ao qual ela se refere. A população corresponde à totalidade dos elementos que se pretende estudar. A amostra é um subconjunto dessa população, utilizado quando o exame de todos os elementos é inviável ou dispendioso.
 
-Essa distinção importa porque uma amostra só é útil se for representativa, e representatividade não é a mesma coisa que tamanho. O exemplo histórico mais citado é a eleição americana de 1936: a revista Literary Digest enviou milhões de cartas e previu a vitória de Alf Landon; George Gallup, com uma amostra centenas de vezes menor mas construída para refletir o eleitorado real, previu corretamente a vitória de Franklin D. Roosevelt. Uma amostra enorme e enviesada perde para uma amostra pequena e representativa.
+**O Online Retail é a população de vendas da loja ou apenas uma amostra?**
 
-Vamos sentir isso nos nossos próprios dados. Comparamos a média de `order_value` da população inteira de pedidos com duas amostras de 200 pedidos: uma sorteada aleatoriamente entre todos os países, e outra enviesada, formada só por pedidos do Reino Unido, o país dominante da base.
+A resposta depende do universo ao qual se pretende generalizar os resultados. Se a base constitui um registro completo das transações realizadas entre dezembro de 2010 e dezembro de 2011, ela pode ser considerada a população desse período. Para prever o comportamento da loja no ano seguinte, contudo, o mesmo conjunto funciona como amostra, pois representa apenas um dos vários períodos possíveis.
+
+Essa distinção é relevante porque a validade das conclusões depende da representatividade da amostra, e não apenas de seu tamanho. Uma amostra enviesada pode conduzir a conclusões inadequadas. Para examinar esse problema, compara-se a média de `order_value` do conjunto completo com a de duas amostras de 200 pedidos. A primeira é sorteada aleatoriamente entre todos os países. A segunda contém apenas pedidos do Reino Unido, país predominante na base, e por isso apresenta viés de seleção.
+
+Espera-se que a média da amostra aleatória oscile em torno da média populacional em razão da variabilidade amostral. A amostra enviesada tende a apresentar média inferior, pois o ticket médio do Reino Unido é menor que o dos demais países em conjunto. Portanto, a média dos pedidos britânicos não deve ser generalizada para todos os países, ainda que as duas amostras tenham o mesmo tamanho.
 
 ```{python}
 
-population_mean = orders["order_value"].mean()
+dataset_mean = orders["order_value"].mean()
 
 random_sample = orders.sample(n=200, random_state=42)  # <1>
 random_sample_mean = random_sample["order_value"].mean()
 
-uk_filter = orders["country"].eq("United Kingdom")
-biased_sample = orders.loc[uk_filter].sample(n=200, random_state=42)  # <2>
+biased_sample = (
+    orders
+    .loc[orders["country"] == "United Kingdom"]
+    .sample(n=200, random_state=42)  # <2>
+)
+
 biased_sample_mean = biased_sample["order_value"].mean()
 
 ```
 
 1. `.sample()` sorteia linhas aleatoriamente, sem favorecer nenhum país. `random_state` fixa a semente para que o sorteio seja reproduzível.
 2. A amostra enviesada sorteia da mesma forma, mas apenas dentro do subconjunto de pedidos do Reino Unido, ignorando os demais 37 países da base.
-
 ```{python}
 
 sampling_summary = pd.Series(
     {
-        "media_populacao_completa": population_mean,
+        "media_conjunto_completo": dataset_mean,
         "media_amostra_aleatoria": random_sample_mean,
-        "media_amostra_enviesada_uk": biased_sample_mean,
+        "media_amostra_enviesada_uk": biased_sample_mean
     },
     name="order_value_medio",
 )
@@ -162,11 +195,122 @@ sampling_summary.round(2).to_frame()
 
 ```
 
-A amostra aleatória tende a ficar próxima da média populacional; a amostra enviesada, não necessariamente, porque o Reino Unido tem um padrão de compra próprio, distinto do restante do mundo. Execute a célula de novo com outro `random_state` e observe: a amostra aleatória oscila em torno da população, a enviesada carrega um viés sistemático que não desaparece trocando a semente.
+A amostra enviesada (£ 465,36) ficou mais próxima da média geral (£ 534,40) do que a amostra aleatória (£ 445,14). O viés é pequeno porque a própria base é desbalanceada. Como o Reino Unido responde por aproximadamente 90% dos pedidos, uma amostra restrita a esse país tende a permanecer próxima de uma amostra formada por todos os países. A amostra balanceada produz o efeito oposto. Ao atribuir o mesmo peso aos 38 países, sua média aumenta para £ 1.064,50, quase o dobro da média populacional. Embora registrem poucos pedidos, os países situados fora do Reino Unido apresentam ticket médio substancialmente maior. Balanceamento e representatividade, portanto, não são equivalentes. Uma amostra representativa preserva a proporção observada de cada grupo, enquanto uma amostra balanceada responde a outra pergunta, relacionada ao pedido médio por país, e não ao pedido médio da loja.
+
+```{python}
+
+balanced_sample = (
+    orders
+    .groupby("country")
+    .sample(n=5, random_state=42, replace=True)  # <1>
+)
+
+balanced_sample_mean = balanced_sample["order_value"].mean()
+
+```
+
+1. `.groupby("country").sample(n=5, replace=True)` sorteia 5 pedidos de cada um dos 38 países, dando peso igual a todos eles. `replace=True` é necessário porque alguns países têm menos de 5 pedidos na base inteira.
+
+```{python}
+
+sampling_summary = pd.Series(
+    {
+        "media_conjunto_completo": dataset_mean,
+        "media_amostra_aleatoria": random_sample_mean,
+        "media_amostra_enviesada_uk": biased_sample_mean,
+        "media_amostra_balanceada_por_pais": balanced_sample_mean,
+    },
+    name="order_value_medio",
+)
+
+sampling_summary.round(2).to_frame()
+
+```
+
+O gráfico abaixo mostra o ticket médio de cada um dos 38 países, ordenado do maior para o menor, com a média geral como referência.
+
+```{python}
+
+country_order_value_mean = (
+    orders
+    .groupby("country")["order_value"]
+    .mean()
+    .sort_values(ascending=False)
+)
+
+fig, ax = plt.subplots(figsize=(8, 10))
+
+sns.barplot(x=country_order_value_mean.values, y=country_order_value_mean.index, ax=ax, color="C0")  # <1>
+
+ax.axvline(dataset_mean, color="crimson", linestyle="--", label=f"Média geral: £ {dataset_mean:,.2f}")
+ax.set_xlabel("Valor médio do pedido (£)")
+ax.set_ylabel("País")
+ax.set_title("Ticket médio por país")
+ax.legend()
+
+plt.show()
+
+```
+
+1. O argumento `color="C0"` atribui uma única cor a todas as barras e evita o mapeamento dos 38 países para cores diferentes, o que prejudicaria a leitura.
+
+A maioria dos países situa-se acima da média geral. O Reino Unido, que concentra o maior volume de pedidos, é um dos poucos países abaixo dessa referência. Por isso, a atribuição do mesmo peso a todos os países eleva a média. Individualmente, a maioria apresenta ticket médio superior ao valor geral, embora participe com poucos pedidos.
+
+O gráfico seguinte apresenta a quantidade de pedidos por país. A ordem dos países é mantida para permitir a comparação direta entre ticket médio e volume.
+
+```{python}
+
+country_order_count = orders.groupby("country")["order_value"].size()
+
+fig, ax = plt.subplots(figsize=(8, 10))
+
+sns.barplot(
+    x=country_order_count.values,
+    y=country_order_count.index,
+    order=country_order_value_mean.index,  # <1>
+    ax=ax,
+    color="C0",
+)
+
+ax.set_xscale("log")  # <2>
+ax.set_xlabel("Número de pedidos (escala log)")
+ax.set_ylabel("País")
+ax.set_title("Quantidade de pedidos por país")
+
+plt.show()
+
+```
+
+1. `order=country_order_value_mean.index` reaproveita a mesma ordem de países do gráfico de ticket médio, para que as duas barras da mesma linha sejam sempre o mesmo país.
+2. A quantidade varia de um pedido, em países como Brasil e Líbano, a milhares de pedidos no Reino Unido. Em escala linear, essa diferença dificultaria a leitura das barras menores. A escala logarítmica permite visualizar simultaneamente os dois extremos.
+
+A comparação entre os gráficos revela uma relação inversa. Os países com maior ticket médio tendem a registrar menor quantidade de pedidos, enquanto o Reino Unido apresenta o padrão oposto. Essa associação explica a divergência entre a média da amostra balanceada e a média do conjunto completo.
 
 # 4. Medidas de tendência central
 
-Medidas de tendência central resumem um conjunto de dados em um único valor que representa o "centro" ou o "típico" da distribuição.
+Medidas de tendência central resumem um conjunto de dados em um único valor que representa o "centro" ou o "típico" da distribuição. Antes de calcular qualquer uma delas, vale olhar para a forma bruta da distribuição do valor do pedido.
+
+```{python}
+
+upper_limit = orders["order_value"].quantile(0.99)  # <1>
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+sns.histplot(orders["order_value"], bins=50, binrange=(0, upper_limit), ax=ax)  # <2>
+
+ax.set_xlim(0, upper_limit)
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_ylabel("Número de pedidos")
+ax.set_title("Distribuição do valor do pedido (Online Retail)")
+
+plt.show()
+
+```
+
+1. O 99º percentil marca até onde está a maior parte dos pedidos; olhar além disso esconderia a forma da distribuição atrás de poucos pedidos de atacado muito grandes.
+2. `binrange=(0, upper_limit)` calcula as 50 faixas dentro dessa janela. Sem isso, os pedidos de atacado (até £ 168 mil) esticam as faixas por um intervalo enorme, e quase todos os dados caem comprimidos numa ou duas barras.
+
+A maior parte dos pedidos se concentra numa faixa relativamente baixa de valores, com uma cauda que se estende para a direita. Guarde essa forma assimétrica em mente — ela volta com números precisos na seção 6.
 
 ## 4.1 Média
 
@@ -184,36 +328,36 @@ print(f"Média via .mean():           £ {pandas_mean:.2f}")
 
 ## 4.2 Valor esperado
 
-A média tem uma segunda leitura, igualmente válida: em vez de somar todos os valores e dividir por `n`, podemos agrupar os valores repetidos, multiplicar cada um pela sua frequência relativa (uma estimativa de probabilidade) e somar. Esse cálculo é o valor esperado, `E[X] = Σ xᵢ P(X = xᵢ)`, e ele é numericamente idêntico à média quando aplicado aos mesmos dados. Vamos confirmar isso com a quantidade de itens por linha de venda, restrita a valores pequenos e frequentes, para que a tabela de frequências caiba na tela.
+A média tem uma segunda leitura, igualmente válida: em vez de somar todos os valores e dividir por `n`, podemos agrupar valores parecidos, multiplicar a média de cada grupo pela proporção de pedidos naquele grupo, e somar. Esse cálculo é o valor esperado, `E[X] = Σ xᵢ P(X = xᵢ)`. Vamos aplicá-lo ao próprio valor do pedido, dividido em 5 grupos de tamanho igual.
 
 ```{python}
 
-small_quantities = sales.loc[sales["quantity"].between(1, 6), "quantity"]
+order_value_bins = pd.qcut(orders["order_value"], q=10)  # <1>
 
-frequency = small_quantities.value_counts().sort_index()
-relative_frequency = small_quantities.value_counts(normalize=True).sort_index()
-
-frequency_table = pd.DataFrame(
-    {"frequencia": frequency, "probabilidade": relative_frequency.round(4)}
+bin_stats = (
+    orders
+    .groupby(order_value_bins, observed=True)["order_value"]
+    .agg(media_do_grupo="mean", contagem="size")
 )
 
-frequency_table
+bin_stats["proporcao"] = bin_stats["contagem"] / len(orders)  # <2>
+bin_stats.round(2)
 
 ```
+
+1. `pd.qcut(..., q=10)` divide o valor do pedido em 10 grupos de tamanho aproximadamente igual — a mesma ideia de percentil que volta na seção 5.3.
+2. A proporção de cada grupo é a sua contagem dividida pelo total de pedidos: a estimativa de probabilidade de um pedido cair naquele grupo.
 
 ```{python}
 
-direct_mean = small_quantities.mean()
-expected_value = (frequency_table.index.to_series() * frequency_table["probabilidade"]).sum()  # <1>
+expected_value = (bin_stats["media_do_grupo"] * bin_stats["proporcao"]).sum()
 
-print(f"Média direta:        {direct_mean:.4f}")
-print(f"Valor esperado E[X]: {expected_value:.4f}")
+print(f"Média direta:        £ {orders['order_value'].mean():.2f}")
+print(f"Valor esperado E[X]: £ {expected_value:.2f}")
 
 ```
 
-1. O índice da tabela de frequências é o próprio valor de `quantity`; multiplicar cada valor pela sua probabilidade e somar é exatamente a definição de valor esperado.
-
-Os dois números coincidem, e essa coincidência não é acaso: a média amostral é o valor esperado de uma distribuição de frequências relativas. A utilidade prática do valor esperado aparece quando ele precisa ser comparado a um custo, para decidir se vale a pena agir. Um exemplo fora da nossa base, mas do mesmo tipo de raciocínio: se uma campanha de aquisição converte 5% dos leads em um plano de £ 300, 15% em um plano de £ 50 e 80% em nada, o valor esperado por lead é `0,05 × 300 + 0,15 × 50 + 0,80 × 0 = £ 22,50`. Qualquer custo de aquisição por lead abaixo desse valor tende a gerar retorno positivo; acima dele, tende a destruir valor. É o mesmo cálculo que acabamos de fazer com `quantity`, só que aplicado a uma decisão de negócio.
+Os dois números coincidem: agrupar os pedidos por quintil e ponderar a média de cada grupo pela sua proporção é só outra forma de somar os mesmos valores, então o resultado bate com a média direta, qualquer que seja o número de grupos usado.
 
 ## 4.3 Média ponderada e média aparada
 
@@ -231,25 +375,22 @@ print(f"Preço médio ponderado (por unidade):    £ {weighted_price_mean:.2f}")
 
 1. A fórmula da média ponderada é `x̄w = Σ xᵢwᵢ / Σ wᵢ`; aqui, cada preço `xᵢ` recebe peso `wᵢ` igual à quantidade vendida naquela linha.
 
-As duas médias divergem porque itens baratos costumam ser vendidos em quantidades maiores nesta base. A média simples dá o mesmo peso a uma linha de 1 unidade e a uma linha de 5.000 unidades; a ponderada reflete o que de fato aconteceu em volume.
+As duas médias divergem porque itens baratos costumam ser vendidos em quantidades maiores nesta base.
 
-Outra forma de controlar a influência de valores extremos é aparar as pontas antes de calcular a média: descartar uma proporção dos menores e dos maiores valores. O pandas não tem uma função pronta para isso, então escrevemos uma:
+Outra forma de controlar a influência de valores extremos é aparar as pontas antes de calcular a média: descartar uma proporção dos menores e dos maiores valores. O scipy já traz essa função pronta.
 
 ```{python}
 
-def trimmed_mean(series, proportion=0.05):
-    ordered = series.sort_values().reset_index(drop=True)
-    cut = int(len(ordered) * proportion)
-    return ordered.iloc[cut: len(ordered) - cut].mean()
-
-order_value_trimmed = trimmed_mean(orders["order_value"], proportion=0.05)
+order_value_trimmed = stats.trim_mean(orders["order_value"], proportiontocut=0.05)  # <1>
 
 print(f"Média simples do valor do pedido: £ {orders['order_value'].mean():.2f}")
 print(f"Média aparada (5% de cada lado):  £ {order_value_trimmed:.2f}")
 
 ```
 
-A média aparada cai bem abaixo da média simples: um punhado de pedidos muito grandes, no topo da distribuição, puxa a média simples para cima, e removê-los revela um centro mais modesto. Guarde esse resultado; ele vai reaparecer na seção 5.
+1. `proportiontocut=0.05` descarta os 5% menores e os 5% maiores valores antes de calcular a média.
+
+A média aparada cai bem abaixo da média simples: um punhado de pedidos muito grandes, no topo da distribuição, puxa a média simples para cima.
 
 ## 4.4 Mediana
 
@@ -277,6 +418,40 @@ print(f"Quantidade mais frequente por linha de venda: {quantity_mode.tolist()}")
 print(f"País mais frequente: {country_mode.tolist()}")
 
 ```
+
+"Nem sempre é única" significa mais do que empates: quando uma distribuição mistura dois grupos com padrões de compra bem diferentes, o histograma pode mostrar dois picos distintos — uma distribuição bimodal. O Online Retail não tem esse padrão no valor do pedido, então o exemplo abaixo usa dados sintéticos só para deixar a ideia visível.
+
+### 4.5.1 Distribuição bimodal de clientes varejo e atacado
+
+O exemplo a seguir é hipotético e não usa dados do conjunto analisado neste material; ele serve apenas para mostrar como é a forma de uma distribuição com mais de uma moda.
+
+```{python}
+
+rng = np.random.default_rng(42)  # <1>
+
+varejo = rng.normal(loc=50, scale=15, size=800)  # <2>
+atacado = rng.normal(loc=300, scale=40, size=200)
+
+illustrative_orders = np.concatenate([varejo, atacado])
+illustrative_orders = illustrative_orders[illustrative_orders > 0]  # <3>
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+sns.histplot(illustrative_orders, bins=40, ax=ax)
+
+ax.set_xlabel("Valor do pedido (£, exemplo hipotético)")
+ax.set_ylabel("Número de pedidos (exemplo hipotético)")
+ax.set_title("Exemplo ilustrativo: distribuição bimodal (varejo vs. atacado)")
+
+plt.show()
+
+```
+
+1. `np.random.default_rng` é o gerador recomendado atualmente pelo numpy; a semente fixa (42) torna o exemplo reproduzível.
+2. Os 800 valores em torno de £ 50 representam um grupo hipotético de "clientes varejo"; os 200 valores em torno de £ 300 representam "clientes atacado".
+3. Como a normal pode gerar valores negativos na cauda, descartamos qualquer valor abaixo de zero.
+
+Os dois picos revelam os dois grupos. Calcular a moda, a média ou a mediana dessa distribuição sem saber da existência dos dois grupos produziria um número que não representa bem nenhum dos dois.
 
 ## 4.6 Média versus mediana: o problema do cliente atacadista
 
@@ -307,7 +482,36 @@ comparison.round(2).to_frame()
 
 ```
 
-Remover um único cliente muda a média visivelmente; a mediana quase não se mexe. Esse é o teste prático para decidir qual medida reportar: se tirar a maior observação muda muito o resultado, a média está sendo carregada por poucos pontos, e a mediana é o resumo mais honesto do "cliente típico".
+Remover um único cliente muda a média visivelmente; a mediana quase não se mexe. Esse é o teste prático para decidir qual medida reportar: se tirar a maior observação muda muito o resultado, a média está sendo carregada por poucos pontos, e a mediana é o resumo mais honesto do "cliente típico". O mesmo efeito aparece no valor do pedido: veja onde média, mediana e moda caem dentro da distribuição real.
+
+```{python}
+
+order_value_mean = orders["order_value"].mean()
+order_value_mode = orders["order_value"].mode().iloc[0]  # <1>
+upper_limit = orders["order_value"].quantile(0.99)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+sns.histplot(orders["order_value"], bins=50, binrange=(0, upper_limit), ax=ax)  # <2>
+
+ax.axvline(order_value_mean, color="crimson", linestyle="--", label=f"Média: £ {order_value_mean:,.2f}")
+ax.axvline(order_value_median, color="darkorange", linestyle="--", label=f"Mediana: £ {order_value_median:,.2f}")
+ax.axvline(order_value_mode, color="seagreen", linestyle="--", label=f"Moda: £ {order_value_mode:,.2f}")
+
+ax.set_xlim(0, upper_limit)
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_ylabel("Número de pedidos")
+ax.set_title("Média, mediana e moda do valor do pedido")
+ax.legend()
+
+plt.show()
+
+```
+
+1. `.mode()` pode retornar mais de um valor; `.iloc[0]` pega o primeiro.
+2. Mesmo ajuste de `binrange` usado no histograma da seção 4, para as 50 faixas caberem dentro da janela visível.
+
+As três linhas aparecem na ordem que a assimetria positiva prevê: moda à esquerda, mediana no meio, média mais à direita, puxada pela cauda longa de pedidos grandes.
 
 # 5. Medidas de dispersão
 
@@ -342,27 +546,22 @@ Na prática, com milhares de pedidos, a diferença entre dividir por `n` ou por 
 
 ## 5.2 Desvio absoluto médio e desvio absoluto mediano
 
-A variância penaliza desvios grandes desproporcionalmente, por causa do quadrado, o que a torna sensível a outliers. Duas alternativas mais robustas trabalham com valores absolutos em vez de quadrados: o desvio absoluto médio, em relação à média, e o desvio absoluto mediano (MAD), em relação à mediana, a mais resistente das duas a valores extremos.
+A variância penaliza desvios grandes desproporcionalmente, por causa do quadrado. Duas alternativas mais robustas trabalham com valores absolutos: o desvio absoluto médio e o desvio absoluto mediano (MAD).
 
 ```{python}
 
 mean_absolute_deviation = (order_values - order_values.mean()).abs().mean()
-median_absolute_deviation = (order_values - order_values.median()).abs().median()
+median_absolute_deviation = stats.median_abs_deviation(order_values)  # <1>
 
-dispersion_comparison = pd.Series(
-    {
-        "desvio_padrao": order_values.std(ddof=0),
-        "desvio_absoluto_medio": mean_absolute_deviation,
-        "desvio_absoluto_mediano": median_absolute_deviation,
-    },
-    name="valor_em_libras",
-)
-
-dispersion_comparison.round(2).to_frame()
+print(f"Desvio-padrão:           £ {order_values.std(ddof=0):,.2f}")
+print(f"Desvio absoluto médio:   £ {mean_absolute_deviation:,.2f}")
+print(f"Desvio absoluto mediano: £ {median_absolute_deviation:,.2f}")
 
 ```
 
-O desvio-padrão sai bem maior que as duas alternativas robustas, sinal de que poucos pedidos muito distantes do centro estão inflando a variância desproporcionalmente. Isso é consistente com o que já vimos na seção 4: a distribuição do valor dos pedidos não é bem comportada.
+1. `stats.median_abs_deviation` calcula o MAD diretamente.
+
+A comparação entre os valores revela que os dados possuem forte assimetria e presença marcante de outliers: enquanto o desvio absoluto mediano (MAD) de £ 161,84 fornece a estimativa mais robusta da variabilidade típica do grupo por não ser influenciado por valores extremos, o desvio absoluto médio de £ 461 mensura a média das distâncias absolutas em relação à média de forma menos inflacionada, e o desvio-padrão atinge o patamar elevado de £ 1.780,44 por elevar os desvios ao quadrado e penalizar desproporcionalmente as observações atípicas.
 
 ## 5.3 Percentis e amplitude interquartílica
 
@@ -370,10 +569,8 @@ Um percentil `P` é o valor abaixo do qual cai uma determinada porcentagem das o
 
 ```{python}
 
-q1 = order_values.quantile(0.25)
-q2 = order_values.quantile(0.50)
-q3 = order_values.quantile(0.75)
-iqr = q3 - q1
+q1, q2, q3 = order_values.quantile([0.25, 0.50, 0.75])  # <1>
+iqr = stats.iqr(order_values)  # <2>
 
 quartile_summary = pd.Series(
     {"Q1 (25%)": q1, "Q2 (mediana, 50%)": q2, "Q3 (75%)": q3, "IQR": iqr},
@@ -383,6 +580,9 @@ quartile_summary = pd.Series(
 quartile_summary.round(2).to_frame()
 
 ```
+
+1. `.quantile([0.25, 0.50, 0.75])` retorna os três quartis de uma vez, desempacotados diretamente em `q1`, `q2` e `q3`.
+2. `stats.iqr` calcula `Q3 - Q1` diretamente.
 
 Uma regra prática, amplamente usada, marca como potencial outlier qualquer observação além de `1,5 × IQR` para além do Q1 ou do Q3. Vamos aplicá-la e, antes de descartar qualquer coisa, investigar quem são os pedidos sinalizados, exatamente como a Aula 3 recomendou ao discutir atacado versus erro.
 
@@ -408,32 +608,104 @@ flagged_orders["country"].value_counts().head(10)
 
 Os pedidos sinalizados se concentram fortemente em poucos países, o mesmo padrão de compra em grande volume por clientes específicos que a Aula 3 já havia levantado como hipótese de atacado, e não de erro. A regra do IQR é útil para localizar candidatos a outlier; decidir se cada um é erro ou atacado legítimo continua sendo trabalho de investigação, não de fórmula.
 
-# 6. Assimetria e curtose
-
-Assimetria (skewness) e curtose (kurtosis) descrevem o formato de uma distribuição além do centro e do espalhamento: a primeira mede para que lado a cauda se estica, a segunda mede o quão pesadas são as caudas, ou seja, a propensão a valores extremos. As duas são calculadas em relação à distribuição normal, para a qual assimetria e excesso de curtose valem zero.
+Os números acima têm uma representação visual padrão: o boxplot. Ele desenha a caixa entre Q1 e Q3, uma linha na mediana, bigodes até o limite de 1,5 × IQR, e marca individualmente qualquer ponto além disso.
 
 ```{python}
 
-order_value_skew = order_values.skew()
-order_value_kurtosis = order_values.kurt()  # <1>
+fig, ax = plt.subplots(figsize=(10, 4))
+
+sns.boxplot(x=order_values, ax=ax, whis=1.5, fliersize=3)  # <1>
+
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_title("Boxplot do valor do pedido, com outliers pela regra do IQR")
+
+plt.show()
+
+```
+
+1. `whis=1.5` reproduz a mesma regra de `1,5 × IQR` usada para calcular `lower_bound`/`upper_bound`; os pontos além dos bigodes são os mesmos pedidos já capturados em `flagged_orders`. `fliersize=3` reduz o tamanho dos marcadores de outlier, já que há muitos ao longo da cauda.
+
+A caixa central, compacta, mostra onde está a maioria dos pedidos; a fileira de pontos à direita é a cauda de pedidos de atacado que a regra do IQR sinalizou.
+
+# 6. Assimetria e curtose
+
+Assimetria (skewness) e curtose (kurtosis) descrevem o formato de uma distribuição além do centro e do espalhamento: a primeira mede para que lado a cauda se estica, a segunda mede o quão pesadas são as caudas. As duas são calculadas em relação à distribuição normal, para a qual assimetria e excesso de curtose valem zero.
+
+```{python}
+
+order_value_skew = stats.skew(order_values)
+order_value_kurtosis = stats.kurtosis(order_values)  # <1>
 
 print(f"Assimetria (skewness) do valor do pedido: {order_value_skew:.2f}")
 print(f"Excesso de curtose (kurtosis) do valor do pedido: {order_value_kurtosis:.2f}")
 
 ```
 
-1. O `.kurt()` do pandas já retorna o excesso de curtose (a curtose da normal subtraída), na mesma convenção da distribuição normal como referência igual a zero: positivo indica caudas mais pesadas que a normal, negativo indica caudas mais leves.
+1. `stats.kurtosis` já usa `fisher=True` por padrão, retornando o excesso de curtose (mesma convenção da distribuição normal como referência igual a zero): positivo indica caudas mais pesadas que a normal.
 
-Assimetria positiva e alta: a cauda longa está à direita, moda menor que mediana, que é menor que a média, exatamente a relação que explicou por que a média do valor do pedido ficou acima da mediana na seção 4. Curtose positiva e alta: caudas muito mais pesadas que as de uma normal, ou seja, valores extremamente distantes do centro (os pedidos de atacado) aparecem com frequência bem maior do que uma distribuição normal preveria. Os dois números, juntos, são a versão quantitativa exata da suspeita que tivemos olhando o `describe()` desde a Aula 2.
+Assimetria positiva e alta: a cauda longa está à direita, moda menor que mediana, que é menor que a média. Curtose positiva e alta: caudas muito mais pesadas que as de uma normal, ou seja, valores extremamente distantes do centro (os pedidos de atacado) aparecem com frequência bem maior do que uma distribuição normal preveria.
+
+A curtose é mais sutil de enxergar diretamente nos dados reais, porque descreve o peso das caudas, não a posição do pico. Ela costuma ser classificada em três tipos:
+
+- **Leptocúrtica**: caudas pesadas e alta propensão a outliers, com pico mais acentuado do que o da normal (curtose positiva);
+- **Mesocúrtica**: formato e caudas equivalentes aos de uma distribuição normal padrão (curtose ≈ 0);
+- **Platicúrtica**: caudas leves e baixa ocorrência de valores extremos, formato mais achatado (curtose negativa).
+
+O trio de histogramas sintéticos abaixo isola esse efeito: três distribuições centradas no mesmo lugar, uma de cada tipo.
+
+::: {.callout-tip}
+## Exemplo ilustrativo: os três tipos de curtose
+
+O exemplo a seguir é hipotético e não usa dados do conjunto analisado neste material; ele serve apenas para isolar visualmente o efeito da curtose.
+:::
+
+```{python}
+
+rng = np.random.default_rng(7)  # <1>
+
+light_tail = rng.uniform(low=-3, high=3, size=5000)  # <2>
+normal_tail = rng.normal(loc=0, scale=1, size=5000)
+heavy_tail = rng.standard_t(df=3, size=5000)  # <3>
+
+fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
+
+sns.histplot(light_tail, bins=40, ax=axes[0], stat="density", kde=True)
+axes[0].set_title("Platicúrtica (curtose < 0)")
+axes[0].set_xlabel("Valor (exemplo hipotético)")
+
+sns.histplot(normal_tail, bins=40, ax=axes[1], stat="density", kde=True)
+axes[1].set_title("Mesocúrtica (curtose ≈ 0)")
+axes[1].set_xlabel("Valor (exemplo hipotético)")
+
+sns.histplot(heavy_tail, bins=40, ax=axes[2], stat="density", kde=True)
+axes[2].set_title("Leptocúrtica (curtose > 0)")
+axes[2].set_xlabel("Valor (exemplo hipotético)")
+
+shared_xlim = axes[1].get_xlim()  # <4>
+axes[0].set_xlim(shared_xlim)
+axes[2].set_xlim(shared_xlim)
+
+fig.suptitle("Os três tipos de curtose")
+
+plt.show()
+
+```
+
+1. Semente nova (7) só para diferenciar deste exemplo do da seção 4.5.
+2. `rng.uniform(low=-3, high=3, ...)` gera uma distribuição uniforme: sem cauda alguma além dos seus limites fixos, o exemplo clássico de curtose negativa (platicúrtica).
+3. `rng.standard_t(df=3, ...)` gera uma distribuição t de Student com 3 graus de liberdade: mesmo formato de sino no centro da normal, mas caudas muito mais pesadas (leptocúrtica).
+4. Os três painéis compartilham a escala do eixo x da distribuição normal (a do meio), para que a comparação de quanto peso cada cauda tem seja justa.
+
+Da esquerda para a direita, os três painéis mostram a progressão da curtose: a uniforme não tem cauda alguma além dos seus limites fixos; a normal tem caudas moderadas, a referência para curtose zero; a t de Student tem valores extremos com frequência bem maior. É esse último padrão, visualmente, que a curtose alta do valor do pedido está descrevendo.
 
 Recapitulando o que este roteiro entrega:
 
-- Distinguiu população e amostra, e mostrou como uma amostra enviesada carrega um viés que o tamanho não corrige;
-- Calculou média, valor esperado, média ponderada e média aparada, mostrando que todas descrevem "o centro", mas reagem de formas diferentes a valores extremos;
-- Comparou média e mediana do valor do pedido e da receita por cliente, isolando o efeito dos clientes atacadistas sobre cada medida;
-- Calculou variância, desvio-padrão e suas alternativas robustas (desvio absoluto médio e mediano), evidenciando a sensibilidade da variância a outliers;
-- Usou percentis e a amplitude interquartílica para sinalizar pedidos extremos, sem descartá-los sem investigação;
-- Quantificou, com assimetria e curtose, o formato da distribuição do valor dos pedidos, confirmando numericamente o que a inspeção visual já sugeria desde a Aula 2.
+- Distinguiu população e amostra, e visualizou como uma amostra enviesada se desloca em relação à população enquanto uma amostra aleatória a acompanha;
+- Calculou média e valor esperado sobre um único exemplo (o valor do pedido), além de média ponderada e média aparada (via scipy);
+- Comparou média, mediana e moda do valor do pedido visualmente, isolando o efeito dos clientes atacadistas;
+- Calculou variância, desvio-padrão e as alternativas robustas (desvio absoluto médio e mediano);
+- Usou percentis, IQR e um boxplot para sinalizar e visualizar pedidos extremos, sem descartá-los sem investigação;
+- Quantificou, com assimetria e curtose (via scipy), o formato da distribuição do valor dos pedidos.
 
 # Perguntas para consolidar
 

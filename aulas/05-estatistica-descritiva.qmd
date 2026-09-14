@@ -696,7 +696,15 @@ plt.show()
 3. `rng.standard_t(df=3, ...)` gera uma distribuição t de Student com 3 graus de liberdade: mesmo formato de sino no centro da normal, mas caudas muito mais pesadas (leptocúrtica).
 4. Os três painéis compartilham a escala do eixo x da distribuição normal (a do meio), para que a comparação de quanto peso cada cauda tem seja justa.
 
-Da esquerda para a direita, os painéis mostram diferentes comportamentos das caudas. A distribuição uniforme possui limites fixos e não produz valores além deles. A distribuição normal apresenta caudas de peso moderado e constitui a referência para excesso de curtose igual a zero. A distribuição t de Student produz valores extremos com frequência muito maior. Este último comportamento se aproxima daquele indicado pela curtose elevada dos valores dos pedidos.
+A comparação entre os painéis ilustra como a geometria das caudas de uma distribuição reflete a probabilidade de ocorrência de valores extremos e a magnitude da curtose:
+
+* **Distribuição Uniforme (Painel da Esquerda):** Caracteriza-se por manter uma probabilidade constante dentro de um intervalo limitado, possuindo limites rígidos além dos quais nenhum valor pode ser gerado. Por não possuir caudas estendidas, não há dispersão extrema, resultando em uma curtose negativa (**platicúrtica**) que indica a ausência total de *outliers*.
+  
+* **Distribuição Normal (Painel Central):** Apresenta uma curva simétrica em formato de sino, na qual cerca de 95% das observações estão concentradas a até dois desvios-padrão da média. Suas caudas decrescem de forma rápida e moderada, tornando a ocorrência de valores muito distantes do centro um evento raro. Por conta desse decaimento padrão, a distribuição normal é adotada como a linha de base universal da teoria estatística, possuindo excesso de curtose igual a zero.
+  
+* **Distribuição $t$ de Student (Painel da Direita):** Embora preserve a simetria central, possui caudas visivelmente mais pesadas e espessas (*heavy tails*). Isso significa que a massa de probabilidade nas extremidades é maior, fazendo com que valores discrepantes ocorram com frequência muito superior à prevista por uma curva normal. Essa densidade nas caudas produz um excesso de curtose positivo (**distribuição leptocúrtica**).
+
+## Conclusão
 
 Neste roteiro, a distinção entre população e amostra orientou a análise do efeito do viés de seleção. O valor dos pedidos serviu de base para o cálculo da média, do valor esperado, das médias ponderada e aparada, da mediana e da moda. A comparação dessas medidas mostrou a influência dos clientes atacadistas. A dispersão foi examinada por meio da variância, do desvio-padrão, dos desvios absolutos médio e mediano, dos percentis e da amplitude interquartílica. Por fim, o *boxplot*, a assimetria e a curtose permitiram identificar e caracterizar valores extremos sem justificar sua exclusão automática.
 

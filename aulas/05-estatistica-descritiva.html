@@ -258,7 +258,14 @@ window.Quarto = {
   </ul></li>
   <li><a href="#assimetria-e-curtose" id="toc-assimetria-e-curtose" class="nav-link" data-scroll-target="#assimetria-e-curtose">6. Assimetria e curtose</a>
   <ul class="collapse">
-  <li><a href="#os-três-tipos-de-curtose" id="toc-os-três-tipos-de-curtose" class="nav-link" data-scroll-target="#os-três-tipos-de-curtose">6.1 Os três tipos de curtose</a></li>
+  <li><a href="#calculando-assimetria-manualmente" id="toc-calculando-assimetria-manualmente" class="nav-link" data-scroll-target="#calculando-assimetria-manualmente">6.1. Calculando assimetria manualmente</a></li>
+  <li><a href="#calculando-curtose-manualmente" id="toc-calculando-curtose-manualmente" class="nav-link" data-scroll-target="#calculando-curtose-manualmente">6.2. Calculando curtose manualmente</a></li>
+  <li><a href="#os-três-tipos-de-curtose" id="toc-os-três-tipos-de-curtose" class="nav-link" data-scroll-target="#os-três-tipos-de-curtose">6.3 Os três tipos de curtose</a>
+  <ul class="collapse">
+  <li><a href="#distribuição-uniforme-platicúrtica" id="toc-distribuição-uniforme-platicúrtica" class="nav-link" data-scroll-target="#distribuição-uniforme-platicúrtica">Distribuição uniforme (platicúrtica)</a></li>
+  <li><a href="#distribuição-normal-mesocúrtica" id="toc-distribuição-normal-mesocúrtica" class="nav-link" data-scroll-target="#distribuição-normal-mesocúrtica">Distribuição normal (mesocúrtica)</a></li>
+  <li><a href="#distribuição-t-de-student-leptocúrtica" id="toc-distribuição-t-de-student-leptocúrtica" class="nav-link" data-scroll-target="#distribuição-t-de-student-leptocúrtica">Distribuição <span class="math inline">\(t\)</span> de Student (leptocúrtica)</a></li>
+  </ul></li>
   <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão">Conclusão</a></li>
   </ul></li>
   <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
@@ -333,7 +340,7 @@ Como usar este roteiro
 <section id="retomando-o-projeto" class="level1">
 <h1>1. Retomando o projeto</h1>
 <p>Comece pela verificação do estado atual do projeto.</p>
-<div id="e3349f0e" class="cell" data-execution_count="1">
+<div id="8434e770" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Onde paramos? O git log conta a historia ate aqui:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd .<span class="op">/</span>projeto<span class="op">-</span>vendas <span class="op">&amp;&amp;</span> git log <span class="op">--</span>oneline</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -358,7 +365,7 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 <section id="preparando-os-dados" class="level1">
 <h1>2. Preparando os dados</h1>
 <p>O ponto de partida é o mesmo da Aula 3. Primeiro, carrega-se a base, calcula-se a receita por item, cria-se o indicador de cancelamento e isolam-se as vendas válidas. As bibliotecas são importadas em uma única etapa. Pandas e numpy apoiam a manipulação dos dados, scipy fornece as funções estatísticas da seção 6, e matplotlib e seaborn são empregados nas visualizações.</p>
-<div id="68bf7a5f" class="cell" data-execution_count="2">
+<div id="bfbad7ad" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -370,7 +377,7 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="a892ee3b" class="cell" data-execution_count="3">
+<div id="b8973dc1" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> Path(<span class="st">"projeto-vendas"</span>) <span class="op">/</span> <span class="st">"data"</span> <span class="op">/</span> <span class="st">"online_retail.xlsx"</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>column_names <span class="op">=</span> {</span>
@@ -457,7 +464,7 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 </div>
 </div>
 </div>
-<div id="2c873f5c" class="cell" data-execution_count="4">
+<div id="35f28828" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>valid_sales_filter <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>retail[<span class="st">"is_cancelled"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> retail[<span class="st">"quantity"</span>].gt(<span class="dv">0</span>)</span>
@@ -559,7 +566,7 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 </div>
 </div>
 <p>Em seguida, são reconstruídas duas agregações da Aula 3. A tabela <code>orders</code> contém uma linha por pedido, enquanto <code>customers</code> contém uma linha por cliente identificado.</p>
-<div id="858151f6" class="cell" data-execution_count="5">
+<div id="78629870" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> (</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"invoice_no"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
@@ -641,7 +648,7 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
 </div>
 </div>
 </div>
-<div id="e97a1761" class="cell" data-execution_count="6">
+<div id="eab5b9a4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>customers <span class="op">=</span> (</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    sales</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"customer_id"</span>])</span>
@@ -725,7 +732,7 @@ Clientes identificados: 4,338</code></pre>
 <p>A resposta depende do universo ao qual se pretende generalizar os resultados. Se a base constitui um registro completo das transações realizadas entre dezembro de 2010 e dezembro de 2011, ela pode ser considerada a população desse período. Para prever o comportamento da loja no ano seguinte, contudo, o mesmo conjunto funciona como amostra, pois representa apenas um dos vários períodos possíveis.</p>
 <p>Essa distinção é relevante porque a validade das conclusões depende da representatividade da amostra, e não apenas de seu tamanho. Uma amostra enviesada pode conduzir a conclusões inadequadas. Para examinar esse problema, compara-se a média de <code>order_value</code> do conjunto completo com a de duas amostras de 200 pedidos. A primeira é sorteada aleatoriamente entre todos os países. A segunda contém apenas pedidos do Reino Unido, país predominante na base, e por isso apresenta viés de seleção.</p>
 <p>Espera-se que a média da amostra aleatória oscile em torno da média populacional em razão da variabilidade amostral. A amostra enviesada tende a apresentar média inferior, pois o ticket médio do Reino Unido é menor que o dos demais países em conjunto. Portanto, a média dos pedidos britânicos não deve ser generalizada para todos os países, ainda que as duas amostras tenham o mesmo tamanho.</p>
-<div id="aa7bb1ae" class="cell" data-execution_count="7">
+<div id="556c6558" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>dataset_mean <span class="op">=</span> orders[<span class="st">"order_value"</span>].mean()</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-3" class="code-annotation-target"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>random_sample <span class="op">=</span> orders.sample(n<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
@@ -751,7 +758,7 @@ Clientes identificados: 4,338</code></pre>
 </dl>
 </div>
 </div>
-<div id="62b4ad8c" class="cell" data-execution_count="8">
+<div id="862e5bc2" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sampling_summary <span class="op">=</span> pd.Series(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"media_conjunto_completo"</span>: dataset_mean,</span>
@@ -793,7 +800,7 @@ Clientes identificados: 4,338</code></pre>
 </div>
 </div>
 <p>A amostra enviesada (£ 465,36) ficou mais próxima da média geral (£ 534,40) do que a amostra aleatória (£ 445,14). O viés é pequeno porque a própria base é desbalanceada. Como o Reino Unido responde por aproximadamente 90% dos pedidos, uma amostra restrita a esse país tende a permanecer próxima de uma amostra formada por todos os países. A amostra balanceada produz o efeito oposto. Ao atribuir o mesmo peso aos 38 países, sua média aumenta para £ 1.064,50, quase o dobro da média populacional. Embora registrem poucos pedidos, os países situados fora do Reino Unido apresentam ticket médio substancialmente maior. Balanceamento e representatividade, portanto, não são equivalentes. Uma amostra representativa preserva a proporção observada de cada grupo, enquanto uma amostra balanceada responde a outra pergunta, relacionada ao pedido médio por país, e não ao pedido médio da loja.</p>
-<div id="c9636f14" class="cell" data-execution_count="9">
+<div id="9e9b7813" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a>balanced_sample <span class="op">=</span> (</span>
 <span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>    orders</span>
 <span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"country"</span>)</span>
@@ -810,7 +817,7 @@ Clientes identificados: 4,338</code></pre>
 </dl>
 </div>
 </div>
-<div id="9b99e32c" class="cell" data-execution_count="10">
+<div id="aadd956f" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sampling_summary <span class="op">=</span> pd.Series(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"media_conjunto_completo"</span>: dataset_mean,</span>
@@ -857,7 +864,7 @@ Clientes identificados: 4,338</code></pre>
 </div>
 </div>
 <p>O gráfico abaixo mostra o ticket médio de cada um dos 38 países, ordenado do maior para o menor, com a média geral como referência.</p>
-<div id="c5ba06f1" class="cell" data-execution_count="11">
+<div id="412574b6" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a>country_order_value_mean <span class="op">=</span> (</span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>    orders</span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"country"</span>)[<span class="st">"order_value"</span>]</span>
@@ -894,7 +901,7 @@ Clientes identificados: 4,338</code></pre>
 </div>
 <p>A maioria dos países situa-se acima da média geral. O Reino Unido, que concentra o maior volume de pedidos, é um dos poucos países abaixo dessa referência. Por isso, a atribuição do mesmo peso a todos os países eleva a média. Individualmente, a maioria apresenta ticket médio superior ao valor geral, embora participe com poucos pedidos.</p>
 <p>O gráfico seguinte apresenta a quantidade de pedidos por país. A ordem dos países é mantida para permitir a comparação direta entre ticket médio e volume.</p>
-<div id="91b3d130" class="cell" data-execution_count="12">
+<div id="34aee853" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a>country_order_count <span class="op">=</span> orders.groupby(<span class="st">"country"</span>)[<span class="st">"order_value"</span>].size()</span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">10</span>))</span>
@@ -938,7 +945,7 @@ Clientes identificados: 4,338</code></pre>
 <section id="medidas-de-tendência-central" class="level1">
 <h1>4. Medidas de tendência central</h1>
 <p>As medidas de tendência central sintetizam um conjunto de dados em um valor representativo de seu centro. Antes de calculá-las, convém examinar a distribuição dos valores dos pedidos.</p>
-<div id="f466dc22" class="cell" data-execution_count="13">
+<div id="12d30c5e" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-1" class="code-annotation-target"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a>upper_limit <span class="op">=</span> orders[<span class="st">"order_value"</span>].quantile(<span class="fl">0.99</span>)</span>
 <span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
@@ -975,7 +982,7 @@ Clientes identificados: 4,338</code></pre>
 <section id="média" class="level2">
 <h2 class="anchored" data-anchor-id="média">4.1 Média</h2>
 <p>A média corresponde à soma dos valores dividida pela quantidade de observações. O cálculo manual para o valor dos pedidos pode ser comparado ao resultado do método fornecido pelo pandas.</p>
-<div id="cdbe1385" class="cell" data-execution_count="14">
+<div id="0f9a5492" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>manual_mean <span class="op">=</span> orders[<span class="st">"order_value"</span>].<span class="bu">sum</span>() <span class="op">/</span> <span class="bu">len</span>(orders)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pandas_mean <span class="op">=</span> orders[<span class="st">"order_value"</span>].mean()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -990,7 +997,7 @@ Média via .mean():           £ 534.40</code></pre>
 <section id="valor-esperado" class="level2">
 <h2 class="anchored" data-anchor-id="valor-esperado">4.2 Valor esperado</h2>
 <p>A média também pode ser interpretada por meio do valor esperado. Em vez de somar todas as observações e dividir o resultado por <code>n</code>, agrupam-se valores semelhantes, multiplica-se a média de cada grupo pela proporção correspondente e somam-se os produtos. Esse cálculo é expresso por <code>E[X] = Σ xᵢ P(X = xᵢ)</code>. A seguir, ele é aplicado ao valor do pedido, dividido em dez grupos de tamanho aproximadamente igual.</p>
-<div id="67ea794d" class="cell" data-execution_count="15">
+<div id="d9ffc693" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-1" class="code-annotation-target"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a>order_value_bins <span class="op">=</span> pd.qcut(orders[<span class="st">"order_value"</span>], q<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a>bin_stats <span class="op">=</span> (</span>
@@ -1099,7 +1106,7 @@ Média via .mean():           £ 534.40</code></pre>
 </div>
 </div>
 </div>
-<div id="f6883a36" class="cell" data-execution_count="16">
+<div id="10b7e065" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>expected_value <span class="op">=</span> (bin_stats[<span class="st">"media_do_grupo"</span>] <span class="op">*</span> bin_stats[<span class="st">"proporcao"</span>]).<span class="bu">sum</span>()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Média direta:        £ </span><span class="sc">{</span>orders[<span class="st">'order_value'</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
@@ -1114,7 +1121,7 @@ Valor esperado E[X]: £ 534.40</code></pre>
 <section id="média-ponderada-e-média-aparada" class="level2">
 <h2 class="anchored" data-anchor-id="média-ponderada-e-média-aparada">4.3 Média ponderada e média aparada</h2>
 <p>A média simples atribui o mesmo peso a cada linha da base. Algumas questões, entretanto, referem-se às unidades vendidas, e não às linhas. Nesse caso, compara-se a média simples do preço unitário à média ponderada pela quantidade vendida de cada item. Esta última representa o preço médio efetivamente pago por unidade.</p>
-<div id="5f3e88da" class="cell" data-execution_count="17">
+<div id="f67dbe45" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="annotated-cell-17"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-hidden="true" tabindex="-1"></a>simple_price_mean <span class="op">=</span> sales[<span class="st">"unit_price"</span>].mean()</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-17" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-17-2" class="code-annotation-target"><a href="#annotated-cell-17-2" aria-hidden="true" tabindex="-1"></a>weighted_price_mean <span class="op">=</span> (sales[<span class="st">"unit_price"</span>] <span class="op">*</span> sales[<span class="st">"quantity"</span>]).<span class="bu">sum</span>() <span class="op">/</span> sales[<span class="st">"quantity"</span>].<span class="bu">sum</span>()</span>
 <span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1135,7 +1142,7 @@ Preço médio ponderado (por unidade):    £ 1.91</code></pre>
 </div>
 <p>As duas médias divergem porque itens baratos costumam ser vendidos em quantidades maiores nesta base.</p>
 <p>Outra forma de controlar a influência de valores extremos consiste em remover, antes do cálculo, uma proporção equivalente dos menores e dos maiores valores. A biblioteca scipy fornece uma função para esse procedimento.</p>
-<div id="a50b6680" class="cell" data-execution_count="18">
+<div id="8d029503" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="annotated-cell-18"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-1" class="code-annotation-target"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a>order_value_trimmed <span class="op">=</span> stats.trim_mean(orders[<span class="st">"order_value"</span>], proportiontocut<span class="op">=</span><span class="fl">0.05</span>)</span>
 <span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Média simples do valor do pedido: £ </span><span class="sc">{</span>orders[<span class="st">'order_value'</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
@@ -1158,7 +1165,7 @@ Média aparada (5% de cada lado):  £ 366.44</code></pre>
 <section id="mediana" class="level2">
 <h2 class="anchored" data-anchor-id="mediana">4.4 Mediana</h2>
 <p>A mediana é o valor central de um conjunto ordenado. Metade das observações situa-se abaixo dela, e a outra metade, acima. Como depende da posição das observações, e não da soma de seus valores, é pouco sensível à magnitude dos extremos.</p>
-<div id="fd1fec85" class="cell" data-execution_count="19">
+<div id="f8c5447e" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>order_value_median <span class="op">=</span> orders[<span class="st">"order_value"</span>].median()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Média do valor do pedido:   £ </span><span class="sc">{</span>orders[<span class="st">'order_value'</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
@@ -1172,7 +1179,7 @@ Mediana do valor do pedido: £ 303.84</code></pre>
 <section id="moda" class="level2">
 <h2 class="anchored" data-anchor-id="moda">4.5 Moda</h2>
 <p>A moda é o valor (ou categoria) mais frequente. Ela pode ser calculada tanto para variáveis numéricas quanto categóricas, e nem sempre é única.</p>
-<div id="f6d9f43f" class="cell" data-execution_count="20">
+<div id="3823b082" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>quantity_mode <span class="op">=</span> sales[<span class="st">"quantity"</span>].mode()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>country_mode <span class="op">=</span> sales[<span class="st">"country"</span>].mode()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1187,7 +1194,7 @@ País mais frequente: ['United Kingdom']</code></pre>
 <section id="distribuição-bimodal-de-clientes-varejo-e-atacado" class="level3">
 <h3 class="anchored" data-anchor-id="distribuição-bimodal-de-clientes-varejo-e-atacado">4.5.1 Distribuição bimodal de clientes varejo e atacado</h3>
 <p>O exemplo seguinte é hipotético e não utiliza dados do conjunto analisado neste material. Sua finalidade é mostrar a forma de uma distribuição com mais de uma moda.</p>
-<div id="2abc1fdd" class="cell" data-execution_count="21">
+<div id="59a3e8db" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="annotated-cell-21"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-1" class="code-annotation-target"><a href="#annotated-cell-21-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
 <span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-21-3" class="code-annotation-target"><a href="#annotated-cell-21-3" aria-hidden="true" tabindex="-1"></a>varejo <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="dv">50</span>, scale<span class="op">=</span><span class="dv">15</span>, size<span class="op">=</span><span class="dv">800</span>)</span>
@@ -1236,7 +1243,7 @@ País mais frequente: ['United Kingdom']</code></pre>
 <h2 class="anchored" data-anchor-id="média-versus-mediana-o-problema-do-cliente-atacadista">4.6 Média versus mediana: o problema do cliente atacadista</h2>
 <p>Um exemplo divulgado em 2016 ilustra a sensibilidade da média a valores extremos. Formandos em Geografia de uma universidade norte-americana pareciam receber um salário inicial médio excepcionalmente alto porque um único ex-aluno, Michael Jordan, elevava a média do grupo. Sem essa observação, o salário típico da turma era muito menor. O caso demonstra como um valor extremo pode alterar a média sem produzir efeito comparável sobre a mediana.</p>
 <p>O conjunto Online Retail apresenta situação semelhante devido aos clientes atacadistas identificados na Aula 3. A comparação seguinte mostra a receita média por cliente antes e depois da remoção do cliente com maior receita.</p>
-<div id="99419e8f" class="cell" data-execution_count="22">
+<div id="6cef4b43" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>top_customer <span class="op">=</span> customers.nlargest(<span class="dv">1</span>, <span class="st">"revenue"</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>top_customer_id <span class="op">=</span> top_customer[<span class="st">"customer_id"</span>].iloc[<span class="dv">0</span>]</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>top_customer_revenue <span class="op">=</span> top_customer[<span class="st">"revenue"</span>].iloc[<span class="dv">0</span>]</span>
@@ -1293,7 +1300,7 @@ País mais frequente: ['United Kingdom']</code></pre>
 </div>
 </div>
 <p>A remoção de um único cliente altera a média de forma perceptível, enquanto a mediana permanece praticamente estável. Quando a retirada da maior observação modifica substancialmente o resultado, poucos valores exercem influência elevada sobre a média. Nessas condições, a mediana descreve melhor o cliente típico. O mesmo efeito pode ser observado no valor dos pedidos pela posição da média, da mediana e da moda na distribuição.</p>
-<div id="af050825" class="cell" data-execution_count="23">
+<div id="e16e3941" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a>order_value_mean <span class="op">=</span> orders[<span class="st">"order_value"</span>].mean()</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-2" class="code-annotation-target"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>order_value_mode <span class="op">=</span> orders[<span class="st">"order_value"</span>].mode().iloc[<span class="dv">0</span>]</span>
 <span id="annotated-cell-23-3"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>upper_limit <span class="op">=</span> orders[<span class="st">"order_value"</span>].quantile(<span class="fl">0.99</span>)</span>
@@ -1342,7 +1349,7 @@ País mais frequente: ['United Kingdom']</code></pre>
 <section id="desvio-variância-e-desvio-padrão" class="level2">
 <h2 class="anchored" data-anchor-id="desvio-variância-e-desvio-padrão">5.1 Desvio, variância e desvio-padrão</h2>
 <p>O desvio de uma observação em relação à média é dado por <code>xᵢ - x̄</code>. A variância corresponde à média dos quadrados desses desvios, procedimento que impede o cancelamento entre valores positivos e negativos. O desvio-padrão é a raiz quadrada da variância e, por isso, é expresso na unidade original dos dados.</p>
-<div id="694c5b1a" class="cell" data-execution_count="24">
+<div id="e5e14f78" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="annotated-cell-24"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-24-1"><a href="#annotated-cell-24-1" aria-hidden="true" tabindex="-1"></a>order_values <span class="op">=</span> orders[<span class="st">"order_value"</span>]</span>
 <span id="annotated-cell-24-2"><a href="#annotated-cell-24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-24-3"><a href="#annotated-cell-24-3" aria-hidden="true" tabindex="-1"></a>deviations <span class="op">=</span> order_values <span class="op">-</span> order_values.mean()</span>
@@ -1380,7 +1387,7 @@ Desvio-padrão pandas: 1,780.44</code></pre>
 <section id="desvio-absoluto-médio-e-desvio-absoluto-mediano" class="level2">
 <h2 class="anchored" data-anchor-id="desvio-absoluto-médio-e-desvio-absoluto-mediano">5.2 Desvio absoluto médio e desvio absoluto mediano</h2>
 <p>A variância penaliza desvios grandes desproporcionalmente, por causa do quadrado. Duas alternativas mais robustas trabalham com valores absolutos: o desvio absoluto médio e o desvio absoluto mediano (MAD).</p>
-<div id="18a3d374" class="cell" data-execution_count="25">
+<div id="b502b49d" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="annotated-cell-25"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-hidden="true" tabindex="-1"></a>mean_absolute_deviation <span class="op">=</span> (order_values <span class="op">-</span> order_values.mean()).<span class="bu">abs</span>().mean()</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-2" class="code-annotation-target"><a href="#annotated-cell-25-2" aria-hidden="true" tabindex="-1"></a>median_absolute_deviation <span class="op">=</span> stats.median_abs_deviation(order_values)</span>
 <span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1406,7 +1413,7 @@ Desvio absoluto mediano: £ 161.84</code></pre>
 <section id="percentis-e-amplitude-interquartílica" class="level2">
 <h2 class="anchored" data-anchor-id="percentis-e-amplitude-interquartílica">5.3 Percentis e amplitude interquartílica</h2>
 <p>Um percentil <code>P</code> indica o valor abaixo do qual se encontra determinada proporção das observações. Os quartis correspondem aos percentis 25, 50 e 75, sendo o segundo quartil igual à mediana. A amplitude interquartílica (IQR) é a diferença entre o terceiro e o primeiro quartil e mede a dispersão da metade central dos dados com baixa sensibilidade aos extremos.</p>
-<div id="f009324d" class="cell" data-execution_count="26">
+<div id="a9fe4848" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="annotated-cell-26"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-26-1" class="code-annotation-target"><a href="#annotated-cell-26-1" aria-hidden="true" tabindex="-1"></a>q1, q2, q3 <span class="op">=</span> order_values.quantile([<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>])</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-26-2" class="code-annotation-target"><a href="#annotated-cell-26-2" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> stats.iqr(order_values)</span>
 <span id="annotated-cell-26-3"><a href="#annotated-cell-26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1463,7 +1470,7 @@ Desvio absoluto mediano: £ 161.84</code></pre>
 </div>
 </div>
 <p>Uma regra prática amplamente empregada classifica como potencial valor atípico qualquer observação inferior a <code>Q1 - 1,5 × IQR</code> ou superior a <code>Q3 + 1,5 × IQR</code>. A regra será aplicada para identificar os pedidos que exigem investigação, sem pressupor que devam ser descartados. Essa cautela retoma a distinção, discutida na Aula 3, entre operações de atacado e erros nos dados.</p>
-<div id="2a526dcd" class="cell" data-execution_count="27">
+<div id="22d6af6c" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="op">=</span> q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> iqr</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="op">=</span> q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> iqr</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1479,7 +1486,7 @@ Limite superior: £ 1,010.27
 Pedidos sinalizados pela regra do IQR: 1,811 de 19,960</code></pre>
 </div>
 </div>
-<div id="1e956d52" class="cell" data-execution_count="28">
+<div id="70fe726d" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>flagged_orders[<span class="st">"country"</span>].value_counts().head(<span class="dv">10</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>country
@@ -1498,7 +1505,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 <p>Os pedidos sinalizados concentram-se em poucos países e reproduzem o padrão de compras em grande volume por clientes específicos, identificado na Aula 3 como possível atividade atacadista. A regra do IQR é útil para localizar candidatos a valores atípicos, mas a distinção entre erro e operação legítima requer investigação dos dados e do contexto de negócio.</p>
 <p>O <em>boxplot</em> oferece uma representação visual dessas medidas. A caixa estende-se de Q1 a Q3, a linha interna indica a mediana, e os bigodes alcançam as observações mais extremas que ainda se encontram dentro dos limites definidos por <code>1,5 × IQR</code>. Os pontos além desses limites são exibidos individualmente.</p>
-<div id="05faaad9" class="cell" data-execution_count="29">
+<div id="709fed31" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
 <span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-29" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-29-3" class="code-annotation-target"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span>order_values, ax<span class="op">=</span>ax, whis<span class="op">=</span><span class="fl">1.5</span>, fliersize<span class="op">=</span><span class="dv">3</span>)</span>
@@ -1524,22 +1531,246 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>A caixa central compacta representa a metade dos pedidos situada entre Q1 e Q3. Os pontos à direita formam a cauda de pedidos elevados sinalizados pela regra do IQR, entre os quais podem existir operações de atacado.</p>
+<div id="7316ff8b" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span>order_values, ax<span class="op">=</span>ax, whis<span class="op">=</span><span class="fl">1.5</span>, fliersize<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="annotated-cell-30-4"><a href="#annotated-cell-30-4" aria-hidden="true" tabindex="-1"></a>ax.axvline(lower_bound, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="ss">f"Limite inferior: £ </span><span class="sc">{</span>lower_bound<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-30-5"><a href="#annotated-cell-30-5" aria-hidden="true" tabindex="-1"></a>ax.axvline(upper_bound, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="ss">f"Limite superior: £ </span><span class="sc">{</span>upper_bound<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-30-6"><a href="#annotated-cell-30-6" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="annotated-cell-30-7"><a href="#annotated-cell-30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-30-8"><a href="#annotated-cell-30-8" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor do pedido (£)"</span>)</span>
+<span id="annotated-cell-30-9"><a href="#annotated-cell-30-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Boxplot do valor do pedido, com outliers pela regra do IQR"</span>)</span>
+<span id="annotated-cell-30-10"><a href="#annotated-cell-30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-30-11"><a href="#annotated-cell-30-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-31-output-1.png" width="784" height="382" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao limitar a distribuição ao limite superior, a cauda de pedidos elevados é removida e a caixa central torna-se mais visível.</p>
+<div id="babf8e50" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="annotated-cell-31"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-1" class="code-annotation-target"><a href="#annotated-cell-31-1" aria-hidden="true" tabindex="-1"></a>trimmed_order_values <span class="op">=</span> order_values[order_values.le(upper_bound)]</span>
+<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span>trimmed_order_values, ax<span class="op">=</span>ax, whis<span class="op">=</span><span class="fl">1.5</span>, fliersize<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor do pedido (£)"</span>)</span>
+<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Boxplot do valor do pedido, limitado ao limite superior do IQR"</span>)</span>
+<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-31" data-code-lines="1" data-code-annotation="1"><code>order_values.le(upper_bound)</code> mantém apenas os pedidos com valor até o limite superior, removendo a cauda de valores sinalizados como potenciais outliers.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-32-output-1.png" width="763" height="382" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Por que ainda aparecem outliers após o corte?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>O boxplot ainda exibe pontos além dos bigodes porque <code>sns.boxplot</code> recalcula Q1, Q3 e IQR a partir dos dados já filtrados, em vez de reaproveitar os limites originais. Como a distribuição permanece assimétrica à direita mesmo sem a cauda mais extrema, o critério de <code>1,5 × IQR</code> volta a sinalizar como outliers as observações mais altas do subconjunto restante.</p>
+</div>
+</div>
+<p>Limitando a distribuição também pelo limite inferior, ambas as caudas sinalizadas pela regra do IQR são removidas.</p>
+<div id="5313a661" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="annotated-cell-32"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-32" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-32-1" class="code-annotation-target"><a href="#annotated-cell-32-1" aria-hidden="true" tabindex="-1"></a>trimmed_order_values <span class="op">=</span> order_values[order_values.between(lower_bound, upper_bound)]</span>
+<span id="annotated-cell-32-2"><a href="#annotated-cell-32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-32-3"><a href="#annotated-cell-32-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="annotated-cell-32-4"><a href="#annotated-cell-32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-32-5"><a href="#annotated-cell-32-5" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span>trimmed_order_values, ax<span class="op">=</span>ax, whis<span class="op">=</span><span class="fl">1.5</span>, fliersize<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="annotated-cell-32-6"><a href="#annotated-cell-32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-32-7"><a href="#annotated-cell-32-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor do pedido (£)"</span>)</span>
+<span id="annotated-cell-32-8"><a href="#annotated-cell-32-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Boxplot do valor do pedido, limitado aos limites do IQR"</span>)</span>
+<span id="annotated-cell-32-9"><a href="#annotated-cell-32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-32-10"><a href="#annotated-cell-32-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-32" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-32" data-code-lines="1" data-code-annotation="1"><code>order_values.between(lower_bound, upper_bound)</code> mantém apenas os pedidos com valor dentro dos limites inferior e superior, removendo as caudas sinalizadas como potenciais outliers.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-33-output-1.png" width="763" height="382" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Por que a remoção pelo <code>lower_bound</code> não alterou o boxplot?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Como <code>order_value</code> é sempre positivo e a distribuição é assimétrica à direita, <code>lower_bound</code> (<code>Q1 - 1,5 × IQR</code>) resulta em um valor negativo. Nenhum pedido tem valor abaixo de zero, logo a condição <code>order_values.ge(lower_bound)</code>, embutida em <code>between</code>, não exclui nenhuma observação adicional além das já removidas por <code>upper_bound</code>. Por isso o segundo boxplot é visualmente idêntico ao primeiro.</p>
+</div>
+</div>
+<p>O histograma a seguir reúne, em um único gráfico, as estatísticas descritivas vistas até aqui: medidas de tendência central (média, mediana e moda), os quartis (Q1, Q2, Q3 e Q4) e os limites de <code>1,5 × IQR</code>.</p>
+<div id="0874d744" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="annotated-cell-33"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-33" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-33-1" class="code-annotation-target"><a href="#annotated-cell-33-1" aria-hidden="true" tabindex="-1"></a>q4 <span class="op">=</span> order_values.quantile(<span class="fl">1.00</span>)</span>
+<span id="annotated-cell-33-2"><a href="#annotated-cell-33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-33-3"><a href="#annotated-cell-33-3" aria-hidden="true" tabindex="-1"></a>descriptive_summary <span class="op">=</span> pd.Series(</span>
+<span id="annotated-cell-33-4"><a href="#annotated-cell-33-4" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="annotated-cell-33-5"><a href="#annotated-cell-33-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Média"</span>: order_value_mean,</span>
+<span id="annotated-cell-33-6"><a href="#annotated-cell-33-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Mediana (Q2)"</span>: order_value_median,</span>
+<span id="annotated-cell-33-7"><a href="#annotated-cell-33-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Moda"</span>: order_value_mode,</span>
+<span id="annotated-cell-33-8"><a href="#annotated-cell-33-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Q1 (25%)"</span>: q1,</span>
+<span id="annotated-cell-33-9"><a href="#annotated-cell-33-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Q2 (50%, mediana)"</span>: q2,</span>
+<span id="annotated-cell-33-10"><a href="#annotated-cell-33-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Q3 (75%)"</span>: q3,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-33" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-33-11" class="code-annotation-target"><a href="#annotated-cell-33-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Q4 (100%, máximo)"</span>: q4,</span>
+<span id="annotated-cell-33-12"><a href="#annotated-cell-33-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Limite inferior"</span>: lower_bound,</span>
+<span id="annotated-cell-33-13"><a href="#annotated-cell-33-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Limite superior"</span>: upper_bound,</span>
+<span id="annotated-cell-33-14"><a href="#annotated-cell-33-14" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="annotated-cell-33-15"><a href="#annotated-cell-33-15" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"order_value"</span>,</span>
+<span id="annotated-cell-33-16"><a href="#annotated-cell-33-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-33-17"><a href="#annotated-cell-33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-33-18"><a href="#annotated-cell-33-18" aria-hidden="true" tabindex="-1"></a>descriptive_summary.<span class="bu">round</span>(<span class="dv">2</span>).to_frame()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-33" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-33" data-code-lines="1" data-code-annotation="1"><code>order_values.quantile(1.00)</code> corresponde ao percentil 100, ou seja, ao valor máximo da distribuição. Embora a divisão em quartis seja formada por Q1, Q2 e Q3, referir-se ao máximo como Q4 completa a leitura da distribuição em quatro quartos.</span>
+</dd>
+<dt data-target-cell="annotated-cell-33" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-33" data-code-lines="11" data-code-annotation="2">Q4 corresponde ao pedido de maior valor da base e está muito distante dos demais pedidos, o que já era esperado pela assimetria e pela cauda de outliers identificadas no boxplot.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">order_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Média</td>
+<td>534.40</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Mediana (Q2)</td>
+<td>303.84</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Moda</td>
+<td>15.00</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Q1 (25%)</td>
+<td>152.51</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Q2 (50%, mediana)</td>
+<td>303.84</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Q3 (75%)</td>
+<td>495.62</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Q4 (100%, máximo)</td>
+<td>168469.60</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Limite inferior</td>
+<td>-362.15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Limite superior</td>
+<td>1010.27</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="01822db4" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="annotated-cell-34"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-34-1"><a href="#annotated-cell-34-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="annotated-cell-34-2"><a href="#annotated-cell-34-2" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-34-3" class="code-annotation-target"><a href="#annotated-cell-34-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(trimmed_order_values, bins<span class="op">=</span><span class="dv">50</span>, binrange<span class="op">=</span>(<span class="dv">0</span>, upper_bound), ax<span class="op">=</span>ax)</span>
+<span id="annotated-cell-34-4"><a href="#annotated-cell-34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-34-5"><a href="#annotated-cell-34-5" aria-hidden="true" tabindex="-1"></a>ax.axvline(order_value_mean, color<span class="op">=</span><span class="st">"crimson"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Média: £ </span><span class="sc">{</span>order_value_mean<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-6"><a href="#annotated-cell-34-6" aria-hidden="true" tabindex="-1"></a>ax.axvline(order_value_median, color<span class="op">=</span><span class="st">"darkorange"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Mediana (Q2): £ </span><span class="sc">{</span>order_value_median<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-7"><a href="#annotated-cell-34-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(order_value_mode, color<span class="op">=</span><span class="st">"seagreen"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="ss">f"Moda: £ </span><span class="sc">{</span>order_value_mode<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-8"><a href="#annotated-cell-34-8" aria-hidden="true" tabindex="-1"></a>ax.axvline(q1, color<span class="op">=</span><span class="st">"steelblue"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="ss">f"Q1: £ </span><span class="sc">{</span>q1<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-9"><a href="#annotated-cell-34-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(q3, color<span class="op">=</span><span class="st">"steelblue"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="ss">f"Q3: £ </span><span class="sc">{</span>q3<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-10"><a href="#annotated-cell-34-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(upper_bound, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="ss">f"Limite superior (IQR): £ </span><span class="sc">{</span>upper_bound<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-34-11"><a href="#annotated-cell-34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-34-12"><a href="#annotated-cell-34-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, upper_bound)</span>
+<span id="annotated-cell-34-13"><a href="#annotated-cell-34-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor do pedido (£)"</span>)</span>
+<span id="annotated-cell-34-14"><a href="#annotated-cell-34-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Número de pedidos"</span>)</span>
+<span id="annotated-cell-34-15"><a href="#annotated-cell-34-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Estatísticas descritivas do valor do pedido"</span>)</span>
+<span id="annotated-cell-34-16"><a href="#annotated-cell-34-16" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="annotated-cell-34-17"><a href="#annotated-cell-34-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-34-18"><a href="#annotated-cell-34-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-34" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-34" data-code-lines="3" data-code-annotation="1">O histograma usa <code>trimmed_order_values</code>, já limitado aos limites inferior e superior do IQR, para evitar que a cauda de outliers distorça a escala do eixo <code>x</code>. Q4 (o máximo) e o limite inferior, negativo, não aparecem como linhas verticais porque ficam fora dessa faixa visível; seus valores exatos constam na tabela de estatísticas descritivas acima.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-35-output-1.png" width="846" height="457" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>O histograma confirma visualmente os resultados numéricos discutidos ao longo da seção: a moda e a mediana concentram-se nos valores mais baixos, a média é deslocada para a direita pelos pedidos de maior valor, e o limite superior do IQR já corta a distribuição próximo do início da cauda longa que caracteriza os pedidos de atacado.</p>
 </section>
 </section>
 <section id="assimetria-e-curtose" class="level1">
 <h1>6. Assimetria e curtose</h1>
 <p>Assimetria (<em>skewness</em>) e curtose (<em>kurtosis</em>) complementam as medidas de centro e dispersão na descrição da forma de uma distribuição. A assimetria indica a direção e a intensidade do prolongamento das caudas. A curtose expressa o peso das caudas e, portanto, a propensão da distribuição a produzir valores extremos. Na distribuição normal, tanto a assimetria quanto o excesso de curtose são iguais a zero.</p>
-<div id="c63c5fe5" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a>order_value_skew <span class="op">=</span> stats.skew(order_values)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-30-2" class="code-annotation-target"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a>order_value_kurtosis <span class="op">=</span> stats.kurtosis(order_values)</span>
-<span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-30-4"><a href="#annotated-cell-30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Assimetria (skewness) do valor do pedido: </span><span class="sc">{</span>order_value_skew<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="annotated-cell-30-5"><a href="#annotated-cell-30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Excesso de curtose (kurtosis) do valor do pedido: </span><span class="sc">{</span>order_value_kurtosis<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c999f2c5" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="annotated-cell-35"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-35-1"><a href="#annotated-cell-35-1" aria-hidden="true" tabindex="-1"></a>order_value_skew <span class="op">=</span> stats.skew(order_values)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-35" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-35-2" class="code-annotation-target"><a href="#annotated-cell-35-2" aria-hidden="true" tabindex="-1"></a>order_value_kurtosis <span class="op">=</span> stats.kurtosis(order_values)</span>
+<span id="annotated-cell-35-3"><a href="#annotated-cell-35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-35-4"><a href="#annotated-cell-35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Assimetria (skewness) do valor do pedido: </span><span class="sc">{</span>order_value_skew<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-35-5"><a href="#annotated-cell-35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Excesso de curtose (kurtosis) do valor do pedido: </span><span class="sc">{</span>order_value_kurtosis<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-30" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-35" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-30" data-code-lines="2" data-code-annotation="1"><code>stats.kurtosis</code> já usa <code>fisher=True</code> por padrão, retornando o excesso de curtose (mesma convenção da distribuição normal como referência igual a zero): positivo indica caudas mais pesadas que a normal.</span>
+<span data-code-cell="annotated-cell-35" data-code-lines="2" data-code-annotation="1"><code>stats.kurtosis</code> já usa <code>fisher=True</code> por padrão, retornando o excesso de curtose (mesma convenção da distribuição normal como referência igual a zero): positivo indica caudas mais pesadas que a normal.</span>
 </dd>
 </dl>
 </div>
@@ -1550,71 +1781,183 @@ Excesso de curtose (kurtosis) do valor do pedido: 4234.71</code></pre>
 </div>
 <p>A assimetria positiva elevada indica uma cauda longa à direita e é compatível com a relação <code>moda &lt; mediana &lt; média</code>. O excesso de curtose positivo e elevado indica caudas mais pesadas que as da distribuição normal. Assim, valores muito distantes do centro, como os pedidos de atacado, ocorrem com frequência superior à esperada sob um modelo normal. Por outro lado, a curtose é menos evidente na inspeção direta dos dados porque descreve principalmente o peso das caudas, e não apenas a altura do pico. Costuma ser classificada em três tipos.</p>
 <p>Os três histogramas sintéticos seguintes isolam esse efeito ao comparar distribuições centradas no mesmo ponto, cada uma representativa de um dos tipos.</p>
-<section id="os-três-tipos-de-curtose" class="level2">
-<h2 class="anchored" data-anchor-id="os-três-tipos-de-curtose">6.1 Os três tipos de curtose</h2>
-<p>O exemplo seguinte é hipotético e não utiliza dados do conjunto analisado neste material. Sua finalidade é isolar visualmente o efeito da curtose.</p>
-<div id="0f6fd2df" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="annotated-cell-31"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-1" class="code-annotation-target"><a href="#annotated-cell-31-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">7</span>)</span>
-<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-31-3" class="code-annotation-target"><a href="#annotated-cell-31-3" aria-hidden="true" tabindex="-1"></a>light_tail <span class="op">=</span> rng.uniform(low<span class="op">=-</span><span class="dv">3</span>, high<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
-<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-hidden="true" tabindex="-1"></a>normal_tail <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-31-5" class="code-annotation-target"><a href="#annotated-cell-31-5" aria-hidden="true" tabindex="-1"></a>heavy_tail <span class="op">=</span> rng.standard_t(df<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
-<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-hidden="true" tabindex="-1"></a>sns.histplot(light_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>], stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Platicúrtica (curtose &lt; 0)"</span>)</span>
-<span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
-<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-13"><a href="#annotated-cell-31-13" aria-hidden="true" tabindex="-1"></a>sns.histplot(normal_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>], stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="annotated-cell-31-14"><a href="#annotated-cell-31-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Mesocúrtica (curtose ≈ 0)"</span>)</span>
-<span id="annotated-cell-31-15"><a href="#annotated-cell-31-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
-<span id="annotated-cell-31-16"><a href="#annotated-cell-31-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-17"><a href="#annotated-cell-31-17" aria-hidden="true" tabindex="-1"></a>sns.histplot(heavy_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>axes[<span class="dv">2</span>], stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="annotated-cell-31-18"><a href="#annotated-cell-31-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">"Leptocúrtica (curtose &gt; 0)"</span>)</span>
-<span id="annotated-cell-31-19"><a href="#annotated-cell-31-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
-<span id="annotated-cell-31-20"><a href="#annotated-cell-31-20" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-31-21" class="code-annotation-target"><a href="#annotated-cell-31-21" aria-hidden="true" tabindex="-1"></a>shared_xlim <span class="op">=</span> axes[<span class="dv">1</span>].get_xlim()</span>
-<span id="annotated-cell-31-22"><a href="#annotated-cell-31-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlim(shared_xlim)</span>
-<span id="annotated-cell-31-23"><a href="#annotated-cell-31-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlim(shared_xlim)</span>
-<span id="annotated-cell-31-24"><a href="#annotated-cell-31-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-25"><a href="#annotated-cell-31-25" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Os três tipos de curtose"</span>)</span>
-<span id="annotated-cell-31-26"><a href="#annotated-cell-31-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-27"><a href="#annotated-cell-31-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="calculando-assimetria-manualmente" class="level2">
+<h2 class="anchored" data-anchor-id="calculando-assimetria-manualmente">6.1. Calculando assimetria manualmente</h2>
+<p>O coeficiente de assimetria calculado por <code>stats.skew</code> corresponde ao terceiro momento padronizado da distribuição, dado por:</p>
+<p><span class="math display">\[
+g_1 = \frac{\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^3}{\left[\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2\right]^{3/2}}
+\]</span></p>
+<p>Em que <span class="math inline">\(x_i\)</span> é cada observação, <span class="math inline">\(\bar{x}\)</span> é a média, e <span class="math inline">\(n\)</span> é o número de observações. O numerador é o terceiro momento central, sensível ao sinal dos desvios: desvios à direita da média contribuem positivamente, e desvios à esquerda, negativamente. O denominador, o desvio-padrão elevado ao cubo, padroniza essa medida para que ela seja independente da escala dos dados. Quando a distribuição é simétrica, os desvios positivos e negativos se cancelam no numerador, e <span class="math inline">\(g_1\)</span> se aproxima de zero.</p>
+<div id="0949e0d8" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="annotated-cell-36"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-36-1"><a href="#annotated-cell-36-1" aria-hidden="true" tabindex="-1"></a>deviations <span class="op">=</span> order_values <span class="op">-</span> order_values.mean()</span>
+<span id="annotated-cell-36-2"><a href="#annotated-cell-36-2" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-36" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-36-3" class="code-annotation-target"><a href="#annotated-cell-36-3" aria-hidden="true" tabindex="-1"></a>manual_skew_numerator <span class="op">=</span> (deviations <span class="op">**</span> <span class="dv">3</span>).mean()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-36" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-36-4" class="code-annotation-target"><a href="#annotated-cell-36-4" aria-hidden="true" tabindex="-1"></a>manual_skew_denominator <span class="op">=</span> order_values.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="op">**</span> <span class="dv">3</span></span>
+<span id="annotated-cell-36-5"><a href="#annotated-cell-36-5" aria-hidden="true" tabindex="-1"></a>manual_skew <span class="op">=</span> manual_skew_numerator <span class="op">/</span> manual_skew_denominator</span>
+<span id="annotated-cell-36-6"><a href="#annotated-cell-36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-36-7"><a href="#annotated-cell-36-7" aria-hidden="true" tabindex="-1"></a>scipy_skew <span class="op">=</span> stats.skew(order_values)</span>
+<span id="annotated-cell-36-8"><a href="#annotated-cell-36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-36-9"><a href="#annotated-cell-36-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Assimetria manual: </span><span class="sc">{</span>manual_skew<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-36-10"><a href="#annotated-cell-36-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Assimetria scipy:  </span><span class="sc">{</span>scipy_skew<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-36" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="1" data-code-annotation="1">Semente nova (7) só para diferenciar deste exemplo do da seção 4.5.</span>
+<span data-code-cell="annotated-cell-36" data-code-lines="3" data-code-annotation="1"><code>(deviations ** 3).mean()</code> reproduz o numerador da fórmula, <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^3\)</span>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-31" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-36" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="3" data-code-annotation="2"><code>rng.uniform(low=-3, high=3, ...)</code> gera uma distribuição uniforme: sem cauda alguma além dos seus limites fixos, o exemplo clássico de curtose negativa (platicúrtica).</span>
-</dd>
-<dt data-target-cell="annotated-cell-31" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="5" data-code-annotation="3"><code>rng.standard_t(df=3, ...)</code> gera uma distribuição t de Student com 3 graus de liberdade: mesmo formato de sino no centro da normal, mas caudas muito mais pesadas (leptocúrtica).</span>
-</dd>
-<dt data-target-cell="annotated-cell-31" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="21" data-code-annotation="4">Os três painéis compartilham a escala do eixo x da distribuição normal (a do meio), para que a comparação de quanto peso cada cauda tem seja justa.</span>
+<span data-code-cell="annotated-cell-36" data-code-lines="4" data-code-annotation="2"><code>order_values.std(ddof=0) ** 3</code> reproduz o denominador, o desvio-padrão populacional elevado ao cubo. Usa-se <code>ddof=0</code> pelo mesmo motivo discutido na seção 5.2: a fórmula do momento padronizado é definida em termos populacionais.</span>
 </dd>
 </dl>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Assimetria manual: 51.07
+Assimetria scipy:  51.07</code></pre>
+</div>
+</div>
+<p>O resultado manual reproduz exatamente o valor retornado por <code>stats.skew</code>, confirmando que a função da scipy implementa a mesma fórmula do momento padronizado.</p>
+</section>
+<section id="calculando-curtose-manualmente" class="level2">
+<h2 class="anchored" data-anchor-id="calculando-curtose-manualmente">6.2. Calculando curtose manualmente</h2>
+<p>O excesso de curtose calculado por <code>stats.kurtosis</code> corresponde ao quarto momento padronizado da distribuição, subtraído de 3, dado por:</p>
+<p><span class="math display">\[
+g_2 = \frac{\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^4}{\left[\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2\right]^{2}} - 3
+\]</span></p>
+<p>Em que <span class="math inline">\(x_i\)</span> é cada observação, <span class="math inline">\(\bar{x}\)</span> é a média, e <span class="math inline">\(n\)</span> é o número de observações. O numerador é o quarto momento central, que eleva os desvios à quarta potência e, por isso, amplia fortemente a influência das observações mais distantes da média, independentemente do sinal do desvio. O denominador, o desvio-padrão elevado à quarta potência, padroniza essa medida para que ela seja independente da escala dos dados. A subtração de 3 ajusta o resultado à convenção de Fisher, segundo a qual a distribuição normal tem excesso de curtose igual a zero.</p>
+<div id="399ac3cb" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="annotated-cell-37"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-37-1"><a href="#annotated-cell-37-1" aria-hidden="true" tabindex="-1"></a>deviations <span class="op">=</span> order_values <span class="op">-</span> order_values.mean()</span>
+<span id="annotated-cell-37-2"><a href="#annotated-cell-37-2" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-37" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-37-3" class="code-annotation-target"><a href="#annotated-cell-37-3" aria-hidden="true" tabindex="-1"></a>manual_kurtosis_numerator <span class="op">=</span> (deviations <span class="op">**</span> <span class="dv">4</span>).mean()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-37" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-37-4" class="code-annotation-target"><a href="#annotated-cell-37-4" aria-hidden="true" tabindex="-1"></a>manual_kurtosis_denominator <span class="op">=</span> order_values.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="op">**</span> <span class="dv">4</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-37" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-37-5" class="code-annotation-target"><a href="#annotated-cell-37-5" aria-hidden="true" tabindex="-1"></a>manual_kurtosis <span class="op">=</span> (manual_kurtosis_numerator <span class="op">/</span> manual_kurtosis_denominator) <span class="op">-</span> <span class="dv">3</span></span>
+<span id="annotated-cell-37-6"><a href="#annotated-cell-37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-37-7"><a href="#annotated-cell-37-7" aria-hidden="true" tabindex="-1"></a>scipy_kurtosis <span class="op">=</span> stats.kurtosis(order_values)</span>
+<span id="annotated-cell-37-8"><a href="#annotated-cell-37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-37-9"><a href="#annotated-cell-37-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Curtose manual: </span><span class="sc">{</span>manual_kurtosis<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-37-10"><a href="#annotated-cell-37-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Curtose scipy:  </span><span class="sc">{</span>scipy_kurtosis<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-37" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-37" data-code-lines="3" data-code-annotation="1"><code>(deviations ** 4).mean()</code> reproduz o numerador da fórmula, <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^4\)</span>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-37" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-37" data-code-lines="4" data-code-annotation="2"><code>order_values.std(ddof=0) ** 4</code> reproduz o denominador, o desvio-padrão populacional elevado à quarta potência. Usa-se <code>ddof=0</code> pelo mesmo motivo discutido na seção 5.2 e reaplicado no cálculo manual da assimetria.</span>
+</dd>
+<dt data-target-cell="annotated-cell-37" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-37" data-code-lines="5" data-code-annotation="3">A subtração de <code>3</code> reproduz a convenção de Fisher usada por padrão em <code>stats.kurtosis</code> (<code>fisher=True</code>), a mesma discutida na seção 6.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Curtose manual: 4234.71
+Curtose scipy:  4234.71</code></pre>
+</div>
+</div>
+<p>O resultado manual reproduz exatamente o valor retornado por <code>stats.kurtosis</code>, confirmando que a função da scipy implementa a mesma fórmula do momento padronizado.</p>
+</section>
+<section id="os-três-tipos-de-curtose" class="level2">
+<h2 class="anchored" data-anchor-id="os-três-tipos-de-curtose">6.3 Os três tipos de curtose</h2>
+<p>Os exemplos seguintes são hipotéticos e não utilizam dados do conjunto analisado neste material. Sua finalidade é isolar visualmente o efeito da curtose. As três distribuições são geradas primeiro, para que compartilhem a mesma semente e a mesma escala de comparação; em seguida, cada tipo é exibido e discutido individualmente.</p>
+<div id="811a4beb" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="annotated-cell-38"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-38" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-38-1" class="code-annotation-target"><a href="#annotated-cell-38-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">7</span>)</span>
+<span id="annotated-cell-38-2"><a href="#annotated-cell-38-2" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-38" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-38-3" class="code-annotation-target"><a href="#annotated-cell-38-3" aria-hidden="true" tabindex="-1"></a>light_tail <span class="op">=</span> rng.uniform(low<span class="op">=-</span><span class="dv">3</span>, high<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
+<span id="annotated-cell-38-4"><a href="#annotated-cell-38-4" aria-hidden="true" tabindex="-1"></a>normal_tail <span class="op">=</span> rng.normal(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-38" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-38-5" class="code-annotation-target"><a href="#annotated-cell-38-5" aria-hidden="true" tabindex="-1"></a>heavy_tail <span class="op">=</span> rng.standard_t(df<span class="op">=</span><span class="dv">3</span>, size<span class="op">=</span><span class="dv">5000</span>)</span>
+<span id="annotated-cell-38-6"><a href="#annotated-cell-38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-38-7"><a href="#annotated-cell-38-7" aria-hidden="true" tabindex="-1"></a>normal_range <span class="op">=</span> normal_tail.<span class="bu">max</span>() <span class="op">-</span> normal_tail.<span class="bu">min</span>()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-38" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-38-8" class="code-annotation-target"><a href="#annotated-cell-38-8" aria-hidden="true" tabindex="-1"></a>shared_xlim <span class="op">=</span> (normal_tail.<span class="bu">min</span>() <span class="op">-</span> <span class="fl">0.05</span> <span class="op">*</span> normal_range, normal_tail.<span class="bu">max</span>() <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> normal_range)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-38" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-38" data-code-lines="1" data-code-annotation="1">Semente nova (7) só para diferenciar deste exemplo do da seção 4.5.</span>
+</dd>
+<dt data-target-cell="annotated-cell-38" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-38" data-code-lines="3" data-code-annotation="2"><code>rng.uniform(low=-3, high=3, ...)</code> gera uma distribuição uniforme: sem cauda alguma além dos seus limites fixos, o exemplo clássico de curtose negativa (platicúrtica).</span>
+</dd>
+<dt data-target-cell="annotated-cell-38" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-38" data-code-lines="5" data-code-annotation="3"><code>rng.standard_t(df=3, ...)</code> gera uma distribuição t de Student com 3 graus de liberdade: mesmo formato de sino no centro da normal, mas caudas muito mais pesadas (leptocúrtica).</span>
+</dd>
+<dt data-target-cell="annotated-cell-38" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-38" data-code-lines="8" data-code-annotation="4"><code>shared_xlim</code> reproduz a escala do eixo x que a distribuição normal ocuparia sozinha, com uma margem de 5% para cada lado. Os três gráficos usarão essa mesma escala, para que a comparação de quanto peso cada cauda tem seja justa.</span>
+</dd>
+</dl>
+</div>
+</div>
+<section id="distribuição-uniforme-platicúrtica" class="level3">
+<h3 class="anchored" data-anchor-id="distribuição-uniforme-platicúrtica">Distribuição uniforme (platicúrtica)</h3>
+<div id="cc737bcb" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(light_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>ax, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(shared_xlim)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Platicúrtica (curtose = </span><span class="sc">{</span>stats<span class="sc">.</span>kurtosis(light_tail)<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-estatistica-descritiva_files/figure-html/cell-32-output-1.png" width="1043" height="402" class="figure-img"></p>
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-40-output-1.png" width="616" height="383" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>A comparação entre os painéis ilustra como a geometria das caudas de uma distribuição reflete a probabilidade de ocorrência de valores extremos e a magnitude da curtose:</p>
-<ul>
-<li><p><strong>Distribuição Uniforme (Painel da Esquerda):</strong> Caracteriza-se por manter uma probabilidade constante dentro de um intervalo limitado, possuindo limites rígidos além dos quais nenhum valor pode ser gerado. Por não possuir caudas estendidas, não há dispersão extrema, resultando em uma curtose negativa (<strong>platicúrtica</strong>) que indica a ausência total de <em>outliers</em>.</p></li>
-<li><p><strong>Distribuição Normal (Painel Central):</strong> Apresenta uma curva simétrica em formato de sino, na qual cerca de 95% das observações estão concentradas a até dois desvios-padrão da média. Suas caudas decrescem de forma rápida e moderada, tornando a ocorrência de valores muito distantes do centro um evento raro. Por conta desse decaimento padrão, a distribuição normal é adotada como a linha de base universal da teoria estatística, possuindo excesso de curtose igual a zero (<strong>distribuição mesocúrtica</strong>).</p></li>
-<li><p><strong>Distribuição <span class="math inline">\(t\)</span> de Student (Painel da Direita):</strong> Embora preserve a simetria central, possui caudas visivelmente mais pesadas e espessas (<em>heavy tails</em>). Isso significa que a massa de probabilidade nas extremidades é maior, fazendo com que valores discrepantes ocorram com frequência muito superior à prevista por uma curva normal. Essa densidade nas caudas produz um excesso de curtose positivo (<strong>distribuição leptocúrtica</strong>).</p></li>
-</ul>
+<p>A distribuição uniforme caracteriza-se por manter uma probabilidade constante dentro de um intervalo limitado, possuindo limites rígidos além dos quais nenhum valor pode ser gerado. Por não possuir caudas estendidas, não há dispersão extrema, resultando em uma curtose negativa (<strong>platicúrtica</strong>) que indica a ausência total de <em>outliers</em>.</p>
+</section>
+<section id="distribuição-normal-mesocúrtica" class="level3">
+<h3 class="anchored" data-anchor-id="distribuição-normal-mesocúrtica">Distribuição normal (mesocúrtica)</h3>
+<div id="ba850b60" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(normal_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>ax, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(shared_xlim)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Mesocúrtica (curtose = </span><span class="sc">{</span>stats<span class="sc">.</span>kurtosis(normal_tail)<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-41-output-1.png" width="597" height="383" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A distribuição normal apresenta uma curva simétrica em formato de sino, na qual cerca de 95% das observações estão concentradas a até dois desvios-padrão da média. Suas caudas decrescem de forma rápida e moderada, tornando a ocorrência de valores muito distantes do centro um evento raro. Por conta desse decaimento padrão, a distribuição normal é adotada como a linha de base universal da teoria estatística, possuindo excesso de curtose igual a zero (<strong>distribuição mesocúrtica</strong>).</p>
+</section>
+<section id="distribuição-t-de-student-leptocúrtica" class="level3">
+<h3 class="anchored" data-anchor-id="distribuição-t-de-student-leptocúrtica">Distribuição <span class="math inline">\(t\)</span> de Student (leptocúrtica)</h3>
+<div id="7498b5f3" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(heavy_tail, bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>ax, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(shared_xlim)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Valor (exemplo hipotético)"</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Leptocúrtica (curtose = </span><span class="sc">{</span>stats<span class="sc">.</span>kurtosis(heavy_tail)<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-estatistica-descritiva_files/figure-html/cell-42-output-1.png" width="606" height="384" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A distribuição <span class="math inline">\(t\)</span> de Student, embora preserve a simetria central, possui caudas visivelmente mais pesadas e espessas (<em>heavy tails</em>). Isso significa que a massa de probabilidade nas extremidades é maior, fazendo com que valores discrepantes ocorram com frequência muito superior à prevista por uma curva normal. Essa densidade nas caudas produz um excesso de curtose positivo (<strong>distribuição leptocúrtica</strong>). O gráfico usa a mesma escala das duas distribuições anteriores para manter a comparação justa; por isso, os valores mais extremos de <code>heavy_tail</code>, muito além do intervalo exibido, ficam fora da faixa visível.</p>
+</section>
 </section>
 <section id="conclusão" class="level2">
 <h2 class="anchored" data-anchor-id="conclusão">Conclusão</h2>
@@ -1628,46 +1971,6 @@ Excesso de curtose (kurtosis) do valor do pedido: 4234.71</code></pre>
 <h2 class="anchored" data-anchor-id="pergunta-1-qual-ticket-médio-você-reportaria-ao-gestor">Pergunta 1: qual “ticket médio” você reportaria ao gestor?</h2>
 <p>Na Aula 3, o ticket médio foi calculado como a média simples do valor dos pedidos. Com base nas diferenças observadas entre média, mediana e média aparada, bem como nos resultados de assimetria e curtose, você manteria a média simples no relatório ao gestor de vendas ou adotaria outra medida? A medida escolhida deveria ser apresentada isoladamente ou acompanhada por uma medida de dispersão?</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>A adequação de uma medida depende da pergunta analisada. Se o gestor deseja conhecer o valor típico de um pedido para dimensionar a operação ou o estoque, a mediana ou a média aparada é mais apropriada, pois os pedidos de atacado elevam a média simples, como demonstrado na seção 4.6. Para projetar o faturamento total com base no número esperado de pedidos, a média simples é adequada porque preserva a soma quando multiplicada pela quantidade de observações, propriedade que a mediana não possui. Em ambos os casos, uma medida de dispersão, como o desvio-padrão, a IQR ou os quartis, deve acompanhar a medida de tendência central para explicitar a variabilidade dos pedidos.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pergunta-2-a-regra-do-iqr-é-suficiente-para-decidir-o-que-é-outlier" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-2-a-regra-do-iqr-é-suficiente-para-decidir-o-que-é-outlier">Pergunta 2: a regra do IQR é suficiente para decidir o que é outlier?</h2>
-<p>Na seção 5.3, a regra de <code>1,5 × IQR</code> sinalizou um conjunto de pedidos extremos, concentrados em poucos países. Isso é evidência suficiente para excluí-los de uma análise de faturamento por serem outliers?</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Como pensar sobre isso
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Não. A regra do IQR funciona como instrumento de triagem estatística, pois identifica candidatos a valores atípicos apenas pela posição que ocupam na distribuição, sem considerar seu significado no negócio. A Aula 3 formulou a hipótese de que volumes elevados, concentrados em poucos clientes e países, correspondem a compras atacadistas legítimas, e não a erros de registro. O cruzamento dos pedidos sinalizados com <code>customer_id</code> e <code>country</code>, realizado na seção 5.3, fornece o contexto necessário à classificação. A exclusão automática pode remover da análise alguns dos clientes mais valiosos da base.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pergunta-3-o-ano-do-online-retail-é-população-ou-amostra" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-3-o-ano-do-online-retail-é-população-ou-amostra">Pergunta 3: o ano do Online Retail é população ou amostra?</h2>
-<p>Releia a seção 3. Se a loja perguntasse “o ticket médio do próximo ano será parecido com o que calculamos aqui?”, sua resposta mudaria dependendo de tratar este ano de dados como população ou como amostra? O que precisaria ser verdade sobre o próximo ano para que as medidas calculadas nesta aula continuassem valendo?</p>
-<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1678,6 +1981,46 @@ Como pensar sobre isso
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A adequação de uma medida depende da pergunta analisada. Se o gestor deseja conhecer o valor típico de um pedido para dimensionar a operação ou o estoque, a mediana ou a média aparada é mais apropriada, pois os pedidos de atacado elevam a média simples, como demonstrado na seção 4.6. Para projetar o faturamento total com base no número esperado de pedidos, a média simples é adequada porque preserva a soma quando multiplicada pela quantidade de observações, propriedade que a mediana não possui. Em ambos os casos, uma medida de dispersão, como o desvio-padrão, a IQR ou os quartis, deve acompanhar a medida de tendência central para explicitar a variabilidade dos pedidos.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-2-a-regra-do-iqr-é-suficiente-para-decidir-o-que-é-outlier" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-2-a-regra-do-iqr-é-suficiente-para-decidir-o-que-é-outlier">Pergunta 2: a regra do IQR é suficiente para decidir o que é outlier?</h2>
+<p>Na seção 5.3, a regra de <code>1,5 × IQR</code> sinalizou um conjunto de pedidos extremos, concentrados em poucos países. Isso é evidência suficiente para excluí-los de uma análise de faturamento por serem outliers?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Não. A regra do IQR funciona como instrumento de triagem estatística, pois identifica candidatos a valores atípicos apenas pela posição que ocupam na distribuição, sem considerar seu significado no negócio. A Aula 3 formulou a hipótese de que volumes elevados, concentrados em poucos clientes e países, correspondem a compras atacadistas legítimas, e não a erros de registro. O cruzamento dos pedidos sinalizados com <code>customer_id</code> e <code>country</code>, realizado na seção 5.3, fornece o contexto necessário à classificação. A exclusão automática pode remover da análise alguns dos clientes mais valiosos da base.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-3-o-ano-do-online-retail-é-população-ou-amostra" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-3-o-ano-do-online-retail-é-população-ou-amostra">Pergunta 3: o ano do Online Retail é população ou amostra?</h2>
+<p>Releia a seção 3. Se a loja perguntasse “o ticket médio do próximo ano será parecido com o que calculamos aqui?”, sua resposta mudaria dependendo de tratar este ano de dados como população ou como amostra? O que precisaria ser verdade sobre o próximo ano para que as medidas calculadas nesta aula continuassem valendo?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Como registro das transações entre dezembro de 2010 e dezembro de 2011, os dados constituem a população completa do período, de modo que as medidas calculadas são exatas para esse intervalo e não apresentam erro amostral. Para prever o ano seguinte, contudo, o período observado passa a representar uma amostra de tamanho um entre vários anos possíveis. A previsão pressupõe relativa estabilidade do padrão de vendas, incluindo a composição dos clientes, a sazonalidade e a ausência de eventos extraordinários. A plausibilidade dessa hipótese depende do negócio. A estatística descritiva caracteriza os dados observados, enquanto sua generalização para períodos futuros pertence à estatística inferencial e envolve incertezas que as medidas desta aula, isoladamente, não quantificam.</p>
 </div>

@@ -180,6 +180,7 @@ biased_sample_mean = biased_sample["order_value"].mean()
 
 1. `.sample()` sorteia linhas aleatoriamente, sem favorecer nenhum país. `random_state` fixa a semente para que o sorteio seja reproduzível.
 2. A amostra enviesada sorteia da mesma forma, mas apenas dentro do subconjunto de pedidos do Reino Unido, ignorando os demais 37 países da base.
+
 ```{python}
 
 sampling_summary = pd.Series(
@@ -627,6 +628,127 @@ plt.show()
 
 A caixa central compacta representa a metade dos pedidos situada entre Q1 e Q3. Os pontos à direita formam a cauda de pedidos elevados sinalizados pela regra do IQR, entre os quais podem existir operações de atacado.
 
+```{python}
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+sns.boxplot(x=order_values, ax=ax, whis=1.5, fliersize=3)  # <1>
+ax.axvline(lower_bound, color="red", linestyle=":", label=f"Limite inferior: £ {lower_bound:,.2f}")
+ax.axvline(upper_bound, color="red", linestyle=":", label=f"Limite superior: £ {upper_bound:,.2f}")
+ax.legend()
+
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_title("Boxplot do valor do pedido, com outliers pela regra do IQR")
+
+plt.show()
+
+```
+
+Ao limitar a distribuição ao limite superior, a cauda de pedidos elevados é removida e a caixa central torna-se mais visível.
+
+```{python}
+
+trimmed_order_values = order_values[order_values.le(upper_bound)]  # <1>
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+sns.boxplot(x=trimmed_order_values, ax=ax, whis=1.5, fliersize=3)
+
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_title("Boxplot do valor do pedido, limitado ao limite superior do IQR")
+
+plt.show()
+
+```
+
+1. `order_values.le(upper_bound)` mantém apenas os pedidos com valor até o limite superior, removendo a cauda de valores sinalizados como potenciais outliers.
+
+::: {.callout-note}
+## Por que ainda aparecem outliers após o corte?
+
+O boxplot ainda exibe pontos além dos bigodes porque `sns.boxplot` recalcula Q1, Q3 e IQR a partir dos dados já filtrados, em vez de reaproveitar os limites originais. Como a distribuição permanece assimétrica à direita mesmo sem a cauda mais extrema, o critério de `1,5 × IQR` volta a sinalizar como outliers as observações mais altas do subconjunto restante.
+:::
+
+Limitando a distribuição também pelo limite inferior, ambas as caudas sinalizadas pela regra do IQR são removidas.
+
+```{python}
+
+trimmed_order_values = order_values[order_values.between(lower_bound, upper_bound)]  # <1>
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+sns.boxplot(x=trimmed_order_values, ax=ax, whis=1.5, fliersize=3)
+
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_title("Boxplot do valor do pedido, limitado aos limites do IQR")
+
+plt.show()
+
+```
+
+1. `order_values.between(lower_bound, upper_bound)` mantém apenas os pedidos com valor dentro dos limites inferior e superior, removendo as caudas sinalizadas como potenciais outliers.
+
+::: {.callout-note}
+## Por que a remoção pelo `lower_bound` não alterou o boxplot?
+
+Como `order_value` é sempre positivo e a distribuição é assimétrica à direita, `lower_bound` (`Q1 - 1,5 × IQR`) resulta em um valor negativo. Nenhum pedido tem valor abaixo de zero, logo a condição `order_values.ge(lower_bound)`, embutida em `between`, não exclui nenhuma observação adicional além das já removidas por `upper_bound`. Por isso o segundo boxplot é visualmente idêntico ao primeiro.
+:::
+
+O histograma a seguir reúne, em um único gráfico, as estatísticas descritivas vistas até aqui: medidas de tendência central (média, mediana e moda), os quartis (Q1, Q2, Q3 e Q4) e os limites de `1,5 × IQR`.
+
+```{python}
+
+q4 = order_values.quantile(1.00)  # <1>
+
+descriptive_summary = pd.Series(
+    {
+        "Média": order_value_mean,
+        "Mediana (Q2)": order_value_median,
+        "Moda": order_value_mode,
+        "Q1 (25%)": q1,
+        "Q2 (50%, mediana)": q2,
+        "Q3 (75%)": q3,
+        "Q4 (100%, máximo)": q4,  # <2>
+        "Limite inferior": lower_bound,
+        "Limite superior": upper_bound,
+    },
+    name="order_value",
+)
+
+descriptive_summary.round(2).to_frame()
+
+```
+
+1. `order_values.quantile(1.00)` corresponde ao percentil 100, ou seja, ao valor máximo da distribuição. Embora a divisão em quartis seja formada por Q1, Q2 e Q3, referir-se ao máximo como Q4 completa a leitura da distribuição em quatro quartos.
+2. Q4 corresponde ao pedido de maior valor da base e está muito distante dos demais pedidos, o que já era esperado pela assimetria e pela cauda de outliers identificadas no boxplot.
+
+```{python}
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+sns.histplot(trimmed_order_values, bins=50, binrange=(0, upper_bound), ax=ax)  # <1>
+
+ax.axvline(order_value_mean, color="crimson", linestyle="--", label=f"Média: £ {order_value_mean:,.2f}")
+ax.axvline(order_value_median, color="darkorange", linestyle="--", label=f"Mediana (Q2): £ {order_value_median:,.2f}")
+ax.axvline(order_value_mode, color="seagreen", linestyle="--", label=f"Moda: £ {order_value_mode:,.2f}")
+ax.axvline(q1, color="steelblue", linestyle=":", label=f"Q1: £ {q1:,.2f}")
+ax.axvline(q3, color="steelblue", linestyle=":", label=f"Q3: £ {q3:,.2f}")
+ax.axvline(upper_bound, color="red", linestyle=":", label=f"Limite superior (IQR): £ {upper_bound:,.2f}")
+
+ax.set_xlim(0, upper_bound)
+ax.set_xlabel("Valor do pedido (£)")
+ax.set_ylabel("Número de pedidos")
+ax.set_title("Estatísticas descritivas do valor do pedido")
+ax.legend()
+
+plt.show()
+
+```
+
+1. O histograma usa `trimmed_order_values`, já limitado aos limites inferior e superior do IQR, para evitar que a cauda de outliers distorça a escala do eixo `x`. Q4 (o máximo) e o limite inferior, negativo, não aparecem como linhas verticais porque ficam fora dessa faixa visível; seus valores exatos constam na tabela de estatísticas descritivas acima.
+
+O histograma confirma visualmente os resultados numéricos discutidos ao longo da seção: a moda e a mediana concentram-se nos valores mais baixos, a média é deslocada para a direita pelos pedidos de maior valor, e o limite superior do IQR já corta a distribuição próximo do início da cauda longa que caracteriza os pedidos de atacado.
+
 # 6. Assimetria e curtose
 
 Assimetria (*skewness*) e curtose (*kurtosis*) complementam as medidas de centro e dispersão na descrição da forma de uma distribuição. A assimetria indica a direção e a intensidade do prolongamento das caudas. A curtose expressa o peso das caudas e, portanto, a propensão da distribuição a produzir valores extremos. Na distribuição normal, tanto a assimetria quanto o excesso de curtose são iguais a zero.
@@ -647,9 +769,70 @@ A assimetria positiva elevada indica uma cauda longa à direita e é compatível
 
 Os três histogramas sintéticos seguintes isolam esse efeito ao comparar distribuições centradas no mesmo ponto, cada uma representativa de um dos tipos.
 
-## 6.1 Os três tipos de curtose
+## 6.1. Calculando assimetria manualmente
 
-O exemplo seguinte é hipotético e não utiliza dados do conjunto analisado neste material. Sua finalidade é isolar visualmente o efeito da curtose.
+O coeficiente de assimetria calculado por `stats.skew` corresponde ao terceiro momento padronizado da distribuição, dado por:
+
+$$
+g_1 = \frac{\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^3}{\left[\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2\right]^{3/2}}
+$$
+
+Em que $x_i$ é cada observação, $\bar{x}$ é a média, e $n$ é o número de observações. O numerador é o terceiro momento central, sensível ao sinal dos desvios: desvios à direita da média contribuem positivamente, e desvios à esquerda, negativamente. O denominador, o desvio-padrão elevado ao cubo, padroniza essa medida para que ela seja independente da escala dos dados. Quando a distribuição é simétrica, os desvios positivos e negativos se cancelam no numerador, e $g_1$ se aproxima de zero.
+
+```{python}
+
+deviations = order_values - order_values.mean()
+
+manual_skew_numerator = (deviations ** 3).mean()  # <1>
+manual_skew_denominator = order_values.std(ddof=0) ** 3  # <2>
+manual_skew = manual_skew_numerator / manual_skew_denominator
+
+scipy_skew = stats.skew(order_values)
+
+print(f"Assimetria manual: {manual_skew:.2f}")
+print(f"Assimetria scipy:  {scipy_skew:.2f}")
+
+```
+
+1. `(deviations ** 3).mean()` reproduz o numerador da fórmula, $\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^3$.
+2. `order_values.std(ddof=0) ** 3` reproduz o denominador, o desvio-padrão populacional elevado ao cubo. Usa-se `ddof=0` pelo mesmo motivo discutido na seção 5.2: a fórmula do momento padronizado é definida em termos populacionais.
+
+O resultado manual reproduz exatamente o valor retornado por `stats.skew`, confirmando que a função da scipy implementa a mesma fórmula do momento padronizado.
+
+## 6.2. Calculando curtose manualmente
+
+O excesso de curtose calculado por `stats.kurtosis` corresponde ao quarto momento padronizado da distribuição, subtraído de 3, dado por:
+
+$$
+g_2 = \frac{\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^4}{\left[\dfrac{1}{n}\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2\right]^{2}} - 3
+$$
+
+Em que $x_i$ é cada observação, $\bar{x}$ é a média, e $n$ é o número de observações. O numerador é o quarto momento central, que eleva os desvios à quarta potência e, por isso, amplia fortemente a influência das observações mais distantes da média, independentemente do sinal do desvio. O denominador, o desvio-padrão elevado à quarta potência, padroniza essa medida para que ela seja independente da escala dos dados. A subtração de 3 ajusta o resultado à convenção de Fisher, segundo a qual a distribuição normal tem excesso de curtose igual a zero.
+
+```{python}
+
+deviations = order_values - order_values.mean()
+
+manual_kurtosis_numerator = (deviations ** 4).mean()  # <1>
+manual_kurtosis_denominator = order_values.std(ddof=0) ** 4  # <2>
+manual_kurtosis = (manual_kurtosis_numerator / manual_kurtosis_denominator) - 3  # <3>
+
+scipy_kurtosis = stats.kurtosis(order_values)
+
+print(f"Curtose manual: {manual_kurtosis:.2f}")
+print(f"Curtose scipy:  {scipy_kurtosis:.2f}")
+
+```
+
+1. `(deviations ** 4).mean()` reproduz o numerador da fórmula, $\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^4$.
+2. `order_values.std(ddof=0) ** 4` reproduz o denominador, o desvio-padrão populacional elevado à quarta potência. Usa-se `ddof=0` pelo mesmo motivo discutido na seção 5.2 e reaplicado no cálculo manual da assimetria.
+3. A subtração de `3` reproduz a convenção de Fisher usada por padrão em `stats.kurtosis` (`fisher=True`), a mesma discutida na seção 6.
+
+O resultado manual reproduz exatamente o valor retornado por `stats.kurtosis`, confirmando que a função da scipy implementa a mesma fórmula do momento padronizado.
+
+## 6.3 Os três tipos de curtose
+
+Os exemplos seguintes são hipotéticos e não utilizam dados do conjunto analisado neste material. Sua finalidade é isolar visualmente o efeito da curtose. As três distribuições são geradas primeiro, para que compartilhem a mesma semente e a mesma escala de comparação; em seguida, cada tipo é exibido e discutido individualmente.
 
 ```{python}
 
@@ -659,42 +842,69 @@ light_tail = rng.uniform(low=-3, high=3, size=5000)  # <2>
 normal_tail = rng.normal(loc=0, scale=1, size=5000)
 heavy_tail = rng.standard_t(df=3, size=5000)  # <3>
 
-fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
-
-sns.histplot(light_tail, bins=40, ax=axes[0], stat="density", kde=True)
-axes[0].set_title("Platicúrtica (curtose < 0)")
-axes[0].set_xlabel("Valor (exemplo hipotético)")
-
-sns.histplot(normal_tail, bins=40, ax=axes[1], stat="density", kde=True)
-axes[1].set_title("Mesocúrtica (curtose ≈ 0)")
-axes[1].set_xlabel("Valor (exemplo hipotético)")
-
-sns.histplot(heavy_tail, bins=40, ax=axes[2], stat="density", kde=True)
-axes[2].set_title("Leptocúrtica (curtose > 0)")
-axes[2].set_xlabel("Valor (exemplo hipotético)")
-
-shared_xlim = axes[1].get_xlim()  # <4>
-axes[0].set_xlim(shared_xlim)
-axes[2].set_xlim(shared_xlim)
-
-fig.suptitle("Os três tipos de curtose")
-
-plt.show()
+normal_range = normal_tail.max() - normal_tail.min()
+shared_xlim = (normal_tail.min() - 0.05 * normal_range, normal_tail.max() + 0.05 * normal_range)  # <4>
 
 ```
 
 1. Semente nova (7) só para diferenciar deste exemplo do da seção 4.5.
 2. `rng.uniform(low=-3, high=3, ...)` gera uma distribuição uniforme: sem cauda alguma além dos seus limites fixos, o exemplo clássico de curtose negativa (platicúrtica).
 3. `rng.standard_t(df=3, ...)` gera uma distribuição t de Student com 3 graus de liberdade: mesmo formato de sino no centro da normal, mas caudas muito mais pesadas (leptocúrtica).
-4. Os três painéis compartilham a escala do eixo x da distribuição normal (a do meio), para que a comparação de quanto peso cada cauda tem seja justa.
+4. `shared_xlim` reproduz a escala do eixo x que a distribuição normal ocuparia sozinha, com uma margem de 5% para cada lado. Os três gráficos usarão essa mesma escala, para que a comparação de quanto peso cada cauda tem seja justa.
 
-A comparação entre os painéis ilustra como a geometria das caudas de uma distribuição reflete a probabilidade de ocorrência de valores extremos e a magnitude da curtose:
+### Distribuição uniforme (platicúrtica)
 
-* **Distribuição Uniforme (Painel da Esquerda):** Caracteriza-se por manter uma probabilidade constante dentro de um intervalo limitado, possuindo limites rígidos além dos quais nenhum valor pode ser gerado. Por não possuir caudas estendidas, não há dispersão extrema, resultando em uma curtose negativa (**platicúrtica**) que indica a ausência total de *outliers*.
-  
-* **Distribuição Normal (Painel Central):** Apresenta uma curva simétrica em formato de sino, na qual cerca de 95% das observações estão concentradas a até dois desvios-padrão da média. Suas caudas decrescem de forma rápida e moderada, tornando a ocorrência de valores muito distantes do centro um evento raro. Por conta desse decaimento padrão, a distribuição normal é adotada como a linha de base universal da teoria estatística, possuindo excesso de curtose igual a zero (**distribuição mesocúrtica**).
-  
-* **Distribuição $t$ de Student (Painel da Direita):** Embora preserve a simetria central, possui caudas visivelmente mais pesadas e espessas (*heavy tails*). Isso significa que a massa de probabilidade nas extremidades é maior, fazendo com que valores discrepantes ocorram com frequência muito superior à prevista por uma curva normal. Essa densidade nas caudas produz um excesso de curtose positivo (**distribuição leptocúrtica**).
+```{python}
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+sns.histplot(light_tail, bins=40, ax=ax, stat="density", kde=True)
+
+ax.set_xlim(shared_xlim)
+ax.set_xlabel("Valor (exemplo hipotético)")
+ax.set_title(f"Platicúrtica (curtose = {stats.kurtosis(light_tail):.2f})")
+
+plt.show()
+
+```
+
+A distribuição uniforme caracteriza-se por manter uma probabilidade constante dentro de um intervalo limitado, possuindo limites rígidos além dos quais nenhum valor pode ser gerado. Por não possuir caudas estendidas, não há dispersão extrema, resultando em uma curtose negativa (**platicúrtica**) que indica a ausência total de *outliers*.
+
+### Distribuição normal (mesocúrtica)
+
+```{python}
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+sns.histplot(normal_tail, bins=40, ax=ax, stat="density", kde=True)
+
+ax.set_xlim(shared_xlim)
+ax.set_xlabel("Valor (exemplo hipotético)")
+ax.set_title(f"Mesocúrtica (curtose = {stats.kurtosis(normal_tail):.2f})")
+
+plt.show()
+
+```
+
+A distribuição normal apresenta uma curva simétrica em formato de sino, na qual cerca de 95% das observações estão concentradas a até dois desvios-padrão da média. Suas caudas decrescem de forma rápida e moderada, tornando a ocorrência de valores muito distantes do centro um evento raro. Por conta desse decaimento padrão, a distribuição normal é adotada como a linha de base universal da teoria estatística, possuindo excesso de curtose igual a zero (**distribuição mesocúrtica**).
+
+### Distribuição $t$ de Student (leptocúrtica)
+
+```{python}
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+sns.histplot(heavy_tail, bins=40, ax=ax, stat="density", kde=True)
+
+ax.set_xlim(shared_xlim)
+ax.set_xlabel("Valor (exemplo hipotético)")
+ax.set_title(f"Leptocúrtica (curtose = {stats.kurtosis(heavy_tail):.2f})")
+
+plt.show()
+
+```
+
+A distribuição $t$ de Student, embora preserve a simetria central, possui caudas visivelmente mais pesadas e espessas (*heavy tails*). Isso significa que a massa de probabilidade nas extremidades é maior, fazendo com que valores discrepantes ocorram com frequência muito superior à prevista por uma curva normal. Essa densidade nas caudas produz um excesso de curtose positivo (**distribuição leptocúrtica**). O gráfico usa a mesma escala das duas distribuições anteriores para manter a comparação justa; por isso, os valores mais extremos de `heavy_tail`, muito além do intervalo exibido, ficam fora da faixa visível.
 
 ## Conclusão
 

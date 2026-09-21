@@ -6,10 +6,27 @@
 aulas/*.html
 aulas/*.ipynb
 aulas/*.quarto_ipynb
+aulas/**/*.html
+aulas/**/*.ipynb
+aulas/**/*.quarto_ipynb
 
 # Projeto isolado (repositorio proprio: projeto-vendas)
 /projetos/
 /aulas/projeto-vendas/
+
+# Datasets da Aula 6 (gerados/baixados localmente, reproduziveis via os scripts em src/)
+/aulas/imoveis-nordeste/data/
+/aulas/imoveis-sao-paulo/data/
+/aulas/imoveis-sao-paulo/SP_STATES.zip
+
+# Gabarito oculto e scripts de geracao (material do instrutor, nunca deve ir para o repositorio publico)
+/aulas/imoveis-nordeste/gabarito-*.qmd
+/aulas/imoveis-sao-paulo/gabarito-*.qmd
+/aulas/imoveis-nordeste/src/*.py
+/aulas/imoveis-sao-paulo/src/*.py
+
+# Arquivos grandes em geral (datasets, downloads)
+*.zip
 
 # Python
 __pycache__/

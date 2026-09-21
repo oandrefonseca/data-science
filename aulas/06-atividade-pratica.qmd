@@ -1,0 +1,238 @@
+---
+title: 'Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo'
+date: last-modified
+toc: true
+format:
+  html: default
+  ipynb: default
+jupyter:
+  kernel: python3
+execute:
+  enabled: true
+---
+
+## Motivação
+
+Nas aulas anteriores, dados tabulares e estatística descritiva foram sempre aplicados sobre o mesmo `projeto-vendas`. Esta prova testa se esse repertório se sustenta diante de um conjunto de dados novo, com problemas reais de qualidade e sem gabarito.
+
+## Situação-problema
+
+Você foi contratado(a) como analista de dados por uma proptech que está avaliando em quais bairros de São Paulo concentrar sua operação de locação residencial. Antes de decidir onde investir, a diretoria pediu um diagnóstico inicial do mercado, baseado em um conjunto de anúncios de imóveis para alugar espalhados pelos bairros da cidade.
+
+Você recebeu apenas o arquivo `imoveis_sao_paulo.csv`, com uma brevíssima explicação prévia sobre suas colunas. Cabe a você entender a estrutura dos dados, formatá-lo adequadamente e verificar se são confiáveis e, a partir daí, responder às perguntas de negócio da diretoria.
+
+1. Quais bairros concentram a maior quantidade de casas?
+2. Qual a média de área e de aluguel por bairro?
+3. Como estão distribuídos os valores embutidos no aluguel (condomínio e IPTU) por bairro?
+4. Em quais bairros se concentram os imóveis com maior valor de aluguel?
+5. Como estão distribuídos os valores de aluguel dos imóveis, considerando se são mobiliados ou não?
+6. Existe diferença relevante no valor do aluguel entre as zonas da cidade (Zona Sul, Zona Norte, Zona Leste, Zona Oeste e Centro)?
+7. Comparando imóveis no mesmo bairro, casas custam mais ou menos que apartamentos?
+8. Prédios mais altos (maior `total_floors`) têm aluguel por m² mais caro que prédios baixos?
+9. A distância até a estação de metrô/trem mais próxima está associada ao valor do aluguel?
+
+**Como cientista de dados, aplique boas práticas na resolução das questões**: para cada um dos itens, apresente o código usado, o resultado (tabela e/ou gráfico) e uma interpretação escrita (2 a 3 frases), **endereçada à diretoria da empresa**.
+
+::: {.callout-note}
+## Critérios de avaliação
+
+1. Construção de um dicionário de dados coerente com o conteúdo real das colunas.
+2. Tratamento correto da avaliação de qualidade (nulos, duplicados, consistência entre colunas relacionadas).
+3. Uso de agregações por grupo (bairro e demais categorias) para responder às perguntas.
+4. Escolha de medidas de tendência central e dispersão adequadas a cada distribuição, com justificativa.
+5. Visualizações que efetivamente respondem à pergunta feita, não apenas gráficos genéricos.
+6. Qualidade da interpretação escrita de cada item — não só o código.
+:::
+
+# Identificação do aluno
+
+**Nome:** João da Silva Sauro
+**Matrícula:** 20XXXXXXXXX
+
+# Bibliotecas e leitura dos dados
+
+Atividade individual, sem gabarito, executada no Google Colab. As bibliotecas abaixo já foram usadas na Aula 5. O único passo antes de começar é fazer o upload do `imoveis_sao_paulo.csv` quando solicitado.
+
+```{python}
+#| eval: false
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+from google.colab import files
+
+uploaded = files.upload()  # selecione o arquivo imoveis_sao_paulo.csv
+
+imoveis = pd.read_csv("imoveis_sao_paulo.csv")
+
+```
+
+# 1. Padronização de dados
+
+| Coluna | Significado | Unidade / valores possíveis |
+|---|---|---|
+| `bairro` | Bairro de São Paulo onde o imóvel está localizado | ex.: Itaim Bibi, Mooca, Tucuruvi |
+| `zona` | Região da cidade | Zona Sul, Zona Norte, Zona Leste, Zona Oeste, Centro |
+| `tier` | Padrão do imóvel | affordable, mid, premium, luxury |
+| `area` | Área útil do imóvel | m² |
+| `rooms` | Quantidade de quartos | inteiro |
+| `parking spaces` | Quantidade de vagas de garagem | inteiro |
+| `floor` | Andar do imóvel | inteiro, ou ausente quando o imóvel não tem andar |
+| `total_floors` | Total de andares do prédio | inteiro, ou ausente quando o imóvel não tem andares |
+| `transit_distance_min` | Distância até a estação de metrô/trem mais próxima | minutos |
+| `furniture` | Imóvel mobiliado | `furnished` / `not furnished` |
+| `hoa (R$)` | Taxa de condomínio | R$/mês (pode ser `0`, um valor real) |
+| `rent amount (R$)` | Valor do aluguel | R$/mês |
+| `property tax (R$)` | IPTU | R$/mês |
+| `total (R$)` | Custo total do imóvel | R$/mês (aluguel + condomínio + IPTU) |
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+# 2. Qualidade dos dados
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+# 3. Perguntas de negócio
+
+## 1. Quais bairros concentram a maior quantidade de casas?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 2. Qual a média de área e de aluguel por bairro?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 3. Como estão distribuídos os valores embutidos no aluguel por bairro?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 4. Em quais bairros se concentram os imóveis com maior valor de aluguel?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 5. Como estão distribuídos os valores de aluguel dos imóveis, considerando se são mobiliados ou não?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 6. Existe diferença relevante no valor do aluguel entre as zonas da cidade?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 7. Comparando imóveis no mesmo bairro, casas custam mais ou menos que apartamentos?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 8. Prédios mais altos têm aluguel por m² mais caro que prédios baixos?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+## 9. A distância até a estação de metrô/trem mais próxima está associada ao valor do aluguel?
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+# Desafio (opcional)
+
+::: {.callout-tip}
+Esta seção é bônus: não fazê-la não tira ponto das 9 perguntas anteriores. Por outro lado, fazê-la bem soma pontos extras. A correção considera relevância/originalidade da pergunta, a justificativa de negócio e a qualidade da execução (código + interpretação).
+:::
+
+Formule sua própria pergunta de negócio sobre o mercado de aluguel em São Paulo — diferente das 9 anteriores — que ajude a diretoria a decidir sobre a expansão. Justifique em 1-2 frases por que essa pergunta importa antes de respondê-la, com o mesmo padrão das demais seções (código, resultado e interpretação escrita).
+
+*Escreva aqui sua pergunta e sua justificativa.*
+
+```{python}
+
+# Escreva aqui o código
+
+```
+
+*Escreva aqui sua interpretação.*
+
+::: {.callout-tip collapse="true"}
+# Antes de entregar
+
+- Use Restart Kernel and Run All (ou "Ambiente de execução > Executar tudo" no Colab) para garantir que todas as células executam em sequência, do início ao fim, sem depender de execuções fora de ordem.
+- Releia cada interpretação escrita como se um diretor sem formação técnica fosse lê-la: ela responde à pergunta feita, sem jargão estatístico não explicado?
+
+:::

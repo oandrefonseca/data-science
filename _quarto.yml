@@ -29,6 +29,8 @@ website:
             href: aulas/04-analise-vendas-r.qmd
           - text: "5. Estatística Descritiva"
             href: aulas/05-estatistica-descritiva.qmd
+          - text: "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+            href: aulas/06-atividade-pratica.qmd
 
 language:
   title-block-author-single: "Autor"

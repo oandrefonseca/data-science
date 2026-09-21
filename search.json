@@ -1,5 +1,575 @@
 [
   {
+    "objectID": "aulas/06-atividade-pratica.html",
+    "href": "aulas/06-atividade-pratica.html",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "",
+    "text": "Nas aulas anteriores, dados tabulares e estatística descritiva foram sempre aplicados sobre o mesmo projeto-vendas. Esta prova testa se esse repertório se sustenta diante de um conjunto de dados novo, com problemas reais de qualidade e sem gabarito.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#motivação",
+    "href": "aulas/06-atividade-pratica.html#motivação",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "",
+    "text": "Nas aulas anteriores, dados tabulares e estatística descritiva foram sempre aplicados sobre o mesmo projeto-vendas. Esta prova testa se esse repertório se sustenta diante de um conjunto de dados novo, com problemas reais de qualidade e sem gabarito.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#situação-problema",
+    "href": "aulas/06-atividade-pratica.html#situação-problema",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "Situação-problema",
+    "text": "Situação-problema\nVocê foi contratado(a) como analista de dados por uma proptech que está avaliando em quais bairros de São Paulo concentrar sua operação de locação residencial. Antes de decidir onde investir, a diretoria pediu um diagnóstico inicial do mercado, baseado em um conjunto de anúncios de imóveis para alugar espalhados pelos bairros da cidade.\nVocê recebeu apenas o arquivo imoveis_sao_paulo.csv, com uma brevíssima explicação prévia sobre suas colunas. Cabe a você entender a estrutura dos dados, formatá-lo adequadamente e verificar se são confiáveis e, a partir daí, responder às perguntas de negócio da diretoria.\n\nQuais bairros concentram a maior quantidade de casas?\nQual a média de área e de aluguel por bairro?\nComo estão distribuídos os valores embutidos no aluguel (condomínio e IPTU) por bairro?\nEm quais bairros se concentram os imóveis com maior valor de aluguel?\nComo estão distribuídos os valores de aluguel dos imóveis, considerando se são mobiliados ou não?\nExiste diferença relevante no valor do aluguel entre as zonas da cidade (Zona Sul, Zona Norte, Zona Leste, Zona Oeste e Centro)?\nComparando imóveis no mesmo bairro, casas custam mais ou menos que apartamentos?\nPrédios mais altos (maior total_floors) têm aluguel por m² mais caro que prédios baixos?\nA distância até a estação de metrô/trem mais próxima está associada ao valor do aluguel?\n\nComo cientista de dados, aplique boas práticas na resolução das questões: para cada um dos itens, apresente o código usado, o resultado (tabela e/ou gráfico) e uma interpretação escrita (2 a 3 frases), endereçada à diretoria da empresa.\n\n\n\n\n\n\nCritérios de avaliação\n\n\n\n\nConstrução de um dicionário de dados coerente com o conteúdo real das colunas.\nTratamento correto da avaliação de qualidade (nulos, duplicados, consistência entre colunas relacionadas).\nUso de agregações por grupo (bairro e demais categorias) para responder às perguntas.\nEscolha de medidas de tendência central e dispersão adequadas a cada distribuição, com justificativa.\nVisualizações que efetivamente respondem à pergunta feita, não apenas gráficos genéricos.\nQualidade da interpretação escrita de cada item — não só o código.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#quais-bairros-concentram-a-maior-quantidade-de-casas",
+    "href": "aulas/06-atividade-pratica.html#quais-bairros-concentram-a-maior-quantidade-de-casas",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "1. Quais bairros concentram a maior quantidade de casas?",
+    "text": "1. Quais bairros concentram a maior quantidade de casas?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#qual-a-média-de-área-e-de-aluguel-por-bairro",
+    "href": "aulas/06-atividade-pratica.html#qual-a-média-de-área-e-de-aluguel-por-bairro",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "2. Qual a média de área e de aluguel por bairro?",
+    "text": "2. Qual a média de área e de aluguel por bairro?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#como-estão-distribuídos-os-valores-embutidos-no-aluguel-por-bairro",
+    "href": "aulas/06-atividade-pratica.html#como-estão-distribuídos-os-valores-embutidos-no-aluguel-por-bairro",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "3. Como estão distribuídos os valores embutidos no aluguel por bairro?",
+    "text": "3. Como estão distribuídos os valores embutidos no aluguel por bairro?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#em-quais-bairros-se-concentram-os-imóveis-com-maior-valor-de-aluguel",
+    "href": "aulas/06-atividade-pratica.html#em-quais-bairros-se-concentram-os-imóveis-com-maior-valor-de-aluguel",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "4. Em quais bairros se concentram os imóveis com maior valor de aluguel?",
+    "text": "4. Em quais bairros se concentram os imóveis com maior valor de aluguel?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#como-estão-distribuídos-os-valores-de-aluguel-dos-imóveis-considerando-se-são-mobiliados-ou-não",
+    "href": "aulas/06-atividade-pratica.html#como-estão-distribuídos-os-valores-de-aluguel-dos-imóveis-considerando-se-são-mobiliados-ou-não",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "5. Como estão distribuídos os valores de aluguel dos imóveis, considerando se são mobiliados ou não?",
+    "text": "5. Como estão distribuídos os valores de aluguel dos imóveis, considerando se são mobiliados ou não?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#existe-diferença-relevante-no-valor-do-aluguel-entre-as-zonas-da-cidade",
+    "href": "aulas/06-atividade-pratica.html#existe-diferença-relevante-no-valor-do-aluguel-entre-as-zonas-da-cidade",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "6. Existe diferença relevante no valor do aluguel entre as zonas da cidade?",
+    "text": "6. Existe diferença relevante no valor do aluguel entre as zonas da cidade?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#comparando-imóveis-no-mesmo-bairro-casas-custam-mais-ou-menos-que-apartamentos",
+    "href": "aulas/06-atividade-pratica.html#comparando-imóveis-no-mesmo-bairro-casas-custam-mais-ou-menos-que-apartamentos",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "7. Comparando imóveis no mesmo bairro, casas custam mais ou menos que apartamentos?",
+    "text": "7. Comparando imóveis no mesmo bairro, casas custam mais ou menos que apartamentos?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#prédios-mais-altos-têm-aluguel-por-m²-mais-caro-que-prédios-baixos",
+    "href": "aulas/06-atividade-pratica.html#prédios-mais-altos-têm-aluguel-por-m²-mais-caro-que-prédios-baixos",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "8. Prédios mais altos têm aluguel por m² mais caro que prédios baixos?",
+    "text": "8. Prédios mais altos têm aluguel por m² mais caro que prédios baixos?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/06-atividade-pratica.html#a-distância-até-a-estação-de-metrôtrem-mais-próxima-está-associada-ao-valor-do-aluguel",
+    "href": "aulas/06-atividade-pratica.html#a-distância-até-a-estação-de-metrôtrem-mais-próxima-está-associada-ao-valor-do-aluguel",
+    "title": "Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo",
+    "section": "9. A distância até a estação de metrô/trem mais próxima está associada ao valor do aluguel?",
+    "text": "9. A distância até a estação de metrô/trem mais próxima está associada ao valor do aluguel?\n\n# Escreva aqui o código\n\nEscreva aqui sua interpretação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "6. Atividade Prática: Mercado Imobiliário de São Paulo"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html",
+    "href": "aulas/04-analise-vendas-r.html",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "",
+    "text": "Na Aula 3 você respondeu, em Python, a uma pergunta de negócio de verdade: quais produtos, clientes, países e períodos priorizar, e o quanto cancelamentos e devoluções custam ao resultado. O raciocínio que sustentou aquela análise, isolar vendas válidas, agregar por pedido e por produto, medir o que foi perdido, não pertence ao pandas. Ele pertence a quem analisa dados, e pode ser expresso em qualquer ferramenta capaz de ler uma tabela.\nR é essa outra ferramenta. Ela já apareceu de passagem na Aula 1, como linguagem relevante em estatística e na academia, e agora é hora de conhecê-la na prática, através do tidyverse, uma coleção de pacotes que oferece para o R o mesmo tipo de sintaxe expressiva e encadeada que o pandas oferece para o Python. Este roteiro reproduz, passo a passo, a mesma análise da Aula 3, e depois vai além dela: apresenta perguntas de negócio novas, que o enunciado original não pedia, para mostrar que o valor de dominar duas ferramentas não é redundância, é alcance.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#motivação",
+    "href": "aulas/04-analise-vendas-r.html#motivação",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "",
+    "text": "Na Aula 3 você respondeu, em Python, a uma pergunta de negócio de verdade: quais produtos, clientes, países e períodos priorizar, e o quanto cancelamentos e devoluções custam ao resultado. O raciocínio que sustentou aquela análise, isolar vendas válidas, agregar por pedido e por produto, medir o que foi perdido, não pertence ao pandas. Ele pertence a quem analisa dados, e pode ser expresso em qualquer ferramenta capaz de ler uma tabela.\nR é essa outra ferramenta. Ela já apareceu de passagem na Aula 1, como linguagem relevante em estatística e na academia, e agora é hora de conhecê-la na prática, através do tidyverse, uma coleção de pacotes que oferece para o R o mesmo tipo de sintaxe expressiva e encadeada que o pandas oferece para o Python. Este roteiro reproduz, passo a passo, a mesma análise da Aula 3, e depois vai além dela: apresenta perguntas de negócio novas, que o enunciado original não pedia, para mostrar que o valor de dominar duas ferramentas não é redundância, é alcance.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#objetivos-de-aprendizagem",
+    "href": "aulas/04-analise-vendas-r.html#objetivos-de-aprendizagem",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Objetivos de aprendizagem",
+    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nReconhecer as equivalências entre pandas e tidyverse: groupby().agg() e group_by() |&gt; summarise(), filtros booleanos e filter(), pd.to_datetime e as funções do pacote lubridate;\nReproduzir em R os indicadores de negócio calculados em Python na Aula 3: faturamento, ticket médio, produtos mais relevantes e impacto de cancelamentos;\nEscrever pipelines tidyverse (|&gt;) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;\nComparar criticamente os resultados das duas linguagens sobre os mesmos dados, como forma de validar a tradução.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro pressupõe o projeto-vendas das Aulas 1 a 3 funcionando, com o Online Retail já baixado em data/. Assim como a Aula 3, este script não é a análise completa: é uma tradução de referência, seção a seção, mais uma seção nova de perguntas extras. Ao final, quatro perguntas ajudam a testar se os critérios usados aqui, os mesmos da Aula 3, continuam sólidos quando expressos em outra linguagem.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#configurando-o-ambiente-r",
+    "href": "aulas/04-analise-vendas-r.html#configurando-o-ambiente-r",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Configurando o ambiente R",
+    "text": "Configurando o ambiente R\nA Aula 1 isolou o ambiente Python por projeto com uv venv, e registrou versões exatas em requirements.txt. Aqui simplificamos deliberadamente: instalamos os pacotes uma vez, de forma global na máquina, sem isolar por projeto.\ninstall.packages(c(\"tidyverse\", \"readxl\", \"lubridate\"))\n\n\n\n\n\n\nUma simplificação, não um esquecimento\n\n\n\nR tem um equivalente ao uv venv: o pacote renv, que cria um ambiente isolado e reprodutível por projeto, com um renv.lock no lugar do requirements.txt. Ele fica fora do escopo desta aula, cujo foco é a tradução da análise, mas vale saber que ele existe: se um dia você depender de R em um projeto sério, renv é o próximo passo natural, pela mesma razão que uv venv foi o da Aula 1.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#valor-médio-dos-pedidos",
+    "href": "aulas/04-analise-vendas-r.html#valor-médio-dos-pedidos",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Valor médio dos pedidos",
+    "text": "Valor médio dos pedidos\nPrimeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.\n\norders &lt;- sales |&gt;\n1  group_by(invoice_no) |&gt;\n  summarise(\n    order_date = min(invoice_date),\n    customer_id = first(customer_id),\n    country = first(country),\n    item_quantity = sum(quantity),\n    order_value = sum(revenue),\n    .groups = \"drop\"\n2  )\n\n\n1\n\nCada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.\n\n2\n\nsummarise() documenta como cada coluna do pedido é obtida a partir das linhas de itens.\n\n\n\n\n\norder_value_summary &lt;- orders |&gt;\n  summarise(\n    ticket_medio = mean(order_value),\n    ticket_mediano = median(order_value)\n  )\n\norder_value_summary\n\n# A tibble: 1 × 2\n  ticket_medio ticket_mediano\n         &lt;dbl&gt;          &lt;dbl&gt;\n1         534.           304.\n\n\nDistribuição do valor dos pedidos:\n\norders |&gt;\n  reframe(\n    percentil = c(25, 50, 75, 90, 99),\n    valor_pedido = round(quantile(order_value, percentil / 100), 2)\n  )\n\n# A tibble: 5 × 2\n  percentil valor_pedido\n      &lt;dbl&gt;        &lt;dbl&gt;\n1        25         153.\n2        50         304.\n3        75         496.\n4        90         941.\n5        99        4821.\n\n\nO ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#produtos-com-maior-faturamento-volume-e-frequência",
+    "href": "aulas/04-analise-vendas-r.html#produtos-com-maior-faturamento-volume-e-frequência",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Produtos com maior faturamento, volume e frequência",
+    "text": "Produtos com maior faturamento, volume e frequência\nPara comparar produtos, usamos três métricas diferentes:\n\nrevenue: faturamento gerado;\nunits_sold: unidades vendidas;\norder_count: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.\n\n\nproducts &lt;- sales |&gt;\n  filter(!is.na(description)) |&gt;\n  group_by(stock_code, description) |&gt;\n  summarise(\n    units_sold = sum(quantity),\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    .groups = \"drop\"\n  )\n\nProdutos com maior faturamento:\n\nproducts |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 DOT        DOTCOM POSTAGE                            706 206249.         706\n 2 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988\n 3 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1\n 4 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 5 47566      PARTY BUNTING                           18295  99504.        1685\n 6 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 7 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247\n 8 M          Manual                                   7224  78110.         289\n 9 POST       POSTAGE                                  3150  78102.        1126\n10 23084      RABBIT NIGHT LIGHT                      30788  66965.         994\n\n\nProdutos com maior volume vendido:\n\nproducts |&gt;\n  slice_max(units_sold, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1\n 2 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247\n 3 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS       55047  13842.         535\n 4 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 5 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 6 22197      POPCORN HOLDER                          36761  34299.         803\n 7 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455\n 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320\n 9 23084      RABBIT NIGHT LIGHT                      30788  66965.         994\n10 22492      MINI PAINT SET VINTAGE                  26633  16938.         380\n\n\nProdutos com maior frequência de compra:\n\nproducts |&gt;\n  slice_max(order_count, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 2 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 3 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988\n 4 47566      PARTY BUNTING                           18295  99504.        1685\n 5 20725      LUNCH BAG RED RETROSPOT                 19353  35752.        1564\n 6 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455\n 7 22720      SET OF 3 CAKE TINS PANTRY DESIGN         7493  38158.        1385\n 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320\n 9 20727      LUNCH BAG  BLACK SKULL.                 12240  22421.        1273\n10 22457      NATURAL SLATE HEART CHALKBOARD           9172  28148.        1249\n\n\nOs três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#países-mais-relevantes-para-o-negócio",
+    "href": "aulas/04-analise-vendas-r.html#países-mais-relevantes-para-o-negócio",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Países mais relevantes para o negócio",
+    "text": "Países mais relevantes para o negócio\nA relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.\n\ncountries &lt;- sales |&gt;\n  group_by(country) |&gt;\n  summarise(\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    customer_count = n_distinct(customer_id, na.rm = TRUE),\n    units_sold = sum(quantity),\n    .groups = \"drop\"\n  )\n\ntop_countries &lt;- countries |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\ntop_countries\n\n# A tibble: 10 × 5\n   country         revenue order_count customer_count units_sold\n   &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;          &lt;int&gt;      &lt;dbl&gt;\n 1 United Kingdom 9025222.       18019           3920    4662390\n 2 Netherlands     285446.          94              9     200361\n 3 EIRE            283454.         288              3     147173\n 4 Germany         228867.         457             94     119261\n 5 France          209715.         392             87     112103\n 6 Australia       138521.          57              9      83901\n 7 Spain            61577.          90             30      27940\n 8 Switzerland      57090.          54             21      30629\n 9 Belgium          41196.          98             25      23237\n10 Sweden           38378.          36              8      36083",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#clientes-mais-relevantes-para-o-negócio",
+    "href": "aulas/04-analise-vendas-r.html#clientes-mais-relevantes-para-o-negócio",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Clientes mais relevantes para o negócio",
+    "text": "Clientes mais relevantes para o negócio\nComo registros sem customer_id não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.\n\nidentified_sales &lt;- sales |&gt;\n  filter(!is.na(customer_id))\n\ncustomers &lt;- identified_sales |&gt;\n  group_by(customer_id) |&gt;\n  summarise(\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    units_sold = sum(quantity),\n    country = first(country),\n    .groups = \"drop\"\n  )\n\ntop_customers &lt;- customers |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\ntop_customers\n\n# A tibble: 10 × 5\n   customer_id revenue order_count units_sold country       \n         &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;         \n 1       14646 280206.          73     196915 Netherlands   \n 2       18102 259657.          60      64124 United Kingdom\n 3       17450 194551.          46      69993 United Kingdom\n 4       16446 168472.           2      80997 United Kingdom\n 5       14911 143825.         201      80265 EIRE          \n 6       12415 124915.          21      77374 Australia     \n 7       14156 117380.          55      57885 EIRE          \n 8       17511  91062.          31      64549 United Kingdom\n 9       16029  81025.          63      40208 United Kingdom\n10       12346  77184.           1      74215 United Kingdom",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#produtos-mais-vendidos-por-trimestre-no-reino-unido",
+    "href": "aulas/04-analise-vendas-r.html#produtos-mais-vendidos-por-trimestre-no-reino-unido",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Produtos mais vendidos por trimestre, no Reino Unido",
+    "text": "Produtos mais vendidos por trimestre, no Reino Unido\nA maior parte das vendas vem do Reino Unido, sede da empresa. Faz sentido perguntar: quais produtos lideram em unidades vendidas, trimestre a trimestre, só nesse mercado?\n\nuk_quarterly_top_products &lt;- sales |&gt;\n  filter(country == \"United Kingdom\") |&gt;\n  mutate(quarter = paste0(year(invoice_date), \"-Q\", quarter(invoice_date))) |&gt;\n  group_by(quarter, stock_code, description) |&gt;\n  summarise(\n    units_sold = sum(quantity),\n    revenue = sum(revenue),\n    .groups = \"drop\"\n  ) |&gt;\n  slice_max(units_sold, n = 5, by = quarter, with_ties = FALSE) |&gt;\n  arrange(quarter, desc(units_sold))\n\nuk_quarterly_top_products\n\n# A tibble: 25 × 5\n   quarter stock_code description                        units_sold revenue\n   &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;\n 1 2010-Q4 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        4571    993.\n 2 2010-Q4 85123A     WHITE HANGING HEART T-LIGHT HOLDER       3633  10110.\n 3 2010-Q4 22834      HAND WARMER BABUSHKA DESIGN              3322   4482.\n 4 2010-Q4 21212      PACK OF 72 RETROSPOT CAKE CASES          3266   2266.\n 5 2010-Q4 22693      GROW A FLYTRAP OR SUNFLOWER IN TIN       2617   2509.\n 6 2011-Q1 23166      MEDIUM CERAMIC TOP STORAGE JAR          74215  77184.\n 7 2011-Q1 85099B     JUMBO BAG RED RETROSPOT                 10224  19241.\n 8 2011-Q1 85123A     WHITE HANGING HEART T-LIGHT HOLDER       8874  24541.\n 9 2011-Q1 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        8609   2067.\n10 2011-Q1 17003      BROCADE RING PURSE                       6903   1484.\n# ℹ 15 more rows\n\n\ncountry == \"United Kingdom\" só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#concentração-de-receita-quantos-clientes-sustentam-o-faturamento",
+    "href": "aulas/04-analise-vendas-r.html#concentração-de-receita-quantos-clientes-sustentam-o-faturamento",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Concentração de receita: quantos clientes sustentam o faturamento?",
+    "text": "Concentração de receita: quantos clientes sustentam o faturamento?\nUma leitura comum em gestão comercial é a curva de Pareto: uma fração pequena de clientes costuma responder por boa parte da receita. Vale checar se isso se confirma aqui.\n\ncustomer_revenue &lt;- customers |&gt;\n  select(customer_id, revenue) |&gt;\n  arrange(desc(revenue)) |&gt;\n  mutate(\n    customer_rank = row_number(),\n    cumulative_share = cumsum(revenue) / sum(revenue)\n  )\n\ncustomers_for_80pct &lt;- customer_revenue |&gt;\n  filter(cumulative_share &gt;= 0.8) |&gt;\n  slice_head(n = 1) |&gt;\n  pull(customer_rank)\n\ntotal_customers &lt;- nrow(customer_revenue)\n\ncat(glue::glue(\n  \"{customers_for_80pct} de {total_customers} clientes \",\n  \"({scales::percent(customers_for_80pct / total_customers, accuracy = 0.1)}) \",\n  \"respondem por 80% do faturamento das vendas válidas.\\n\"\n))\n\n1133 de 4338 clientes (26.1%) respondem por 80% do faturamento das vendas válidas.\n\n\nClientes com maior faturamento:\n\ncustomer_revenue |&gt;\n  slice_head(n = 10)\n\n# A tibble: 10 × 4\n   customer_id revenue customer_rank cumulative_share\n         &lt;dbl&gt;   &lt;dbl&gt;         &lt;int&gt;            &lt;dbl&gt;\n 1       14646 280206.             1           0.0314\n 2       18102 259657.             2           0.0606\n 3       17450 194551.             3           0.0824\n 4       16446 168472.             4           0.101 \n 5       14911 143825.             5           0.117 \n 6       12415 124915.             6           0.131 \n 7       14156 117380.             7           0.145 \n 8       17511  91062.             8           0.155 \n 9       16029  81025.             9           0.164 \n10       12346  77184.            10           0.173",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/04-analise-vendas-r.html#sazonalidade-por-dia-da-semana",
+    "href": "aulas/04-analise-vendas-r.html#sazonalidade-por-dia-da-semana",
+    "title": "Aula 4 - Análise de Vendas em R",
+    "section": "Sazonalidade por dia da semana",
+    "text": "Sazonalidade por dia da semana\nA seção 4 já apontou sazonalidade mensal como pergunta em aberto. Antes de chegar lá, um recorte mais fino: existe um dia da semana melhor para vendas?\n\nweekday_revenue &lt;- sales |&gt;\n  mutate(weekday = wday(invoice_date, label = TRUE, abbr = FALSE, week_start = 1)) |&gt;\n  group_by(weekday) |&gt;\n  summarise(\n    orders = n_distinct(invoice_no),\n    revenue = sum(revenue),\n    avg_revenue_per_order = revenue / orders,\n    .groups = \"drop\"\n  ) |&gt;\n  arrange(weekday)\n\nweekday_revenue\n\n# A tibble: 6 × 4\n  weekday   orders  revenue avg_revenue_per_order\n  &lt;ord&gt;      &lt;int&gt;    &lt;dbl&gt;                 &lt;dbl&gt;\n1 Monday      3126 1779575.                  569.\n2 Tuesday     3554 2178633.                  613.\n3 Wednesday   3690 1851148.                  502.\n4 Thursday    4246 2203161.                  519.\n5 Friday      3140 1840340.                  586.\n6 Sunday      2204  813828.                  369.\n\n\nVale notar o que falta nos dados: se um dia da semana não aparece na tabela acima, é porque não há faturas registradas nele, o que já é, por si só, um achado sobre a operação.\nRecapitulando o que este roteiro entrega:\n\nReproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, valor médio dos pedidos, rankings de produtos, países e clientes, e impacto de cancelamentos;\nFoi além do enunciado original com três perguntas novas: produtos líderes por trimestre no Reino Unido, concentração de receita por cliente e sazonalidade por dia da semana.\n\nO que ainda falta é o mesmo que faltava na Aula 3: sazonalidade mensal completa, investigação direta dos outliers e as recomendações práticas para a gestão comercial.",
+    "crumbs": [
+      "Roteiros de aula",
+      "4. Análise de Vendas em R"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html",
+    "href": "aulas/02-introducao-dados-tabulares.html",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "",
+    "text": "Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.\nAntes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.\nMas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.\nO plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#motivação",
+    "href": "aulas/02-introducao-dados-tabulares.html#motivação",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "",
+    "text": "Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.\nAntes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.\nMas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.\nO plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#objetivos-de-aprendizagem",
+    "href": "aulas/02-introducao-dados-tabulares.html#objetivos-de-aprendizagem",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Objetivos de aprendizagem",
+    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nDefinir dados tabulares e identificar seus elementos: observações (linhas), variáveis (colunas) e valores;\nClassificar variáveis por tipo (numéricas contínuas e discretas, categóricas nominais e ordinais, temporais) e explicar por que o tipo importa para a análise;\nReconhecer os principais formatos de arquivo tabular (CSV, Excel, Parquet) e seus problemas típicos;\nCriar e manipular Series e DataFrames com o pandas;\nCarregar um dataset real e executar o ritual de inspeção inicial: head, shape, info, describe, value_counts e contagem de ausentes;\nSelecionar colunas e filtrar linhas por condições para responder perguntas de negócio;\nDiagnosticar problemas comuns de qualidade em dados reais, sem ainda tratá-los.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criado, com o ambiente virtual e o Git funcionando. As células devem ser executadas na ordem. Ao final, três perguntas ajudam a consolidar o aprendizado: tente respondê-las antes de expandir as explicações.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#tipos-de-variáveis",
+    "href": "aulas/02-introducao-dados-tabulares.html#tipos-de-variáveis",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Tipos de variáveis",
+    "text": "Tipos de variáveis\nNem toda coluna é igual, e a diferença mais importante entre elas é o tipo da variável. O tipo determina o que faz sentido fazer com ela: que estatística calcular, que gráfico desenhar, que modelo aplicar.\n\n\n\n\n\n\n\n\n\nTipo\nDefinição\nExemplos\nO que faz sentido\n\n\n\n\nNumérica contínua\nNúmeros que podem assumir qualquer valor em um intervalo\nPreço, altura, temperatura\nMédia, mediana, soma, histograma\n\n\nNumérica discreta\nNúmeros inteiros de contagem\nQuantidade de itens, número de filhos\nMédia, soma, contagem\n\n\nCategórica nominal\nCategorias sem ordem natural\nPaís, cor, nome do produto\nContagem, moda, proporção\n\n\nCategórica ordinal\nCategorias com ordem natural\nEscolaridade, avaliação (ruim, boa, ótima)\nContagem, mediana, comparação de ordem\n\n\nTemporal\nDatas e horários\nData da venda, timestamp\nOrdenação, extração de mês e ano, séries temporais\n\n\n\nDuas armadilhas clássicas merecem aviso prévio. A primeira: nem tudo que parece número é numérico. Um CEP, um CPF, um código de produto são compostos de dígitos, mas são categorias: somar dois CEPs não significa nada, e calcular a média de códigos de cliente é um absurdo estatístico. A pergunta certa não é “isso tem dígitos?”, e sim “faz sentido fazer aritmética com isso?”. A segunda: uma nota de 1 a 5 parece numérica, mas é ordinal: a distância entre 1 e 2 não é necessariamente igual à distância entre 4 e 5. Tratá-la como número puro é uma simplificação que às vezes é aceitável e às vezes distorce a análise; o importante é fazer isso conscientemente, não por acidente. Guarde essas duas armadilhas: as duas vão aparecer, na prática, ainda nesta aula.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#formatos-de-arquivo",
+    "href": "aulas/02-introducao-dados-tabulares.html#formatos-de-arquivo",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Formatos de arquivo",
+    "text": "Formatos de arquivo\nTabelas viajam entre sistemas dentro de arquivos, e os formatos mais comuns têm personalidades diferentes:\n\nCSV (comma-separated values): texto puro com um separador entre os valores. Universal, legível, versionável, mas frágil: não guarda tipos (tudo é texto até prova em contrário) e sofre com um problema particularmente brasileiro. Em países que usam vírgula como separador decimal, como o Brasil, o CSV frequentemente usa ponto e vírgula como separador de campos, e o pandas precisa ser avisado disso (parâmetros sep e decimal do read_csv). Um CSV brasileiro lido com as configurações padrão americanas vira uma coluna única ilegível, e esse erro recebe todo iniciante de braços abertos.\nExcel (xlsx): o formato das planilhas, onipresente no mundo corporativo. Guarda tipos, múltiplas abas e formatação, mas é pesado e lento de ler em arquivos grandes, além de permitir as travessuras que quebram o princípio tidy: células mescladas, totais no meio, cores com significado.\nParquet: formato binário colunar, padrão da engenharia de dados moderna. Rápido, compacto e preserva tipos, mas não é legível por humanos. Vamos usá-lo mais adiante no curso.\n\nA regra prática: receba os dados no formato que vierem, mas conheça o custo de cada um. Hoje receberemos um Excel, e você vai sentir o custo na pele: o arquivo demora a abrir.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#baixando-os-dados-para-o-lugar-certo",
+    "href": "aulas/02-introducao-dados-tabulares.html#baixando-os-dados-para-o-lugar-certo",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Baixando os dados para o lugar certo",
+    "text": "Baixando os dados para o lugar certo\nO arquivo vem compactado e tem cerca de 23 MB. E para onde ele vai? Para a pasta data/, criada justamente para isso na Aula 1. Voltamos ao terminal por um instante:\n\n# Baixamos o arquivo compactado para a pasta data/ do projeto\n!cd ./projeto-vendas && curl -L -o data/online_retail.zip \"https://archive.ics.uci.edu/static/public/352/online+retail.zip\"\n\n# Descompactamos e renomeamos para um nome sem espacos\n!cd ./projeto-vendas && unzip -o data/online_retail.zip -d data/\n!cd ./projeto-vendas && mv \"data/Online Retail.xlsx\" data/online_retail.xlsx\n\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  123k    0  123k    0     0  61870      0 --:--:--  0:00:02 --:--:-- 61897100  347k    0  347k    0     0   116k      0 --:--:--  0:00:02 --:--:--  116k100  987k    0  987k    0     0   240k      0 --:--:--  0:00:04 --:--:--  240k100 2775k    0 2775k    0     0   540k      0 --:--:--  0:00:05 --:--:--  540k100 3839k    0 3839k    0     0   643k      0 --:--:--  0:00:05 --:--:--  762k100 4695k    0 4695k    0     0   675k      0 --:--:--  0:00:06 --:--:--  933k100 5555k    0 5555k    0     0   690k      0 --:--:--  0:00:08 --:--:-- 1030k100 6346k    0 6346k    0     0   699k      0 --:--:--  0:00:09 --:--:-- 1076k100 6842k    0 6842k    0     0   689k      0 --:--:--  0:00:09 --:--:--  848k100 7190k    0 7190k    0     0   652k      0 --:--:--  0:00:11 --:--:--  662k100 7558k    0 7558k    0     0   629k      0 --:--:--  0:00:12 --:--:--  565k100 7954k    0 7954k    0     0   611k      0 --:--:--  0:00:13 --:--:--  484k100 8382k    0 8382k    0     0   598k      0 --:--:--  0:00:13 --:--:--  414k100 8850k    0 8850k    0     0   590k      0 --:--:--  0:00:14 --:--:--  396k100 9354k    0 9354k    0     0   585k      0 --:--:--  0:00:15 --:--:--  436k100 9970k    0 9970k    0     0   587k      0 --:--:--  0:00:16 --:--:--  486k100 10.5M    0 10.5M    0     0   602k      0 --:--:--  0:00:17 --:--:--  578k100 11.7M    0 11.7M    0     0   633k      0 --:--:--  0:00:18 --:--:--  730k100 13.3M    0 13.3M    0     0   685k      0 --:--:--  0:00:19 --:--:--  972k100 15.6M    0 15.6M    0     0   763k      0 --:--:--  0:00:20 --:--:-- 1339k100 18.6M    0 18.6M    0     0   870k      0 --:--:--  0:00:21 --:--:-- 1837k100 22.5M    0 22.5M    0     0  1007k      0 --:--:--  0:00:22 --:--:-- 2463k100 22.6M    0 22.6M    0     0  1009k      0 --:--:--  0:00:22 --:--:-- 2790k\nArchive:  data/online_retail.zip\n extracting: data/Online Retail.xlsx  \n\n\nConferindo:\n\n!cd ./projeto-vendas && ls -lh data/\n\ntotal 46M\n-rwx------ 1 oandrefonseca oandrefonseca 23M May 22  2023 online_retail.xlsx\n-rw-rw-r-- 1 oandrefonseca oandrefonseca 23M Aug 31 09:50 online_retail.zip\n\n\nE agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:\n\n!cd ./projeto-vendas && git status\n\nNada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está no .gitignore que escrevemos na Aula 1, e a decisão daquele dia acaba de se provar correta: 23 MB de dados brutos não pertencem ao histórico de código. Mas isso cria uma responsabilidade nova, e ela vai reaparecer nas perguntas do final da aula: se os dados não viajam com o repositório, o repositório precisa ensinar como obtê-los. Vamos cumprir essa responsabilidade agora, documentando a origem no README:\n\n# Documentamos a fonte dos dados e as instrucoes de obtencao no README\n!cd ./projeto-vendas && printf \"\\n## Dados\\n\\nDataset Online Retail (UCI Machine Learning Repository, id 352).\\nLicenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.\\nDownload: https://archive.ics.uci.edu/dataset/352/online+retail\\nApos baixar, descompacte em data/ e renomeie para online_retail.xlsx\\n\" &gt;&gt; README.md\n\n\n# Ciclo de sempre: add, commit\n!cd ./projeto-vendas && git add README.md\n!cd ./projeto-vendas && git commit -m \"Documenta a fonte e as instrucoes de download dos dados\"",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-1-o-cliente-com-casas-decimais",
+    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-1-o-cliente-com-casas-decimais",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Pergunta 1: o cliente com casas decimais",
+    "text": "Pergunta 1: o cliente com casas decimais\nO info revelou que a coluna customer_id foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nA causa é a combinação de dois fatos. Primeiro, a coluna customer_id tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.\nO aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, customer_id nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-2-a-documentação-contra-os-dados",
+    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-2-a-documentação-contra-os-dados",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Pergunta 2: a documentação contra os dados",
+    "text": "Pergunta 2: a documentação contra os dados\nA página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em customer_id e milhares em description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nOs dados vencem, sempre. A documentação é um relato sobre os dados, escrito por alguém, em algum momento, com algum grau de cuidado; os dados são o fato. Quando os dois divergem, a documentação está desatualizada, incompleta ou simplesmente errada, e qualquer análise construída sobre a afirmação falsa herda o erro.\nO hábito profissional é o ceticismo verificador: leia toda a documentação disponível (ela é valiosa, como o dicionário de variáveis provou ao explicar os cancelamentos), mas trate cada afirmação verificável como uma hipótese a testar, não como um fato estabelecido. O ritual de inspeção da aula é exatamente esse teste: barato, rápido e sistemático. Note a assimetria: verificar custou uma linha de código; confiar cegamente custaria uma análise inteira baseada na premissa de que todas as vendas têm cliente identificado, o que é falso para cerca de um quarto do dataset.\nE há uma lição de espelho: um dia você será a pessoa que escreve a documentação. O README que atualizamos hoje é o começo dessa responsabilidade, e mantê-lo fiel aos dados é o mesmo dever, visto do outro lado.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-3-o-repositório-sem-os-dados",
+    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-3-o-repositório-sem-os-dados",
+    "title": "Aula 2 - Introdução aos Dados Tabulares",
+    "section": "Pergunta 3: o repositório sem os dados",
+    "text": "Pergunta 3: o repositório sem os dados\nSua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nO caminho dela reúne as duas aulas do curso. Primeiro, a fundação da Aula 1: entrar na pasta do projeto clonado, criar o ambiente com uv venv e instalar as dependências exatas com uv pip install -r requirements.txt, o que já inclui o pandas e a openpyxl registrados hoje. Depois, a novidade desta aula: seguir as instruções da seção Dados do README, baixar o arquivo da UCI, descompactar em data/ e renomear para online_retail.xlsx. A partir daí, os notebooks rodam identicamente nas duas máquinas.\nO README cumpre o papel de receita dos dados, exatamente como o requirements.txt é a receita do ambiente. O padrão é o mesmo da Aula 1: o repositório não transporta artefatos pesados ou recriáveis (nem a cozinha, nem os ingredientes brutos), transporta as receitas que permitem reconstruir tudo, e receitas são leves, legíveis e versionáveis. Sim, o projeto continua reprodutível, porque reprodutibilidade não significa embalar tudo junto; significa garantir que qualquer pessoa reconstrua o todo a partir do que o repositório ensina.\nEm projetos maduros, essa receita manual evolui: um script de download automatizado, ou ferramentas de versionamento de dados como o DVC, que registram inclusive qual versão exata dos dados foi usada em cada análise. O princípio, porém, você já domina: código e receitas no Git, artefatos reconstruíveis fora dele.",
+    "crumbs": [
+      "Roteiros de aula",
+      "2. Introdução aos Dados Tabulares"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Ciência de Dados",
+    "section": "",
+    "text": "Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada aula é construída como um projeto real, com um roteiro em Quarto que combina explicação e código executável.",
+    "crumbs": [
+      "Ciência de Dados"
+    ]
+  },
+  {
+    "objectID": "index.html#roteiros-de-aula",
+    "href": "index.html#roteiros-de-aula",
+    "title": "Ciência de Dados",
+    "section": "Roteiros de aula",
+    "text": "Roteiros de aula\n\nAula 1 - Ferramentas, Ambiente e Versionamento\nEstrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.\nAula 2 - Introdução aos Dados Tabulares\nConceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.\nAula 3 - Trabalho Final: Análise de Vendas\nEnunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.\nAula 4 - Análise de Vendas em R\nReproduz a análise da Aula 3 em R e tidyverse, e explora novas perguntas de negócio sobre o mesmo dataset.\nAula 5 - Estatística Descritiva\nMedidas de tendência central e de dispersão, assimetria e curtose, aplicadas ao valor dos pedidos do Online Retail.\n\n\n\n\n\n\n\nComo usar este material\n\n\n\nOs roteiros seguem a ordem das aulas e constroem, passo a passo, um projeto real chamado projeto-vendas. Recomenda-se executar as aulas na ordem, acompanhando pelo terminal e por um notebook próprio.",
+    "crumbs": [
+      "Ciência de Dados"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "",
+    "text": "Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.\nVocê passou duas semanas construindo uma análise excelente. O notebook roda perfeitamente na sua máquina. Você envia o arquivo para um colega e recebe de volta a mensagem mais temida da computação:\n\n“Aqui não funcionou.”\n\nOu pior: você mesmo, três meses depois, abre o próprio projeto e ele não roda mais. Alguma biblioteca foi atualizada, algo quebrou, e você não faz ideia de qual versão usava na época. O código está lá, intacto, mas o resultado sumiu.\nEsse tipo de situação não é um acidente raro. Ela é a consequência natural de trabalhar sem três práticas fundamentais: versionamento de código, isolamento de ambientes e registro de dependências. São exatamente essas três práticas que vamos construir nesta aula.\nCiência de Dados é, antes de tudo, ciência. E ciência precisa ser reprodutível: outra pessoa, com acesso aos mesmos dados e ao mesmo procedimento, deve conseguir chegar aos mesmos resultados. Um resultado que só existe na sua máquina, em um estado que você não consegue recriar, não é um resultado científico. É um acidente feliz.\nHá ainda um argumento profissional. Quando você entrar em uma equipe de dados, ninguém vai perguntar se você sabe usar Git e ambientes virtuais. Isso é assumido como pré-requisito, da mesma forma que se assume que um cirurgião sabe lavar as mãos. As ferramentas desta aula são a infraestrutura invisível de todo projeto sério de dados: elas não aparecem no resultado final, mas sem elas o resultado final não se sustenta.\nA aula de hoje tem um formato diferente do usual. Em vez de estudar cada ferramenta em uma seção separada, vamos fazer o que um cientista de dados faz no primeiro dia de um projeto real: criar a pasta, iniciar o repositório, montar o ambiente e instalar as primeiras dependências, nessa ordem. Cada ferramenta será apresentada no momento exato em que o projeto precisar dela. Ao final, o próprio histórico do projeto contará a história da aula.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#motivação",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#motivação",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "",
+    "text": "Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.\nVocê passou duas semanas construindo uma análise excelente. O notebook roda perfeitamente na sua máquina. Você envia o arquivo para um colega e recebe de volta a mensagem mais temida da computação:\n\n“Aqui não funcionou.”\n\nOu pior: você mesmo, três meses depois, abre o próprio projeto e ele não roda mais. Alguma biblioteca foi atualizada, algo quebrou, e você não faz ideia de qual versão usava na época. O código está lá, intacto, mas o resultado sumiu.\nEsse tipo de situação não é um acidente raro. Ela é a consequência natural de trabalhar sem três práticas fundamentais: versionamento de código, isolamento de ambientes e registro de dependências. São exatamente essas três práticas que vamos construir nesta aula.\nCiência de Dados é, antes de tudo, ciência. E ciência precisa ser reprodutível: outra pessoa, com acesso aos mesmos dados e ao mesmo procedimento, deve conseguir chegar aos mesmos resultados. Um resultado que só existe na sua máquina, em um estado que você não consegue recriar, não é um resultado científico. É um acidente feliz.\nHá ainda um argumento profissional. Quando você entrar em uma equipe de dados, ninguém vai perguntar se você sabe usar Git e ambientes virtuais. Isso é assumido como pré-requisito, da mesma forma que se assume que um cirurgião sabe lavar as mãos. As ferramentas desta aula são a infraestrutura invisível de todo projeto sério de dados: elas não aparecem no resultado final, mas sem elas o resultado final não se sustenta.\nA aula de hoje tem um formato diferente do usual. Em vez de estudar cada ferramenta em uma seção separada, vamos fazer o que um cientista de dados faz no primeiro dia de um projeto real: criar a pasta, iniciar o repositório, montar o ambiente e instalar as primeiras dependências, nessa ordem. Cada ferramenta será apresentada no momento exato em que o projeto precisar dela. Ao final, o próprio histórico do projeto contará a história da aula.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#objetivos-de-aprendizagem",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#objetivos-de-aprendizagem",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "Objetivos de aprendizagem",
+    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nDescrever o ecossistema de ferramentas do cientista de dados que trabalha com Python e o papel de cada componente;\nConhecer as principais IDEs usadas em ciência de dados, em Python e em outras linguagens;\nCriar a estrutura de um projeto de dados pelo terminal;\nExplicar a importância do versionamento de código e executar o ciclo essencial do Git (init, status, add, commit, log), sabendo que também existem tecnologias para versionamento de dados e de modelos;\nComparar os gerenciadores de pacotes e ambientes mais comuns (pip, venv, conda e uv) e escolher o adequado para cada situação;\nCriar e usar ambientes virtuais isolados, explicando por que o isolamento e o registro de dependências são essenciais para a reprodutibilidade.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nLeia as células de contexto com calma e execute as células de código na ordem em que aparecem. A ordem importa mais do que de costume: estamos construindo um projeto passo a passo, e cada etapa depende da anterior. Ao final do roteiro, três perguntas ajudam a consolidar o que foi aprendido. Tente respondê-las antes de expandir as explicações.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#criar-o-ambiente-com-o-quê",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#criar-o-ambiente-com-o-quê",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "Criar o ambiente com o quê?",
+    "text": "Criar o ambiente com o quê?\nAqui surge a primeira decisão de ferramenta da aula, e ela merece uma comparação honesta, porque o ecossistema Python tem várias opções com sobreposição parcial:\n\n\n\n\n\n\n\n\n\nFerramenta\nO que é\nPontos fortes\nPontos fracos\n\n\n\n\npip\nO instalador de pacotes oficial do Python. Baixa pacotes do repositório PyPI.\nVem junto com o Python; funciona em qualquer lugar; é o denominador comum do ecossistema.\nSó instala, não isola: precisa do venv como parceiro. Resolução de dependências lenta.\n\n\nvenv\nMódulo da biblioteca padrão que cria ambientes virtuais.\nNativo, simples, sem instalar nada extra.\nSó cria o ambiente: não instala pacotes nem gerencia versões do Python.\n\n\nconda\nGerenciador de pacotes e de ambientes, do ecossistema Anaconda.\nInstala também dependências que não são Python (CUDA, bibliotecas C, R). Por isso domina a computação científica e o deep learning.\nMais pesado e mais lento; usa um ecossistema de pacotes paralelo ao PyPI.\n\n\nuv\nFerramenta moderna escrita em Rust, criada pela Astral.\nEntre 10 e 100 vezes mais rápido que o pip; unifica pacotes, ambientes, versões do Python e arquivos de lock em uma única ferramenta.\nMais recente: algumas empresas ainda estão migrando; não substitui o conda para dependências nativas.\n\n\n\nE qual é a mais usada atualmente? A resposta exige uma distinção. O pip ainda é a ferramenta mais onipresente: vem instalado com o Python e todo o ecossistema é compatível com ele. O uv, porém, tornou-se o padrão recomendado para projetos novos: a comunidade migrou rapidamente para ele pela velocidade e por resolver sozinho o que antes exigia quatro ferramentas combinadas. Em projetos novos, é a ferramenta dominante da atualidade, e será o padrão deste curso. O conda continua sendo a escolha correta quando o projeto precisa de dependências fora do mundo Python, como drivers CUDA para deep learning com GPU. Em resumo: aprenda pip e venv porque são o fundamento; use uv no dia a dia; e saiba que o conda existe para quando o problema for maior do que o Python.\nDecisão tomada. Vamos criar o ambiente do nosso projeto com o uv:\n\n# Criamos o ambiente virtual: uma pasta .venv dentro do projeto\n!cd ./projeto-vendas && uv venv --clear\n\n# O ambiente existe. Vamos conferir a pasta do projeto:\n!ls -a ./projeto-vendas\n\nNos comandos do dia a dia, no terminal, você ativaria o ambiente com source .venv/bin/activate (Linux e Mac) ou .venv\\Scripts\\Activate.ps1 (Windows), e o nome do ambiente apareceria entre parênteses no início da linha, como (.venv). Esse é o sinal de que você está na cozinha certa. Com o uv há um atalho ainda melhor, que veremos já já: o uv run executa qualquer comando dentro do ambiente sem precisar ativar nada.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#o-incidente",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#o-incidente",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "O incidente",
+    "text": "O incidente\nAgora pergunte ao Git como ele está se sentindo a respeito:\n\n!cd ./projeto-vendas && git status\n\nO Git está apontando para a pasta .venv como conteúdo novo, não rastreado. E se você fizesse um git add nela, centenas de arquivos de bibliotecas entrariam no histórico do projeto: arquivos que não são seus, que mudam a cada instalação e que qualquer pessoa recria em segundos. O repositório ficaria inchado e o histórico, poluído.\nEsse pequeno incidente ensina uma distinção importante: nem tudo o que está na pasta do projeto pertence ao histórico do projeto. Três categorias devem ficar de fora. Primeiro, artefatos recriáveis, como o próprio .venv e os caches da pasta pycache: são gerados a partir do código e não carregam informação própria. Segundo, credenciais e segredos, como senhas e chaves de API: uma vez commitados, ficam no histórico para sempre, mesmo que você apague o arquivo depois, e existem robôs varrendo o GitHub continuamente em busca de chaves vazadas. Terceiro, dados brutos grandes: incham o repositório e frequentemente contêm informação pessoal ou sensível, o que envolve questões legais como a LGPD; para eles existem as ferramentas de versionamento de dados que mencionamos, como o DVC.\nA solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o Git deve ignorar por completo. Vamos criar o nosso e resolver o incidente:\n\n# Criamos o .gitignore com as exclusoes classicas de projetos de dados\n!cd ./projeto-vendas && printf \".venv/\\n__pycache__/\\ndata/\\n*.env\\n.ipynb_checkpoints/\\n\" &gt; .gitignore\n\n# O incidente foi resolvido? So o .gitignore deve aparecer como novo:\n!cd ./projeto-vendas && git status\n\n\n# O .gitignore faz parte do projeto e deve ser versionado. Novo ciclo:\n!cd ./projeto-vendas && git add .gitignore\n!cd ./projeto-vendas && git commit -m \"Adiciona .gitignore para ambiente, dados e segredos\"\n!cd ./projeto-vendas && git log --oneline\n\nRepare no hábito se formando: cada etapa do projeto termina com um commit. É o segundo do dia, e não será o último.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-1-o-colega-cético",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-1-o-colega-cético",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "Pergunta 1: o colega cético",
+    "text": "Pergunta 1: o colega cético\nUm colega afirma: “Ambiente virtual é exagero. Eu instalo tudo no Python global e nunca tive problema.” Ele trabalha sozinho e mantém um único projeto. Ele está errado? E o que muda quando ele tiver dois projetos, ou um colega de equipe?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nCom um único projeto e trabalhando sozinho, ele de fato pode viver sem sentir dor por algum tempo. O problema é invisível até o dia em que deixa de ser. Considere três cenários:\nDois projetos: no momento em que dois projetos precisarem de versões diferentes da mesma biblioteca, um deles quebra. Pior: atualizar uma biblioteca para o projeto novo pode quebrar silenciosamente o projeto antigo, e ele só vai descobrir semanas depois, quando reabrir o código.\nUm colega de equipe: sem um ambiente isolado e um arquivo de versões, o novo colega não tem como saber o que instalar. Ele vai instalar as versões mais recentes de tudo, que provavelmente não são as que o projeto usa, e o famoso “aqui não funcionou” está garantido.\nO futuro: mesmo sem colegas, o eu de daqui a seis meses é, na prática, outra pessoa, que não lembra de nada e precisará recriar o ambiente do zero.\nOu seja: não é exagero, é um seguro contra um acidente que vai acontecer. E com ferramentas como o uv, criar um ambiente custa segundos. O seguro ficou barato demais para ser recusado.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-2-ignorar-não-é-proteger",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-2-ignorar-não-é-proteger",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "Pergunta 2: ignorar não é proteger",
+    "text": "Pergunta 2: ignorar não é proteger\nNo nosso projeto, o .gitignore exclui a pasta data/ do versionamento. Suponha que você coloque um arquivo valioso, digamos data/vendas.csv, nessa pasta, e meses depois o apague por acidente. O Git consegue recuperá-lo, como recuperaria o README.md? O que isso ensina sobre a diferença entre ignorar e versionar, e qual seria a estratégia correta para proteger esse arquivo?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nNão, o Git não consegue recuperar o vendas.csv. O README.md está no histórico: um simples git restore README.md o traz de volta, porque há fotografias dele guardadas. Já a pasta data/ está sendo ignorada: para o Git, o que está nela não existe, e nenhuma fotografia jamais a incluiu. Ignorar um arquivo significa abrir mão, para aquele arquivo, de toda a proteção que o versionamento oferece.\nPor isso a decisão sobre o que entra no .gitignore é uma decisão de engenharia, e não um detalhe burocrático. Segredos devem ficar de fora por proteção (uma chave commitada fica no histórico para sempre). Artefatos recriáveis, como o .venv, podem ficar de fora porque o requirements.txt permite regenerá-los. Mas dados valiosos não são nem segredo a esconder, nem artefato recriável: eles precisam de uma estratégia própria de proteção, que é backup e, em projetos maduros, versionamento de dados com ferramentas dedicadas, como o DVC e o Git LFS, que guardam os dados fora do repositório e mantêm no Git apenas referências leves.\nA síntese: versionamos a receita, ignoramos o que a receita recria, e protegemos os dados por outros meios.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-3-o-teste-definitivo-da-aula",
+    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-3-o-teste-definitivo-da-aula",
+    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
+    "section": "Pergunta 3: o teste definitivo da aula",
+    "text": "Pergunta 3: o teste definitivo da aula\nSua colega clonou o repositório do projeto-vendas na máquina dela. Ela recebeu o README.md, o .gitignore e o requirements.txt, mas não recebeu a pasta .venv, que está no .gitignore. Descreva, passo a passo, o que ela precisa fazer para executar o projeto com exatamente as mesmas versões de bibliotecas que você usou. Em seguida, responda: por que o fato de o .venv não viajar junto não é um defeito, e sim o próprio desenho da reprodutibilidade?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nO caminho dela tem três passos, todos já vistos na aula:\n\nEntrar na pasta do projeto clonado pelo terminal;\nCriar um ambiente virtual novo, com uv venv;\nInstalar as dependências registradas, com uv pip install -r requirements.txt.\n\nPronto: o ambiente dela agora contém exatamente as mesmas bibliotecas, nas mesmas versões, que o seu, porque o requirements.txt registrou tudo com precisão. O código rodará sobre a mesma fundação nas duas máquinas.\nE por que o .venv não viajar junto é o desenho correto? Porque o ambiente é um artefato local e recriável: ele contém arquivos compilados para o sistema operacional de cada máquina (um .venv criado no Windows não funciona no Linux) e pode ser regenerado em segundos a partir da receita. O que precisa viajar é a informação, não o artefato: a receita (requirements.txt) é leve, universal e suficiente. Transportar a cozinha inteira seria pesado, frágil e desnecessário, quando a receita reconstrói a cozinha em qualquer lugar.\nSe você respondeu essa pergunta com segurança, você entendeu a aula inteira: o repositório carrega o código e as receitas; cada máquina reconstrói o resto. É exatamente assim que equipes de dados profissionais trabalham todos os dias.",
+    "crumbs": [
+      "Roteiros de aula",
+      "1. Ferramentas, Ambiente e Versionamento"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html",
+    "href": "aulas/03-analise-vendas.html",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "",
+    "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#motivação",
+    "href": "aulas/03-analise-vendas.html#motivação",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "",
+    "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#objetivos-de-aprendizagem",
+    "href": "aulas/03-analise-vendas.html#objetivos-de-aprendizagem",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Objetivos de aprendizagem",
+    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nTraduzir uma pergunta de negócio em critérios de análise verificáveis nos dados;\nReaplicar o ritual de inspeção e diagnóstico da Aula 2 para separar vendas válidas de cancelamentos e registros anômalos;\nConstruir indicadores de negócio (faturamento, ticket médio, produtos e países mais relevantes) a partir de dados tabulares;\nQuantificar o impacto financeiro de cancelamentos e devoluções sobre o resultado;\nDocumentar e justificar, por escrito, os critérios usados na análise, transformando resultados em recomendações práticas.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro pressupõe o projeto-vendas das Aulas 1 e 2 funcionando, com o Online Retail já baixado em data/. As primeiras células carregam e preparam a base, exatamente o ponto em que a Aula 2 parou; a partir daí, o enunciado é o guia. Este script não é a análise completa: é a fundação sobre a qual as respostas ao enunciado devem ser construídas, célula a célula, no seu próprio notebook. Ao final, três perguntas ajudam a testar se os seus critérios estão sólidos antes de entregar.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#valor-médio-dos-pedidos",
+    "href": "aulas/03-analise-vendas.html#valor-médio-dos-pedidos",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Valor médio dos pedidos",
+    "text": "Valor médio dos pedidos\nPrimeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.\n\norders = (\n    sales\n1    .groupby(\"invoice_no\", as_index=False)\n    .agg(\n        order_date=(\"invoice_date\", \"min\"),\n        customer_id=(\"customer_id\", \"first\"),\n        country=(\"country\", \"first\"),\n        item_quantity=(\"quantity\", \"sum\"),\n        order_value=(\"revenue\", \"sum\"),\n2    )\n)\n\n\n1\n\nCada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.\n\n2\n\nA agregação nomeada documenta, para cada nova coluna, a variável de origem e a função aplicada.\n\n\n\n\n\norder_value_summary = pd.Series(\n    {\n        \"ticket_medio\": orders[\"order_value\"].mean(),\n        \"ticket_mediano\": orders[\"order_value\"].median(),\n    },\n    name=\"valor_em_libras\",\n)\n\norder_value_summary.round(2).to_frame()\n\n\n\n\n\n\n\n\nvalor_em_libras\n\n\n\n\nticket_medio\n534.40\n\n\nticket_mediano\n303.84\n\n\n\n\n\n\n\nDistribuição do valor dos pedidos:\n\norder_percentiles = [0.25, 0.50, 0.75, 0.90, 0.99]\norders[\"order_value\"].describe(percentiles=order_percentiles).round(2)\n\ncount     19960.00\nmean        534.40\nstd        1780.49\nmin           0.38\n25%         152.51\n50%         303.84\n75%         495.62\n90%         940.89\n99%        4821.17\nmax      168469.60\nName: order_value, dtype: float64\n\n\nO ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#produtos-com-maior-faturamento-volume-e-frequência",
+    "href": "aulas/03-analise-vendas.html#produtos-com-maior-faturamento-volume-e-frequência",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Produtos com maior faturamento, volume e frequência",
+    "text": "Produtos com maior faturamento, volume e frequência\nPara comparar produtos, usamos três métricas diferentes:\n\nrevenue: faturamento gerado;\nunits_sold: unidades vendidas;\norder_count: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.\n\n\nproducts = (\n    sales\n    .dropna(subset=[\"description\"])\n    .groupby([\"stock_code\", \"description\"], as_index=False)\n    .agg(\n        units_sold=(\"quantity\", \"sum\"),\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n    )\n)\n\nProdutos com maior faturamento:\n\ntop_products_by_revenue = products.nlargest(10, \"revenue\")\ntop_products_by_revenue.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n4150\nDOT\nDOTCOM POSTAGE\n706\n206248.77\n706\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n4151\nM\nManual\n7224\n78110.27\n289\n\n\n4153\nPOST\nPOSTAGE\n3150\n78101.88\n1126\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n\n\n\n\n\nProdutos com maior volume vendido:\n\ntop_products_by_volume = products.nlargest(10, \"units_sold\")\ntop_products_by_volume.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n2769\n84077\nWORLD WAR 2 GLIDERS ASSTD DESIGNS\n55047\n13841.85\n535\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n1051\n22197\nPOPCORN HOLDER\n36761\n34298.87\n803\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n1327\n22492\nMINI PAINT SET VINTAGE\n26633\n16937.82\n380\n\n\n\n\n\n\n\nProdutos com maior frequência de compra:\n\ntop_products_by_frequency = products.nlargest(10, \"order_count\")\ntop_products_by_frequency.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n101\n20725\nLUNCH BAG RED RETROSPOT\n19353\n35752.01\n1564\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n1552\n22720\nSET OF 3 CAKE TINS PANTRY DESIGN\n7493\n38158.39\n1385\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n104\n20727\nLUNCH BAG BLACK SKULL.\n12240\n22421.21\n1273\n\n\n1295\n22457\nNATURAL SLATE HEART CHALKBOARD\n9172\n28147.96\n1249\n\n\n\n\n\n\n\nOs três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#países-mais-relevantes-para-o-negócio",
+    "href": "aulas/03-analise-vendas.html#países-mais-relevantes-para-o-negócio",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Países mais relevantes para o negócio",
+    "text": "Países mais relevantes para o negócio\nA relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.\n\ncountries = (\n    sales\n    .groupby(\"country\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        customer_count=(\"customer_id\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n    )\n)\n\ntop_countries = countries.nlargest(10, \"revenue\")\ntop_countries.round(2)\n\n\n\n\n\n\n\n\ncountry\nrevenue\norder_count\ncustomer_count\nunits_sold\n\n\n\n\n36\nUnited Kingdom\n9025222.08\n18019\n3920\n4662390\n\n\n24\nNetherlands\n285446.34\n94\n9\n200361\n\n\n10\nEIRE\n283453.96\n288\n3\n147173\n\n\n14\nGermany\n228867.14\n457\n94\n119261\n\n\n13\nFrance\n209715.11\n392\n87\n112103\n\n\n0\nAustralia\n138521.31\n57\n9\n83901\n\n\n31\nSpain\n61577.11\n90\n30\n27940\n\n\n33\nSwitzerland\n57089.90\n54\n21\n30629\n\n\n3\nBelgium\n41196.34\n98\n25\n23237\n\n\n32\nSweden\n38378.33\n36\n8\n36083",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#clientes-mais-relevantes-para-o-negócio",
+    "href": "aulas/03-analise-vendas.html#clientes-mais-relevantes-para-o-negócio",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Clientes mais relevantes para o negócio",
+    "text": "Clientes mais relevantes para o negócio\nComo registros sem customer_id não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.\n\nidentified_sales = sales.dropna(subset=[\"customer_id\"])\n\ncustomers = (\n    identified_sales\n    .groupby(\"customer_id\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n        country=(\"country\", \"first\"),\n    )\n)\n\ntop_customers = customers.nlargest(10, \"revenue\")\ntop_customers.round(2)\n\n\n\n\n\n\n\n\ncustomer_id\nrevenue\norder_count\nunits_sold\ncountry\n\n\n\n\n1689\n14646.0\n280206.02\n73\n196915\nNetherlands\n\n\n4201\n18102.0\n259657.30\n60\n64124\nUnited Kingdom\n\n\n3728\n17450.0\n194550.79\n46\n69993\nUnited Kingdom\n\n\n3008\n16446.0\n168472.50\n2\n80997\nUnited Kingdom\n\n\n1879\n14911.0\n143825.06\n201\n80265\nEIRE\n\n\n55\n12415.0\n124914.53\n21\n77374\nAustralia\n\n\n1333\n14156.0\n117379.63\n55\n57885\nEIRE\n\n\n3771\n17511.0\n91062.38\n31\n64549\nUnited Kingdom\n\n\n2702\n16029.0\n81024.84\n63\n40208\nUnited Kingdom\n\n\n0\n12346.0\n77183.60\n1\n74215\nUnited Kingdom",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução",
+    "href": "aulas/03-analise-vendas.html#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Pergunta 1: cancelamento é a mesma coisa que devolução?",
+    "text": "Pergunta 1: cancelamento é a mesma coisa que devolução?\nO critério de vendas válidas da seção 6 trata toda linha com is_cancelled verdadeiro ou quantity negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nReleia o dicionário de variáveis da Aula 2: invoice_no começando com C é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com C. Verifique nos próprios dados se todas as linhas com quantity negativa têm invoice_no começando com C, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo",
+    "href": "aulas/03-analise-vendas.html#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Pergunta 2: quando um outlier é erro e quando é atacado legítimo?",
+    "text": "Pergunta 2: quando um outlier é erro e quando é atacado legítimo?\nO describe da seção 5 mostra valores de quantity na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nA documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o customer_id e o country dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
+    "objectID": "aulas/03-analise-vendas.html#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender",
+    "href": "aulas/03-analise-vendas.html#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender",
+    "title": "Aula 3 - Análise de Vendas",
+    "section": "Pergunta 3: qual recorte de “vendas válidas” você vai defender?",
+    "text": "Pergunta 3: qual recorte de “vendas válidas” você vai defender?\nAlém de cancelamentos, a seção 6 também exclui quantity igual a zero e unit_price igual a zero. Existem linhas com preço zero e customer_id ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nPreço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de uma venda. Se for esse o caso, mantê-las no cálculo de faturamento infla artificialmente o volume sem representar receita real. O ponto não é decorar essa resposta, mas perceber que cada exclusão do filtro precisa de uma evidência nos próprios dados, não de uma suposição.",
+    "crumbs": [
+      "Roteiros de aula",
+      "3. Análise de Vendas"
+    ]
+  },
+  {
     "objectID": "aulas/05-estatistica-descritiva.html",
     "href": "aulas/05-estatistica-descritiva.html",
     "title": "Aula 5 - Estatística Descritiva",
@@ -206,444 +776,6 @@
     "crumbs": [
       "Roteiros de aula",
       "5. Estatística Descritiva"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html",
-    "href": "aulas/03-analise-vendas.html",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "",
-    "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#motivação",
-    "href": "aulas/03-analise-vendas.html#motivação",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "",
-    "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#objetivos-de-aprendizagem",
-    "href": "aulas/03-analise-vendas.html#objetivos-de-aprendizagem",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Objetivos de aprendizagem",
-    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nTraduzir uma pergunta de negócio em critérios de análise verificáveis nos dados;\nReaplicar o ritual de inspeção e diagnóstico da Aula 2 para separar vendas válidas de cancelamentos e registros anômalos;\nConstruir indicadores de negócio (faturamento, ticket médio, produtos e países mais relevantes) a partir de dados tabulares;\nQuantificar o impacto financeiro de cancelamentos e devoluções sobre o resultado;\nDocumentar e justificar, por escrito, os critérios usados na análise, transformando resultados em recomendações práticas.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro pressupõe o projeto-vendas das Aulas 1 e 2 funcionando, com o Online Retail já baixado em data/. As primeiras células carregam e preparam a base, exatamente o ponto em que a Aula 2 parou; a partir daí, o enunciado é o guia. Este script não é a análise completa: é a fundação sobre a qual as respostas ao enunciado devem ser construídas, célula a célula, no seu próprio notebook. Ao final, três perguntas ajudam a testar se os seus critérios estão sólidos antes de entregar.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#valor-médio-dos-pedidos",
-    "href": "aulas/03-analise-vendas.html#valor-médio-dos-pedidos",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Valor médio dos pedidos",
-    "text": "Valor médio dos pedidos\nPrimeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.\n\norders = (\n    sales\n1    .groupby(\"invoice_no\", as_index=False)\n    .agg(\n        order_date=(\"invoice_date\", \"min\"),\n        customer_id=(\"customer_id\", \"first\"),\n        country=(\"country\", \"first\"),\n        item_quantity=(\"quantity\", \"sum\"),\n        order_value=(\"revenue\", \"sum\"),\n2    )\n)\n\n\n1\n\nCada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.\n\n2\n\nA agregação nomeada documenta, para cada nova coluna, a variável de origem e a função aplicada.\n\n\n\n\n\norder_value_summary = pd.Series(\n    {\n        \"ticket_medio\": orders[\"order_value\"].mean(),\n        \"ticket_mediano\": orders[\"order_value\"].median(),\n    },\n    name=\"valor_em_libras\",\n)\n\norder_value_summary.round(2).to_frame()\n\n\n\n\n\n\n\n\nvalor_em_libras\n\n\n\n\nticket_medio\n534.40\n\n\nticket_mediano\n303.84\n\n\n\n\n\n\n\nDistribuição do valor dos pedidos:\n\norder_percentiles = [0.25, 0.50, 0.75, 0.90, 0.99]\norders[\"order_value\"].describe(percentiles=order_percentiles).round(2)\n\ncount     19960.00\nmean        534.40\nstd        1780.49\nmin           0.38\n25%         152.51\n50%         303.84\n75%         495.62\n90%         940.89\n99%        4821.17\nmax      168469.60\nName: order_value, dtype: float64\n\n\nO ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#produtos-com-maior-faturamento-volume-e-frequência",
-    "href": "aulas/03-analise-vendas.html#produtos-com-maior-faturamento-volume-e-frequência",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Produtos com maior faturamento, volume e frequência",
-    "text": "Produtos com maior faturamento, volume e frequência\nPara comparar produtos, usamos três métricas diferentes:\n\nrevenue: faturamento gerado;\nunits_sold: unidades vendidas;\norder_count: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.\n\n\nproducts = (\n    sales\n    .dropna(subset=[\"description\"])\n    .groupby([\"stock_code\", \"description\"], as_index=False)\n    .agg(\n        units_sold=(\"quantity\", \"sum\"),\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n    )\n)\n\nProdutos com maior faturamento:\n\ntop_products_by_revenue = products.nlargest(10, \"revenue\")\ntop_products_by_revenue.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n4150\nDOT\nDOTCOM POSTAGE\n706\n206248.77\n706\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n4151\nM\nManual\n7224\n78110.27\n289\n\n\n4153\nPOST\nPOSTAGE\n3150\n78101.88\n1126\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n\n\n\n\n\nProdutos com maior volume vendido:\n\ntop_products_by_volume = products.nlargest(10, \"units_sold\")\ntop_products_by_volume.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n2769\n84077\nWORLD WAR 2 GLIDERS ASSTD DESIGNS\n55047\n13841.85\n535\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n1051\n22197\nPOPCORN HOLDER\n36761\n34298.87\n803\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n1327\n22492\nMINI PAINT SET VINTAGE\n26633\n16937.82\n380\n\n\n\n\n\n\n\nProdutos com maior frequência de compra:\n\ntop_products_by_frequency = products.nlargest(10, \"order_count\")\ntop_products_by_frequency.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n101\n20725\nLUNCH BAG RED RETROSPOT\n19353\n35752.01\n1564\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n1552\n22720\nSET OF 3 CAKE TINS PANTRY DESIGN\n7493\n38158.39\n1385\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n104\n20727\nLUNCH BAG BLACK SKULL.\n12240\n22421.21\n1273\n\n\n1295\n22457\nNATURAL SLATE HEART CHALKBOARD\n9172\n28147.96\n1249\n\n\n\n\n\n\n\nOs três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#países-mais-relevantes-para-o-negócio",
-    "href": "aulas/03-analise-vendas.html#países-mais-relevantes-para-o-negócio",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Países mais relevantes para o negócio",
-    "text": "Países mais relevantes para o negócio\nA relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.\n\ncountries = (\n    sales\n    .groupby(\"country\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        customer_count=(\"customer_id\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n    )\n)\n\ntop_countries = countries.nlargest(10, \"revenue\")\ntop_countries.round(2)\n\n\n\n\n\n\n\n\ncountry\nrevenue\norder_count\ncustomer_count\nunits_sold\n\n\n\n\n36\nUnited Kingdom\n9025222.08\n18019\n3920\n4662390\n\n\n24\nNetherlands\n285446.34\n94\n9\n200361\n\n\n10\nEIRE\n283453.96\n288\n3\n147173\n\n\n14\nGermany\n228867.14\n457\n94\n119261\n\n\n13\nFrance\n209715.11\n392\n87\n112103\n\n\n0\nAustralia\n138521.31\n57\n9\n83901\n\n\n31\nSpain\n61577.11\n90\n30\n27940\n\n\n33\nSwitzerland\n57089.90\n54\n21\n30629\n\n\n3\nBelgium\n41196.34\n98\n25\n23237\n\n\n32\nSweden\n38378.33\n36\n8\n36083",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#clientes-mais-relevantes-para-o-negócio",
-    "href": "aulas/03-analise-vendas.html#clientes-mais-relevantes-para-o-negócio",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Clientes mais relevantes para o negócio",
-    "text": "Clientes mais relevantes para o negócio\nComo registros sem customer_id não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.\n\nidentified_sales = sales.dropna(subset=[\"customer_id\"])\n\ncustomers = (\n    identified_sales\n    .groupby(\"customer_id\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n        country=(\"country\", \"first\"),\n    )\n)\n\ntop_customers = customers.nlargest(10, \"revenue\")\ntop_customers.round(2)\n\n\n\n\n\n\n\n\ncustomer_id\nrevenue\norder_count\nunits_sold\ncountry\n\n\n\n\n1689\n14646.0\n280206.02\n73\n196915\nNetherlands\n\n\n4201\n18102.0\n259657.30\n60\n64124\nUnited Kingdom\n\n\n3728\n17450.0\n194550.79\n46\n69993\nUnited Kingdom\n\n\n3008\n16446.0\n168472.50\n2\n80997\nUnited Kingdom\n\n\n1879\n14911.0\n143825.06\n201\n80265\nEIRE\n\n\n55\n12415.0\n124914.53\n21\n77374\nAustralia\n\n\n1333\n14156.0\n117379.63\n55\n57885\nEIRE\n\n\n3771\n17511.0\n91062.38\n31\n64549\nUnited Kingdom\n\n\n2702\n16029.0\n81024.84\n63\n40208\nUnited Kingdom\n\n\n0\n12346.0\n77183.60\n1\n74215\nUnited Kingdom",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução",
-    "href": "aulas/03-analise-vendas.html#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Pergunta 1: cancelamento é a mesma coisa que devolução?",
-    "text": "Pergunta 1: cancelamento é a mesma coisa que devolução?\nO critério de vendas válidas da seção 6 trata toda linha com is_cancelled verdadeiro ou quantity negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nReleia o dicionário de variáveis da Aula 2: invoice_no começando com C é a convenção do sistema para cancelamento, registrado no mesmo momento da venda. Uma devolução, no mundo real, costuma acontecer depois, como um evento separado, e pode ou não gerar uma fatura com C. Verifique nos próprios dados se todas as linhas com quantity negativa têm invoice_no começando com C, como fizemos na Aula 2; se houver exceções, elas podem ser a diferença entre as duas categorias que o enunciado pede para separar.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo",
-    "href": "aulas/03-analise-vendas.html#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Pergunta 2: quando um outlier é erro e quando é atacado legítimo?",
-    "text": "Pergunta 2: quando um outlier é erro e quando é atacado legítimo?\nO describe da seção 5 mostra valores de quantity na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nA documentação do dataset já avisa: há muitos clientes atacadistas nesta base. Antes de descartar uma linha como erro, olhe o customer_id e o country dela: um mesmo cliente comprando o mesmo produto em grande volume, repetidamente, é um padrão de atacado, não um erro de digitação isolado. Descartar esses registros sem checar pode subestimar exatamente os clientes mais relevantes que o enunciado pede para identificar.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/03-analise-vendas.html#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender",
-    "href": "aulas/03-analise-vendas.html#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender",
-    "title": "Aula 3 - Análise de Vendas",
-    "section": "Pergunta 3: qual recorte de “vendas válidas” você vai defender?",
-    "text": "Pergunta 3: qual recorte de “vendas válidas” você vai defender?\nAlém de cancelamentos, a seção 6 também exclui quantity igual a zero e unit_price igual a zero. Existem linhas com preço zero e customer_id ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?\n\n\n\n\n\n\nComo pensar sobre isso\n\n\n\n\n\nPreço zero sem cliente identificado tem cara de brinde, amostra grátis ou ajuste interno de estoque, não de uma venda. Se for esse o caso, mantê-las no cálculo de faturamento infla artificialmente o volume sem representar receita real. O ponto não é decorar essa resposta, mas perceber que cada exclusão do filtro precisa de uma evidência nos próprios dados, não de uma suposição.",
-    "crumbs": [
-      "Roteiros de aula",
-      "3. Análise de Vendas"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "",
-    "text": "Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.\nVocê passou duas semanas construindo uma análise excelente. O notebook roda perfeitamente na sua máquina. Você envia o arquivo para um colega e recebe de volta a mensagem mais temida da computação:\n\n“Aqui não funcionou.”\n\nOu pior: você mesmo, três meses depois, abre o próprio projeto e ele não roda mais. Alguma biblioteca foi atualizada, algo quebrou, e você não faz ideia de qual versão usava na época. O código está lá, intacto, mas o resultado sumiu.\nEsse tipo de situação não é um acidente raro. Ela é a consequência natural de trabalhar sem três práticas fundamentais: versionamento de código, isolamento de ambientes e registro de dependências. São exatamente essas três práticas que vamos construir nesta aula.\nCiência de Dados é, antes de tudo, ciência. E ciência precisa ser reprodutível: outra pessoa, com acesso aos mesmos dados e ao mesmo procedimento, deve conseguir chegar aos mesmos resultados. Um resultado que só existe na sua máquina, em um estado que você não consegue recriar, não é um resultado científico. É um acidente feliz.\nHá ainda um argumento profissional. Quando você entrar em uma equipe de dados, ninguém vai perguntar se você sabe usar Git e ambientes virtuais. Isso é assumido como pré-requisito, da mesma forma que se assume que um cirurgião sabe lavar as mãos. As ferramentas desta aula são a infraestrutura invisível de todo projeto sério de dados: elas não aparecem no resultado final, mas sem elas o resultado final não se sustenta.\nA aula de hoje tem um formato diferente do usual. Em vez de estudar cada ferramenta em uma seção separada, vamos fazer o que um cientista de dados faz no primeiro dia de um projeto real: criar a pasta, iniciar o repositório, montar o ambiente e instalar as primeiras dependências, nessa ordem. Cada ferramenta será apresentada no momento exato em que o projeto precisar dela. Ao final, o próprio histórico do projeto contará a história da aula.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#motivação",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#motivação",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "",
-    "text": "Imagine a seguinte cena, porque ela vai acontecer com você mais cedo ou mais tarde.\nVocê passou duas semanas construindo uma análise excelente. O notebook roda perfeitamente na sua máquina. Você envia o arquivo para um colega e recebe de volta a mensagem mais temida da computação:\n\n“Aqui não funcionou.”\n\nOu pior: você mesmo, três meses depois, abre o próprio projeto e ele não roda mais. Alguma biblioteca foi atualizada, algo quebrou, e você não faz ideia de qual versão usava na época. O código está lá, intacto, mas o resultado sumiu.\nEsse tipo de situação não é um acidente raro. Ela é a consequência natural de trabalhar sem três práticas fundamentais: versionamento de código, isolamento de ambientes e registro de dependências. São exatamente essas três práticas que vamos construir nesta aula.\nCiência de Dados é, antes de tudo, ciência. E ciência precisa ser reprodutível: outra pessoa, com acesso aos mesmos dados e ao mesmo procedimento, deve conseguir chegar aos mesmos resultados. Um resultado que só existe na sua máquina, em um estado que você não consegue recriar, não é um resultado científico. É um acidente feliz.\nHá ainda um argumento profissional. Quando você entrar em uma equipe de dados, ninguém vai perguntar se você sabe usar Git e ambientes virtuais. Isso é assumido como pré-requisito, da mesma forma que se assume que um cirurgião sabe lavar as mãos. As ferramentas desta aula são a infraestrutura invisível de todo projeto sério de dados: elas não aparecem no resultado final, mas sem elas o resultado final não se sustenta.\nA aula de hoje tem um formato diferente do usual. Em vez de estudar cada ferramenta em uma seção separada, vamos fazer o que um cientista de dados faz no primeiro dia de um projeto real: criar a pasta, iniciar o repositório, montar o ambiente e instalar as primeiras dependências, nessa ordem. Cada ferramenta será apresentada no momento exato em que o projeto precisar dela. Ao final, o próprio histórico do projeto contará a história da aula.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#objetivos-de-aprendizagem",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#objetivos-de-aprendizagem",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "Objetivos de aprendizagem",
-    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nDescrever o ecossistema de ferramentas do cientista de dados que trabalha com Python e o papel de cada componente;\nConhecer as principais IDEs usadas em ciência de dados, em Python e em outras linguagens;\nCriar a estrutura de um projeto de dados pelo terminal;\nExplicar a importância do versionamento de código e executar o ciclo essencial do Git (init, status, add, commit, log), sabendo que também existem tecnologias para versionamento de dados e de modelos;\nComparar os gerenciadores de pacotes e ambientes mais comuns (pip, venv, conda e uv) e escolher o adequado para cada situação;\nCriar e usar ambientes virtuais isolados, explicando por que o isolamento e o registro de dependências são essenciais para a reprodutibilidade.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nLeia as células de contexto com calma e execute as células de código na ordem em que aparecem. A ordem importa mais do que de costume: estamos construindo um projeto passo a passo, e cada etapa depende da anterior. Ao final do roteiro, três perguntas ajudam a consolidar o que foi aprendido. Tente respondê-las antes de expandir as explicações.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#criar-o-ambiente-com-o-quê",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#criar-o-ambiente-com-o-quê",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "Criar o ambiente com o quê?",
-    "text": "Criar o ambiente com o quê?\nAqui surge a primeira decisão de ferramenta da aula, e ela merece uma comparação honesta, porque o ecossistema Python tem várias opções com sobreposição parcial:\n\n\n\n\n\n\n\n\n\nFerramenta\nO que é\nPontos fortes\nPontos fracos\n\n\n\n\npip\nO instalador de pacotes oficial do Python. Baixa pacotes do repositório PyPI.\nVem junto com o Python; funciona em qualquer lugar; é o denominador comum do ecossistema.\nSó instala, não isola: precisa do venv como parceiro. Resolução de dependências lenta.\n\n\nvenv\nMódulo da biblioteca padrão que cria ambientes virtuais.\nNativo, simples, sem instalar nada extra.\nSó cria o ambiente: não instala pacotes nem gerencia versões do Python.\n\n\nconda\nGerenciador de pacotes e de ambientes, do ecossistema Anaconda.\nInstala também dependências que não são Python (CUDA, bibliotecas C, R). Por isso domina a computação científica e o deep learning.\nMais pesado e mais lento; usa um ecossistema de pacotes paralelo ao PyPI.\n\n\nuv\nFerramenta moderna escrita em Rust, criada pela Astral.\nEntre 10 e 100 vezes mais rápido que o pip; unifica pacotes, ambientes, versões do Python e arquivos de lock em uma única ferramenta.\nMais recente: algumas empresas ainda estão migrando; não substitui o conda para dependências nativas.\n\n\n\nE qual é a mais usada atualmente? A resposta exige uma distinção. O pip ainda é a ferramenta mais onipresente: vem instalado com o Python e todo o ecossistema é compatível com ele. O uv, porém, tornou-se o padrão recomendado para projetos novos: a comunidade migrou rapidamente para ele pela velocidade e por resolver sozinho o que antes exigia quatro ferramentas combinadas. Em projetos novos, é a ferramenta dominante da atualidade, e será o padrão deste curso. O conda continua sendo a escolha correta quando o projeto precisa de dependências fora do mundo Python, como drivers CUDA para deep learning com GPU. Em resumo: aprenda pip e venv porque são o fundamento; use uv no dia a dia; e saiba que o conda existe para quando o problema for maior do que o Python.\nDecisão tomada. Vamos criar o ambiente do nosso projeto com o uv:\n\n# Criamos o ambiente virtual: uma pasta .venv dentro do projeto\n!cd ./projeto-vendas && uv venv --clear\n\n# O ambiente existe. Vamos conferir a pasta do projeto:\n!ls -a ./projeto-vendas\n\nNos comandos do dia a dia, no terminal, você ativaria o ambiente com source .venv/bin/activate (Linux e Mac) ou .venv\\Scripts\\Activate.ps1 (Windows), e o nome do ambiente apareceria entre parênteses no início da linha, como (.venv). Esse é o sinal de que você está na cozinha certa. Com o uv há um atalho ainda melhor, que veremos já já: o uv run executa qualquer comando dentro do ambiente sem precisar ativar nada.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#o-incidente",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#o-incidente",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "O incidente",
-    "text": "O incidente\nAgora pergunte ao Git como ele está se sentindo a respeito:\n\n!cd ./projeto-vendas && git status\n\nO Git está apontando para a pasta .venv como conteúdo novo, não rastreado. E se você fizesse um git add nela, centenas de arquivos de bibliotecas entrariam no histórico do projeto: arquivos que não são seus, que mudam a cada instalação e que qualquer pessoa recria em segundos. O repositório ficaria inchado e o histórico, poluído.\nEsse pequeno incidente ensina uma distinção importante: nem tudo o que está na pasta do projeto pertence ao histórico do projeto. Três categorias devem ficar de fora. Primeiro, artefatos recriáveis, como o próprio .venv e os caches da pasta pycache: são gerados a partir do código e não carregam informação própria. Segundo, credenciais e segredos, como senhas e chaves de API: uma vez commitados, ficam no histórico para sempre, mesmo que você apague o arquivo depois, e existem robôs varrendo o GitHub continuamente em busca de chaves vazadas. Terceiro, dados brutos grandes: incham o repositório e frequentemente contêm informação pessoal ou sensível, o que envolve questões legais como a LGPD; para eles existem as ferramentas de versionamento de dados que mencionamos, como o DVC.\nA solução formal é o arquivo .gitignore: uma lista de padrões de nomes que o Git deve ignorar por completo. Vamos criar o nosso e resolver o incidente:\n\n# Criamos o .gitignore com as exclusoes classicas de projetos de dados\n!cd ./projeto-vendas && printf \".venv/\\n__pycache__/\\ndata/\\n*.env\\n.ipynb_checkpoints/\\n\" &gt; .gitignore\n\n# O incidente foi resolvido? So o .gitignore deve aparecer como novo:\n!cd ./projeto-vendas && git status\n\n\n# O .gitignore faz parte do projeto e deve ser versionado. Novo ciclo:\n!cd ./projeto-vendas && git add .gitignore\n!cd ./projeto-vendas && git commit -m \"Adiciona .gitignore para ambiente, dados e segredos\"\n!cd ./projeto-vendas && git log --oneline\n\nRepare no hábito se formando: cada etapa do projeto termina com um commit. É o segundo do dia, e não será o último.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-1-o-colega-cético",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-1-o-colega-cético",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "Pergunta 1: o colega cético",
-    "text": "Pergunta 1: o colega cético\nUm colega afirma: “Ambiente virtual é exagero. Eu instalo tudo no Python global e nunca tive problema.” Ele trabalha sozinho e mantém um único projeto. Ele está errado? E o que muda quando ele tiver dois projetos, ou um colega de equipe?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nCom um único projeto e trabalhando sozinho, ele de fato pode viver sem sentir dor por algum tempo. O problema é invisível até o dia em que deixa de ser. Considere três cenários:\nDois projetos: no momento em que dois projetos precisarem de versões diferentes da mesma biblioteca, um deles quebra. Pior: atualizar uma biblioteca para o projeto novo pode quebrar silenciosamente o projeto antigo, e ele só vai descobrir semanas depois, quando reabrir o código.\nUm colega de equipe: sem um ambiente isolado e um arquivo de versões, o novo colega não tem como saber o que instalar. Ele vai instalar as versões mais recentes de tudo, que provavelmente não são as que o projeto usa, e o famoso “aqui não funcionou” está garantido.\nO futuro: mesmo sem colegas, o eu de daqui a seis meses é, na prática, outra pessoa, que não lembra de nada e precisará recriar o ambiente do zero.\nOu seja: não é exagero, é um seguro contra um acidente que vai acontecer. E com ferramentas como o uv, criar um ambiente custa segundos. O seguro ficou barato demais para ser recusado.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-2-ignorar-não-é-proteger",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-2-ignorar-não-é-proteger",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "Pergunta 2: ignorar não é proteger",
-    "text": "Pergunta 2: ignorar não é proteger\nNo nosso projeto, o .gitignore exclui a pasta data/ do versionamento. Suponha que você coloque um arquivo valioso, digamos data/vendas.csv, nessa pasta, e meses depois o apague por acidente. O Git consegue recuperá-lo, como recuperaria o README.md? O que isso ensina sobre a diferença entre ignorar e versionar, e qual seria a estratégia correta para proteger esse arquivo?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nNão, o Git não consegue recuperar o vendas.csv. O README.md está no histórico: um simples git restore README.md o traz de volta, porque há fotografias dele guardadas. Já a pasta data/ está sendo ignorada: para o Git, o que está nela não existe, e nenhuma fotografia jamais a incluiu. Ignorar um arquivo significa abrir mão, para aquele arquivo, de toda a proteção que o versionamento oferece.\nPor isso a decisão sobre o que entra no .gitignore é uma decisão de engenharia, e não um detalhe burocrático. Segredos devem ficar de fora por proteção (uma chave commitada fica no histórico para sempre). Artefatos recriáveis, como o .venv, podem ficar de fora porque o requirements.txt permite regenerá-los. Mas dados valiosos não são nem segredo a esconder, nem artefato recriável: eles precisam de uma estratégia própria de proteção, que é backup e, em projetos maduros, versionamento de dados com ferramentas dedicadas, como o DVC e o Git LFS, que guardam os dados fora do repositório e mantêm no Git apenas referências leves.\nA síntese: versionamos a receita, ignoramos o que a receita recria, e protegemos os dados por outros meios.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-3-o-teste-definitivo-da-aula",
-    "href": "aulas/01-ferramentas-ambiente-versionamento.html#pergunta-3-o-teste-definitivo-da-aula",
-    "title": "Aula 1 - Ferramentas, Ambiente e Versionamento",
-    "section": "Pergunta 3: o teste definitivo da aula",
-    "text": "Pergunta 3: o teste definitivo da aula\nSua colega clonou o repositório do projeto-vendas na máquina dela. Ela recebeu o README.md, o .gitignore e o requirements.txt, mas não recebeu a pasta .venv, que está no .gitignore. Descreva, passo a passo, o que ela precisa fazer para executar o projeto com exatamente as mesmas versões de bibliotecas que você usou. Em seguida, responda: por que o fato de o .venv não viajar junto não é um defeito, e sim o próprio desenho da reprodutibilidade?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nO caminho dela tem três passos, todos já vistos na aula:\n\nEntrar na pasta do projeto clonado pelo terminal;\nCriar um ambiente virtual novo, com uv venv;\nInstalar as dependências registradas, com uv pip install -r requirements.txt.\n\nPronto: o ambiente dela agora contém exatamente as mesmas bibliotecas, nas mesmas versões, que o seu, porque o requirements.txt registrou tudo com precisão. O código rodará sobre a mesma fundação nas duas máquinas.\nE por que o .venv não viajar junto é o desenho correto? Porque o ambiente é um artefato local e recriável: ele contém arquivos compilados para o sistema operacional de cada máquina (um .venv criado no Windows não funciona no Linux) e pode ser regenerado em segundos a partir da receita. O que precisa viajar é a informação, não o artefato: a receita (requirements.txt) é leve, universal e suficiente. Transportar a cozinha inteira seria pesado, frágil e desnecessário, quando a receita reconstrói a cozinha em qualquer lugar.\nSe você respondeu essa pergunta com segurança, você entendeu a aula inteira: o repositório carrega o código e as receitas; cada máquina reconstrói o resto. É exatamente assim que equipes de dados profissionais trabalham todos os dias.",
-    "crumbs": [
-      "Roteiros de aula",
-      "1. Ferramentas, Ambiente e Versionamento"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Ciência de Dados",
-    "section": "",
-    "text": "Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada aula é construída como um projeto real, com um roteiro em Quarto que combina explicação e código executável.",
-    "crumbs": [
-      "Ciência de Dados"
-    ]
-  },
-  {
-    "objectID": "index.html#roteiros-de-aula",
-    "href": "index.html#roteiros-de-aula",
-    "title": "Ciência de Dados",
-    "section": "Roteiros de aula",
-    "text": "Roteiros de aula\n\nAula 1 - Ferramentas, Ambiente e Versionamento\nEstrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.\nAula 2 - Introdução aos Dados Tabulares\nConceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.\nAula 3 - Trabalho Final: Análise de Vendas\nEnunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.\nAula 4 - Análise de Vendas em R\nReproduz a análise da Aula 3 em R e tidyverse, e explora novas perguntas de negócio sobre o mesmo dataset.\nAula 5 - Estatística Descritiva\nMedidas de tendência central e de dispersão, assimetria e curtose, aplicadas ao valor dos pedidos do Online Retail.\n\n\n\n\n\n\n\nComo usar este material\n\n\n\nOs roteiros seguem a ordem das aulas e constroem, passo a passo, um projeto real chamado projeto-vendas. Recomenda-se executar as aulas na ordem, acompanhando pelo terminal e por um notebook próprio.",
-    "crumbs": [
-      "Ciência de Dados"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html",
-    "href": "aulas/02-introducao-dados-tabulares.html",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "",
-    "text": "Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.\nAntes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.\nMas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.\nO plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#motivação",
-    "href": "aulas/02-introducao-dados-tabulares.html#motivação",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "",
-    "text": "Na aula passada, montamos a bancada: criamos o projeto-vendas, demos memória a ele com o Git, isolamos o ambiente com o uv e registramos as dependências. Ficou faltando uma coisa, e não é uma coisa pequena: os dados. Um projeto chamado projeto-vendas sem uma única venda dentro é uma promessa não cumprida. Hoje nós cumprimos a promessa.\nAntes, porém, uma pergunta que parece boba e não é: em que formato vivem os dados do mundo? A resposta, na esmagadora maioria dos casos, é uma só: em tabelas. A planilha do financeiro é uma tabela. O banco de dados do e-commerce guarda tabelas. O extrato do seu banco, o histórico escolar, o prontuário médico, o cadastro de clientes: tabelas, tabelas, tabelas. Estima-se que a maior parte do trabalho aplicado de ciência de dados aconteça sobre dados tabulares, e é por isso que a habilidade de ler, inspecionar e interrogar uma tabela com fluência é o alicerce de tudo o que vem depois: visualização, estatística, machine learning.\nMas há uma segunda razão para esta aula, menos óbvia e mais importante. Dados reais são sujos. Eles chegam com valores faltando, registros duplicados, números negativos onde não deveria haver, colunas com o tipo errado e surpresas que a documentação não conta. O iniciante descobre isso da pior forma: no meio de uma análise, quando o resultado dá errado e ele não sabe por quê. O profissional descobre isso de propósito, logo no início, com um ritual de inspeção que executa em todo dataset novo antes de confiar em qualquer número. Hoje você aprende esse ritual e o aplica em um dataset real, com mais de meio milhão de registros e todos os defeitos que o mundo real oferece.\nO plano da aula: primeiro a teoria, para você saber nomear o que vai ver (o que é uma observação, uma variável, um tipo de dado); depois o pandas em escala pequena, com uma tabela de brinquedo em que tudo é visível; e só então o dataset real, o Online Retail, com as vendas de um ano inteiro de um varejo online. Teoria, brinquedo, mundo real, nessa ordem, porque cada etapa dá as ferramentas para sobreviver à seguinte.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#objetivos-de-aprendizagem",
-    "href": "aulas/02-introducao-dados-tabulares.html#objetivos-de-aprendizagem",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Objetivos de aprendizagem",
-    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nDefinir dados tabulares e identificar seus elementos: observações (linhas), variáveis (colunas) e valores;\nClassificar variáveis por tipo (numéricas contínuas e discretas, categóricas nominais e ordinais, temporais) e explicar por que o tipo importa para a análise;\nReconhecer os principais formatos de arquivo tabular (CSV, Excel, Parquet) e seus problemas típicos;\nCriar e manipular Series e DataFrames com o pandas;\nCarregar um dataset real e executar o ritual de inspeção inicial: head, shape, info, describe, value_counts e contagem de ausentes;\nSelecionar colunas e filtrar linhas por condições para responder perguntas de negócio;\nDiagnosticar problemas comuns de qualidade em dados reais, sem ainda tratá-los.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro continua o projeto da Aula 1: você precisa do projeto-vendas criado, com o ambiente virtual e o Git funcionando. As células devem ser executadas na ordem. Ao final, três perguntas ajudam a consolidar o aprendizado: tente respondê-las antes de expandir as explicações.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#tipos-de-variáveis",
-    "href": "aulas/02-introducao-dados-tabulares.html#tipos-de-variáveis",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Tipos de variáveis",
-    "text": "Tipos de variáveis\nNem toda coluna é igual, e a diferença mais importante entre elas é o tipo da variável. O tipo determina o que faz sentido fazer com ela: que estatística calcular, que gráfico desenhar, que modelo aplicar.\n\n\n\n\n\n\n\n\n\nTipo\nDefinição\nExemplos\nO que faz sentido\n\n\n\n\nNumérica contínua\nNúmeros que podem assumir qualquer valor em um intervalo\nPreço, altura, temperatura\nMédia, mediana, soma, histograma\n\n\nNumérica discreta\nNúmeros inteiros de contagem\nQuantidade de itens, número de filhos\nMédia, soma, contagem\n\n\nCategórica nominal\nCategorias sem ordem natural\nPaís, cor, nome do produto\nContagem, moda, proporção\n\n\nCategórica ordinal\nCategorias com ordem natural\nEscolaridade, avaliação (ruim, boa, ótima)\nContagem, mediana, comparação de ordem\n\n\nTemporal\nDatas e horários\nData da venda, timestamp\nOrdenação, extração de mês e ano, séries temporais\n\n\n\nDuas armadilhas clássicas merecem aviso prévio. A primeira: nem tudo que parece número é numérico. Um CEP, um CPF, um código de produto são compostos de dígitos, mas são categorias: somar dois CEPs não significa nada, e calcular a média de códigos de cliente é um absurdo estatístico. A pergunta certa não é “isso tem dígitos?”, e sim “faz sentido fazer aritmética com isso?”. A segunda: uma nota de 1 a 5 parece numérica, mas é ordinal: a distância entre 1 e 2 não é necessariamente igual à distância entre 4 e 5. Tratá-la como número puro é uma simplificação que às vezes é aceitável e às vezes distorce a análise; o importante é fazer isso conscientemente, não por acidente. Guarde essas duas armadilhas: as duas vão aparecer, na prática, ainda nesta aula.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#formatos-de-arquivo",
-    "href": "aulas/02-introducao-dados-tabulares.html#formatos-de-arquivo",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Formatos de arquivo",
-    "text": "Formatos de arquivo\nTabelas viajam entre sistemas dentro de arquivos, e os formatos mais comuns têm personalidades diferentes:\n\nCSV (comma-separated values): texto puro com um separador entre os valores. Universal, legível, versionável, mas frágil: não guarda tipos (tudo é texto até prova em contrário) e sofre com um problema particularmente brasileiro. Em países que usam vírgula como separador decimal, como o Brasil, o CSV frequentemente usa ponto e vírgula como separador de campos, e o pandas precisa ser avisado disso (parâmetros sep e decimal do read_csv). Um CSV brasileiro lido com as configurações padrão americanas vira uma coluna única ilegível, e esse erro recebe todo iniciante de braços abertos.\nExcel (xlsx): o formato das planilhas, onipresente no mundo corporativo. Guarda tipos, múltiplas abas e formatação, mas é pesado e lento de ler em arquivos grandes, além de permitir as travessuras que quebram o princípio tidy: células mescladas, totais no meio, cores com significado.\nParquet: formato binário colunar, padrão da engenharia de dados moderna. Rápido, compacto e preserva tipos, mas não é legível por humanos. Vamos usá-lo mais adiante no curso.\n\nA regra prática: receba os dados no formato que vierem, mas conheça o custo de cada um. Hoje receberemos um Excel, e você vai sentir o custo na pele: o arquivo demora a abrir.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#baixando-os-dados-para-o-lugar-certo",
-    "href": "aulas/02-introducao-dados-tabulares.html#baixando-os-dados-para-o-lugar-certo",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Baixando os dados para o lugar certo",
-    "text": "Baixando os dados para o lugar certo\nO arquivo vem compactado e tem cerca de 23 MB. E para onde ele vai? Para a pasta data/, criada justamente para isso na Aula 1. Voltamos ao terminal por um instante:\n\n# Baixamos o arquivo compactado para a pasta data/ do projeto\n!cd ./projeto-vendas && curl -L -o data/online_retail.zip \"https://archive.ics.uci.edu/static/public/352/online+retail.zip\"\n\n# Descompactamos e renomeamos para um nome sem espacos\n!cd ./projeto-vendas && unzip -o data/online_retail.zip -d data/\n!cd ./projeto-vendas && mv \"data/Online Retail.xlsx\" data/online_retail.xlsx\n\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  123k    0  123k    0     0  61870      0 --:--:--  0:00:02 --:--:-- 61897100  347k    0  347k    0     0   116k      0 --:--:--  0:00:02 --:--:--  116k100  987k    0  987k    0     0   240k      0 --:--:--  0:00:04 --:--:--  240k100 2775k    0 2775k    0     0   540k      0 --:--:--  0:00:05 --:--:--  540k100 3839k    0 3839k    0     0   643k      0 --:--:--  0:00:05 --:--:--  762k100 4695k    0 4695k    0     0   675k      0 --:--:--  0:00:06 --:--:--  933k100 5555k    0 5555k    0     0   690k      0 --:--:--  0:00:08 --:--:-- 1030k100 6346k    0 6346k    0     0   699k      0 --:--:--  0:00:09 --:--:-- 1076k100 6842k    0 6842k    0     0   689k      0 --:--:--  0:00:09 --:--:--  848k100 7190k    0 7190k    0     0   652k      0 --:--:--  0:00:11 --:--:--  662k100 7558k    0 7558k    0     0   629k      0 --:--:--  0:00:12 --:--:--  565k100 7954k    0 7954k    0     0   611k      0 --:--:--  0:00:13 --:--:--  484k100 8382k    0 8382k    0     0   598k      0 --:--:--  0:00:13 --:--:--  414k100 8850k    0 8850k    0     0   590k      0 --:--:--  0:00:14 --:--:--  396k100 9354k    0 9354k    0     0   585k      0 --:--:--  0:00:15 --:--:--  436k100 9970k    0 9970k    0     0   587k      0 --:--:--  0:00:16 --:--:--  486k100 10.5M    0 10.5M    0     0   602k      0 --:--:--  0:00:17 --:--:--  578k100 11.7M    0 11.7M    0     0   633k      0 --:--:--  0:00:18 --:--:--  730k100 13.3M    0 13.3M    0     0   685k      0 --:--:--  0:00:19 --:--:--  972k100 15.6M    0 15.6M    0     0   763k      0 --:--:--  0:00:20 --:--:-- 1339k100 18.6M    0 18.6M    0     0   870k      0 --:--:--  0:00:21 --:--:-- 1837k100 22.5M    0 22.5M    0     0  1007k      0 --:--:--  0:00:22 --:--:-- 2463k100 22.6M    0 22.6M    0     0  1009k      0 --:--:--  0:00:22 --:--:-- 2790k\nArchive:  data/online_retail.zip\n extracting: data/Online Retail.xlsx  \n\n\nConferindo:\n\n!cd ./projeto-vendas && ls -lh data/\n\ntotal 46M\n-rwx------ 1 oandrefonseca oandrefonseca 23M May 22  2023 online_retail.xlsx\n-rw-rw-r-- 1 oandrefonseca oandrefonseca 23M Aug 31 09:50 online_retail.zip\n\n\nE agora, uma pergunta de aluno atento: os dados entraram no projeto; não deveríamos commitar? Consulte o Git:\n\n!cd ./projeto-vendas && git status\n\nNada a commitar. O Git nem enxerga os arquivos novos, porque a pasta data/ está no .gitignore que escrevemos na Aula 1, e a decisão daquele dia acaba de se provar correta: 23 MB de dados brutos não pertencem ao histórico de código. Mas isso cria uma responsabilidade nova, e ela vai reaparecer nas perguntas do final da aula: se os dados não viajam com o repositório, o repositório precisa ensinar como obtê-los. Vamos cumprir essa responsabilidade agora, documentando a origem no README:\n\n# Documentamos a fonte dos dados e as instrucoes de obtencao no README\n!cd ./projeto-vendas && printf \"\\n## Dados\\n\\nDataset Online Retail (UCI Machine Learning Repository, id 352).\\nLicenca CC BY 4.0. Citacao: Chen, D. (2015). Online Retail. UCI.\\nDownload: https://archive.ics.uci.edu/dataset/352/online+retail\\nApos baixar, descompacte em data/ e renomeie para online_retail.xlsx\\n\" &gt;&gt; README.md\n\n\n# Ciclo de sempre: add, commit\n!cd ./projeto-vendas && git add README.md\n!cd ./projeto-vendas && git commit -m \"Documenta a fonte e as instrucoes de download dos dados\"",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-1-o-cliente-com-casas-decimais",
-    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-1-o-cliente-com-casas-decimais",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Pergunta 1: o cliente com casas decimais",
-    "text": "Pergunta 1: o cliente com casas decimais\nO info revelou que a coluna customer_id foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nA causa é a combinação de dois fatos. Primeiro, a coluna customer_id tem milhares de valores ausentes, como o isna().sum() mostrou. Segundo, o tipo inteiro clássico do pandas (int64) não comporta o marcador de valor ausente NaN, que é, tecnicamente, um número de ponto flutuante. Diante de uma coluna de números que precisa acomodar NaN, o pandas promove tudo para float64, e é assim que 17850 vira 17850.0.\nO aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, customer_id nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-2-a-documentação-contra-os-dados",
-    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-2-a-documentação-contra-os-dados",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Pergunta 2: a documentação contra os dados",
-    "text": "Pergunta 2: a documentação contra os dados\nA página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em customer_id e milhares em description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nOs dados vencem, sempre. A documentação é um relato sobre os dados, escrito por alguém, em algum momento, com algum grau de cuidado; os dados são o fato. Quando os dois divergem, a documentação está desatualizada, incompleta ou simplesmente errada, e qualquer análise construída sobre a afirmação falsa herda o erro.\nO hábito profissional é o ceticismo verificador: leia toda a documentação disponível (ela é valiosa, como o dicionário de variáveis provou ao explicar os cancelamentos), mas trate cada afirmação verificável como uma hipótese a testar, não como um fato estabelecido. O ritual de inspeção da aula é exatamente esse teste: barato, rápido e sistemático. Note a assimetria: verificar custou uma linha de código; confiar cegamente custaria uma análise inteira baseada na premissa de que todas as vendas têm cliente identificado, o que é falso para cerca de um quarto do dataset.\nE há uma lição de espelho: um dia você será a pessoa que escreve a documentação. O README que atualizamos hoje é o começo dessa responsabilidade, e mantê-lo fiel aos dados é o mesmo dever, visto do outro lado.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/02-introducao-dados-tabulares.html#pergunta-3-o-repositório-sem-os-dados",
-    "href": "aulas/02-introducao-dados-tabulares.html#pergunta-3-o-repositório-sem-os-dados",
-    "title": "Aula 2 - Introdução aos Dados Tabulares",
-    "section": "Pergunta 3: o repositório sem os dados",
-    "text": "Pergunta 3: o repositório sem os dados\nSua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?\n\n\n\n\n\n\nExplicação\n\n\n\n\n\nO caminho dela reúne as duas aulas do curso. Primeiro, a fundação da Aula 1: entrar na pasta do projeto clonado, criar o ambiente com uv venv e instalar as dependências exatas com uv pip install -r requirements.txt, o que já inclui o pandas e a openpyxl registrados hoje. Depois, a novidade desta aula: seguir as instruções da seção Dados do README, baixar o arquivo da UCI, descompactar em data/ e renomear para online_retail.xlsx. A partir daí, os notebooks rodam identicamente nas duas máquinas.\nO README cumpre o papel de receita dos dados, exatamente como o requirements.txt é a receita do ambiente. O padrão é o mesmo da Aula 1: o repositório não transporta artefatos pesados ou recriáveis (nem a cozinha, nem os ingredientes brutos), transporta as receitas que permitem reconstruir tudo, e receitas são leves, legíveis e versionáveis. Sim, o projeto continua reprodutível, porque reprodutibilidade não significa embalar tudo junto; significa garantir que qualquer pessoa reconstrua o todo a partir do que o repositório ensina.\nEm projetos maduros, essa receita manual evolui: um script de download automatizado, ou ferramentas de versionamento de dados como o DVC, que registram inclusive qual versão exata dos dados foi usada em cada análise. O princípio, porém, você já domina: código e receitas no Git, artefatos reconstruíveis fora dele.",
-    "crumbs": [
-      "Roteiros de aula",
-      "2. Introdução aos Dados Tabulares"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html",
-    "href": "aulas/04-analise-vendas-r.html",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "",
-    "text": "Na Aula 3 você respondeu, em Python, a uma pergunta de negócio de verdade: quais produtos, clientes, países e períodos priorizar, e o quanto cancelamentos e devoluções custam ao resultado. O raciocínio que sustentou aquela análise, isolar vendas válidas, agregar por pedido e por produto, medir o que foi perdido, não pertence ao pandas. Ele pertence a quem analisa dados, e pode ser expresso em qualquer ferramenta capaz de ler uma tabela.\nR é essa outra ferramenta. Ela já apareceu de passagem na Aula 1, como linguagem relevante em estatística e na academia, e agora é hora de conhecê-la na prática, através do tidyverse, uma coleção de pacotes que oferece para o R o mesmo tipo de sintaxe expressiva e encadeada que o pandas oferece para o Python. Este roteiro reproduz, passo a passo, a mesma análise da Aula 3, e depois vai além dela: apresenta perguntas de negócio novas, que o enunciado original não pedia, para mostrar que o valor de dominar duas ferramentas não é redundância, é alcance.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#motivação",
-    "href": "aulas/04-analise-vendas-r.html#motivação",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "",
-    "text": "Na Aula 3 você respondeu, em Python, a uma pergunta de negócio de verdade: quais produtos, clientes, países e períodos priorizar, e o quanto cancelamentos e devoluções custam ao resultado. O raciocínio que sustentou aquela análise, isolar vendas válidas, agregar por pedido e por produto, medir o que foi perdido, não pertence ao pandas. Ele pertence a quem analisa dados, e pode ser expresso em qualquer ferramenta capaz de ler uma tabela.\nR é essa outra ferramenta. Ela já apareceu de passagem na Aula 1, como linguagem relevante em estatística e na academia, e agora é hora de conhecê-la na prática, através do tidyverse, uma coleção de pacotes que oferece para o R o mesmo tipo de sintaxe expressiva e encadeada que o pandas oferece para o Python. Este roteiro reproduz, passo a passo, a mesma análise da Aula 3, e depois vai além dela: apresenta perguntas de negócio novas, que o enunciado original não pedia, para mostrar que o valor de dominar duas ferramentas não é redundância, é alcance.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#objetivos-de-aprendizagem",
-    "href": "aulas/04-analise-vendas-r.html#objetivos-de-aprendizagem",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Objetivos de aprendizagem",
-    "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nReconhecer as equivalências entre pandas e tidyverse: groupby().agg() e group_by() |&gt; summarise(), filtros booleanos e filter(), pd.to_datetime e as funções do pacote lubridate;\nReproduzir em R os indicadores de negócio calculados em Python na Aula 3: faturamento, ticket médio, produtos mais relevantes e impacto de cancelamentos;\nEscrever pipelines tidyverse (|&gt;) para responder a perguntas de negócio que ainda não haviam sido formuladas, usando o mesmo dataset;\nComparar criticamente os resultados das duas linguagens sobre os mesmos dados, como forma de validar a tradução.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro pressupõe o projeto-vendas das Aulas 1 a 3 funcionando, com o Online Retail já baixado em data/. Assim como a Aula 3, este script não é a análise completa: é uma tradução de referência, seção a seção, mais uma seção nova de perguntas extras. Ao final, quatro perguntas ajudam a testar se os critérios usados aqui, os mesmos da Aula 3, continuam sólidos quando expressos em outra linguagem.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#configurando-o-ambiente-r",
-    "href": "aulas/04-analise-vendas-r.html#configurando-o-ambiente-r",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Configurando o ambiente R",
-    "text": "Configurando o ambiente R\nA Aula 1 isolou o ambiente Python por projeto com uv venv, e registrou versões exatas em requirements.txt. Aqui simplificamos deliberadamente: instalamos os pacotes uma vez, de forma global na máquina, sem isolar por projeto.\ninstall.packages(c(\"tidyverse\", \"readxl\", \"lubridate\"))\n\n\n\n\n\n\nUma simplificação, não um esquecimento\n\n\n\nR tem um equivalente ao uv venv: o pacote renv, que cria um ambiente isolado e reprodutível por projeto, com um renv.lock no lugar do requirements.txt. Ele fica fora do escopo desta aula, cujo foco é a tradução da análise, mas vale saber que ele existe: se um dia você depender de R em um projeto sério, renv é o próximo passo natural, pela mesma razão que uv venv foi o da Aula 1.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#valor-médio-dos-pedidos",
-    "href": "aulas/04-analise-vendas-r.html#valor-médio-dos-pedidos",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Valor médio dos pedidos",
-    "text": "Valor médio dos pedidos\nPrimeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.\n\norders &lt;- sales |&gt;\n1  group_by(invoice_no) |&gt;\n  summarise(\n    order_date = min(invoice_date),\n    customer_id = first(customer_id),\n    country = first(country),\n    item_quantity = sum(quantity),\n    order_value = sum(revenue),\n    .groups = \"drop\"\n2  )\n\n\n1\n\nCada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.\n\n2\n\nsummarise() documenta como cada coluna do pedido é obtida a partir das linhas de itens.\n\n\n\n\n\norder_value_summary &lt;- orders |&gt;\n  summarise(\n    ticket_medio = mean(order_value),\n    ticket_mediano = median(order_value)\n  )\n\norder_value_summary\n\n# A tibble: 1 × 2\n  ticket_medio ticket_mediano\n         &lt;dbl&gt;          &lt;dbl&gt;\n1         534.           304.\n\n\nDistribuição do valor dos pedidos:\n\norders |&gt;\n  reframe(\n    percentil = c(25, 50, 75, 90, 99),\n    valor_pedido = round(quantile(order_value, percentil / 100), 2)\n  )\n\n# A tibble: 5 × 2\n  percentil valor_pedido\n      &lt;dbl&gt;        &lt;dbl&gt;\n1        25         153.\n2        50         304.\n3        75         496.\n4        90         941.\n5        99        4821.\n\n\nO ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#produtos-com-maior-faturamento-volume-e-frequência",
-    "href": "aulas/04-analise-vendas-r.html#produtos-com-maior-faturamento-volume-e-frequência",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Produtos com maior faturamento, volume e frequência",
-    "text": "Produtos com maior faturamento, volume e frequência\nPara comparar produtos, usamos três métricas diferentes:\n\nrevenue: faturamento gerado;\nunits_sold: unidades vendidas;\norder_count: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.\n\n\nproducts &lt;- sales |&gt;\n  filter(!is.na(description)) |&gt;\n  group_by(stock_code, description) |&gt;\n  summarise(\n    units_sold = sum(quantity),\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    .groups = \"drop\"\n  )\n\nProdutos com maior faturamento:\n\nproducts |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 DOT        DOTCOM POSTAGE                            706 206249.         706\n 2 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988\n 3 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1\n 4 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 5 47566      PARTY BUNTING                           18295  99504.        1685\n 6 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 7 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247\n 8 M          Manual                                   7224  78110.         289\n 9 POST       POSTAGE                                  3150  78102.        1126\n10 23084      RABBIT NIGHT LIGHT                      30788  66965.         994\n\n\nProdutos com maior volume vendido:\n\nproducts |&gt;\n  slice_max(units_sold, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 23843      PAPER CRAFT , LITTLE BIRDIE             80995 168470.           1\n 2 23166      MEDIUM CERAMIC TOP STORAGE JAR          78033  81701.         247\n 3 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS       55047  13842.         535\n 4 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 5 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 6 22197      POPCORN HOLDER                          36761  34299.         803\n 7 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455\n 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320\n 9 23084      RABBIT NIGHT LIGHT                      30788  66965.         994\n10 22492      MINI PAINT SET VINTAGE                  26633  16938.         380\n\n\nProdutos com maior frequência de compra:\n\nproducts |&gt;\n  slice_max(order_count, n = 10, with_ties = FALSE)\n\n# A tibble: 10 × 5\n   stock_code description                        units_sold revenue order_count\n   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;\n 1 85123A     WHITE HANGING HEART T-LIGHT HOLDER      37599 104340.        2189\n 2 85099B     JUMBO BAG RED RETROSPOT                 48474  94340.        2089\n 3 22423      REGENCY CAKESTAND 3 TIER                13879 174485.        1988\n 4 47566      PARTY BUNTING                           18295  99504.        1685\n 5 20725      LUNCH BAG RED RETROSPOT                 19353  35752.        1564\n 6 84879      ASSORTED COLOUR BIRD ORNAMENT           36461  59095.        1455\n 7 22720      SET OF 3 CAKE TINS PANTRY DESIGN         7493  38158.        1385\n 8 21212      PACK OF 72 RETROSPOT CAKE CASES         36419  21259.        1320\n 9 20727      LUNCH BAG  BLACK SKULL.                 12240  22421.        1273\n10 22457      NATURAL SLATE HEART CHALKBOARD           9172  28148.        1249\n\n\nOs três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#países-mais-relevantes-para-o-negócio",
-    "href": "aulas/04-analise-vendas-r.html#países-mais-relevantes-para-o-negócio",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Países mais relevantes para o negócio",
-    "text": "Países mais relevantes para o negócio\nA relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.\n\ncountries &lt;- sales |&gt;\n  group_by(country) |&gt;\n  summarise(\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    customer_count = n_distinct(customer_id, na.rm = TRUE),\n    units_sold = sum(quantity),\n    .groups = \"drop\"\n  )\n\ntop_countries &lt;- countries |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\ntop_countries\n\n# A tibble: 10 × 5\n   country         revenue order_count customer_count units_sold\n   &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;          &lt;int&gt;      &lt;dbl&gt;\n 1 United Kingdom 9025222.       18019           3920    4662390\n 2 Netherlands     285446.          94              9     200361\n 3 EIRE            283454.         288              3     147173\n 4 Germany         228867.         457             94     119261\n 5 France          209715.         392             87     112103\n 6 Australia       138521.          57              9      83901\n 7 Spain            61577.          90             30      27940\n 8 Switzerland      57090.          54             21      30629\n 9 Belgium          41196.          98             25      23237\n10 Sweden           38378.          36              8      36083",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#clientes-mais-relevantes-para-o-negócio",
-    "href": "aulas/04-analise-vendas-r.html#clientes-mais-relevantes-para-o-negócio",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Clientes mais relevantes para o negócio",
-    "text": "Clientes mais relevantes para o negócio\nComo registros sem customer_id não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.\n\nidentified_sales &lt;- sales |&gt;\n  filter(!is.na(customer_id))\n\ncustomers &lt;- identified_sales |&gt;\n  group_by(customer_id) |&gt;\n  summarise(\n    revenue = sum(revenue),\n    order_count = n_distinct(invoice_no),\n    units_sold = sum(quantity),\n    country = first(country),\n    .groups = \"drop\"\n  )\n\ntop_customers &lt;- customers |&gt;\n  slice_max(revenue, n = 10, with_ties = FALSE)\n\ntop_customers\n\n# A tibble: 10 × 5\n   customer_id revenue order_count units_sold country       \n         &lt;dbl&gt;   &lt;dbl&gt;       &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;         \n 1       14646 280206.          73     196915 Netherlands   \n 2       18102 259657.          60      64124 United Kingdom\n 3       17450 194551.          46      69993 United Kingdom\n 4       16446 168472.           2      80997 United Kingdom\n 5       14911 143825.         201      80265 EIRE          \n 6       12415 124915.          21      77374 Australia     \n 7       14156 117380.          55      57885 EIRE          \n 8       17511  91062.          31      64549 United Kingdom\n 9       16029  81025.          63      40208 United Kingdom\n10       12346  77184.           1      74215 United Kingdom",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#produtos-mais-vendidos-por-trimestre-no-reino-unido",
-    "href": "aulas/04-analise-vendas-r.html#produtos-mais-vendidos-por-trimestre-no-reino-unido",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Produtos mais vendidos por trimestre, no Reino Unido",
-    "text": "Produtos mais vendidos por trimestre, no Reino Unido\nA maior parte das vendas vem do Reino Unido, sede da empresa. Faz sentido perguntar: quais produtos lideram em unidades vendidas, trimestre a trimestre, só nesse mercado?\n\nuk_quarterly_top_products &lt;- sales |&gt;\n  filter(country == \"United Kingdom\") |&gt;\n  mutate(quarter = paste0(year(invoice_date), \"-Q\", quarter(invoice_date))) |&gt;\n  group_by(quarter, stock_code, description) |&gt;\n  summarise(\n    units_sold = sum(quantity),\n    revenue = sum(revenue),\n    .groups = \"drop\"\n  ) |&gt;\n  slice_max(units_sold, n = 5, by = quarter, with_ties = FALSE) |&gt;\n  arrange(quarter, desc(units_sold))\n\nuk_quarterly_top_products\n\n# A tibble: 25 × 5\n   quarter stock_code description                        units_sold revenue\n   &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;                                   &lt;dbl&gt;   &lt;dbl&gt;\n 1 2010-Q4 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        4571    993.\n 2 2010-Q4 85123A     WHITE HANGING HEART T-LIGHT HOLDER       3633  10110.\n 3 2010-Q4 22834      HAND WARMER BABUSHKA DESIGN              3322   4482.\n 4 2010-Q4 21212      PACK OF 72 RETROSPOT CAKE CASES          3266   2266.\n 5 2010-Q4 22693      GROW A FLYTRAP OR SUNFLOWER IN TIN       2617   2509.\n 6 2011-Q1 23166      MEDIUM CERAMIC TOP STORAGE JAR          74215  77184.\n 7 2011-Q1 85099B     JUMBO BAG RED RETROSPOT                 10224  19241.\n 8 2011-Q1 85123A     WHITE HANGING HEART T-LIGHT HOLDER       8874  24541.\n 9 2011-Q1 84077      WORLD WAR 2 GLIDERS ASSTD DESIGNS        8609   2067.\n10 2011-Q1 17003      BROCADE RING PURSE                       6903   1484.\n# ℹ 15 more rows\n\n\ncountry == \"United Kingdom\" só funciona porque conferimos antes o rótulo exato do país nos dados; a Aula 2 já ensinou a não supor esse tipo de valor sem checar.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#concentração-de-receita-quantos-clientes-sustentam-o-faturamento",
-    "href": "aulas/04-analise-vendas-r.html#concentração-de-receita-quantos-clientes-sustentam-o-faturamento",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Concentração de receita: quantos clientes sustentam o faturamento?",
-    "text": "Concentração de receita: quantos clientes sustentam o faturamento?\nUma leitura comum em gestão comercial é a curva de Pareto: uma fração pequena de clientes costuma responder por boa parte da receita. Vale checar se isso se confirma aqui.\n\ncustomer_revenue &lt;- customers |&gt;\n  select(customer_id, revenue) |&gt;\n  arrange(desc(revenue)) |&gt;\n  mutate(\n    customer_rank = row_number(),\n    cumulative_share = cumsum(revenue) / sum(revenue)\n  )\n\ncustomers_for_80pct &lt;- customer_revenue |&gt;\n  filter(cumulative_share &gt;= 0.8) |&gt;\n  slice_head(n = 1) |&gt;\n  pull(customer_rank)\n\ntotal_customers &lt;- nrow(customer_revenue)\n\ncat(glue::glue(\n  \"{customers_for_80pct} de {total_customers} clientes \",\n  \"({scales::percent(customers_for_80pct / total_customers, accuracy = 0.1)}) \",\n  \"respondem por 80% do faturamento das vendas válidas.\\n\"\n))\n\n1133 de 4338 clientes (26.1%) respondem por 80% do faturamento das vendas válidas.\n\n\nClientes com maior faturamento:\n\ncustomer_revenue |&gt;\n  slice_head(n = 10)\n\n# A tibble: 10 × 4\n   customer_id revenue customer_rank cumulative_share\n         &lt;dbl&gt;   &lt;dbl&gt;         &lt;int&gt;            &lt;dbl&gt;\n 1       14646 280206.             1           0.0314\n 2       18102 259657.             2           0.0606\n 3       17450 194551.             3           0.0824\n 4       16446 168472.             4           0.101 \n 5       14911 143825.             5           0.117 \n 6       12415 124915.             6           0.131 \n 7       14156 117380.             7           0.145 \n 8       17511  91062.             8           0.155 \n 9       16029  81025.             9           0.164 \n10       12346  77184.            10           0.173",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
-    ]
-  },
-  {
-    "objectID": "aulas/04-analise-vendas-r.html#sazonalidade-por-dia-da-semana",
-    "href": "aulas/04-analise-vendas-r.html#sazonalidade-por-dia-da-semana",
-    "title": "Aula 4 - Análise de Vendas em R",
-    "section": "Sazonalidade por dia da semana",
-    "text": "Sazonalidade por dia da semana\nA seção 4 já apontou sazonalidade mensal como pergunta em aberto. Antes de chegar lá, um recorte mais fino: existe um dia da semana melhor para vendas?\n\nweekday_revenue &lt;- sales |&gt;\n  mutate(weekday = wday(invoice_date, label = TRUE, abbr = FALSE, week_start = 1)) |&gt;\n  group_by(weekday) |&gt;\n  summarise(\n    orders = n_distinct(invoice_no),\n    revenue = sum(revenue),\n    avg_revenue_per_order = revenue / orders,\n    .groups = \"drop\"\n  ) |&gt;\n  arrange(weekday)\n\nweekday_revenue\n\n# A tibble: 6 × 4\n  weekday   orders  revenue avg_revenue_per_order\n  &lt;ord&gt;      &lt;int&gt;    &lt;dbl&gt;                 &lt;dbl&gt;\n1 Monday      3126 1779575.                  569.\n2 Tuesday     3554 2178633.                  613.\n3 Wednesday   3690 1851148.                  502.\n4 Thursday    4246 2203161.                  519.\n5 Friday      3140 1840340.                  586.\n6 Sunday      2204  813828.                  369.\n\n\nVale notar o que falta nos dados: se um dia da semana não aparece na tabela acima, é porque não há faturas registradas nele, o que já é, por si só, um achado sobre a operação.\nRecapitulando o que este roteiro entrega:\n\nReproduziu em R e tidyverse toda a análise da Aula 3: visão geral, qualidade dos dados, vendas válidas, valor médio dos pedidos, rankings de produtos, países e clientes, e impacto de cancelamentos;\nFoi além do enunciado original com três perguntas novas: produtos líderes por trimestre no Reino Unido, concentração de receita por cliente e sazonalidade por dia da semana.\n\nO que ainda falta é o mesmo que faltava na Aula 3: sazonalidade mensal completa, investigação direta dos outliers e as recomendações práticas para a gestão comercial.",
-    "crumbs": [
-      "Roteiros de aula",
-      "4. Análise de Vendas em R"
     ]
   }
 ]

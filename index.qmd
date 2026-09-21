@@ -22,6 +22,9 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 5 - Estatística Descritiva](aulas/05-estatistica-descritiva.qmd)\
   Medidas de tendência central e de dispersão, assimetria e curtose, aplicadas ao valor dos pedidos do Online Retail.
 
+- [Aula 6 - Atividade Prática: Mercado Imobiliário de São Paulo](aulas/06-atividade-pratica.qmd)\
+  Avaliação individual, sem gabarito, que aplica o repertório das aulas anteriores a um dataset novo sobre o mercado de aluguel residencial em São Paulo.
+
 ::: {.callout-tip}
 ## Como usar este material
 

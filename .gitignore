@@ -16,7 +16,6 @@ aulas/**/*.quarto_ipynb
 
 # Datasets da Aula 6 (gerados/baixados localmente, reproduziveis via os scripts em src/)
 /aulas/imoveis-nordeste/data/
-/aulas/imoveis-sao-paulo/data/
 /aulas/imoveis-sao-paulo/SP_STATES.zip
 
 # Gabarito oculto e scripts de geracao (material do instrutor, nunca deve ir para o repositorio publico)
@@ -24,6 +23,10 @@ aulas/**/*.quarto_ipynb
 /aulas/imoveis-sao-paulo/gabarito-*.qmd
 /aulas/imoveis-nordeste/src/*.py
 /aulas/imoveis-sao-paulo/src/*.py
+
+# Enunciado da atividade avaliativa da Aula 6 (distribuido apenas no dia da prova)
+/aulas/06-atividade-pratica.qmd
+/_freeze/aulas/06-atividade-pratica/
 
 # Arquivos grandes em geral (datasets, downloads)
 *.zip

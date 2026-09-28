@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/06-imputacao-normalizacao-dados.html</loc>
+    <lastmod>2026-09-28T19:03:01.999Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
-    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
+    <lastmod>2026-09-28T19:03:01.999Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
+    <lastmod>2026-09-28T19:03:01.999Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
+    <lastmod>2026-09-28T19:03:02.009Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
+    <lastmod>2026-09-28T19:03:01.998Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
+    <lastmod>2026-09-28T19:03:01.999Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
+    <lastmod>2026-09-28T19:03:01.999Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Aula 6 - Imputação e Normalização de Dados – Ciência de Dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-31c5116dce638bf40351868cd08965ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ba99d7a9af36e81ac0abe239f9976969.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/06-imputacao-normalizacao-dados.html">6. Imputação e Normalização de Dados</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Ciência de Dados</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciência de Dados</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Roteiros de aula</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/01-ferramentas-ambiente-versionamento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Ferramentas, Ambiente e Versionamento</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/02-introducao-dados-tabulares.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Introdução aos Dados Tabulares</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/03-analise-vendas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Análise de Vendas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/04-analise-vendas-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Análise de Vendas em R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/05-estatistica-descritiva.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Estatística Descritiva</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/06-imputacao-normalizacao-dados.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">6. Imputação e Normalização de Dados</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link active" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
+  <li><a href="#preparando-a-base" id="toc-preparando-a-base" class="nav-link" data-scroll-target="#preparando-a-base">1. Preparando a base</a>
+  <ul class="collapse">
+  <li><a href="#os-três-problemas-da-aula" id="toc-os-três-problemas-da-aula" class="nav-link" data-scroll-target="#os-três-problemas-da-aula">1.1 Os três problemas da aula</a></li>
+  </ul></li>
+  <li><a href="#ausência-estrutural" id="toc-ausência-estrutural" class="nav-link" data-scroll-target="#ausência-estrutural">2. Ausência estrutural</a></li>
+  <li><a href="#imputação-o-impacto-das-alternativas" id="toc-imputação-o-impacto-das-alternativas" class="nav-link" data-scroll-target="#imputação-o-impacto-das-alternativas">3. Imputação: o impacto das alternativas</a>
+  <ul class="collapse">
+  <li><a href="#média-mediana-e-mediana-agrupada" id="toc-média-mediana-e-mediana-agrupada" class="nav-link" data-scroll-target="#média-mediana-e-mediana-agrupada">3.1 Média, mediana e mediana agrupada</a></li>
+  <li><a href="#moda-e-variáveis-discretas" id="toc-moda-e-variáveis-discretas" class="nav-link" data-scroll-target="#moda-e-variáveis-discretas">3.2 Moda e variáveis discretas</a></li>
+  <li><a href="#resumo-da-imputação" id="toc-resumo-da-imputação" class="nav-link" data-scroll-target="#resumo-da-imputação">3.3 Resumo da imputação</a></li>
+  </ul></li>
+  <li><a href="#escalonamento-a-régua-muda-a-forma-não" id="toc-escalonamento-a-régua-muda-a-forma-não" class="nav-link" data-scroll-target="#escalonamento-a-régua-muda-a-forma-não">4. Escalonamento: a régua muda, a forma não</a>
+  <ul class="collapse">
+  <li><a href="#três-escaladores" id="toc-três-escaladores" class="nav-link" data-scroll-target="#três-escaladores">4.1 Três escaladores</a></li>
+  <li><a href="#sensibilidade-a-extremos" id="toc-sensibilidade-a-extremos" class="nav-link" data-scroll-target="#sensibilidade-a-extremos">4.2 Sensibilidade a extremos</a></li>
+  </ul></li>
+  <li><a href="#transformações-a-forma-muda" id="toc-transformações-a-forma-muda" class="nav-link" data-scroll-target="#transformações-a-forma-muda">5. Transformações: a forma muda</a>
+  <ul class="collapse">
+  <li><a href="#aluguel-positivo-log-e-box-cox" id="toc-aluguel-positivo-log-e-box-cox" class="nav-link" data-scroll-target="#aluguel-positivo-log-e-box-cox">5.1 Aluguel positivo: log e Box-Cox</a></li>
+  <li><a href="#distância-com-zeros-log1p-e-yeo-johnson" id="toc-distância-com-zeros-log1p-e-yeo-johnson" class="nav-link" data-scroll-target="#distância-com-zeros-log1p-e-yeo-johnson">5.2 Distância com zeros: <code>log1p</code> e Yeo-Johnson</a></li>
+  <li><a href="#resumo-das-transformações" id="toc-resumo-das-transformações" class="nav-link" data-scroll-target="#resumo-das-transformações">5.3 Resumo das transformações</a></li>
+  </ul></li>
+  <li><a href="#aplicação-e-comparação-final" id="toc-aplicação-e-comparação-final" class="nav-link" data-scroll-target="#aplicação-e-comparação-final">6. Aplicação e comparação final</a>
+  <ul class="collapse">
+  <li><a href="#registrar-as-lacunas" id="toc-registrar-as-lacunas" class="nav-link" data-scroll-target="#registrar-as-lacunas">6.1 Registrar as lacunas</a></li>
+  <li><a href="#imputar-pela-mediana-do-grupo" id="toc-imputar-pela-mediana-do-grupo" class="nav-link" data-scroll-target="#imputar-pela-mediana-do-grupo">6.2 Imputar pela mediana do grupo</a></li>
+  <li><a href="#reduzir-as-caudas" id="toc-reduzir-as-caudas" class="nav-link" data-scroll-target="#reduzir-as-caudas">6.3 Reduzir as caudas</a></li>
+  <li><a href="#antes-e-depois" id="toc-antes-e-depois" class="nav-link" data-scroll-target="#antes-e-depois">6.4 Antes e depois</a></li>
+  </ul></li>
+  <li><a href="#guia-rápido" id="toc-guia-rápido" class="nav-link" data-scroll-target="#guia-rápido">7. Guia rápido</a>
+  <ul class="collapse">
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese">Síntese</a></li>
+  </ul></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
+  <ul class="collapse">
+  <li><a href="#pergunta-1-imputar-sempre-melhora-a-análise" id="toc-pergunta-1-imputar-sempre-melhora-a-análise" class="nav-link" data-scroll-target="#pergunta-1-imputar-sempre-melhora-a-análise">Pergunta 1: imputar sempre melhora a análise?</a></li>
+  <li><a href="#pergunta-2-por-que-o-standardscaler-não-resolveu-a-assimetria" id="toc-pergunta-2-por-que-o-standardscaler-não-resolveu-a-assimetria" class="nav-link" data-scroll-target="#pergunta-2-por-que-o-standardscaler-não-resolveu-a-assimetria">Pergunta 2: por que o <code>StandardScaler</code> não resolveu a assimetria?</a></li>
+  <li><a href="#pergunta-3-qual-escala-você-apresentaria-ao-gestor" id="toc-pergunta-3-qual-escala-você-apresentaria-ao-gestor" class="nav-link" data-scroll-target="#pergunta-3-qual-escala-você-apresentaria-ao-gestor">Pergunta 3: qual escala você apresentaria ao gestor?</a></li>
+  </ul></li>
+  <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/06-imputacao-normalizacao-dados.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="06-imputacao-normalizacao-dados.ipynb" download="06-imputacao-normalizacao-dados.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/06-imputacao-normalizacao-dados.html">6. Imputação e Normalização de Dados</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Aula 6 - Imputação e Normalização de Dados</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">28 de setembro de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>Na Aula 5, usamos assimetria, curtose e valores atípicos para <strong>descrever</strong> distribuições. O valor dos pedidos, por exemplo, apresentava uma cauda longa à direita, e um grupo pequeno de clientes atacadistas elevava a média. Essa análise caracterizava os dados observados, mas ainda não envolvia qualquer modificação da base.</p>
+<p>Nesta aula, o diagnóstico passa a orientar <strong>decisões de tratamento</strong>. Antes de ajustar um modelo, construir um indicador ou comparar grupos, uma base real geralmente exige algum preparo. Esse conjunto de operações recebe o nome de pré-processamento. As escolhas feitas nessa etapa alteram os dados que chegam às análises posteriores e, portanto, afetam as estimativas e conclusões produzidas a partir deles.</p>
+<p>Para ilustrar, usaremos a base de anúncios de aluguel em São Paulo da atividade prática. Ela reúne três problemas que aparecem com frequência em dados reais:</p>
+<ul>
+<li><strong>lacunas</strong> em algumas colunas, que podem representar perda de informação ou ausência estrutural,</li>
+<li>variáveis medidas em <strong>unidades diferentes</strong>, como área em m², aluguel em reais e número de quartos,</li>
+<li>Distribuições com <strong>cauda longa</strong>, em que poucos imóveis muito caros esticam a escala.</li>
+</ul>
+<p>Cada problema pede uma decisão diferente. A <strong>imputação</strong> estima valores que não foram observados. O <strong>escalonamento</strong> coloca variáveis em escalas numéricas comparáveis. As <strong>transformações não lineares</strong> modificam a geometria da distribuição e podem reduzir sua assimetria. O termo <em>normalização</em> aparece na literatura com significados diferentes, por isso o roteiro distingue explicitamente escalonamento de transformação. Nenhum desses tratamentos é neutro. Imputar introduz valores estimados, escalonar muda a unidade de representação e transformar altera as distâncias entre as observações. Avaliaremos cada técnica tanto pelo problema que resolve quanto pelas mudanças que produz.</p>
+<blockquote class="blockquote">
+<p><strong>O que cada tratamento muda nos dados?</strong></p>
+</blockquote>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
+<p>Ao final deste roteiro, você será capaz de:</p>
+<ol type="1">
+<li>Distinguir ausência estrutural de ausência por falha de registro.</li>
+<li>Imputar valores pela média, mediana, moda e mediana por grupo, além de medir o erro de cada estratégia.</li>
+<li>Escalonar variáveis com <code>StandardScaler</code>, <code>RobustScaler</code> e <code>MinMaxScaler</code>, reconhecendo a sensibilidade de cada um a extremos.</li>
+<li>Reduzir a assimetria com <code>log</code>, <code>log1p</code>, Box-Cox e Yeo-Johnson.</li>
+<li>Explicar a diferença entre mudar a <strong>régua</strong> (escalonar) e mudar a <strong>forma</strong> (transformar) de uma distribuição.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como usar este roteiro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>O roteiro usa a base <code>imoveis_sao_paulo.csv</code>, a mesma da atividade prática, salva em <code>imoveis-sao-paulo/data/</code>.</p>
+<p>Além das bibliotecas da Aula 5, usamos o módulo <code>sklearn.preprocessing</code> do <strong>scikit-learn</strong>.</p>
+<p>Ao final, três perguntas ajudam a consolidar as escolhas de tratamento.</p>
+</div>
+</div>
+</section>
+<section id="preparando-a-base" class="level1">
+<h1>1. Preparando a base</h1>
+<p>Começamos importando as bibliotecas usadas no carregamento, na transformação e na visualização dos dados.</p>
+<div id="bf2e835b" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> (</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    MinMaxScaler,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    PowerTransformer,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    RobustScaler,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    StandardScaler,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em seguida, carregamos a base e fazemos três ajustes iniciais:</p>
+<ul>
+<li>padronizamos os nomes das colunas,</li>
+<li>removemos linhas duplicadas,</li>
+<li>criamos <code>property_type</code>: imóveis sem andar são casas.</li>
+</ul>
+<div id="66d64644" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>column_names <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"parking spaces"</span>: <span class="st">"parking_spaces"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hoa (R$)"</span>: <span class="st">"hoa"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rent amount (R$)"</span>: <span class="st">"rent_amount"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"property tax (R$)"</span>: <span class="st">"property_tax"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"total (R$)"</span>: <span class="st">"total"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>imoveis <span class="op">=</span> (</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"imoveis-sao-paulo/data/imoveis_sao_paulo.csv"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    .rename(columns<span class="op">=</span>column_names)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    .drop_duplicates()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sem andar indica casa, com andar indica apartamento</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        property_type<span class="op">=</span><span class="kw">lambda</span> df: np.where(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            df[<span class="st">"floor"</span>].isna(),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"casa"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"apartamento"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="os-três-problemas-da-aula" class="level2">
+<h2 class="anchored" data-anchor-id="os-três-problemas-da-aula">1.1 Os três problemas da aula</h2>
+<p>Uma figura resume os três problemas. Primeiro, calculamos o que cada painel mostrará:</p>
+<ol type="1">
+<li>a proporção de ausentes em três colunas,</li>
+<li>a mediana de variáveis em unidades diferentes,</li>
+<li>o limite para exibir a cauda do aluguel.</li>
+</ol>
+<div id="6501cca2" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    imoveis[[<span class="st">"hoa"</span>, <span class="st">"parking_spaces"</span>, <span class="st">"floor"</span>]]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    .isna()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    .mean()  <span class="co"># média de booleanos = proporção de True</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    .mul(<span class="dv">100</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>scales <span class="op">=</span> (</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    imoveis[[<span class="st">"rooms"</span>, <span class="st">"area"</span>, <span class="st">"rent_amount"</span>]]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    .median()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># percentil 99: corta o 1% mais extremo apenas na visualização</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>limit <span class="op">=</span> imoveis[<span class="st">"rent_amount"</span>].quantile(<span class="fl">.99</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="87969baa" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sns.barplot(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>missing.index,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>missing.values,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>axes[<span class="dv">0</span>],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#4C72B0"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"1. Valores ausentes"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"Ausentes (%)"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">""</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>sns.barplot(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>scales.index,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>scales.values,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>axes[<span class="dv">1</span>],</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#55A868"</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"2. Escalas incompatíveis"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"Mediana original"</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">""</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>sns.histplot(</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    imoveis[<span class="st">"rent_amount"</span>],</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    binrange<span class="op">=</span>(<span class="dv">0</span>, limit),</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>axes[<span class="dv">2</span>],</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#C44E52"</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].<span class="bu">set</span>(</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"3. Cauda longa"</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Aluguel (R$)"</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-5-output-1.png" width="1431" height="367" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Cada painel corresponde a uma parte do roteiro:</p>
+<ul>
+<li><strong>valores ausentes</strong> → seções 2 e 3,</li>
+<li><strong>escalas incompatíveis</strong> → seção 4,</li>
+<li><strong>cauda longa</strong> → seção 5.</li>
+</ul>
+<p>A ordem das seções acompanha uma sequência comum de pré-processamento. Primeiro, investigamos as lacunas e decidimos quais delas representam informação perdida. Muitos estimadores não aceitam valores ausentes em sua entrada, mas esse não é o único motivo para tratá-los. Também precisamos evitar que procedimentos diferentes descartem subconjuntos distintos da base. Depois, examinamos separadamente a escala numérica e a forma das distribuições.</p>
+</section>
+</section>
+<section id="ausência-estrutural" class="level1">
+<h1>2. Ausência estrutural</h1>
+<p>Ao encontrar uma coluna com lacunas, é tentador preenchê-las imediatamente. Antes de escolher uma técnica, precisamos investigar <strong>por que</strong> o valor está ausente. Nem toda célula vazia representa erro de coleta ou perda de informação.</p>
+<p>Na base de imóveis, <code>floor</code> e <code>total_floors</code> estão ausentes nas casas. Não houve falha de cadastro. Esses atributos descrevem a posição de uma unidade em um edifício e, portanto, não se aplicam a casas. Esse tipo de lacuna é chamado de <strong>ausência estrutural</strong>, pois decorre da definição da variável para determinado tipo de observação. Imputar um número produziria um valor sem referente real.</p>
+<div id="d1db0b4a" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    imoveis</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"property_type"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        imoveis<span class="op">=</span>(<span class="st">"property_type"</span>, <span class="st">"size"</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        proporcao_sem_andar<span class="op">=</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"floor"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: (</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                x</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                .isna()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                .mean()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">imoveis</th>
+<th data-quarto-table-cell-role="th">proporcao_sem_andar</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">property_type</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">apartamento</td>
+<td>25024</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">casa</td>
+<td>4415</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Quando a ausência decorre de uma característica conhecida da observação, registre essa característica e <strong>não impute</strong> um valor numérico. Aqui, <code>property_type</code> torna explícita a informação que antes estava codificada apenas pela lacuna.</p>
+</div>
+</div>
+<p>Depois de separar o caso estrutural, restam lacunas que podem representar informação perdida, como um aluguel não informado ou um número de vagas não registrado. Para esses casos, a imputação é uma alternativa possível. A escolha ainda depende do mecanismo que produziu a ausência e da quantidade de dados faltantes.</p>
+</section>
+<section id="imputação-o-impacto-das-alternativas" class="level1">
+<h1>3. Imputação: o impacto das alternativas</h1>
+<p>Imputar consiste em substituir um valor ausente por uma estimativa calculada a partir das informações disponíveis. Há estratégias simples, como usar uma medida de posição da própria coluna, e métodos multivariados, que estimam cada lacuna a partir de outras variáveis. Nesta aula, trabalharemos com estatísticas descritivas da Aula 5. Mesmo simples, essas estratégias permitem observar efeitos importantes, como concentração artificial de valores e redução da variabilidade.</p>
+<p>Há uma dificuldade prática. Em uma lacuna real, o valor verdadeiro não foi observado. Sem uma referência, não podemos calcular diretamente o erro cometido pela imputação.</p>
+<p>A saída é simular o problema:</p>
+<ol type="1">
+<li>partir de registros completos,</li>
+<li>apagar alguns valores conhecidos,</li>
+<li>imputar e comparar com o valor original.</li>
+</ol>
+<p>Primeiro, a função que apaga uma fração dos valores e a base completa, que servirá de gabarito.</p>
+<div id="992b50bf" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># semente fixa: o mesmo apagamento a cada execução</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> erase_at_random(values, share):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sorteia um número em [0, 1) por linha, mask troca por NaN</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># onde o sorteio fica abaixo de `share`</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> values.mask(rng.random(<span class="bu">len</span>(values)) <span class="op">&lt;</span> share)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># gabarito: apenas registros com hoa e vagas conhecidos</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>imoveis_true <span class="op">=</span> (</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    imoveis</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"hoa"</span>, <span class="st">"parking_spaces"</span>])</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Em seguida, criamos lacunas em três variáveis de tipos diferentes: discreta, contínua e categórica.</p>
+<div id="ba2a9913" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>imoveis_missing <span class="op">=</span> (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    imoveis_true</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># proporção apagada: 10% dos quartos, 15% dos aluguéis, 8% da mobília</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        rooms<span class="op">=</span><span class="kw">lambda</span> df: erase_at_random(df[<span class="st">"rooms"</span>], <span class="fl">.10</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        rent_amount<span class="op">=</span><span class="kw">lambda</span> df: erase_at_random(df[<span class="st">"rent_amount"</span>], <span class="fl">.15</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        furniture<span class="op">=</span><span class="kw">lambda</span> df: erase_at_random(df[<span class="st">"furniture"</span>], <span class="fl">.08</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Conferimos quantos valores foram apagados:</p>
+<div id="963859e6" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    imoveis_missing[[<span class="st">"rooms"</span>, <span class="st">"rent_amount"</span>, <span class="st">"furniture"</span>]]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    .isna()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    .to_frame(<span class="st">"ausentes"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        proporcao<span class="op">=</span><span class="kw">lambda</span> x: (</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            x.ausentes <span class="op">/</span> <span class="bu">len</span>(imoveis_missing)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        ).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="39">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ausentes</th>
+<th data-quarto-table-cell-role="th">proporcao</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">rooms</td>
+<td>2783</td>
+<td>0.097</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">rent_amount</td>
+<td>4308</td>
+<td>0.150</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">furniture</td>
+<td>2254</td>
+<td>0.079</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Por que o mecanismo de ausência importa?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O apagamento simulado é completamente aleatório, mecanismo conhecido como MCAR (<em>missing completely at random</em>). Isso significa que a probabilidade de apagar uma célula não depende de nenhuma variável observada nem do próprio valor apagado.</p>
+<p>Em dados reais, essa condição é forte e nem sempre plausível. A ausência pode estar associada ao próprio valor. Se imóveis caros anunciam “valor sob consulta” com maior frequência, por exemplo, a distribuição dos aluguéis observados deixa de representar a distribuição completa. Uma imputação baseada apenas nesses valores tende a subestimar os aluguéis omitidos.</p>
+</div>
+</div>
+</div>
+<section id="média-mediana-e-mediana-agrupada" class="level2">
+<h2 class="anchored" data-anchor-id="média-mediana-e-mediana-agrupada">3.1 Média, mediana e mediana agrupada</h2>
+<p>As estratégias mais simples substituem todas as lacunas por uma única constante calculada com os valores observados da coluna. A média utiliza toda a magnitude dos dados e, por isso, responde fortemente a valores extremos. A mediana depende apenas da ordenação e é mais resistente a caudas longas.</p>
+<div id="547506de" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rent_mean <span class="op">=</span> (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    imoveis_missing.rent_amount</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    .mean()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>rent_median <span class="op">=</span> (</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    imoveis_missing.rent_amount</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    .median()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A mediana por <code>tier</code> condiciona a estimativa ao padrão do imóvel. Cada lacuna recebe a mediana calculada entre os anúncios do mesmo grupo. Se um <code>tier</code> não tiver aluguéis observados, não será possível calcular sua mediana. Nesse caso, a mediana global funciona como estratégia de contingência.</p>
+<div id="860a06da" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rent_group <span class="op">=</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    imoveis_missing</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"tier"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    .rent_amount</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># transform devolve uma série alinhada ao índice original</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    .transform(<span class="kw">lambda</span> x: x.fillna(x.median()))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># grupos sem observações: mediana global</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    .fillna(rent_median)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Reunimos as versões do aluguel para compará-las lado a lado:</p>
+<div id="0c175b0a" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rent_versions <span class="op">=</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Original"</span>: imoveis_true.rent_amount,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Com lacunas"</span>: imoveis_missing.rent_amount,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Média"</span>: imoveis_missing.rent_amount.fillna(rent_mean),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mediana"</span>: imoveis_missing.rent_amount.fillna(rent_median),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mediana por tier"</span>: rent_group,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b363ed5c" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>limit <span class="op">=</span> imoveis_true.rent_amount.quantile(<span class="fl">.99</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (label, values) <span class="kw">in</span> <span class="bu">zip</span>(axes, rent_versions.items()):</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    sns.histplot(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        values.dropna(),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        bins<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        binrange<span class="op">=</span>(<span class="dv">0</span>, limit),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"#4C72B0"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span>label,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">"Aluguel (R$)"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># linha tracejada: a constante usada para preencher as lacunas</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label <span class="op">==</span> <span class="st">"Média"</span>:</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        ax.axvline(</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>            rent_mean,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"#C44E52"</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label <span class="op">==</span> <span class="st">"Mediana"</span>:</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        ax.axvline(</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>            rent_median,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"#C44E52"</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>            linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-13-output-1.png" width="1905" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dois efeitos aparecem nos histogramas:</p>
+<ul>
+<li><strong>média e mediana</strong> concentram todas as lacunas em um único valor, criando um pico artificial e reduzindo a dispersão,</li>
+<li><strong>mediana por tier</strong> distribui as lacunas entre vários valores, um por grupo.</li>
+</ul>
+<p>Os histogramas mostram como cada estratégia altera a distribuição. Para medir a precisão das estimativas nas posições apagadas, usamos o erro absoluto médio (MAE). Ele corresponde à média, em reais, dos valores absolutos das diferenças entre cada aluguel imputado e seu valor verdadeiro.</p>
+<p>Primeiro, recuperamos no gabarito os valores verdadeiros das posições apagadas:</p>
+<div id="d64073ed" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># máscara das posições apagadas e seus valores verdadeiros</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rent_missing <span class="op">=</span> imoveis_missing.rent_amount.isna()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> imoveis_true.loc[rent_missing, <span class="st">"rent_amount"</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f889d3eb" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE: média do erro absoluto, só nas posições imputadas</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Média"</span>: (</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                (truth <span class="op">-</span> rent_mean)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                .<span class="bu">abs</span>()</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                .mean()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Mediana"</span>: (</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                (truth <span class="op">-</span> rent_median)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                .<span class="bu">abs</span>()</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                .mean()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Mediana por tier"</span>: (</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                (truth <span class="op">-</span> rent_group[rent_missing])</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                .<span class="bu">abs</span>()</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                .mean()</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"MAE (R$)"</span>,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="45">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MAE (R$)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Média</td>
+<td>2505.30</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Mediana</td>
+<td>2313.52</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Mediana por tier</td>
+<td>1820.84</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Quanto menor o MAE, menor foi o erro médio das imputações neste experimento. Essa comparação avalia a precisão pontual sob o mecanismo MCAR simulado. Ela não garante que a mesma estratégia seja adequada quando o padrão de ausência dos dados reais for diferente.</p>
+</section>
+<section id="moda-e-variáveis-discretas" class="level2">
+<h2 class="anchored" data-anchor-id="moda-e-variáveis-discretas">3.2 Moda e variáveis discretas</h2>
+<p>Para variáveis categóricas nominais, operações aritméticas como média e mediana não têm interpretação válida. Uma alternativa simples é a moda, isto é, a categoria observada com maior frequência.</p>
+<p>Calculamos a categoria mais frequente de <code>furniture</code>:</p>
+<div id="4fd0e425" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>furniture_mode <span class="op">=</span> (</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    imoveis_missing.furniture</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    .mode()  <span class="co"># devolve uma série: pode haver empate</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .iloc[<span class="dv">0</span>]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>furniture_mode</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<pre><code>'not furnished'</code></pre>
+</div>
+</div>
+<p>Depois da imputação, todas as lacunas passam a contar como ocorrências dessa categoria. A frequência da moda aumenta artificialmente, um efeito que precisa ser considerado ao interpretar a distribuição resultante.</p>
+<div id="51f6b062" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    pd.concat(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="co"># dropna=False inclui a contagem de NaN</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Antes"</span>: imoveis_missing.furniture.value_counts(dropna<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Depois da moda"</span>: (</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                imoveis_missing.furniture</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                .fillna(furniture_mode)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                .value_counts()</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    .fillna(<span class="dv">0</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Antes</th>
+<th data-quarto-table-cell-role="th">Depois da moda</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">furniture</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">not furnished</td>
+<td>17265</td>
+<td>19519.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">furnished</td>
+<td>9122</td>
+<td>9122.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">NaN</td>
+<td>2254</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Em uma variável quantitativa discreta, como o número de quartos, a média é matematicamente definida, mas pode produzir um valor incompatível com o domínio da variável, como uma quantidade fracionária de quartos:</p>
+<div id="8c65bfe1" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"média"</span>: imoveis_missing.rooms.mean(),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"mediana"</span>: imoveis_missing.rooms.median(),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"moda"</span>: (</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                imoveis_missing.rooms</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                .mode()</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                .iloc[<span class="dv">0</span>]</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"quartos"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">quartos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">média</td>
+<td>2.262085</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mediana</td>
+<td>2.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">moda</td>
+<td>2.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="resumo-da-imputação" class="level2">
+<h2 class="anchored" data-anchor-id="resumo-da-imputação">3.3 Resumo da imputação</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Situação</th>
+<th>Escolha inicial</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Contínua e simétrica</td>
+<td>Média</td>
+</tr>
+<tr class="even">
+<td>Assimétrica ou com extremos</td>
+<td>Mediana</td>
+</tr>
+<tr class="odd">
+<td>Categórica ou discreta</td>
+<td>Moda ou mediana</td>
+</tr>
+<tr class="even">
+<td>Varia entre grupos conhecidos</td>
+<td>Estatística por grupo</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Antes de imputar, crie uma <strong>coluna indicadora</strong> para distinguir valores observados de estimados.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+E se um grupo não tiver observações?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Sua mediana será <code>NaN</code>. Use a mediana global como segunda opção. Mesmo quando existe algum valor observado, grupos muito pequenos produzem estimativas com alta variabilidade amostral.</p>
+</div>
+</div>
+</div>
+<p>Encerrada a comparação entre estratégias de imputação, passamos a outro problema. As colunas são expressas em unidades e ordens de grandeza diferentes. As duas próximas seções distinguem o escalonamento, que modifica a representação numérica, das transformações não lineares, que também alteram a forma da distribuição.</p>
+</section>
+</section>
+<section id="escalonamento-a-régua-muda-a-forma-não" class="level1">
+<h1>4. Escalonamento: a régua muda, a forma não</h1>
+<p>O termo <strong>normalização</strong> não tem uso inteiramente uniforme na literatura e nas bibliotecas. Nesta seção, tratamos de <strong>escalonamento</strong>, isto é, transformações afins do tipo <span class="math inline">\(x' = (x - c)/s\)</span>. O parâmetro <span class="math inline">\(c\)</span> representa um centro, como média, mediana ou mínimo, e <span class="math inline">\(s\)</span> representa uma medida de escala, como desvio-padrão, IQR ou amplitude. Essa operação preserva a ordenação das observações. Também multiplica todas as distâncias por uma mesma constante positiva, de modo que o formato do histograma, a assimetria e a curtose não se alteram. Muda a unidade em que a variável é representada.</p>
+<p>O objetivo do escalonamento é colocar variáveis numéricas em escalas comparáveis. Algoritmos que calculam distâncias, como k-vizinhos mais próximos e k-médias, são diretamente sensíveis às magnitudes dos atributos. Métodos ajustados por gradiente e modelos com regularização também podem ser afetados. Sem escalonamento, uma variável de maior ordem de grandeza pode dominar o cálculo apenas por causa de sua unidade. A padronização por z-score e o escalonamento Min-Max são duas alternativas conhecidas. O scikit-learn ainda reserva o nome <code>Normalizer</code> para a normalização de cada amostra por sua norma vetorial, uma operação diferente das três estudadas aqui. Por isso, convém verificar a definição exata da técnica em vez de confiar apenas no termo empregado.</p>
+<p>Na base de imóveis, área em m², aluguel em reais e número de quartos têm ordens de grandeza muito diferentes. Uma diferença de um quarto pode distinguir substancialmente dois imóveis. Uma diferença de R$ 1 no aluguel costuma ser desprezível. O escalonamento permite que essas diferenças sejam comparadas em unidades relativas à distribuição de cada atributo.</p>
+<section id="três-escaladores" class="level2">
+<h2 class="anchored" data-anchor-id="três-escaladores">4.1 Três escaladores</h2>
+<p>Os três escaladores diferem na escolha do centro e da escala, e essa escolha determina a sensibilidade a valores extremos.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Técnica</th>
+<th>Centro e escala</th>
+<th>Sensibilidade a extremos</th>
+<th>Indicação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>StandardScaler</code></td>
+<td>Média e desvio-padrão</td>
+<td>Alta</td>
+<td>Sem extremos importantes</td>
+</tr>
+<tr class="even">
+<td><code>RobustScaler</code></td>
+<td>Mediana e IQR</td>
+<td>Baixa</td>
+<td>Com valores extremos</td>
+</tr>
+<tr class="odd">
+<td><code>MinMaxScaler</code></td>
+<td>Mínimo e máximo</td>
+<td>Muito alta</td>
+<td>Limites estáveis</td>
+</tr>
+</tbody>
+</table>
+<p>Aplicamos os três escaladores ao aluguel.</p>
+<p>Os escaladores do scikit-learn recebem um <code>DataFrame</code> e devolvem uma matriz. <code>.ravel()</code> converte essa matriz em vetor.</p>
+<div id="ca873e19" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># colchetes duplos: o scikit-learn espera uma tabela (2D)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>rent_frame <span class="op">=</span> imoveis_true[[<span class="st">"rent_amount"</span>]]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fit_transform estima os parâmetros (média, IQR, mín./máx.) e aplica</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>scaled <span class="op">=</span> {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Original"</span>: rent_frame.rent_amount.to_numpy(),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"StandardScaler"</span>: (</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        StandardScaler()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        .fit_transform(rent_frame)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        .ravel()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RobustScaler"</span>: (</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        RobustScaler()</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        .fit_transform(rent_frame)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        .ravel()</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MinMaxScaler"</span>: (</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        MinMaxScaler()</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        .fit_transform(rent_frame)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        .ravel()</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Observe o eixo horizontal e a assimetria de cada painel:</p>
+<div id="91c12877" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (label, values) <span class="kw">in</span> <span class="bu">zip</span>(axes, scaled.items()):</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    sns.histplot(values, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">"#55A868"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(values)<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">"Escala"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-20-output-1.png" width="1516" height="369" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Os quatro histogramas têm a mesma forma e a mesma assimetria. Apenas os valores do eixo horizontal mudam, porque cada método define uma nova origem e uma nova unidade de medida.</p>
+</section>
+<section id="sensibilidade-a-extremos" class="level2">
+<h2 class="anchored" data-anchor-id="sensibilidade-a-extremos">4.2 Sensibilidade a extremos</h2>
+<p>O Min-Max usa o mínimo e o máximo observados como referências. Um único aluguel extremo aumenta a amplitude usada no denominador e comprime os demais valores em uma faixa estreita próxima de zero.</p>
+<p>Para ver o efeito, acrescentamos um aluguel fictício de R$ 500 mil e o descartamos depois do ajuste:</p>
+<div id="83c03016" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>with_extreme <span class="op">=</span> pd.concat(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    [rent_frame, pd.DataFrame({<span class="st">"rent_amount"</span>: [<span class="fl">500_000.</span>]})],</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    ignore_index<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>minmax_extreme <span class="op">=</span> (</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    MinMaxScaler()</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    .fit_transform(with_extreme)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    .ravel()[:<span class="op">-</span><span class="dv">1</span>]  <span class="co"># descarta o aluguel fictício, último da lista</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="052f6c59" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, values, title <span class="kw">in</span> <span class="bu">zip</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    axes,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    [scaled[<span class="st">"MinMaxScaler"</span>], minmax_extreme],</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"Sem extremo"</span>, <span class="st">"Com aluguel de R$ 500 mil"</span>],</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>):</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    sns.histplot(</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        values,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        bins<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        binrange<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"#8172B2"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span>title,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">"Escala Min-Max"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-22-output-1.png" width="945" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Com o extremo, quase todos os imóveis ficam concentrados no início da escala. O <code>RobustScaler</code>, baseado na mediana e no IQR, é muito menos sensível a esse efeito. O ponto extremo ainda permanece distante depois da transformação, mas não determina o centro nem a escala usados para representar a maioria das observações.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Escalonar muda a régua, não a forma.</strong></p>
+</div>
+</div>
+<p>O escalonamento tornou as unidades comparáveis, mas o aluguel continua com a mesma cauda longa observada na figura inicial. Poucos imóveis muito caros ainda ocupam grande parte do eixo, enquanto a maioria dos anúncios permanece concentrada à esquerda. Reduzir essa assimetria exige uma transformação não linear.</p>
+</section>
+</section>
+<section id="transformações-a-forma-muda" class="level1">
+<h1>5. Transformações: a forma muda</h1>
+<p>Nesta seção, usamos <strong>transformação da distribuição</strong> para designar a aplicação de uma função não linear, como <span class="math inline">\(\log(x)\)</span> ou uma transformação de potência. O objetivo pode ser reduzir a assimetria, estabilizar a variância ou tornar uma relação multiplicativa mais próxima de uma relação linear. Aproximar a variável de uma distribuição normal é uma finalidade possível, mas não constitui uma exigência geral do pré-processamento.</p>
+<p>Ao contrário do escalonamento afim, uma função não linear comprime regiões diferentes do eixo em intensidades diferentes. O logaritmo reduz mais as distâncias entre valores altos do que entre valores baixos. Na escala logarítmica, a distância entre R$ 1.000 e R$ 2.000 é igual à distância entre R$ 10.000 e R$ 20.000, pois os dois pares representam a mesma razão. A ordenação é preservada, mas as diferenças absolutas e as razões entre distâncias mudam. Com isso, também podem mudar a assimetria, a curtose e a influência de observações extremas.</p>
+<p>Esse tipo de transformação é útil quando a escala original produz forte heterogeneidade de variância, quando relações multiplicativas descrevem melhor o fenômeno ou quando uma cauda longa exerce influência excessiva sobre o ajuste. O custo aparece na interpretação. Um coeficiente ou uma média calculados na escala transformada já não estão expressos diretamente em reais. Transformações como Box-Cox e Yeo-Johnson ampliam as possibilidades do logaritmo ao estimar, a partir dos dados, um parâmetro de potência associado à aproximação da normalidade.</p>
+<p>Quando o problema é a cauda longa, mudar a régua não basta. É preciso mudar a <strong>forma</strong> da distribuição. A escolha da transformação depende dos valores que a variável aceita: algumas exigem valores estritamente positivos, outras aceitam zero ou até negativos.</p>
+<section id="aluguel-positivo-log-e-box-cox" class="level2">
+<h2 class="anchored" data-anchor-id="aluguel-positivo-log-e-box-cox">5.1 Aluguel positivo: log e Box-Cox</h2>
+<p>Nesta base, todos os aluguéis são estritamente positivos, condição necessária para aplicar <code>log</code> e Box-Cox. Começamos pelo logaritmo, frequentemente adequado a valores monetários com variação multiplicativa, e o comparamos com Box-Cox, que estima um parâmetro de potência a partir dos dados.</p>
+<p><code>stats.boxcox</code> devolve os valores transformados e o λ estimado.</p>
+<div id="a0a8525a" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rent <span class="op">=</span> imoveis_true.rent_amount</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># boxcox devolve uma tupla: (valores transformados, λ estimado)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>boxcox_rent, boxcox_lambda <span class="op">=</span> stats.boxcox(rent)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>rent_transformed <span class="op">=</span> {</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Original"</span>: rent,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log"</span>: np.log(rent),</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Box-Cox (λ=</span><span class="sc">{</span>boxcox_lambda<span class="sc">:.2f}</span><span class="ss">)"</span>: boxcox_rent,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b649b000" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (label, values) <span class="kw">in</span> <span class="bu">zip</span>(axes, rent_transformed.items()):</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    sns.histplot(values, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">"#C44E52"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(values)<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">"Escala"</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-24-output-1.png" width="1329" height="369" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Box-Cox estima o parâmetro λ por máxima verossimilhança sob a hipótese de que os valores transformados se aproximam de uma distribuição normal. Quando λ = 0, sua definição corresponde ao logaritmo natural.</p>
+<p>O valor de λ próximo de zero mostra que, dentro da família Box-Cox, a transformação estimada é muito semelhante ao logaritmo. Isso sustenta o uso de <code>log</code> para o aluguel desta base.</p>
+<p>Nem toda variável, porém, é estritamente positiva. Quando há zeros, o logaritmo deixa de ser definido, e é preciso recorrer a variantes.</p>
+</section>
+<section id="distância-com-zeros-log1p-e-yeo-johnson" class="level2">
+<h2 class="anchored" data-anchor-id="distância-com-zeros-log1p-e-yeo-johnson">5.2 Distância com zeros: <code>log1p</code> e Yeo-Johnson</h2>
+<p>A distância ao transporte pode ser igual a zero para imóveis localizados junto a uma estação. Como <code>log</code> e Box-Cox exigem valores estritamente positivos, não podem ser aplicados diretamente. Duas alternativas são <code>log1p</code>, que calcula <span class="math inline">\(\log(1+x)\)</span>, e Yeo-Johnson, uma transformação de potência definida também para zero e valores negativos.</p>
+<p>Com <code>standardize=False</code>, o <code>PowerTransformer</code> apenas transforma, sem escalonar.</p>
+<div id="25e98b6e" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>transit <span class="op">=</span> imoveis_true.transit_distance_min</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>pt <span class="op">=</span> PowerTransformer(method<span class="op">=</span><span class="st">"yeo-johnson"</span>, standardize<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>transit_yj <span class="op">=</span> (</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    pt</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    .fit_transform(imoveis_true[[<span class="st">"transit_distance_min"</span>]])</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    .ravel()</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>transformed <span class="op">=</span> {</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Original"</span>: transit,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log1p"</span>: np.log1p(transit),  <span class="co"># log(1 + x): definido em zero</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># lambdas_ guarda um λ por coluna ajustada</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Yeo-Johnson (λ=</span><span class="sc">{</span>pt<span class="sc">.</span>lambdas_[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">)"</span>: transit_yj,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="98d4b715" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (label, values) <span class="kw">in</span> <span class="bu">zip</span>(axes, transformed.items()):</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    sns.histplot(values, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(values)<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">"Escala"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-26-output-1.png" width="1330" height="369" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Compare as assimetrias:</p>
+<ul>
+<li><code>log1p</code> aceita zeros, mas aqui comprime a cauda direita além do necessário,</li>
+<li>Yeo-Johnson aceita qualquer sinal e estima uma transformação mais branda.</li>
+</ul>
+</section>
+<section id="resumo-das-transformações" class="level2">
+<h2 class="anchored" data-anchor-id="resumo-das-transformações">5.3 Resumo das transformações</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Técnica</th>
+<th>Valores aceitos</th>
+<th>Interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>log</code></td>
+<td>Positivos</td>
+<td>Boa: diferenças representam razões</td>
+</tr>
+<tr class="even">
+<td><code>log1p</code></td>
+<td>Zero e positivos</td>
+<td>Boa, com inversa <code>expm1</code></td>
+</tr>
+<tr class="odd">
+<td>Box-Cox</td>
+<td>Positivos</td>
+<td>Menos direta</td>
+</tr>
+<tr class="even">
+<td>Yeo-Johnson</td>
+<td>Qualquer sinal</td>
+<td>Menos direta</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Fórmula e interpretação
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A transformação de Box-Cox é dada por:</p>
+<p><span class="math display">\[
+x^{(\lambda)} =
+\begin{cases}
+\dfrac{x^\lambda - 1}{\lambda}, &amp; \lambda \ne 0 \\[6pt]
+\log(x), &amp; \lambda = 0
+\end{cases}
+\]</span></p>
+<p>Para voltar à unidade original:</p>
+<ul>
+<li>após <code>log</code>, use <code>np.exp</code>,</li>
+<li>após <code>log1p</code>, use <code>np.expm1</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Transformar muda a forma.</strong> A redução da assimetria deve ser avaliada junto com a perda de interpretação direta na unidade original.</p>
+</div>
+</div>
+<p>Até aqui, cada técnica foi estudada isoladamente, em uma ou duas variáveis e sobre a base de gabarito. Na prática, porém, as decisões são aplicadas em conjunto e na ordem certa, sobre a base original, com suas lacunas reais.</p>
+</section>
+</section>
+<section id="aplicação-e-comparação-final" class="level1">
+<h1>6. Aplicação e comparação final</h1>
+<p>Esta seção reúne as decisões anteriores em um único fluxo aplicado à base completa. A ordem das operações importa. As colunas indicadoras precisam ser criadas antes da imputação, enquanto as posições originalmente ausentes ainda são identificáveis. A imputação precede as transformações para que as medianas sejam calculadas e interpretadas na unidade original.</p>
+<p>Aplicamos as decisões em três etapas.</p>
+<section id="registrar-as-lacunas" class="level2">
+<h2 class="anchored" data-anchor-id="registrar-as-lacunas">6.1 Registrar as lacunas</h2>
+<p>As colunas indicadoras são criadas <strong>antes</strong> da imputação. Depois dela, o rastro se perderia.</p>
+<div id="be063f84" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>imoveis_processed <span class="op">=</span> (</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    imoveis</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        hoa_missing<span class="op">=</span><span class="kw">lambda</span> x: x.hoa.isna(),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        parking_spaces_missing<span class="op">=</span><span class="kw">lambda</span> x: x.parking_spaces.isna(),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="imputar-pela-mediana-do-grupo" class="level2">
+<h2 class="anchored" data-anchor-id="imputar-pela-mediana-do-grupo">6.2 Imputar pela mediana do grupo</h2>
+<p>Os grupos combinam tipo de imóvel e <code>tier</code>. Grupos sem observações recebem a mediana global.</p>
+<div id="8abdba7a" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>groups <span class="op">=</span> [<span class="st">"property_type"</span>, <span class="st">"tier"</span>]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>imoveis_processed <span class="op">=</span> (</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    imoveis_processed</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        hoa<span class="op">=</span><span class="kw">lambda</span> x: (</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>            x</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>            .groupby(groups)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>            .hoa</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>            .transform(<span class="kw">lambda</span> s: s.fillna(s.median()))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># segunda opção: mediana global</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>            .fillna(imoveis.hoa.median())</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>        parking_spaces<span class="op">=</span><span class="kw">lambda</span> x: (</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>            x</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>            .groupby(groups)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>            .parking_spaces</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>            .transform(<span class="kw">lambda</span> s: s.fillna(s.median()))</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>            .fillna(imoveis.parking_spaces.median())</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Conferimos que não restaram lacunas e quantos valores foram estimados:</p>
+<div id="a1bbaf3b" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    imoveis_processed</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>            <span class="co"># lacunas restantes (esperado: zero)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hoa"</span>: <span class="kw">lambda</span> s: s.isna().<span class="bu">sum</span>(),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"parking_spaces"</span>: <span class="kw">lambda</span> s: s.isna().<span class="bu">sum</span>(),</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># valores estimados, contados pelas indicadoras</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"hoa_missing"</span>: <span class="st">"sum"</span>,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"parking_spaces_missing"</span>: <span class="st">"sum"</span>,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<pre><code>hoa                         0
+parking_spaces              0
+hoa_missing               505
+parking_spaces_missing    297
+dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="reduzir-as-caudas" class="level2">
+<h2 class="anchored" data-anchor-id="reduzir-as-caudas">6.3 Reduzir as caudas</h2>
+<p>Seguimos o resumo da seção 5.3:</p>
+<ul>
+<li>área e valores monetários são positivos e recebem <code>log</code>,</li>
+<li>a distância, que pode ser zero, recebe Yeo-Johnson.</li>
+</ul>
+<div id="3d252ed0" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>imoveis_processed <span class="op">=</span> (</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    imoveis_processed</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        area<span class="op">=</span><span class="kw">lambda</span> x: np.log(x.area),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        rent_amount<span class="op">=</span><span class="kw">lambda</span> x: np.log(x.rent_amount),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        property_tax<span class="op">=</span><span class="kw">lambda</span> x: np.log(x.property_tax),</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        total<span class="op">=</span><span class="kw">lambda</span> x: np.log(x.total),</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># [0] contém os valores transformados, [1] conteria o λ</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        transit_distance_min<span class="op">=</span><span class="kw">lambda</span> x: stats.yeojohnson(</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>            x.transit_distance_min</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        )[<span class="dv">0</span>],</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="antes-e-depois" class="level2">
+<h2 class="anchored" data-anchor-id="antes-e-depois">6.4 Antes e depois</h2>
+<p>Comparamos as distribuições das cinco variáveis transformadas:</p>
+<div id="56484b5f" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"area"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rent_amount"</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"property_tax"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"total"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"transit_distance_min"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"Área"</span>, <span class="st">"Aluguel"</span>, <span class="st">"IPTU"</span>, <span class="st">"Total"</span>, <span class="st">"Distância"</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="66f7c4ac" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">7</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># linha de cima mostra antes, linha de baixo mostra depois</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, label, ax1, ax2 <span class="kw">in</span> <span class="bu">zip</span>(columns, labels, axes[<span class="dv">0</span>], axes[<span class="dv">1</span>]):</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    before, after <span class="op">=</span> imoveis[col], imoveis_processed[col]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    sns.histplot(before, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>ax1, color<span class="op">=</span><span class="st">"#4C72B0"</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    ax1.<span class="bu">set</span>(</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: antes</span><span class="ch">\n</span><span class="ss">assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(before)<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">""</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    sns.histplot(after, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>ax2, color<span class="op">=</span><span class="st">"#55A868"</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    ax2.<span class="bu">set</span>(</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: depois</span><span class="ch">\n</span><span class="ss">assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(after)<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>        xlabel<span class="op">=</span><span class="st">""</span>,</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        ylabel<span class="op">=</span><span class="st">"Imóveis"</span>,</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-imputacao-normalizacao-dados_files/figure-html/cell-32-output-1.png" width="1713" height="656" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Na linha inferior, as distribuições apresentam menor assimetria, e os valores extremos ocupam uma parcela menor do eixo. Isso não significa que os extremos foram removidos. Suas distâncias em relação ao centro foram comprimidas pela transformação.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Evite vazamento
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Em um projeto de modelagem, os dados são divididos em treino e teste.</p>
+<p>Medianas, parâmetros λ e parâmetros dos escaladores devem ser estimados <strong>apenas no conjunto de treino</strong>. Em seguida, os mesmos valores estimados são aplicados ao conjunto de teste. Ajustá-los antes da separação permite que informações do teste influenciem o pré-processamento e produz vazamento de dados.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Extensão opcional: ydata-profiling
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O relatório automático é útil para auditoria, mas não é necessário para o argumento visual da aula.</p>
+<div id="a3e5e2d8" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ydata_profiling <span class="im">import</span> ProfileReport, compare</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>before <span class="op">=</span> ProfileReport(</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    imoveis,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    minimal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>after <span class="op">=</span> ProfileReport(</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    imoveis_processed,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    minimal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    compare([before, after])</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    .to_file(</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"imoveis-sao-paulo/reports/comparacao_pre_processamento.html"</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="guia-rápido" class="level1">
+<h1>7. Guia rápido</h1>
+<p>A tabela reúne as decisões discutidas no roteiro. Ela oferece critérios iniciais, não regras automáticas. A escolha final depende do mecanismo de ausência, da distribuição observada, do modelo empregado e do objetivo da análise.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Problema</th>
+<th>Técnica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ausência estrutural</td>
+<td>Não imputar, registrar</td>
+</tr>
+<tr class="even">
+<td>Contínua simétrica</td>
+<td>Média</td>
+</tr>
+<tr class="odd">
+<td>Assimétrica ou com extremos</td>
+<td>Mediana</td>
+</tr>
+<tr class="even">
+<td>Categórica ou discreta</td>
+<td>Moda ou mediana</td>
+</tr>
+<tr class="odd">
+<td>Varia entre grupos</td>
+<td>Mediana por grupo</td>
+</tr>
+<tr class="even">
+<td>Escalas diferentes, sem extremos</td>
+<td>Z-score</td>
+</tr>
+<tr class="odd">
+<td>Escalas diferentes, com extremos</td>
+<td>RobustScaler</td>
+</tr>
+<tr class="even">
+<td>Limites estáveis</td>
+<td>Min-Max</td>
+</tr>
+<tr class="odd">
+<td>Cauda positiva</td>
+<td>Log ou Box-Cox</td>
+</tr>
+<tr class="even">
+<td>Cauda com zeros</td>
+<td>log1p ou Yeo-Johnson</td>
+</tr>
+</tbody>
+</table>
+<section id="síntese" class="level2">
+<h2 class="anchored" data-anchor-id="síntese">Síntese</h2>
+<p>Três classes de tratamento foram aplicadas à base de imóveis:</p>
+<ol type="1">
+<li><strong>Imputação.</strong> Nem toda ausência corresponde a um valor que deveria existir. Quando a imputação for apropriada, a estratégia deve considerar o tipo da variável, sua distribuição e as informações disponíveis em outros atributos. Uma coluna indicadora preserva o registro das posições estimadas.</li>
+<li><strong>Escalonamento.</strong> Uma transformação afim altera a origem e a unidade da variável sem modificar a forma de sua distribuição. A presença de valores extremos influencia a escolha entre parâmetros convencionais, como média e desvio-padrão, e parâmetros robustos, como mediana e IQR.</li>
+<li><strong>Transformação.</strong> Uma função não linear modifica as distâncias entre observações e pode reduzir a assimetria. Essa mudança pode favorecer a modelagem, mas exige cuidado ao interpretar e comunicar resultados na escala original.</li>
+</ol>
+</section>
+</section>
+<section id="perguntas-para-consolidar" class="level1">
+<h1>Perguntas para consolidar</h1>
+<section id="pergunta-1-imputar-sempre-melhora-a-análise" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-1-imputar-sempre-melhora-a-análise">Pergunta 1: imputar sempre melhora a análise?</h2>
+<p>A seção 2 mostrou lacunas que não deveriam ser preenchidas. Em que situação uma estratégia com MAE baixo no experimento controlado ainda pode piorar a análise quando aplicada à base real?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O MAE mede a distância entre valores imputados e valores verdadeiros nas posições apagadas artificialmente. Ele avalia o desempenho sob o mecanismo de ausência usado na simulação. Não demonstra que a variável seja aplicável a todas as observações nem que o mesmo padrão de ausência exista na base real.</p>
+<p>No caso do andar de uma casa, não existe valor verdadeiro a estimar, pois o atributo não se aplica à observação. O MAE nem sequer é uma métrica conceitualmente válida para esse caso. Em lacunas não estruturais, uma estratégia também pode apresentar baixo MAE sob MCAR e introduzir viés quando a ausência real depende do valor omitido. Imputações por constantes ainda reduzem a variabilidade observada e criam concentrações artificiais. Sem uma coluna indicadora, deixa de ser possível separar o que foi observado do que foi estimado.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-2-por-que-o-standardscaler-não-resolveu-a-assimetria" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-2-por-que-o-standardscaler-não-resolveu-a-assimetria">Pergunta 2: por que o <code>StandardScaler</code> não resolveu a assimetria?</h2>
+<p>Na seção 4.1, os três escaladores produziram a mesma assimetria do aluguel original. Por que isso acontece?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Os escaladores estudados aplicam uma transformação afim. Eles subtraem um centro e dividem por uma constante positiva. A operação desloca o eixo e multiplica todas as distâncias pela mesma constante.</p>
+<p>Como todas as distâncias são multiplicadas pelo mesmo fator, os momentos padronizados que definem assimetria e curtose permanecem iguais. Para mudar a forma, precisamos de uma transformação não linear, como <code>log</code> ou Box-Cox.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pergunta-3-qual-escala-você-apresentaria-ao-gestor" class="level2">
+<h2 class="anchored" data-anchor-id="pergunta-3-qual-escala-você-apresentaria-ao-gestor">Pergunta 3: qual escala você apresentaria ao gestor?</h2>
+<p>O <code>log</code> reduziu fortemente a assimetria do aluguel. Você apresentaria ao gestor um gráfico do aluguel em escala log?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Depende do objetivo e do público. Para determinados modelos estatísticos, a escala transformada pode produzir relações mais lineares, variância mais estável ou menor influência da cauda.</p>
+<p>Para comunicação, a unidade original em reais costuma ser mais direta. Uma possibilidade é ajustar o modelo na escala logarítmica e converter previsões com <code>np.exp</code> antes de apresentá-las. Essa conversão exige atenção. A exponencial de uma previsão média na escala log não coincide, em geral, com a média condicional na escala original sem uma correção de retransformação.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="para-casa" class="level1">
+<h1>Para casa</h1>
+<ol type="1">
+<li>Compare o MAE da média e da mediana para <code>rooms</code> e relacione o resultado à assimetria e ao caráter discreto da variável.</li>
+<li>Impute o aluguel por <code>tier</code> e <code>zona</code>. Depois, use o bairro como grupo e discuta o efeito de grupos pequenos.</li>
+<li>Entre apartamentos, compare <code>log1p</code>, Box-Cox e Yeo-Johnson para <code>hoa</code>. Qual produz menor assimetria? Qual você apresentaria a um gestor?</li>
+<li>Antes de considerar o notebook pronto, use Restart Kernel and Run All.</li>
+</ol>
+<blockquote class="blockquote">
+<p>Escalonar muda a régua. Transformar muda a forma. Imputar muda os dados e deve deixar rastro.</p>
+</blockquote>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/data-science\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/06-imputacao-normalizacao-dados.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>

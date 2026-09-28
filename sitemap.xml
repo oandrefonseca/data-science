@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/06-atividade-pratica.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
-    <lastmod>2026-09-21T19:55:43.152Z</lastmod>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
   </url>
   <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
-    <lastmod>2026-09-21T19:55:43.153Z</lastmod>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
+    <lastmod>2026-09-28T18:30:01.277Z</lastmod>
   </url>
 </urlset>

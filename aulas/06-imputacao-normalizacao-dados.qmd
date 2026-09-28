@@ -53,6 +53,7 @@ Começamos importando as bibliotecas usadas no carregamento, na transformação 
 
 ```{python}
 
+# Importa as bibliotecas e define o tema dos gráficos
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -79,6 +80,7 @@ Em seguida, carregamos a base e fazemos três ajustes iniciais:
 
 ```{python}
 
+# Novos nomes para as colunas com espaços e símbolos
 column_names = {
     "parking spaces": "parking_spaces",
     "hoa (R$)": "hoa",
@@ -87,14 +89,18 @@ column_names = {
     "total (R$)": "total",
 }
 
+```
+
+```{python}
+
+# Carrega a base, remove duplicatas e identifica o tipo de imóvel
 imoveis = (
     pd.read_csv("imoveis-sao-paulo/data/imoveis_sao_paulo.csv")
     .rename(columns=column_names)
     .drop_duplicates()
     .reset_index(drop=True)
     .assign(
-        # sem andar indica casa, com andar indica apartamento
-        property_type=lambda df: np.where(
+        property_type=lambda df: np.where(  # <1>
             df["floor"].isna(),
             "casa",
             "apartamento",
@@ -104,20 +110,31 @@ imoveis = (
 
 ```
 
+1. `np.where` escolhe o rótulo linha a linha: imóveis sem andar são casas, e os demais, apartamentos.
+
 ## 1.1 Os três problemas da aula
 
-Uma figura resume os três problemas. Primeiro, calculamos o que cada painel mostrará:
+Antes de tratar qualquer coluna, precisamos saber o que há de errado com ela. Esta seção faz um diagnóstico rápido da base, no espírito da Aula 5, e o resume em uma única figura com três painéis. Cada painel responde a uma pergunta e antecipa um dos problemas que a aula vai tratar.
 
-1. a proporção de ausentes em três colunas,
-2. a mediana de variáveis em unidades diferentes,
-3. o limite para exibir a cauda do aluguel.
+| Painel | Pergunta | O que observar |
+|---|---|---|
+| 1. Valores ausentes | Quais colunas têm lacunas, e em que proporção? | Se as proporções são parecidas ou se alguma coluna destoa das demais |
+| 2. Escalas incompatíveis | As variáveis numéricas estão na mesma ordem de grandeza? | A distância entre as medianas de quartos, área e aluguel |
+| 3. Cauda longa | Como os aluguéis se distribuem? | Onde se concentra a maioria dos imóveis e até onde a cauda se estende |
+
+Para montar a figura, calculamos antes três objetos:
+
+- `missing`: a porcentagem de valores ausentes em `hoa`, `parking_spaces` e `floor`;
+- `scales`: a mediana de `rooms`, `area` e `rent_amount`, cada uma em sua unidade original;
+- `limit`: o percentil 99 do aluguel, usado apenas para recortar o eixo do histograma. Sem ele, os poucos aluguéis mais altos esticariam o eixo e esconderiam a forma da distribuição.
 
 ```{python}
 
+# Valores exibidos em cada painel da figura
 missing = (
     imoveis[["hoa", "parking_spaces", "floor"]]
     .isna()
-    .mean()  # média de booleanos = proporção de True
+    .mean()  # <1>
     .mul(100)
 )
 
@@ -126,13 +143,16 @@ scales = (
     .median()
 )
 
-# percentil 99: corta o 1% mais extremo apenas na visualização
-limit = imoveis["rent_amount"].quantile(.99)
+limit = imoveis["rent_amount"].quantile(.99)  # <2>
 
 ```
 
+1. A média de uma coluna booleana é a proporção de valores `True`, aqui a proporção de ausentes.
+2. O percentil 99 recorta o 1% mais extremo apenas na visualização. Nenhum dado é removido.
+
 ```{python}
 
+# Figura-resumo com os três problemas da aula
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 sns.barplot(
@@ -178,11 +198,11 @@ plt.show()
 
 ```
 
-Cada painel corresponde a uma parte do roteiro:
+A leitura da figura revela os três problemas:
 
-- **valores ausentes** → seções 2 e 3,
-- **escalas incompatíveis** → seção 4,
-- **cauda longa** → seção 5.
+1. **Valores ausentes.** `hoa` e `parking_spaces` têm poucas lacunas (cerca de 2% e 1%), enquanto `floor` chega a 15%. Uma diferença tão grande sugere que a ausência em `floor` tem uma causa própria, investigada na seção 2.
+2. **Escalas incompatíveis.** O imóvel típico tem 2 quartos, cerca de 76 m² e aluguel de R$ 2.900. As três medianas estão separadas por ordens de grandeza, e o aluguel domina o painel apenas por causa da unidade.
+3. **Cauda longa.** Três quartos dos aluguéis ficam abaixo de cerca de R$ 5.100, mas a cauda se estende muito à direita. O maior aluguel chega a quase R$ 38 mil, bem além do recorte do gráfico. A média (cerca de R$ 4.000) fica acima da mediana, o mesmo padrão de assimetria positiva visto na Aula 5.
 
 A ordem das seções acompanha uma sequência comum de pré-processamento. Primeiro, investigamos as lacunas e decidimos quais delas representam informação perdida. Muitos estimadores não aceitam valores ausentes em sua entrada, mas esse não é o único motivo para tratá-los. Também precisamos evitar que procedimentos diferentes descartem subconjuntos distintos da base. Depois, examinamos separadamente a escala numérica e a forma das distribuições.
 
@@ -194,6 +214,7 @@ Na base de imóveis, `floor` e `total_floors` estão ausentes nas casas. Não ho
 
 ```{python}
 
+# Número de imóveis e proporção sem andar, por tipo
 (
     imoveis
     .groupby("property_type")
@@ -234,18 +255,13 @@ Primeiro, a função que apaga uma fração dos valores e a base completa, que s
 
 ```{python}
 
-# semente fixa: o mesmo apagamento a cada execução
-rng = np.random.default_rng(42)
-
+# Função de apagamento e base-gabarito
+rng = np.random.default_rng(42)  # <1>
 
 def erase_at_random(values, share):
-    # sorteia um número em [0, 1) por linha, mask troca por NaN
-    # onde o sorteio fica abaixo de `share`
-    return values.mask(rng.random(len(values)) < share)
+    return values.mask(rng.random(len(values)) < share)  # <2>
 
-
-# gabarito: apenas registros com hoa e vagas conhecidos
-imoveis_true = (
+imoveis_true = (  # <3>
     imoveis
     .dropna(subset=["hoa", "parking_spaces"])
     .reset_index(drop=True)
@@ -253,14 +269,18 @@ imoveis_true = (
 
 ```
 
+1. A semente fixa garante o mesmo apagamento a cada execução.
+2. `rng.random` sorteia um número em [0, 1) para cada linha. `.mask` troca por `NaN` os valores cujo sorteio fica abaixo de `share`.
+3. O gabarito mantém apenas registros com `hoa` e `parking_spaces` conhecidos.
+
 Em seguida, criamos lacunas em três variáveis de tipos diferentes: discreta, contínua e categórica.
 
 ```{python}
 
+# Apaga valores em três colunas de tipos diferentes
 imoveis_missing = (
     imoveis_true
-    .assign(
-        # proporção apagada: 10% dos quartos, 15% dos aluguéis, 8% da mobília
+    .assign(  # <1>
         rooms=lambda df: erase_at_random(df["rooms"], .10),
         rent_amount=lambda df: erase_at_random(df["rent_amount"], .15),
         furniture=lambda df: erase_at_random(df["furniture"], .08),
@@ -269,10 +289,13 @@ imoveis_missing = (
 
 ```
 
+1. As proporções apagadas são 10% dos quartos, 15% dos aluguéis e 8% da mobília.
+
 Conferimos quantos valores foram apagados:
 
 ```{python}
 
+# Quantidade e proporção de valores apagados por coluna
 (
     imoveis_missing[["rooms", "rent_amount", "furniture"]]
     .isna()
@@ -301,6 +324,7 @@ As estratégias mais simples substituem todas as lacunas por uma única constant
 
 ```{python}
 
+# Constantes para a imputação simples
 rent_mean = (
     imoveis_missing.rent_amount
     .mean()
@@ -317,22 +341,25 @@ A mediana por `tier` condiciona a estimativa ao padrão do imóvel. Cada lacuna 
 
 ```{python}
 
+# Imputação pela mediana de cada tier
 rent_group = (
     imoveis_missing
     .groupby("tier")
     .rent_amount
-    # transform devolve uma série alinhada ao índice original
-    .transform(lambda x: x.fillna(x.median()))
-    # grupos sem observações: mediana global
-    .fillna(rent_median)
+    .transform(lambda x: x.fillna(x.median()))  # <1>
+    .fillna(rent_median)  # <2>
 )
 
 ```
+
+1. `.transform` devolve uma série do mesmo tamanho da original, alinhada ao seu índice.
+2. Grupos sem observações recebem a mediana global.
 
 Reunimos as versões do aluguel para compará-las lado a lado:
 
 ```{python}
 
+# Versões do aluguel a comparar
 rent_versions = {
     "Original": imoveis_true.rent_amount,
     "Com lacunas": imoveis_missing.rent_amount,
@@ -345,6 +372,7 @@ rent_versions = {
 
 ```{python}
 
+# Histograma de cada versão do aluguel
 fig, axes = plt.subplots(1, 5, figsize=(20, 4), sharey=True)
 
 limit = imoveis_true.rent_amount.quantile(.99)
@@ -362,8 +390,7 @@ for ax, (label, values) in zip(axes, rent_versions.items()):
         xlabel="Aluguel (R$)",
         ylabel="Imóveis",
     )
-    # linha tracejada: a constante usada para preencher as lacunas
-    if label == "Média":
+    if label == "Média":  # <1>
         ax.axvline(
             rent_mean,
             color="#C44E52",
@@ -381,18 +408,45 @@ plt.show()
 
 ```
 
+1. Nos painéis da média e da mediana, a linha tracejada marca a constante usada para preencher as lacunas.
+
 Dois efeitos aparecem nos histogramas:
 
 - **média e mediana** concentram todas as lacunas em um único valor, criando um pico artificial e reduzindo a dispersão,
 - **mediana por tier** distribui as lacunas entre vários valores, um por grupo.
 
-Os histogramas mostram como cada estratégia altera a distribuição. Para medir a precisão das estimativas nas posições apagadas, usamos o erro absoluto médio (MAE). Ele corresponde à média, em reais, dos valores absolutos das diferenças entre cada aluguel imputado e seu valor verdadeiro.
+### 3.1.1 Erro absoluto médio (MAE)
+
+Os histogramas mostram como cada estratégia altera a **forma** da distribuição, mas não dizem quão perto cada valor imputado ficou do valor verdadeiro. Uma estratégia pode preservar bem o formato do histograma e, ainda assim, errar muito imóvel a imóvel. Para avaliar a **precisão** das estimativas, precisamos de uma métrica de erro. É aqui que o gabarito se torna útil: como os valores foram apagados de propósito, sabemos exatamente quanto cada lacuna deveria valer.
+
+O erro de uma imputação é a diferença entre o valor verdadeiro $y_i$ e o valor imputado $\hat{y}_i$. Essa diferença pode ser positiva ou negativa, e uma média simples dos erros deixaria que subestimativas e superestimativas se cancelassem, como a soma dos desvios em torno da média na Aula 5. O **erro absoluto médio** (MAE, do inglês *mean absolute error*) evita esse cancelamento ao tomar o valor absoluto de cada erro antes de calcular a média:
+
+$$
+\text{MAE} = \frac{1}{n}\sum_{i=1}^{n} \left| y_i - \hat{y}_i \right|
+$$
+
+Aqui, $n$ é o número de lacunas imputadas. O MAE é expresso na mesma unidade da variável, o que facilita a interpretação: um MAE de R$ 500 significa que, em média, a imputação errou o aluguel em R$ 500, para mais ou para menos.
+
+Um exemplo pequeno ajuda a fixar o cálculo. Suponha três imóveis cujo aluguel foi apagado e imputado com a mesma constante, R$ 3.000:
+
+| Imóvel | Verdadeiro ($y_i$) | Imputado ($\hat{y}_i$) | Erro absoluto |
+|---|---|---|---|
+| A | R$ 2.000 | R$ 3.000 | R$ 1.000 |
+| B | R$ 3.000 | R$ 3.000 | R$ 0 |
+| C | R$ 10.000 | R$ 3.000 | R$ 7.000 |
+
+O MAE é $(1.000 + 0 + 7.000)/3 \approx$ R$ 2.666,67. Observe que um único imóvel caro responde pela maior parte do erro.
+
+Dois cuidados orientam o cálculo nesta seção:
+
+- **Apenas as posições imputadas entram na conta.** Nas posições observadas, o valor não foi alterado e o erro é zero por construção. Incluí-las reduziria artificialmente o MAE.
+- **A escolha da métrica favorece certas estratégias.** A mediana é o valor constante que minimiza a soma dos erros absolutos, enquanto a média minimiza a soma dos erros quadráticos. Por isso, entre as duas constantes, espera-se que a mediana apresente MAE menor, sobretudo em distribuições assimétricas como a do aluguel.
 
 Primeiro, recuperamos no gabarito os valores verdadeiros das posições apagadas:
 
 ```{python}
 
-# máscara das posições apagadas e seus valores verdadeiros
+# Posições apagadas e seus valores verdadeiros
 rent_missing = imoveis_missing.rent_amount.isna()
 
 truth = imoveis_true.loc[rent_missing, "rent_amount"]
@@ -401,7 +455,7 @@ truth = imoveis_true.loc[rent_missing, "rent_amount"]
 
 ```{python}
 
-# MAE: média do erro absoluto, só nas posições imputadas
+# MAE de cada estratégia, apenas nas posições imputadas
 (
     pd.Series(
         {
@@ -429,7 +483,9 @@ truth = imoveis_true.loc[rent_missing, "rent_amount"]
 
 ```
 
-Quanto menor o MAE, menor foi o erro médio das imputações neste experimento. Essa comparação avalia a precisão pontual sob o mecanismo MCAR simulado. Ela não garante que a mesma estratégia seja adequada quando o padrão de ausência dos dados reais for diferente.
+Quanto menor o MAE, menor foi o erro médio das imputações neste experimento. Como esperado, a mediana erra menos que a média. A mediana por `tier` reduz ainda mais o erro, porque usa uma informação adicional, o padrão do imóvel, para aproximar a estimativa do valor verdadeiro.
+
+Essa comparação avalia a precisão pontual sob o mecanismo MCAR simulado. Ela não garante que a mesma estratégia seja adequada quando o padrão de ausência dos dados reais for diferente.
 
 ## 3.2 Moda e variáveis discretas
 
@@ -439,9 +495,10 @@ Calculamos a categoria mais frequente de `furniture`:
 
 ```{python}
 
+# Categoria mais frequente de furniture
 furniture_mode = (
     imoveis_missing.furniture
-    .mode()  # devolve uma série: pode haver empate
+    .mode()  # <1>
     .iloc[0]
 )
 
@@ -449,15 +506,17 @@ furniture_mode
 
 ```
 
+1. `.mode()` devolve uma série, pois pode haver empate. `.iloc[0]` seleciona o primeiro valor.
+
 Depois da imputação, todas as lacunas passam a contar como ocorrências dessa categoria. A frequência da moda aumenta artificialmente, um efeito que precisa ser considerado ao interpretar a distribuição resultante.
 
 ```{python}
 
+# Contagem das categorias antes e depois da imputação
 (
     pd.concat(
         {
-            # dropna=False inclui a contagem de NaN
-            "Antes": imoveis_missing.furniture.value_counts(dropna=False),
+            "Antes": imoveis_missing.furniture.value_counts(dropna=False),  # <1>
             "Depois da moda": (
                 imoveis_missing.furniture
                 .fillna(furniture_mode)
@@ -471,10 +530,13 @@ Depois da imputação, todas as lacunas passam a contar como ocorrências dessa 
 
 ```
 
+1. `dropna=False` inclui os valores `NaN` na contagem.
+
 Em uma variável quantitativa discreta, como o número de quartos, a média é matematicamente definida, mas pode produzir um valor incompatível com o domínio da variável, como uma quantidade fracionária de quartos:
 
 ```{python}
 
+# Média, mediana e moda do número de quartos
 (
     pd.Series(
         {
@@ -538,15 +600,14 @@ Os escaladores do scikit-learn recebem um `DataFrame` e devolvem uma matriz. `.r
 
 ```{python}
 
-# colchetes duplos: o scikit-learn espera uma tabela (2D)
-rent_frame = imoveis_true[["rent_amount"]]
+# Aplica os três escaladores ao aluguel
+rent_frame = imoveis_true[["rent_amount"]]  # <1>
 
-# fit_transform estima os parâmetros (média, IQR, mín./máx.) e aplica
 scaled = {
     "Original": rent_frame.rent_amount.to_numpy(),
     "StandardScaler": (
         StandardScaler()
-        .fit_transform(rent_frame)
+        .fit_transform(rent_frame)  # <2>
         .ravel()
     ),
     "RobustScaler": (
@@ -563,10 +624,14 @@ scaled = {
 
 ```
 
+1. Os colchetes duplos mantêm uma tabela (2D), formato que o scikit-learn espera.
+2. `.fit_transform` estima os parâmetros do escalador (média, IQR ou mínimo e máximo) e já os aplica aos dados.
+
 Observe o eixo horizontal e a assimetria de cada painel:
 
 ```{python}
 
+# Histograma do aluguel em cada escala
 fig, axes = plt.subplots(1, 4, figsize=(16, 4), sharey=True)
 
 for ax, (label, values) in zip(axes, scaled.items()):
@@ -592,6 +657,7 @@ Para ver o efeito, acrescentamos um aluguel fictício de R$ 500 mil e o descarta
 
 ```{python}
 
+# Min-Max ajustado com um aluguel fictício de R$ 500 mil
 with_extreme = pd.concat(
     [rent_frame, pd.DataFrame({"rent_amount": [500_000.]})],
     ignore_index=True,
@@ -600,13 +666,16 @@ with_extreme = pd.concat(
 minmax_extreme = (
     MinMaxScaler()
     .fit_transform(with_extreme)
-    .ravel()[:-1]  # descarta o aluguel fictício, último da lista
+    .ravel()[:-1]  # <1>
 )
 
 ```
 
+1. `[:-1]` descarta o último valor do vetor, o aluguel fictício.
+
 ```{python}
 
+# Min-Max sem e com o valor extremo
 fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
 
 for ax, values, title in zip(
@@ -642,6 +711,8 @@ O escalonamento tornou as unidades comparáveis, mas o aluguel continua com a me
 
 # 5. Transformações: a forma muda
 
+Esta seção trata do segundo sentido em que o termo **normalização** aparece na literatura. Na seção 4, normalizar significava escalonar, isto é, mudar a origem e a unidade de uma variável sem alterar sua forma. Aqui, normalizar significa transformar a própria distribuição, em geral para aproximá-la de uma forma mais simétrica e, em muitos casos, mais próxima da distribuição normal, origem do nome. As duas operações recebem o mesmo rótulo em textos e bibliotecas, mas produzem efeitos diferentes sobre os dados. Por isso, ao encontrar o termo, convém verificar qual dos dois sentidos está em jogo.
+
 Nesta seção, usamos **transformação da distribuição** para designar a aplicação de uma função não linear, como $\log(x)$ ou uma transformação de potência. O objetivo pode ser reduzir a assimetria, estabilizar a variância ou tornar uma relação multiplicativa mais próxima de uma relação linear. Aproximar a variável de uma distribuição normal é uma finalidade possível, mas não constitui uma exigência geral do pré-processamento.
 
 Ao contrário do escalonamento afim, uma função não linear comprime regiões diferentes do eixo em intensidades diferentes. O logaritmo reduz mais as distâncias entre valores altos do que entre valores baixos. Na escala logarítmica, a distância entre R$ 1.000 e R$ 2.000 é igual à distância entre R$ 10.000 e R$ 20.000, pois os dois pares representam a mesma razão. A ordenação é preservada, mas as diferenças absolutas e as razões entre distâncias mudam. Com isso, também podem mudar a assimetria, a curtose e a influência de observações extremas.
@@ -658,10 +729,10 @@ Nesta base, todos os aluguéis são estritamente positivos, condição necessár
 
 ```{python}
 
+# Aluguel original, em log e em Box-Cox
 rent = imoveis_true.rent_amount
 
-# boxcox devolve uma tupla: (valores transformados, λ estimado)
-boxcox_rent, boxcox_lambda = stats.boxcox(rent)
+boxcox_rent, boxcox_lambda = stats.boxcox(rent)  # <1>
 
 rent_transformed = {
     "Original": rent,
@@ -671,8 +742,11 @@ rent_transformed = {
 
 ```
 
+1. `stats.boxcox` devolve uma tupla com os valores transformados e o λ estimado.
+
 ```{python}
 
+# Histogramas das transformações do aluguel
 fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
 
 for ax, (label, values) in zip(axes, rent_transformed.items()):
@@ -702,6 +776,7 @@ Com `standardize=False`, o `PowerTransformer` apenas transforma, sem escalonar.
 
 ```{python}
 
+# Distância original, em log1p e em Yeo-Johnson
 transit = imoveis_true.transit_distance_min
 
 pt = PowerTransformer(method="yeo-johnson", standardize=False)
@@ -714,15 +789,18 @@ transit_yj = (
 
 transformed = {
     "Original": transit,
-    "log1p": np.log1p(transit),  # log(1 + x): definido em zero
-    # lambdas_ guarda um λ por coluna ajustada
-    f"Yeo-Johnson (λ={pt.lambdas_[0]:.2f})": transit_yj,
+    "log1p": np.log1p(transit),  # <1>
+    f"Yeo-Johnson (λ={pt.lambdas_[0]:.2f})": transit_yj,  # <2>
 }
 
 ```
 
+1. `np.log1p` calcula $\log(1 + x)$, que é definido em zero.
+2. `pt.lambdas_` guarda um λ para cada coluna ajustada. Aqui há apenas uma.
+
 ```{python}
 
+# Histogramas das transformações da distância
 fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
 
 for ax, (label, values) in zip(axes, transformed.items()):
@@ -789,6 +867,7 @@ As colunas indicadoras são criadas **antes** da imputação. Depois dela, o ras
 
 ```{python}
 
+# Colunas indicadoras das lacunas originais
 imoveis_processed = (
     imoveis
     .assign(
@@ -805,6 +884,7 @@ Os grupos combinam tipo de imóvel e `tier`. Grupos sem observações recebem a 
 
 ```{python}
 
+# Imputa hoa e vagas pela mediana de cada grupo
 groups = ["property_type", "tier"]
 
 imoveis_processed = (
@@ -815,40 +895,43 @@ imoveis_processed = (
             .groupby(groups)
             .hoa
             .transform(lambda s: s.fillna(s.median()))
-            # segunda opção: mediana global
-            .fillna(imoveis.hoa.median())
+            .fillna(imoveis.hoa.median())  # <1>
         ),
         parking_spaces=lambda x: (
             x
             .groupby(groups)
             .parking_spaces
             .transform(lambda s: s.fillna(s.median()))
-            .fillna(imoveis.parking_spaces.median())
+            .fillna(imoveis.parking_spaces.median())  # <1>
         ),
     )
 )
 
 ```
 
+1. Grupos sem observações recebem a mediana global como segunda opção.
+
 Conferimos que não restaram lacunas e quantos valores foram estimados:
 
 ```{python}
 
+# Lacunas restantes e valores estimados
 (
     imoveis_processed
     .agg(
         {
-            # lacunas restantes (esperado: zero)
-            "hoa": lambda s: s.isna().sum(),
-            "parking_spaces": lambda s: s.isna().sum(),
-            # valores estimados, contados pelas indicadoras
-            "hoa_missing": "sum",
-            "parking_spaces_missing": "sum",
+            "hoa": lambda s: s.isna().sum(),  # <1>
+            "parking_spaces": lambda s: s.isna().sum(),  # <1>
+            "hoa_missing": "sum",  # <2>
+            "parking_spaces_missing": "sum",  # <2>
         }
     )
 )
 
 ```
+
+1. Lacunas que restaram em cada coluna. O esperado é zero.
+2. Valores estimados, contados pelas colunas indicadoras.
 
 ## 6.3 Reduzir as caudas
 
@@ -859,6 +942,7 @@ Seguimos o resumo da seção 5.3:
 
 ```{python}
 
+# Log nas variáveis positivas e Yeo-Johnson na distância
 imoveis_processed = (
     imoveis_processed
     .assign(
@@ -866,14 +950,15 @@ imoveis_processed = (
         rent_amount=lambda x: np.log(x.rent_amount),
         property_tax=lambda x: np.log(x.property_tax),
         total=lambda x: np.log(x.total),
-        # [0] contém os valores transformados, [1] conteria o λ
         transit_distance_min=lambda x: stats.yeojohnson(
             x.transit_distance_min
-        )[0],
+        )[0],  # <1>
     )
 )
 
 ```
+
+1. `stats.yeojohnson` devolve os valores transformados e o λ estimado. `[0]` seleciona os valores.
 
 ## 6.4 Antes e depois
 
@@ -881,6 +966,7 @@ Comparamos as distribuições das cinco variáveis transformadas:
 
 ```{python}
 
+# Variáveis comparadas e seus rótulos nos gráficos
 columns = [
     "area",
     "rent_amount",
@@ -895,9 +981,9 @@ labels = ["Área", "Aluguel", "IPTU", "Total", "Distância"]
 
 ```{python}
 
+# Distribuições antes (linha de cima) e depois (linha de baixo)
 fig, axes = plt.subplots(2, 5, figsize=(18, 7))
 
-# linha de cima mostra antes, linha de baixo mostra depois
 for col, label, ax1, ax2 in zip(columns, labels, axes[0], axes[1]):
     before, after = imoveis[col], imoveis_processed[col]
     sns.histplot(before, bins=50, ax=ax1, color="#4C72B0")
@@ -936,6 +1022,7 @@ O relatório automático é útil para auditoria, mas não é necessário para o
 ```{python}
 #| eval: false
 
+# Relatório comparativo antes e depois do pré-processamento
 from ydata_profiling import ProfileReport, compare
 
 before = ProfileReport(

@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/06-imputacao-normalizacao-dados.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
-    <lastmod>2026-09-28T19:16:28.575Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/07-inferencia-estatistica.html</loc>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
-    <lastmod>2026-09-28T19:16:28.564Z</lastmod>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
+    <lastmod>2026-10-06T22:29:27.756Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
+    <lastmod>2026-10-06T22:29:27.766Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/06-imputacao-normalizacao-dados.html</loc>
+    <lastmod>2026-10-06T22:29:27.757Z</lastmod>
   </url>
 </urlset>

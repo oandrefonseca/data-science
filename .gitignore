@@ -31,6 +31,9 @@ aulas/**/*.quarto_ipynb
 # Arquivos grandes em geral (datasets, downloads)
 *.zip
 
+# Slides das aulas (material de apoio, nao faz parte do site)
+*.pdf
+
 # Python
 __pycache__/
 *.pyc

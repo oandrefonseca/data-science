@@ -233,6 +233,12 @@ window.Quarto = {
  <span class="menu-text">7. Inferência Estatística</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/08-testes-parametricos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8. Testes Paramétricos</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -360,7 +366,7 @@ Como usar este roteiro
 <section id="preparando-os-dados" class="level1">
 <h1>1. Preparando os dados</h1>
 <p>Começamos importando as bibliotecas usadas na simulação, nos testes e na visualização.</p>
-<div id="fafcd4c6" class="cell" data-execution_count="1">
+<div id="08748685" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -390,7 +396,7 @@ Como usar este roteiro
 </tbody>
 </table>
 <p>Ao carregar a base, criamos uma coluna auxiliar com um rótulo legível para o câmbio.</p>
-<div id="ea94ec8c" class="cell" data-execution_count="2">
+<div id="8c78778e" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a base e cria o rótulo do câmbio</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">=</span> (</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"mtcars/data/mtcars.csv"</span>)</span>
@@ -412,7 +418,7 @@ Como usar este roteiro
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="62">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -531,7 +537,7 @@ Como usar este roteiro
 \]</span></p>
 <p>Aqui, <span class="math inline">\(\bar{x}_A\)</span> e <span class="math inline">\(\bar{x}_B\)</span> são as médias amostrais dos grupos A e B. O sinal indica o sentido da diferença. Neste roteiro, o grupo A é sempre aquele em que suspeitamos de um efeito: os carros manuais e, mais adiante, os dias de lua cheia. Quando há assimetria ou valores atípicos, a diferença de medianas é uma alternativa mais robusta, pelos mesmos motivos discutidos na Aula 5.</p>
 <p>Antes de calcular a diferença, resumimos cada grupo:</p>
-<div id="7a28e1c0" class="cell" data-execution_count="3">
+<div id="69ae7e41" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tamanho, média, mediana e desvio-padrão do consumo por câmbio</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    mtcars</span>
@@ -540,7 +546,7 @@ Como usar este roteiro
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    .agg([<span class="st">"size"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"std"</span>])</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="63">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -589,7 +595,7 @@ Como usar este roteiro
 <li><strong>Os manuais variam mais.</strong> O desvio-padrão dos manuais (6,17) é cerca de 60% maior que o dos automáticos (3,83).</li>
 </ul>
 <p>A diferença de médias resume a comparação em um único número:</p>
-<div id="6fce56af" class="cell" data-execution_count="4">
+<div id="6a87c5ff" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Efeito observado: diferença das médias de consumo</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>manual <span class="op">=</span> mtcars.loc[mtcars.am <span class="op">==</span> <span class="dv">1</span>, <span class="st">"mpg"</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>automatic <span class="op">=</span> mtcars.loc[mtcars.am <span class="op">==</span> <span class="dv">0</span>, <span class="st">"mpg"</span>]</span>
@@ -597,13 +603,13 @@ Como usar este roteiro
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>delta_obs <span class="op">=</span> manual.mean() <span class="op">-</span> automatic.mean()</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(delta_obs, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="64">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>np.float64(7.24)</code></pre>
 </div>
 </div>
 <p>Os carros manuais fazem, em média, 7,24 milhas por galão a mais. A diferença de medianas é menor, 5,5 mpg, coerente com a assimetria observada nos manuais. Nas duas medidas, porém, os manuais aparecem como mais econômicos.</p>
 <p>O boxplot mostra a diferença e a dispersão de cada grupo. Cada ponto é um carro, e as linhas tracejadas marcam as médias. Como faremos o mesmo gráfico para o pronto-socorro, o boxplot com as observações sobrepostas fica em uma função:</p>
-<div id="c324cd79" class="cell" data-execution_count="5">
+<div id="38a07c77" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot com as observações sobrepostas e as médias de cada grupo</span></span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_groups(data, x, y, order, ax, alpha<span class="op">=</span><span class="dv">1</span>, jitter<span class="op">=</span><span class="fl">.15</span>):</span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>    sns.boxplot(</span>
@@ -660,7 +666,7 @@ Como usar este roteiro
 <section id="um-pronto-socorro-simulado" class="level2">
 <h2 class="anchored" data-anchor-id="um-pronto-socorro-simulado">3.1 Um pronto-socorro simulado</h2>
 <p>Para estudar a crença, simulamos um ano de atendimentos em um pronto-socorro fictício. A simulação tem uma vantagem didática importante: <strong>sabemos</strong> que a lua não tem efeito, porque os atendimentos de todos os dias são sorteados da mesma distribuição. Qualquer diferença que encontrarmos entre os grupos terá sido produzida apenas pelo acaso.</p>
-<div id="81481f2c" class="cell" data-execution_count="6">
+<div id="d714bfd3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Um ano de atendimentos diários, sem nenhum efeito da lua</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2726</span>)</span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -692,7 +698,7 @@ Como usar este roteiro
 </div>
 </div>
 <p>Resumimos os dois grupos da mesma forma que no <code>mtcars</code>:</p>
-<div id="b94a3d20" class="cell" data-execution_count="7">
+<div id="ad53dec6" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Atendimentos por dia em cada grupo</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    er_visits</span>
@@ -701,7 +707,7 @@ Como usar este roteiro
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    .agg([<span class="st">"size"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"std"</span>])</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="67">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -746,7 +752,7 @@ Como usar este roteiro
 <p>Os dias de lua cheia tiveram média de 123,67 atendimentos, contra 119,78 nos demais dias. A mediana também é maior na lua cheia (121,5 contra 119). Os dois grupos têm desvio-padrão parecido, entre 9 e 11 atendimentos.</p>
 <p>Esse desvio-padrão ajuda a entender o que está acontecendo. Em uma distribuição de Poisson, a variância é igual à média. Com média de 120 atendimentos, o desvio-padrão diário é de cerca de <span class="math inline">\(\sqrt{120} \approx 11\)</span>. Um dia comum pode facilmente ter 110 ou 130 atendimentos. A média de apenas 12 dias ainda carrega boa parte dessa oscilação, enquanto a média de 353 dias é muito mais estável. Quando comparamos as duas médias, a oscilação do grupo pequeno aparece como uma “diferença”.</p>
 <p>Assim como fizemos com <code>manual</code> e <code>automatic</code>, separamos os atendimentos de cada grupo e calculamos o efeito observado:</p>
-<div id="b4f2bd11" class="cell" data-execution_count="8">
+<div id="406ebac5" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Atendimentos de cada grupo e efeito observado da lua cheia</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>moon_in <span class="op">=</span> er_visits.loc[er_visits.full_moon, <span class="st">"visits"</span>]</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>moon_out <span class="op">=</span> er_visits.loc[<span class="op">~</span>er_visits.full_moon, <span class="st">"visits"</span>]</span>
@@ -762,12 +768,12 @@ Como usar este roteiro
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="68">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>np.float64(3.88)</code></pre>
 </div>
 </div>
 <p>O boxplot usa a mesma função <code>plot_groups</code>. Com 365 pontos, aumentamos a transparência para que a sobreposição não esconda a distribuição.</p>
-<div id="60f6e0a8" class="cell" data-execution_count="9">
+<div id="0d033ca5" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Atendimentos por grupo</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">4.5</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -965,7 +971,7 @@ Como usar este roteiro
 </table>
 <p>Os valores permanecem nas mesmas posições. Apenas os rótulos trocam de lugar, sempre com três A e três B. Com seis observações, há apenas 20 maneiras de escolher quais três recebem o rótulo A, e poderíamos listar todas. No pronto-socorro, há cerca de <span class="math inline">\(9{,}7 \times 10^{21}\)</span> maneiras de escolher 12 dias entre 365. Por isso, em vez de listar todas, sorteamos uma amostra grande delas.</p>
 <p>Como aplicaremos o procedimento aos dois exemplos da aula, ele fica em uma função. A cada repetição, a função embaralha os rótulos e recalcula a diferença de médias. Em seguida, aplicamos a função aos dados do pronto-socorro:</p>
-<div id="b4b32841" class="cell" data-execution_count="10">
+<div id="b36c85ca" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição nula por permutação, aplicada à lua cheia</span></span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> permutation_null(values, labels, n_perm<span class="op">=</span><span class="dv">10_000</span>, seed<span class="op">=</span><span class="dv">2026</span>):</span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
@@ -997,13 +1003,13 @@ Como usar este roteiro
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="70">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>array([-5.33, -6.46, -2.23, -1.54,  4.49])</code></pre>
 </div>
 </div>
 <p>Os cinco primeiros valores mostram o que o acaso produz. Alguns sorteios deram diferenças positivas, outros negativas, e algumas delas são maiores, em módulo, que os 3,9 atendimentos observados. Cada valor de <code>moon_null</code> é a diferença que teríamos observado se 12 dias quaisquer tivessem recebido o rótulo de lua cheia.</p>
 <p>O histograma reúne as 10.000 diferenças. Como <span class="math inline">\(H_1\)</span> é bilateral, marcamos <span class="math inline">\(+\Delta_{obs}\)</span> e <span class="math inline">\(-\Delta_{obs}\)</span>. Como faremos o mesmo gráfico para o <code>mtcars</code>, ele também fica em uma função:</p>
-<div id="d6cc6e0f" class="cell" data-execution_count="11">
+<div id="c6e47aa4" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição nula da lua cheia e posição do efeito observado</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_null(null, obs, title, xlabel):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
@@ -1034,7 +1040,7 @@ Como usar este roteiro
 <li><strong>Largura que reflete a oscilação do acaso.</strong> A maior parte das diferenças fica entre <span class="math inline">\(-6\)</span> e <span class="math inline">\(+6\)</span> atendimentos. Essa faixa é o que o acaso, sozinho, consegue produzir com 12 dias contra 353.</li>
 </ul>
 <p>O efeito observado cai em uma região bem povoada da distribuição, longe das caudas. A proporção de permutações com resultado tão ou mais extremo que <span class="math inline">\(\Delta_{obs}\)</span> responde à pergunta “quão comum é esse resultado sob o acaso?”:</p>
-<div id="b5f1d5ca" class="cell" data-execution_count="12">
+<div id="49501744" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proporção de permutações tão ou mais extremas que o observado</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-2" class="code-annotation-target"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>moon_p <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(moon_null) <span class="op">&gt;=</span> <span class="bu">abs</span>(moon_obs))</span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1047,7 +1053,7 @@ Como usar este roteiro
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="72">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>np.float64(0.23)</code></pre>
 </div>
 </div>
@@ -1199,7 +1205,7 @@ Por que 0,05?
 <section id="permutação-no-mtcars" class="level2">
 <h2 class="anchored" data-anchor-id="permutação-no-mtcars">4.5 Permutação no <code>mtcars</code></h2>
 <p>Repetimos o procedimento para o câmbio. Sob <span class="math inline">\(H_0\)</span>, o câmbio não afeta o consumo, e os 32 valores de <code>mpg</code> vêm de uma única distribuição. Qualquer divisão em 13 manuais e 19 automáticos seria tão plausível quanto a real. Há cerca de 347 milhões dessas divisões, e novamente sorteamos 10.000 delas.</p>
-<div id="9004aec7" class="cell" data-execution_count="13">
+<div id="1b6a319e" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição nula do câmbio</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mpg_values <span class="op">=</span> mtcars[<span class="st">"mpg"</span>].to_numpy()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>mpg_labels <span class="op">=</span> (mtcars[<span class="st">"am"</span>] <span class="op">==</span> <span class="dv">1</span>).to_numpy()</span>
@@ -1209,11 +1215,11 @@ Por que 0,05?
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>mpg_p <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(mpg_null) <span class="op">&gt;=</span> <span class="bu">abs</span>(delta_obs))</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>mpg_p</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="73">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>np.float64(0.0001)</code></pre>
 </div>
 </div>
-<div id="01584d9b" class="cell" data-execution_count="14">
+<div id="2b54bc50" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição nula do câmbio e posição do efeito observado</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plot_null(</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    mpg_null,</span>
@@ -1270,10 +1276,10 @@ Aviso
 <section id="o-erro-padrão" class="level2">
 <h2 class="anchored" data-anchor-id="o-erro-padrão">5.1 O erro-padrão</h2>
 <p>Para substituir a simulação, a teoria precisa saber <strong>quanto a diferença de médias oscila por acaso</strong>. Essa oscilação corresponde à largura da distribuição nula, que podemos medir pelo desvio-padrão das permutações:</p>
-<div id="c6913226" class="cell" data-execution_count="15">
+<div id="97c70a8a" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Largura da distribuição nula do câmbio, medida pela simulação</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(mpg_null.std(), <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="75">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>np.float64(2.16)</code></pre>
 </div>
 </div>
@@ -1286,19 +1292,19 @@ Aviso
 <p><span class="math display">\[
 SE = \sqrt{\frac{s^2}{n_A} + \frac{s^2}{n_B}} = s \sqrt{\frac{1}{n_A} + \frac{1}{n_B}}
 \]</span></p>
-<div id="cbb80bb2" class="cell" data-execution_count="16">
+<div id="293c4c8b" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Largura da distribuição nula do câmbio, prevista pela fórmula</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_manual, n_automatic <span class="op">=</span> <span class="bu">len</span>(manual), <span class="bu">len</span>(automatic)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>se_null <span class="op">=</span> mtcars.mpg.std() <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">/</span> n_manual <span class="op">+</span> <span class="dv">1</span> <span class="op">/</span> n_automatic)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(se_null, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="76">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>np.float64(2.17)</code></pre>
 </div>
 </div>
 <p>Os dois valores praticamente coincidem: 2,16 mpg pela simulação e 2,17 mpg pela fórmula. A curva normal com essa largura descreve bem o histograma das permutações:</p>
-<div id="e3ea293d" class="cell" data-execution_count="17">
+<div id="ad1eb171" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="annotated-cell-17"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma das permutações e curva normal prevista pela fórmula</span></span>
 <span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
 <span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1366,7 +1372,7 @@ SE = \sqrt{\frac{s^2}{n_A} + \frac{s^2}{n_B}} = s \sqrt{\frac{1}{n_A} + \frac{1}
 </tbody>
 </table>
 <p>O pronto-socorro simulado ilustra a diferença. Sorteamos 2.000 amostras de cada tamanho a partir dos 365 dias e, para cada tamanho, calculamos duas coisas: o desvio-padrão típico <strong>dentro</strong> de uma amostra e o desvio-padrão das médias <strong>entre</strong> as amostras.</p>
-<div id="4642d150" class="cell" data-execution_count="18">
+<div id="13f0034d" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="annotated-cell-18"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Desvio-padrão dos dados e das médias amostrais, por tamanho de amostra</span></span>
 <span id="annotated-cell-18-2"><a href="#annotated-cell-18-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1400,7 +1406,7 @@ SE = \sqrt{\frac{s^2}{n_A} + \frac{s^2}{n_B}} = s \sqrt{\frac{1}{n_A} + \frac{1}
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="78">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
 
@@ -1461,10 +1467,10 @@ SE = \sqrt{\frac{s^2}{n_A} + \frac{s^2}{n_B}} = s \sqrt{\frac{1}{n_A} + \frac{1}
 <section id="a-estatística-t" class="level2">
 <h2 class="anchored" data-anchor-id="a-estatística-t">5.3 A estatística <em>t</em></h2>
 <p>Com a régua definida, a pergunta se torna: <strong>quantos erros-padrão cabem entre 0 e <span class="math inline">\(\Delta_{obs}\)</span>?</strong></p>
-<div id="448e9fc2" class="cell" data-execution_count="19">
+<div id="e93bbfe3" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Efeito observado do câmbio, medido em erros-padrão</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(delta_obs <span class="op">/</span> se_null, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="79">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>np.float64(3.34)</code></pre>
 </div>
 </div>
@@ -1478,19 +1484,49 @@ t = \frac{\bar{x}_A - \bar{x}_B}{SE}
 SE = \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}}
 \]</span></p>
 <p>Aqui, <span class="math inline">\(s_A^2\)</span> e <span class="math inline">\(s_B^2\)</span> são as variâncias amostrais e <span class="math inline">\(n_A\)</span> e <span class="math inline">\(n_B\)</span>, os tamanhos dos grupos.</p>
-<div id="75fd9726" class="cell" data-execution_count="20">
+<div id="14c80e18" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estatística t de Welch calculada pela fórmula</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>se_welch <span class="op">=</span> np.sqrt(manual.var() <span class="op">/</span> n_manual <span class="op">+</span> automatic.var() <span class="op">/</span> n_automatic)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(se_welch, <span class="dv">2</span>), <span class="bu">round</span>(delta_obs <span class="op">/</span> se_welch, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="80">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>(np.float64(1.92), np.float64(3.77))</code></pre>
 </div>
 </div>
 <p>O erro-padrão de Welch (1,92 mpg) é menor que o da seção 5.1 (2,17 mpg), e o <em>t</em> sobe de 3,34 para 3,77. A diferença tem uma explicação. O desvio-padrão dos 32 carros juntos inclui a distância entre os dois grupos: misturar manuais econômicos com automáticos menos econômicos aumenta a dispersão total. A versão de Welch mede a variação <strong>dentro</strong> de cada grupo e não é inflada por essa distância.</p>
 <p>O teste <em>t</em> converte o número de erros-padrão em uma probabilidade. Para isso, usa a distribuição <em>t</em> em vez da normal. As duas têm forma de sino, mas a <em>t</em> tem caudas mais pesadas. A razão é que o erro-padrão também é estimado a partir dos dados e, em amostras pequenas, essa estimativa pode errar. A distribuição <em>t</em> incorpora essa incerteza extra por meio dos <strong>graus de liberdade</strong> (<em>df</em>, do inglês <em>degrees of freedom</em>), que crescem com o tamanho das amostras. Com poucos graus de liberdade, as caudas são pesadas. Com muitos, a distribuição <em>t</em> se aproxima da normal.</p>
+<p><strong>O que são graus de liberdade?</strong> Pense em três números cuja média precisa ser 10. Você pode escolher os dois primeiros à vontade, por exemplo 8 e 15. O terceiro, porém, já está decidido: tem de ser 7. São três números, mas só dois são livres. Esse é o número de graus de liberdade.</p>
+<p>O desvio-padrão sofre a mesma restrição, porque é calculado em torno da média da própria amostra. Por isso, uma amostra de <span class="math inline">\(n\)</span> observações tem <span class="math inline">\(n - 1\)</span> graus de liberdade. Com dois grupos, cada um perde um, e sobram <span class="math inline">\(n_A + n_B - 2\)</span>: no <code>mtcars</code>, <span class="math inline">\(13 + 19 - 2 = 30\)</span>. A versão de Welch ajusta esse número conforme a variância de cada grupo e chega a cerca de 18,3.</p>
+<p>Na prática, os graus de liberdade dizem <strong>quanta informação</strong> temos para estimar a variabilidade. Com pouca informação, a curva <em>t</em> é mais cautelosa e exige uma diferença maior para rejeitar <span class="math inline">\(H_0\)</span>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Graus de liberdade</th>
+<th>Erros-padrão necessários para <span class="math inline">\(p \leq 0{,}05\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td>4,30</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>2,57</td>
+</tr>
+<tr class="odd">
+<td>30</td>
+<td>2,04</td>
+</tr>
+<tr class="even">
+<td>Muitos (curva normal)</td>
+<td>1,96</td>
+</tr>
+</tbody>
+</table>
+<p>A partir de algumas dezenas de graus de liberdade, o limite fica perto de 2. Daí a regra prática de que, sob o acaso, a estatística quase nunca ultrapassa 2 erros-padrão.</p>
 <p>Na prática, <code>stats.ttest_ind</code> faz todo o cálculo. Guardamos o resultado em uma variável para reaproveitá-lo na seção 5.6:</p>
-<div id="2e880835" class="cell" data-execution_count="21">
+<div id="f6f2bf5f" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="annotated-cell-21"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste t de Welch no mtcars</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-2" class="code-annotation-target"><a href="#annotated-cell-21-2" aria-hidden="true" tabindex="-1"></a>mpg_ttest <span class="op">=</span> stats.ttest_ind(manual, automatic, equal_var<span class="op">=</span><span class="va">False</span>)</span>
 <span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1503,7 +1539,7 @@ SE = \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}}
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="81">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>TtestResult(statistic=np.float64(3.767123145144923), pvalue=np.float64(0.0013736383330710345), df=np.float64(18.332251638400464))</code></pre>
 </div>
 </div>
@@ -1514,12 +1550,12 @@ SE = \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}}
 <li><strong><code>df</code></strong>: os graus de liberdade estimados pela fórmula de Welch, cerca de 18,3. O valor não é inteiro porque Welch ajusta os graus de liberdade conforme as variâncias e os tamanhos dos grupos.</li>
 </ul>
 <p>E no pronto-socorro:</p>
-<div id="ec73c82d" class="cell" data-execution_count="22">
+<div id="c1d69610" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste t de Welch na lua cheia</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>moon_ttest <span class="op">=</span> stats.ttest_ind(moon_in, moon_out, equal_var<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>moon_ttest</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="82">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>TtestResult(statistic=np.float64(1.4048153658505091), pvalue=np.float64(0.1853402601391711), df=np.float64(12.043510826046889))</code></pre>
 </div>
 </div>
@@ -1586,7 +1622,7 @@ Por que “Student”?
 <section id="um-único-valor-atípico-muda-a-história" class="level2">
 <h2 class="anchored" data-anchor-id="um-único-valor-atípico-muda-a-história">5.5 Um único valor atípico muda a história</h2>
 <p>Na Aula 5, vimos que média e desvio-padrão são sensíveis a valores extremos. O teste <em>t</em> depende das duas medidas e herda essa fragilidade. Para ver o efeito, acrescentamos um carro automático cujo consumo foi digitado como 60 mpg, um erro de registro plausível.</p>
-<div id="12bc7551" class="cell" data-execution_count="23">
+<div id="c82ba784" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Automáticos com um consumo digitado como 60 mpg</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>automatic_typo <span class="op">=</span> pd.concat(</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    [automatic, pd.Series([<span class="fl">60.</span>])],</span>
@@ -1594,7 +1630,7 @@ Por que “Student”?
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A função abaixo reúne, para dois grupos, as medidas que o valor atípico pode afetar. Aplicamos a função à base original e à base com o valor digitado errado:</p>
-<div id="c52b6328" class="cell" data-execution_count="24">
+<div id="98eb5198" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Diferenças, dispersão e teste t, sem e com o valor digitado errado</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare(group_a, group_b):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> stats.ttest_ind(group_a, group_b, equal_var<span class="op">=</span><span class="va">False</span>)</span>
@@ -1604,19 +1640,20 @@ Por que “Student”?
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dp_automaticos"</span>: group_b.std(),</span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"t"</span>: test.statistic,</span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p"</span>: test.pvalue,</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"mtcars original"</span>: compare(manual, automatic),</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"+1 automático com 60 mpg"</span>: compare(manual, automatic_typo),</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    .T</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">4</span>)</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="84">
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5e734e79" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"mtcars original"</span>: compare(manual, automatic),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"+1 automático com 60 mpg"</span>: compare(manual, automatic_typo),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    .T</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
 <div>
 
 
@@ -1719,19 +1756,19 @@ Importante
 </tr>
 </tbody>
 </table>
-<div id="8bc28f95" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valores dos dois métodos nos dois exemplos</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"permutação"</span>: [mpg_p, moon_p],</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"teste t (Welch)"</span>: [mpg_ttest.pvalue, moon_ttest.pvalue],</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        },</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>[<span class="st">"mtcars"</span>, <span class="st">"Lua cheia"</span>],</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">4</span>)</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="85">
+<div id="4ca03658" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valores dos dois métodos nos dois exemplos</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"permutação"</span>: [mpg_p, moon_p],</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"teste t (Welch)"</span>: [mpg_ttest.pvalue, moon_ttest.pvalue],</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>[<span class="st">"mtcars"</span>, <span class="st">"Lua cheia"</span>],</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
 <div>
 
 
@@ -1803,41 +1840,41 @@ Importante
 <section id="muitos-testes" class="level2">
 <h2 class="anchored" data-anchor-id="muitos-testes">6.2 Muitos testes</h2>
 <p>O nível <span class="math inline">\(\alpha\)</span> controla o erro de <strong>um</strong> teste. Quando fazemos muitos testes, os falsos positivos se acumulam. Imagine 20 pronto-socorros em que a lua não tem efeito, cada um testado com <span class="math inline">\(\alpha = 0{,}05\)</span>:</p>
-<div id="d9f0ad89" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valores da lua cheia em 20 pronto-socorros sem efeito</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">7</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>hospital_p <span class="op">=</span> stats.ttest_ind(</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    rng.poisson(<span class="dv">120</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">12</span>)),</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    rng.poisson(<span class="dv">120</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">353</span>)),</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    equal_var<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>).pvalue</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ca8e4153" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valores da lua cheia em 20 pronto-socorros sem efeito</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">7</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>hospital_p <span class="op">=</span> stats.ttest_ind(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    rng.poisson(<span class="dv">120</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">12</span>)),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    rng.poisson(<span class="dv">120</span>, size<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">353</span>)),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    equal_var<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>).pvalue</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>O gráfico mostra o <em>p</em>-valor de cada pronto-socorro e o limiar <span class="math inline">\(\alpha = 0{,}05\)</span>:</p>
-<div id="b502a1b2" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valor de cada pronto-socorro, com destaque para as rejeições</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.5</span>))</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>ax.bar(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    np.arange(<span class="dv">1</span>, <span class="dv">21</span>),</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    hospital_p,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>np.where(hospital_p <span class="op">&lt;=</span> <span class="fl">.05</span>, <span class="st">"#DD8452"</span>, <span class="st">"#A1C9F4"</span>),</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="fl">.05</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"20 pronto-socorros, nenhum efeito da lua"</span>,</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Pronto-socorro"</span>,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"p-valor"</span>,</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    xticks<span class="op">=</span>np.arange(<span class="dv">1</span>, <span class="dv">21</span>),</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f9957c19" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valor de cada pronto-socorro, com destaque para as rejeições</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.5</span>))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>ax.bar(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    np.arange(<span class="dv">1</span>, <span class="dv">21</span>),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    hospital_p,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>np.where(hospital_p <span class="op">&lt;=</span> <span class="fl">.05</span>, <span class="st">"#DD8452"</span>, <span class="st">"#A1C9F4"</span>),</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="fl">.05</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"20 pronto-socorros, nenhum efeito da lua"</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Pronto-socorro"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    ylabel<span class="op">=</span><span class="st">"p-valor"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    xticks<span class="op">=</span>np.arange(<span class="dv">1</span>, <span class="dv">21</span>),</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="07-inferencia-estatistica_files/figure-html/cell-28-output-1.png" width="849" height="320" class="figure-img"></p>
+<p><img src="07-inferencia-estatistica_files/figure-html/cell-29-output-1.png" width="849" height="320" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1848,28 +1885,28 @@ Importante
 P(\text{pelo menos um falso positivo}) = 1 - (1 - \alpha)^k
 \]</span></p>
 <p>Com 20 testes, <span class="math inline">\(1 - 0{,}95^{20} \approx 64\%\)</span>. Uma solução simples é a <strong>correção de Bonferroni</strong>: usar <span class="math inline">\(\alpha/k\)</span> como limiar em cada teste. A tabela compara as duas abordagens:</p>
-<div id="f15d6d14" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="annotated-cell-28"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilidade de pelo menos um falso positivo em k testes sem efeito</span></span>
-<span id="annotated-cell-28-2"><a href="#annotated-cell-28-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">.05</span></span>
-<span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-4"><a href="#annotated-cell-28-4" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="annotated-cell-28-5"><a href="#annotated-cell-28-5" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame({<span class="st">"k"</span>: [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">100</span>]})</span>
-<span id="annotated-cell-28-6"><a href="#annotated-cell-28-6" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
-<span id="annotated-cell-28-7"><a href="#annotated-cell-28-7" aria-hidden="true" tabindex="-1"></a>        sem_correcao<span class="op">=</span><span class="kw">lambda</span> df: <span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">-</span> alpha) <span class="op">**</span> df[<span class="st">"k"</span>],</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-28-8" class="code-annotation-target"><a href="#annotated-cell-28-8" aria-hidden="true" tabindex="-1"></a>        bonferroni<span class="op">=</span><span class="kw">lambda</span> df: <span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> df[<span class="st">"k"</span>]) <span class="op">**</span> df[<span class="st">"k"</span>],</span>
-<span id="annotated-cell-28-9"><a href="#annotated-cell-28-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="annotated-cell-28-10"><a href="#annotated-cell-28-10" aria-hidden="true" tabindex="-1"></a>    .set_index(<span class="st">"k"</span>)</span>
-<span id="annotated-cell-28-11"><a href="#annotated-cell-28-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="annotated-cell-28-12"><a href="#annotated-cell-28-12" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8eb7856e" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilidade de pelo menos um falso positivo em k testes sem efeito</span></span>
+<span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">.05</span></span>
+<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="annotated-cell-29-5"><a href="#annotated-cell-29-5" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame({<span class="st">"k"</span>: [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">100</span>]})</span>
+<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="annotated-cell-29-7"><a href="#annotated-cell-29-7" aria-hidden="true" tabindex="-1"></a>        sem_correcao<span class="op">=</span><span class="kw">lambda</span> df: <span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">-</span> alpha) <span class="op">**</span> df[<span class="st">"k"</span>],</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-29" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-29-8" class="code-annotation-target"><a href="#annotated-cell-29-8" aria-hidden="true" tabindex="-1"></a>        bonferroni<span class="op">=</span><span class="kw">lambda</span> df: <span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> df[<span class="st">"k"</span>]) <span class="op">**</span> df[<span class="st">"k"</span>],</span>
+<span id="annotated-cell-29-9"><a href="#annotated-cell-29-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-29-10"><a href="#annotated-cell-29-10" aria-hidden="true" tabindex="-1"></a>    .set_index(<span class="st">"k"</span>)</span>
+<span id="annotated-cell-29-11"><a href="#annotated-cell-29-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="annotated-cell-29-12"><a href="#annotated-cell-29-12" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-28" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-29" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-28" data-code-lines="8" data-code-annotation="1">Na correção de Bonferroni, cada teste usa o limiar <span class="math inline">\(\alpha/k\)</span>. Com 20 testes, o limiar passa a ser 0,0025.</span>
+<span data-code-cell="annotated-cell-29" data-code-lines="8" data-code-annotation="1">Na correção de Bonferroni, cada teste usa o limiar <span class="math inline">\(\alpha/k\)</span>. Com 20 testes, o limiar passa a ser 0,0025.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="88">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <div>
 
 
@@ -1923,28 +1960,28 @@ P(\text{pelo menos um falso positivo}) = 1 - (1 - \alpha)^k
 t = d \sqrt{\frac{n}{2}}
 \]</span></p>
 <p>O efeito <span class="math inline">\(d\)</span> fica fixo, mas <span class="math inline">\(\sqrt{n}\)</span> cresce sem limite. Mesmo um efeito minúsculo acaba gerando um <em>t</em> grande quando <span class="math inline">\(n\)</span> é grande o bastante. A tabela mostra o <em>p</em>-valor de um mesmo efeito minúsculo, de 0,02 desvio-padrão, para tamanhos de amostra crescentes:</p>
-<div id="ec86b64a" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valor de um efeito fixo de 0,02 desvio-padrão, por tamanho de grupo</span></span>
-<span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
-<span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-hidden="true" tabindex="-1"></a>        {</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-29" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-29-5" class="code-annotation-target"><a href="#annotated-cell-29-5" aria-hidden="true" tabindex="-1"></a>            n: <span class="dv">2</span> <span class="op">*</span> stats.t.sf(<span class="fl">.02</span> <span class="op">*</span> np.sqrt(n <span class="op">/</span> <span class="dv">2</span>), df<span class="op">=</span><span class="dv">2</span> <span class="op">*</span> n <span class="op">-</span> <span class="dv">2</span>)</span>
-<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> n <span class="kw">in</span> [<span class="dv">100</span>, <span class="dv">1_000</span>, <span class="dv">10_000</span>, <span class="dv">100_000</span>, <span class="dv">1_000_000</span>]</span>
-<span id="annotated-cell-29-7"><a href="#annotated-cell-29-7" aria-hidden="true" tabindex="-1"></a>        },</span>
-<span id="annotated-cell-29-8"><a href="#annotated-cell-29-8" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"p"</span>,</span>
-<span id="annotated-cell-29-9"><a href="#annotated-cell-29-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="annotated-cell-29-10"><a href="#annotated-cell-29-10" aria-hidden="true" tabindex="-1"></a>    .rename_axis(<span class="st">"n por grupo"</span>)</span>
-<span id="annotated-cell-29-11"><a href="#annotated-cell-29-11" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
-<span id="annotated-cell-29-12"><a href="#annotated-cell-29-12" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4572df31" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-valor de um efeito fixo de 0,02 desvio-padrão, por tamanho de grupo</span></span>
+<span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
+<span id="annotated-cell-30-4"><a href="#annotated-cell-30-4" aria-hidden="true" tabindex="-1"></a>        {</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-30-5" class="code-annotation-target"><a href="#annotated-cell-30-5" aria-hidden="true" tabindex="-1"></a>            n: <span class="dv">2</span> <span class="op">*</span> stats.t.sf(<span class="fl">.02</span> <span class="op">*</span> np.sqrt(n <span class="op">/</span> <span class="dv">2</span>), df<span class="op">=</span><span class="dv">2</span> <span class="op">*</span> n <span class="op">-</span> <span class="dv">2</span>)</span>
+<span id="annotated-cell-30-6"><a href="#annotated-cell-30-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> n <span class="kw">in</span> [<span class="dv">100</span>, <span class="dv">1_000</span>, <span class="dv">10_000</span>, <span class="dv">100_000</span>, <span class="dv">1_000_000</span>]</span>
+<span id="annotated-cell-30-7"><a href="#annotated-cell-30-7" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="annotated-cell-30-8"><a href="#annotated-cell-30-8" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"p"</span>,</span>
+<span id="annotated-cell-30-9"><a href="#annotated-cell-30-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-30-10"><a href="#annotated-cell-30-10" aria-hidden="true" tabindex="-1"></a>    .rename_axis(<span class="st">"n por grupo"</span>)</span>
+<span id="annotated-cell-30-11"><a href="#annotated-cell-30-11" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="annotated-cell-30-12"><a href="#annotated-cell-30-12" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-29" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-30" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-29" data-code-lines="5" data-code-annotation="1"><code>.02 * np.sqrt(n / 2)</code> é a estatística <span class="math inline">\(t = d\sqrt{n/2}\)</span>, com <span class="math inline">\(d = 0{,}02\)</span>. <code>stats.t.sf</code> devolve a área da cauda direita da distribuição <em>t</em>, e multiplicamos por 2 porque o teste é bilateral.</span>
+<span data-code-cell="annotated-cell-30" data-code-lines="5" data-code-annotation="1"><code>.02 * np.sqrt(n / 2)</code> é a estatística <span class="math inline">\(t = d\sqrt{n/2}\)</span>, com <span class="math inline">\(d = 0{,}02\)</span>. <code>stats.t.sf</code> devolve a área da cauda direita da distribuição <em>t</em>, e multiplicamos por 2 porque o teste é bilateral.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="89">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <div>
 
 

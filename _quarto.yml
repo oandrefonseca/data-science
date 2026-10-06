@@ -34,6 +34,8 @@ website:
             href: aulas/06-imputacao-normalizacao-dados.qmd
           - text: "7. Inferência Estatística"
             href: aulas/07-inferencia-estatistica.qmd
+          - text: "8. Testes Paramétricos"
+            href: aulas/08-testes-parametricos.qmd
 
 language:
   title-block-author-single: "Autor"

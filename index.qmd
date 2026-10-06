@@ -28,6 +28,9 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 7 - Inferência Estatística](aulas/07-inferencia-estatistica.qmd)\
   Hipóteses nula e alternativa, teste de permutação, teste *t* de Student, *p*-valor, erros dos tipos I e II, tamanho do efeito e confundidores.
 
+- [Aula 8 - Testes Paramétricos](aulas/08-testes-parametricos.qmd)\
+  Premissas e diagnóstico de normalidade, escolha do teste e sete casos: *t* de uma amostra, Welch, pareado, ANOVA, Pearson, *Z* de proporções e qui-quadrado.
+
 ::: {.callout-tip}
 ## Como usar este material
 

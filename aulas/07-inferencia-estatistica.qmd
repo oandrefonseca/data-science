@@ -653,6 +653,21 @@ O erro-padrão de Welch (1,92 mpg) é menor que o da seção 5.1 (2,17 mpg), e o
 
 O teste *t* converte o número de erros-padrão em uma probabilidade. Para isso, usa a distribuição *t* em vez da normal. As duas têm forma de sino, mas a *t* tem caudas mais pesadas. A razão é que o erro-padrão também é estimado a partir dos dados e, em amostras pequenas, essa estimativa pode errar. A distribuição *t* incorpora essa incerteza extra por meio dos **graus de liberdade** (*df*, do inglês *degrees of freedom*), que crescem com o tamanho das amostras. Com poucos graus de liberdade, as caudas são pesadas. Com muitos, a distribuição *t* se aproxima da normal.
 
+**O que são graus de liberdade?** Pense em três números cuja média precisa ser 10. Você pode escolher os dois primeiros à vontade, por exemplo 8 e 15. O terceiro, porém, já está decidido: tem de ser 7. São três números, mas só dois são livres. Esse é o número de graus de liberdade.
+
+O desvio-padrão sofre a mesma restrição, porque é calculado em torno da média da própria amostra. Por isso, uma amostra de $n$ observações tem $n - 1$ graus de liberdade. Com dois grupos, cada um perde um, e sobram $n_A + n_B - 2$: no `mtcars`, $13 + 19 - 2 = 30$. A versão de Welch ajusta esse número conforme a variância de cada grupo e chega a cerca de 18,3.
+
+Na prática, os graus de liberdade dizem **quanta informação** temos para estimar a variabilidade. Com pouca informação, a curva *t* é mais cautelosa e exige uma diferença maior para rejeitar $H_0$:
+
+| Graus de liberdade | Erros-padrão necessários para $p \leq 0{,}05$ |
+|---|---|
+| 2 | 4,30 |
+| 5 | 2,57 |
+| 30 | 2,04 |
+| Muitos (curva normal) | 1,96 |
+
+A partir de algumas dezenas de graus de liberdade, o limite fica perto de 2. Daí a regra prática de que, sob o acaso, a estatística quase nunca ultrapassa 2 erros-padrão.
+
 Na prática, `stats.ttest_ind` faz todo o cálculo. Guardamos o resultado em uma variável para reaproveitá-lo na seção 5.6:
 
 ```{python}
@@ -723,7 +738,6 @@ automatic_typo = pd.concat(
 A função abaixo reúne, para dois grupos, as medidas que o valor atípico pode afetar. Aplicamos a função à base original e à base com o valor digitado errado:
 
 ```{python}
-
 # Diferenças, dispersão e teste t, sem e com o valor digitado errado
 def compare(group_a, group_b):
     test = stats.ttest_ind(group_a, group_b, equal_var=False)
@@ -734,6 +748,9 @@ def compare(group_a, group_b):
         "t": test.statistic,
         "p": test.pvalue,
     }
+```
+
+```{python}
 
 (
     pd.DataFrame(

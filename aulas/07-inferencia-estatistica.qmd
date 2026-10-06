@@ -1,0 +1,1071 @@
+---
+title: 'Aula 7 - Inferência Estatística'
+date: last-modified
+toc: true
+format:
+  html: default
+  ipynb: default
+jupyter:
+  kernel: python3
+execute:
+  enabled: true
+---
+
+## Motivação
+
+Na Aula 5, a estatística descritiva resumiu os dados observados sem generalizá-los. Na Aula 6, o diagnóstico orientou o tratamento da base. Em ambas, as conclusões ficaram restritas à amostra disponível. Nesta aula, damos o passo seguinte. Ao comparar dois grupos, encontramos uma diferença. A pergunta passa a ser se essa diferença diz algo sobre o processo que gerou os dados ou se é apenas um resultado da variabilidade aleatória da amostra.
+
+Considere um exemplo clássico. A revista *Motor Trend* mediu, em 1974, o consumo de 32 modelos de carro. Os carros com câmbio manual percorrem, em média, cerca de 7 milhas a mais por galão do que os automáticos. A diferença parece grande, mas a amostra é pequena. Se a revista tivesse escolhido outros 32 carros, a diferença seria outra. Talvez menor, talvez nula, talvez invertida.
+
+A estatística inferencial oferece um procedimento para responder a essa pergunta. Primeiro, supomos que **não existe** efeito algum. Em seguida, medimos quão raro seria observar uma diferença do tamanho da encontrada se essa suposição fosse verdadeira. Se a diferença for muito rara sob o acaso, temos evidência contra a suposição inicial. Estudaremos duas formas de construir essa referência: uma por simulação, o **teste de permutação**, e outra por fórmula, o **teste *t* de Student**.
+
+> **Diferença real ou acaso?**
+
+## Objetivos de aprendizagem
+
+Ao final deste roteiro, você será capaz de:
+
+1. Medir o efeito observado ($\Delta_{obs}$) entre dois grupos e comparar sua dispersão com boxplots.
+2. Formular a hipótese nula ($H_0$) e a hipótese alternativa ($H_1$) para uma comparação entre grupos.
+3. Aplicar o teste de permutação e construir a distribuição empírica do acaso.
+4. Aplicar o teste *t* de Student, reconhecendo suas premissas, seus limites e sua sensibilidade a valores atípicos.
+5. Interpretar o *p*-valor, o nível de significância ($\alpha$) e os erros dos tipos I e II, distinguindo significância estatística de relevância prática.
+
+::: {.callout-tip}
+## Como usar este roteiro
+
+O roteiro usa a base `mtcars.csv`, salva em `mtcars/data/`, e um conjunto simulado de atendimentos em um pronto-socorro, gerado no próprio roteiro.
+
+Além das bibliotecas das aulas anteriores, usamos o módulo `statsmodels` na seção 6.3.
+
+Ao final, três perguntas ajudam a consolidar a interpretação dos testes.
+:::
+
+# 1. Preparando os dados
+
+Começamos importando as bibliotecas usadas na simulação, nos testes e na visualização.
+
+```{python}
+
+# Importa as bibliotecas e define o tema dos gráficos
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+import statsmodels.formula.api as smf
+
+sns.set_theme(style="whitegrid", palette="colorblind")
+
+```
+
+A base `mtcars` reúne 32 modelos de carro vendidos nos Estados Unidos em 1973 e 1974. Usaremos quatro de suas onze colunas:
+
+| Coluna | Significado |
+|---|---|
+| `mpg` | Consumo, em milhas por galão. Quanto maior, mais econômico |
+| `am` | Câmbio: 0 = automático, 1 = manual |
+| `wt` | Peso, em milhares de libras |
+| `hp` | Potência, em cavalos |
+
+Ao carregar a base, criamos duas colunas auxiliares: um rótulo legível para o câmbio e o peso convertido para quilogramas.
+
+```{python}
+
+# Carrega a base e cria o rótulo do câmbio e o peso em kg
+mtcars = (
+    pd.read_csv("mtcars/data/mtcars.csv")
+    .assign(
+        transmission=lambda df: np.where(  # <1>
+            df["am"] == 1,
+            "Manual",
+            "Automático",
+        ),
+        weight_kg=lambda df: df["wt"] * 453.6,  # <2>
+    )
+)
+
+mtcars.head()
+
+```
+
+1. `np.where` escolhe o rótulo linha a linha, como na Aula 6.
+2. Uma libra equivale a cerca de 0,4536 kg, e `wt` está em milhares de libras.
+
+# 2. A diferença observada
+
+O primeiro passo de qualquer comparação é descritivo. Calculamos uma estatística em cada grupo e medimos a distância entre elas. Chamamos essa distância de **efeito observado**:
+
+$$
+\Delta_{obs} = \bar{x}_A - \bar{x}_B
+$$
+
+Aqui, $\bar{x}_A$ e $\bar{x}_B$ são as médias amostrais dos grupos A e B. Quando há assimetria ou valores atípicos, a diferença de medianas é uma alternativa mais robusta, pelos mesmos motivos discutidos na Aula 5.
+
+```{python}
+
+# Tamanho, média, mediana e desvio-padrão do consumo por câmbio
+(
+    mtcars
+    .groupby("transmission")
+    .mpg
+    .agg(["size", "mean", "median", "std"])
+    .round(2)
+)
+
+```
+
+```{python}
+
+# Efeito observado: diferença das médias de consumo
+manual = mtcars.loc[mtcars.am == 1, "mpg"]
+automatic = mtcars.loc[mtcars.am == 0, "mpg"]
+
+delta_obs = manual.mean() - automatic.mean()
+
+round(delta_obs, 2)
+
+```
+
+Os carros manuais fazem, em média, 7,24 milhas por galão a mais. O boxplot mostra a diferença e a dispersão de cada grupo. Cada ponto é um carro, e as linhas tracejadas marcam as médias.
+
+```{python}
+
+# Boxplot com os carros sobrepostos e as médias de cada grupo
+fig, ax = plt.subplots(figsize=(6, 4.5))
+
+order = ["Automático", "Manual"]
+
+sns.boxplot(
+    data=mtcars,
+    x="transmission",
+    y="mpg",
+    order=order,
+    color="#A1C9F4",
+    showfliers=False,  # <1>
+    ax=ax,
+)
+sns.stripplot(
+    data=mtcars,
+    x="transmission",
+    y="mpg",
+    order=order,
+    color="#1F4E79",
+    size=6,
+    jitter=.15,
+    ax=ax,
+)
+for mean in [automatic.mean(), manual.mean()]:
+    ax.axhline(mean, color="#DD8452", linestyle="--")
+
+ax.set(
+    title=f"Δobs = {delta_obs:.2f} mpg",
+    xlabel="",
+    ylabel="Consumo (milhas por galão)",
+)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+1. Os pontos já aparecem no `stripplot`. `showfliers=False` evita desenhá-los duas vezes.
+
+Os manuais parecem mais econômicos. Mas $\Delta_{obs} \neq 0$ é apenas uma descrição da amostra, não uma prova de diferença na população. Há três motivos para cautela:
+
+- **Natureza estocástica.** Cada amostra é uma entre muitas realizações possíveis. A média amostral flutua em torno do parâmetro verdadeiro e, por isso, dois grupos sem diferença real raramente apresentam médias idênticas.
+- **Sensibilidade a valores atípicos.** Um único valor extremo pode deslocar $\bar{x}$ e fabricar um $\Delta_{obs}$ expressivo que não representa a maior parte dos dados.
+- **Recorte limitado.** Os dados capturam uma janela no tempo e no espaço. Viés de amostragem e fatores ocultos limitam a extrapolação.
+
+O primeiro motivo é o tema central desta aula. Antes de formalizá-lo, vejamos como ele engana a intuição.
+
+# 3. O problema da aleatoriedade
+
+A **apofenia** é a tendência humana de perceber padrões e relações significativas em dados puramente aleatórios. Vemos rostos em nuvens e sequências em números sorteados. Uma variante conhecida é a *falácia do atirador do Texas*: atirar contra a parede de um celeiro e, só depois, desenhar o alvo em volta do grupo de tiros mais próximos.
+
+Um exemplo clássico entre profissionais de saúde é a crença de que "plantão de lua cheia é sempre cheio". Uma meta-análise com dezenas de estudos (Rotton & Kelly, 1985) não encontrou relação entre as fases da lua e o comportamento humano. A crença persiste por viés de confirmação: a noite agitada de lua cheia vira história, e a noite calma é esquecida.
+
+## 3.1 Um pronto-socorro simulado
+
+Para estudar a crença, simulamos um ano de atendimentos em um pronto-socorro fictício. A simulação tem uma vantagem didática importante: **sabemos** que a lua não tem efeito, porque os atendimentos de todos os dias são sorteados da mesma distribuição.
+
+```{python}
+
+# Um ano de atendimentos diários, sem nenhum efeito da lua
+rng = np.random.default_rng(2726)  # <1>
+
+full_moon_days = np.round(np.arange(12) * 29.53 + 14)  # <2>
+
+er_visits = (
+    pd.DataFrame({"day": np.arange(365)})
+    .assign(
+        visits=rng.poisson(120, size=365),  # <3>
+        full_moon=lambda df: df["day"].isin(full_moon_days),
+        moon=lambda df: np.where(df["full_moon"], "Lua cheia", "Demais dias"),
+    )
+)
+
+```
+
+1. A semente fixa garante os mesmos atendimentos a cada execução.
+2. O ciclo lunar dura cerca de 29,53 dias, o que resulta em 12 dias de lua cheia no ano.
+3. A distribuição de Poisson é usada com frequência para contagens de eventos. Todos os dias têm a mesma média, 120 atendimentos.
+
+```{python}
+
+# Atendimentos por dia em cada grupo
+(
+    er_visits
+    .groupby("moon")
+    .visits
+    .agg(["size", "mean", "median", "std"])
+    .round(2)
+)
+
+```
+
+```{python}
+
+# Efeito observado da lua cheia
+moon_obs = (
+    er_visits.loc[er_visits.full_moon, "visits"].mean()
+    - er_visits.loc[~er_visits.full_moon, "visits"].mean()  # <1>
+)
+
+round(moon_obs, 2)
+
+```
+
+1. `~` inverte uma série booleana. Aqui, seleciona os dias que **não** são de lua cheia.
+
+```{python}
+
+# Boxplot dos atendimentos por grupo
+fig, ax = plt.subplots(figsize=(6, 4.5))
+
+order = ["Demais dias", "Lua cheia"]
+
+sns.boxplot(
+    data=er_visits,
+    x="moon",
+    y="visits",
+    order=order,
+    color="#A1C9F4",
+    showfliers=False,
+    ax=ax,
+)
+sns.stripplot(
+    data=er_visits,
+    x="moon",
+    y="visits",
+    order=order,
+    color="#1F4E79",
+    alpha=.4,
+    jitter=.2,
+    ax=ax,
+)
+ax.set(
+    title=f"Δobs = {moon_obs:+.2f} atendimentos/dia",
+    xlabel="",
+    ylabel="Atendimentos por dia",
+)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+Os dias de lua cheia tiveram, em média, cerca de 3,9 atendimentos a mais. O resultado parece confirmar a crença, embora tenhamos construído os dados **sem** qualquer efeito da lua. A diferença surgiu apenas porque 12 dias sorteados raramente têm a mesma média que os outros 353.
+
+Temos agora duas diferenças: 7,24 mpg no `mtcars` e 3,9 atendimentos no pronto-socorro. Sabemos que a segunda é puro acaso. Precisamos de um procedimento que, sem conhecer a resposta de antemão, distinga um caso do outro.
+
+# 4. Formalizando o acaso
+
+## 4.1 Hipóteses nula e alternativa
+
+Um teste de hipóteses confronta duas proposições sobre a **população**, não sobre a amostra:
+
+| Hipótese | Notação | Leitura |
+|---|---|---|
+| Nula ($H_0$) | $\mu_A = \mu_B \iff \Delta = 0$ | Não há efeito. A diferença observada é fruto do acaso |
+| Alternativa ($H_1$) | $\mu_A \neq \mu_B \iff \Delta \neq 0$ | Existe um efeito real no processo gerador dos dados |
+
+Aqui, $\mu$ é a média populacional, $\Delta$ é o efeito verdadeiro, que desconhecemos, e $\Delta_{obs}$ é sua estimativa na amostra. A hipótese alternativa também aparece escrita como $H_a$.
+
+Para a lua cheia:
+
+- $H_0$: $\mu_{\text{lua cheia}} = \mu_{\text{demais dias}}$. A lua não afeta o movimento do pronto-socorro.
+- $H_1$: $\mu_{\text{lua cheia}} \neq \mu_{\text{demais dias}}$. O movimento muda em noites de lua cheia.
+
+A lógica do teste lembra a de um tribunal:
+
+| Julgamento | Teste de hipóteses |
+|---|---|
+| Presunção de inocência | $H_0$: não há efeito |
+| Provas apresentadas | Dados observados ($\Delta_{obs}$) |
+| Culpado "além de dúvida razoável" | *p*-valor $\leq \alpha$ |
+| Condenar um inocente | Erro do tipo I (falso positivo) |
+| Absolver um culpado | Erro do tipo II (falso negativo) |
+| "Não culpado" não significa inocente | Não rejeitar $H_0$ não prova $H_0$ |
+
+O réu é considerado inocente até que as provas tornem essa hipótese difícil de sustentar. Da mesma forma, partimos de $H_0$ e só a abandonamos se os dados forem improváveis sob ela.
+
+## 4.2 O teste de permutação
+
+Se $H_0$ for verdadeira, o rótulo "lua cheia" não carrega informação alguma sobre o número de atendimentos. Os 365 valores vêm de uma única distribuição, e o rótulo poderia estar em quaisquer 12 dias do ano. Dizemos que, sob $H_0$, os rótulos são **intercambiáveis**.
+
+Essa ideia leva a um procedimento em quatro passos:
+
+1. **Medir.** Calcular a estatística nos dados reais: $\Delta_{obs}$.
+2. **Embaralhar.** Sob $H_0$, os rótulos não importam. Sortear novamente quais observações recebem cada rótulo.
+3. **Recalcular.** Calcular a mesma estatística nos dados embaralhados: $\Delta_{perm}$.
+4. **Repetir.** Fazer isso muitas vezes, por exemplo 10.000, para obter a distribuição empírica de $\Delta$ sob o acaso, chamada **distribuição nula**.
+
+Escrevemos duas funções. A primeira calcula a diferença de médias a partir de valores e rótulos. A segunda embaralha os rótulos e recalcula a diferença repetidas vezes.
+
+```{python}
+
+# Diferença de médias e distribuição nula por permutação
+def mean_diff(values, labels):
+    return values[labels].mean() - values[~labels].mean()
+
+def permutation_null(values, labels, n_perm=10_000, seed=2026):
+    rng = np.random.default_rng(seed)
+    return np.array([
+        mean_diff(values, rng.permutation(labels))  # <1>
+        for _ in range(n_perm)  # <2>
+    ])
+
+```
+
+1. `rng.permutation` devolve uma cópia embaralhada dos rótulos. Os valores ficam no lugar, e os rótulos mudam de dono.
+2. `_` é o nome convencional para uma variável de laço que não será usada.
+
+Aplicamos as funções aos dados do pronto-socorro:
+
+```{python}
+
+# Distribuição nula da lua cheia
+moon_values = er_visits["visits"].to_numpy()  # <1>
+moon_labels = er_visits["full_moon"].to_numpy()
+
+moon_null = permutation_null(moon_values, moon_labels)
+
+moon_null[:5].round(2)
+
+```
+
+1. Arrays do NumPy aceitam indexação booleana sem alinhar índices, o que torna o laço mais rápido.
+
+Cada valor de `moon_null` é a diferença que teríamos observado se 12 dias quaisquer tivessem recebido o rótulo de lua cheia. O histograma mostra onde $\Delta_{obs}$ cai nessa distribuição. Como $H_1$ admite diferenças nos dois sentidos, marcamos $+\Delta_{obs}$ e $-\Delta_{obs}$.
+
+```{python}
+
+# Distribuição nula da lua cheia e posição do efeito observado
+fig, ax = plt.subplots(figsize=(9, 4))
+
+sns.histplot(moon_null, bins=50, color="#A1C9F4", ax=ax)
+for value in [-moon_obs, moon_obs]:
+    ax.axvline(value, color="#DD8452", linewidth=2)
+
+ax.set(
+    title="Lua cheia: onde cai o Δobs na distribuição do acaso?",
+    xlabel="Δperm: diferença de médias após sortear 12 dias como lua cheia",
+    ylabel="Permutações",
+)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+O efeito observado cai em uma região bem povoada da distribuição. A proporção de permutações com resultado tão ou mais extremo que $\Delta_{obs}$ responde à pergunta "quão comum é esse resultado sob o acaso?":
+
+```{python}
+
+# Proporção de permutações tão ou mais extremas que o observado
+moon_p = np.mean(np.abs(moon_null) >= abs(moon_obs))  # <1>
+
+moon_p
+
+```
+
+1. A média de um vetor booleano é a proporção de `True`. O valor absoluto conta os dois sentidos: o teste é **bilateral**.
+
+## 4.3 O *p*-valor
+
+Essa proporção tem nome. O ***p*-valor** é a probabilidade, **supondo $H_0$ verdadeira**, de obter um efeito tão ou mais extremo que o observado:
+
+$$
+p = P\left(|\Delta_{perm}| \geq |\Delta_{obs}| \;\middle|\; H_0 \text{ verdadeira}\right)
+$$
+
+No pronto-socorro, cerca de 23% das permutações produziram diferenças pelo menos tão grandes quanto a observada. Uma diferença de 3,9 atendimentos é, portanto, um resultado corriqueiro quando a lua não tem efeito algum.
+
+O *p*-valor é frequentemente mal interpretado. A American Statistical Association publicou uma declaração específica sobre o tema (Wasserstein & Lazar, 2016):
+
+| O *p*-valor é | O *p*-valor não é |
+|---|---|
+| Uma probabilidade condicional a $H_0$ | A probabilidade de $H_0$ ser verdadeira |
+| Uma medida de quão atípicos os dados são sob o acaso | A probabilidade de o resultado ser "mero acaso" |
+| Dependente do tamanho da amostra | Uma medida do tamanho ou da importância do efeito |
+
+::: {.callout-important}
+O *p*-valor responde a "**se** não houvesse efeito, quão raro seria este resultado?". Ele não responde a "qual é a probabilidade de não haver efeito?". As duas perguntas têm respostas diferentes.
+:::
+
+## 4.4 A regra de decisão
+
+Para transformar o *p*-valor em uma decisão, fixamos **antes da análise** um limiar chamado **nível de significância**, $\alpha$. O valor convencional é $\alpha = 0{,}05$.
+
+| Resultado | Decisão | Leitura |
+|---|---|---|
+| $p \leq \alpha$ | Rejeita-se $H_0$ | Os dados são atípicos demais para o acaso. O efeito é estatisticamente significante |
+| $p > \alpha$ | Não se rejeita $H_0$ | A diferença é compatível com a flutuação aleatória. Isso não prova que $H_0$ seja verdadeira |
+
+Na lua cheia, $p \approx 0{,}23 > 0{,}05$. Não rejeitamos $H_0$: o "plantão de lua cheia" é compatível com o acaso. Neste caso, sabemos que a decisão está correta, porque construímos os dados sem efeito.
+
+::: {.callout-note collapse="true"}
+## Por que 0,05?
+
+O valor é uma convenção, popularizada por R. A. Fisher na década de 1920, e não uma propriedade matemática. Áreas diferentes adotam limiares diferentes. A física de partículas, por exemplo, exige evidências muito mais fortes antes de anunciar uma descoberta. O importante é fixar $\alpha$ antes de olhar os dados. Escolher o limiar depois de ver o *p*-valor é uma versão da falácia do atirador do Texas.
+:::
+
+## 4.5 Permutação no `mtcars`
+
+Repetimos o procedimento para o câmbio. Sob $H_0$, o câmbio não afeta o consumo, e os 32 valores de `mpg` vêm de uma única distribuição. Qualquer divisão em 13 manuais e 19 automáticos seria tão plausível quanto a real.
+
+```{python}
+
+# Distribuição nula do câmbio
+mpg_values = mtcars["mpg"].to_numpy()
+mpg_labels = (mtcars["am"] == 1).to_numpy()
+
+mpg_null = permutation_null(mpg_values, mpg_labels)
+
+mpg_p = np.mean(np.abs(mpg_null) >= abs(delta_obs))
+
+mpg_p
+
+```
+
+```{python}
+
+# Distribuição nula do câmbio e posição do efeito observado
+fig, ax = plt.subplots(figsize=(9, 4))
+
+sns.histplot(mpg_null, bins=50, color="#A1C9F4", ax=ax)
+for value in [-delta_obs, delta_obs]:
+    ax.axvline(value, color="#DD8452", linewidth=2)
+
+ax.set(
+    title="Câmbio: onde cai o Δobs na distribuição do acaso?",
+    xlabel="Δperm: diferença de médias (mpg) após embaralhar o câmbio",
+    ylabel="Permutações",
+)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+Agora, as linhas ficam nas extremidades, fora da região ocupada pelas permutações. Apenas uma em 10.000 chegou a uma diferença de 7,24 mpg. Como $p < 0{,}05$, rejeitamos $H_0$: uma diferença desse tamanho seria muito rara se o câmbio não importasse.
+
+::: {.callout-warning}
+Rejeitar $H_0$ indica que a diferença dificilmente é acaso. **Não** indica que o câmbio seja a causa da diferença. Os carros manuais da base também são mais leves, uma questão que retomaremos na seção 6.3.
+:::
+
+# 5. O atalho paramétrico
+
+O teste de permutação constrói a distribuição nula por simulação. Um teste **paramétrico** chega ao mesmo destino por outro caminho:
+
+1. **Supor um modelo.** Os dados, ou as médias, seguem uma família conhecida, como a normal, com parâmetros $\mu$ e $\sigma$.
+2. **Derivar a distribuição nula.** Sob $H_0$, a estatística do teste segue uma distribuição teórica, como *t*, *F*, $\chi^2$ ou *Z*.
+3. **Ler o *p*-valor.** A área na cauda vem de uma fórmula, sem simular nada.
+
+A vantagem é a rapidez e, quando as premissas valem, um poder maior. O risco é que, se as premissas falharem, o *p*-valor pode enganar.
+
+## 5.1 O erro-padrão
+
+Para substituir a simulação, a teoria precisa saber **quanto a diferença de médias oscila por acaso**. Essa oscilação corresponde à largura da distribuição nula, que podemos medir pelo desvio-padrão das permutações:
+
+```{python}
+
+# Largura da distribuição nula do câmbio, medida pela simulação
+round(mpg_null.std(), 2)
+
+```
+
+A teoria prevê essa largura sem simular nada. Sob $H_0$, os dois grupos vêm da mesma população, cujo desvio-padrão estimamos com os 32 carros juntos. A oscilação da diferença de médias é dada por:
+
+$$
+SE = s \sqrt{\frac{1}{n_A} + \frac{1}{n_B}}
+$$
+
+```{python}
+
+# Largura da distribuição nula do câmbio, prevista pela fórmula
+n_manual, n_automatic = len(manual), len(automatic)
+
+se_null = mtcars.mpg.std() * np.sqrt(1 / n_manual + 1 / n_automatic)
+
+round(se_null, 2)
+
+```
+
+Os dois valores praticamente coincidem. A curva normal com essa largura descreve bem o histograma das permutações:
+
+```{python}
+
+# Histograma das permutações e curva normal prevista pela fórmula
+fig, ax = plt.subplots(figsize=(8, 4))
+
+grid = np.linspace(-9, 9, 300)
+
+ax.hist(mpg_null, bins=40, density=True, color="#A1C9F4", label="10.000 permutações")  # <1>
+ax.plot(grid, stats.norm.pdf(grid, 0, se_null), color="#1F4E79", linewidth=2, label="curva prevista pela fórmula")
+for value in [-se_null, se_null]:
+    ax.axvline(value, color="#DD8452", linestyle="--")
+
+ax.set(
+    title="±1 erro-padrão",
+    xlabel="Δperm: diferença de médias sob H₀ (mpg)",
+    ylabel="Densidade",
+)
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+
+```
+
+1. `density=True` coloca o histograma na mesma escala da curva, com área total igual a 1.
+
+Essa largura recebe o nome de **erro-padrão** (SE, do inglês *standard error*). Ela funciona como a régua do acaso.
+
+## 5.2 Desvio-padrão e erro-padrão
+
+Os dois termos se parecem, mas medem coisas diferentes:
+
+| | Desvio-padrão ($s$) | Erro-padrão ($SE$) |
+|---|---|---|
+| O que mede | A dispersão dos **dados individuais** em torno da média | A variabilidade da **própria estimativa**, como $\bar{x}$, entre amostras repetidas |
+| Com mais dados | Não diminui: é uma característica da população | Diminui: $SE(\bar{x}) = s / \sqrt{n}$ |
+
+O pronto-socorro simulado ilustra a diferença. Sorteamos 2.000 amostras de cada tamanho a partir dos 365 dias e, para cada tamanho, calculamos duas coisas: o desvio-padrão típico **dentro** de uma amostra e o desvio-padrão das médias **entre** as amostras.
+
+```{python}
+
+# Desvio-padrão dos dados e das médias amostrais, por tamanho de amostra
+rng = np.random.default_rng(42)
+
+def sample_summary(n, n_samples=2_000):
+    samples = rng.choice(moon_values, size=(n_samples, n))  # <1>
+    return {
+        "dp_dos_dados": samples.std(axis=1, ddof=1).mean(),  # <2>
+        "dp_das_medias": samples.mean(axis=1).std(ddof=1),  # <3>
+        "previsto_s_raiz_n": moon_values.std(ddof=1) / np.sqrt(n),
+    }
+
+(
+    pd.DataFrame({n: sample_summary(n) for n in [10, 40, 160, 640]})
+    .T
+    .rename_axis("n")
+    .round(2)
+)
+
+```
+
+1. Cada linha da matriz é uma amostra de tamanho `n`, sorteada com reposição.
+2. Desvio-padrão dentro de cada amostra, depois a média entre as amostras.
+3. Desvio-padrão das 2.000 médias amostrais: o erro-padrão observado.
+
+O desvio-padrão dos dados fica estável em torno de 11 atendimentos, qualquer que seja $n$. O erro-padrão cai pela metade cada vez que $n$ quadruplica, exatamente como prevê $s/\sqrt{n}$. O erro-padrão diz o quanto a estimativa mudaria se a coleta fosse repetida com outra amostra do mesmo tamanho.
+
+## 5.3 A estatística *t*
+
+Com a régua definida, a pergunta se torna: **quantos erros-padrão cabem entre 0 e $\Delta_{obs}$?**
+
+```{python}
+
+# Efeito observado do câmbio, medido em erros-padrão
+round(delta_obs / se_null, 2)
+
+```
+
+Cabem cerca de 3,3 erros-padrão. Sob o acaso, a diferença de médias quase nunca ultrapassa 2 erros-padrão. Essa contagem é a **estatística *t***:
+
+$$
+t = \frac{\bar{x}_A - \bar{x}_B}{SE}
+$$
+
+A fórmula da seção 5.1 usou um único desvio-padrão para os dois grupos. A versão de **Welch** estima a variância de cada grupo separadamente e não exige que sejam iguais:
+
+$$
+SE = \sqrt{\frac{s_A^2}{n_A} + \frac{s_B^2}{n_B}}
+$$
+
+Aqui, $s_A^2$ e $s_B^2$ são as variâncias amostrais e $n_A$ e $n_B$, os tamanhos dos grupos.
+
+```{python}
+
+# Estatística t de Welch calculada pela fórmula
+se_welch = np.sqrt(manual.var() / n_manual + automatic.var() / n_automatic)
+
+round(se_welch, 2), round(delta_obs / se_welch, 2)
+
+```
+
+O teste *t* converte o número de erros-padrão em uma probabilidade, usando a distribuição *t* com um número de graus de liberdade calculado a partir dos dados. Na prática, `stats.ttest_ind` faz todo o cálculo:
+
+```{python}
+
+# Teste t de Welch no mtcars
+stats.ttest_ind(manual, automatic, equal_var=False)  # <1>
+
+```
+
+1. `equal_var=False` seleciona a versão de Welch. Com `True`, o SciPy usa a versão clássica, que supõe variâncias iguais.
+
+E no pronto-socorro:
+
+```{python}
+
+# Teste t de Welch na lua cheia
+stats.ttest_ind(
+    er_visits.loc[er_visits.full_moon, "visits"],
+    er_visits.loc[~er_visits.full_moon, "visits"],
+    equal_var=False,
+)
+
+```
+
+As conclusões coincidem com as da permutação. No `mtcars`, $p < 0{,}05$ e rejeitamos $H_0$. Na lua cheia, $p > 0{,}05$ e não rejeitamos.
+
+::: {.callout-note collapse="true"}
+## Por que "Student"?
+
+William S. Gosset era químico da cervejaria Guinness e precisava tirar conclusões de amostras pequenas de cevada. A cervejaria não permitia que seus funcionários publicassem com o próprio nome, e Gosset publicou o teste em 1908 sob o pseudônimo "Student".
+:::
+
+## 5.4 Premissas e limitações do teste *t*
+
+| O que ele pressupõe | Onde ele tropeça |
+|---|---|
+| Observações independentes | Amostras pequenas e muito assimétricas |
+| Médias aproximadamente normais (teorema central do limite, com *n* moderado ou grande) | Valores atípicos: média e variância são sensíveis |
+| Variável em escala contínua | Dados pareados ou temporais exigem outra versão |
+| Na versão de Welch, as variâncias podem ser diferentes | Compara médias, não medianas nem formas |
+
+## 5.5 Um único valor atípico muda a história
+
+Na Aula 5, vimos que média e desvio-padrão são sensíveis a valores extremos. O teste *t* depende das duas medidas e herda essa fragilidade. Para ver o efeito, acrescentamos um carro automático cujo consumo foi digitado como 60 mpg, um erro de registro plausível.
+
+```{python}
+
+# Automáticos com um consumo digitado como 60 mpg
+automatic_typo = pd.concat(
+    [automatic, pd.Series([60.])],
+    ignore_index=True,
+)
+
+```
+
+```{python}
+
+# Diferenças, dispersão e teste t, sem e com o valor digitado errado
+def compare(group_a, group_b):
+    test = stats.ttest_ind(group_a, group_b, equal_var=False)
+    return {
+        "dif_medias": group_a.mean() - group_b.mean(),
+        "dif_medianas": group_a.median() - group_b.median(),
+        "dp_automaticos": group_b.std(),
+        "t": test.statistic,
+        "p": test.pvalue,
+    }
+
+(
+    pd.DataFrame(
+        {
+            "mtcars original": compare(manual, automatic),
+            "+1 automático com 60 mpg": compare(manual, automatic_typo),
+        }
+    )
+    .T
+    .round(4)
+)
+
+```
+
+Um único erro de digitação reduz a diferença de médias e quase triplica o desvio-padrão dos automáticos. O erro-padrão aumenta, *t* cai pela metade, e o teste **deixa de detectar** a diferença ao nível de 5%. A diferença de medianas quase não se altera.
+
+::: {.callout-important}
+Diagnostique com boxplots **antes** de testar. Diante de valores atípicos, considere corrigir valores sentinela ou erros de registro, aplicar uma transformação como $\log(x)$, vista na Aula 6, ou usar uma permutação sobre a diferença de medianas.
+:::
+
+## 5.6 Permutação e teste *t*
+
+| Dimensão | Permutação (não paramétrico) | Teste *t* (paramétrico) |
+|---|---|---|
+| Premissas | Livre de distribuição. Exige apenas intercambialidade sob $H_0$ | Médias aproximadamente normais. Escala contínua |
+| Custo computacional | Milhares de reamostragens | Irrisório: fórmula fechada |
+| Tamanho dos dados | Bom para amostras pequenas e dados assimétricos | Adequado para volumes moderados e grandes |
+| Interpretação | Frequência empírica do reordenamento aleatório | Posição de *t* em uma distribuição teórica |
+| Flexibilidade | Qualquer estatística: média, mediana, razão | Diferença de médias |
+
+```{python}
+
+# p-valores dos dois métodos nos dois exemplos
+(
+    pd.DataFrame(
+        {
+            "permutação": [mpg_p, moon_p],
+            "teste t (Welch)": [
+                stats.ttest_ind(manual, automatic, equal_var=False).pvalue,
+                stats.ttest_ind(
+                    moon_values[moon_labels],
+                    moon_values[~moon_labels],
+                    equal_var=False,
+                ).pvalue,
+            ],
+        },
+        index=["mtcars", "Lua cheia"],
+    )
+    .round(4)
+)
+
+```
+
+Os valores não são idênticos, porque os dois métodos constroem a distribuição nula de formas diferentes. As decisões, porém, coincidem nos dois exemplos.
+
+# 6. Armadilhas da decisão
+
+## 6.1 Dois tipos de erro
+
+Qualquer decisão baseada em dados amostrais pode errar. Como nunca sabemos se $H_0$ é verdadeira, há quatro combinações possíveis:
+
+| | $H_0$ verdadeira | $H_0$ falsa |
+|---|---|---|
+| **Rejeitar $H_0$** | Erro do tipo I ($\alpha$): falso positivo, "descobrir" um efeito que não existe | Decisão correta: poder estatístico ($1 - \beta$) |
+| **Não rejeitar $H_0$** | Decisão correta: confiança ($1 - \alpha$) | Erro do tipo II ($\beta$): falso negativo, não detectar um efeito real |
+
+O nível de significância $\alpha$ é exatamente a taxa de falsos positivos que aceitamos. Podemos verificar isso por simulação. Geramos 5.000 anos de pronto-socorro **sem** efeito da lua e contamos em quantos o teste rejeita $H_0$.
+
+```{python}
+
+# Taxa de rejeição em 5.000 anos simulados sem efeito da lua
+rng = np.random.default_rng(1)
+
+def rejection_rate(effect, n_moon=12, n_other=353, n_years=5_000, alpha=.05):
+    moon = rng.poisson(120 + effect, size=(n_years, n_moon))  # <1>
+    other = rng.poisson(120, size=(n_years, n_other))
+    p_values = stats.ttest_ind(moon, other, axis=1, equal_var=False).pvalue  # <2>
+    return np.mean(p_values <= alpha)
+
+rejection_rate(effect=0)
+
+```
+
+1. Cada linha é um ano simulado. `effect` acrescenta atendimentos aos dias de lua cheia.
+2. Com `axis=1`, o SciPy aplica o teste a cada linha de uma vez e devolve 5.000 *p*-valores.
+
+Cerca de 5% dos anos levam a uma rejeição, embora a lua não tenha efeito algum. Esse é o custo de usar $\alpha = 0{,}05$.
+
+Agora, suponha que exista um efeito real e pequeno, de 5 atendimentos a mais por noite de lua cheia. Com quantos dias de lua cheia o teste consegue detectá-lo?
+
+```{python}
+
+# Poder do teste para um efeito de +5 atendimentos, por número de dias de lua cheia
+(
+    pd.Series(
+        {
+            n_moon: rejection_rate(effect=5, n_moon=n_moon)
+            for n_moon in [12, 24, 60, 120]
+        },
+        name="poder",
+    )
+    .rename_axis("dias de lua cheia")
+    .to_frame()
+)
+
+```
+
+Com 12 noites de lua cheia, um ano de dados, o teste detecta o efeito em menos de um terço das vezes. Na maior parte dos anos, cometeria um erro do tipo II. Com mais dados, o poder aumenta.
+
+Reduzir $\alpha$ diminui os falsos positivos, mas aumenta $\beta$. **Aumentar $n$ reduz os dois.**
+
+### 6.1.1 Muitos testes
+
+Com $\alpha = 0{,}05$, espera-se cerca de um falso positivo a cada 20 testes sem efeito. Imagine 20 pronto-socorros em que a lua não tem efeito:
+
+```{python}
+
+# p-valores da lua cheia em 20 pronto-socorros sem efeito
+rng = np.random.default_rng(7)
+
+hospital_p = stats.ttest_ind(
+    rng.poisson(120, size=(20, 12)),
+    rng.poisson(120, size=(20, 353)),
+    axis=1,
+    equal_var=False,
+).pvalue
+
+fig, ax = plt.subplots(figsize=(9, 3.5))
+
+ax.bar(
+    np.arange(1, 21),
+    hospital_p,
+    color=np.where(hospital_p <= .05, "#DD8452", "#A1C9F4"),
+)
+ax.axhline(.05, color="#1F4E79", linestyle="--")
+ax.set(
+    title="20 pronto-socorros, nenhum efeito da lua",
+    xlabel="Pronto-socorro",
+    ylabel="p-valor",
+    xticks=np.arange(1, 21),
+)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+A probabilidade de pelo menos um dos 20 testes rejeitar $H_0$ por acaso é $1 - 0{,}95^{20} \approx 64\%$. Quem testa muitas hipóteses e relata apenas as significantes repete a falácia do atirador do Texas.
+
+## 6.2 Significância estatística não é relevância prática
+
+O *p*-valor depende do tamanho da amostra. O erro-padrão encolhe com $\sqrt{n}$, e um efeito minúsculo acaba se tornando "significante" quando $n$ é grande o bastante. A tabela mostra o *p*-valor de um mesmo efeito minúsculo, de 0,02 desvio-padrão, para tamanhos de amostra crescentes:
+
+```{python}
+
+# p-valor de um efeito fixo de 0,02 desvio-padrão, por tamanho de grupo
+def expected_p(d, n):
+    t = d * np.sqrt(n / 2)  # <1>
+    return 2 * stats.t.sf(t, df=2 * n - 2)  # <2>
+
+(
+    pd.Series(
+        {n: expected_p(.02, n) for n in [100, 1_000, 10_000, 100_000, 1_000_000]},
+        name="p",
+    )
+    .rename_axis("n por grupo")
+    .to_frame()
+)
+
+```
+
+1. Com dois grupos de tamanho $n$ e desvio-padrão comum, $t = d\sqrt{n/2}$.
+2. `stats.t.sf` é a área da cauda direita da distribuição *t*. Multiplicamos por 2 porque o teste é bilateral.
+
+Com um milhão de observações por grupo, uma diferença irrelevante produz um *p*-valor astronomicamente pequeno. Em grandes bases de dados, quase tudo se torna "significante". Por isso, além do *p*-valor, reporte o **tamanho do efeito**. Uma medida comum é o *d* de Cohen, a diferença de médias expressa em desvios-padrão:
+
+$$
+d = \frac{\bar{x}_A - \bar{x}_B}{s_{\text{combinado}}}
+$$
+
+```{python}
+
+# d de Cohen para o câmbio
+pooled_sd = np.sqrt(
+    ((n_manual - 1) * manual.var() + (n_automatic - 1) * automatic.var())
+    / (n_manual + n_automatic - 2)  # <1>
+)
+
+round(delta_obs / pooled_sd, 2)
+
+```
+
+1. O desvio-padrão combinado é uma média das variâncias dos dois grupos, ponderada pelos graus de liberdade.
+
+Como referência, valores de *d* em torno de 0,2, 0,5 e 0,8 costumam ser descritos como efeitos pequenos, médios e grandes. No `mtcars`, $d \approx 1{,}48$, um efeito grande. A pergunta final, porém, é se a diferença é **acionável**: grande o bastante e bem compreendida o bastante para orientar uma decisão.
+
+## 6.3 Confundidor: quem está por trás da diferença?
+
+O teste da seção 4.5 mostrou que os manuais gastam menos combustível e que essa diferença dificilmente é acaso. Isso significa que trocar o câmbio de um carro o tornaria mais econômico?
+
+O contexto dos dados sugere cautela. A *Motor Trend* mediu modelos de 1973 e 1974, logo após a crise do petróleo de 1973. Os manuais da amostra são, em sua maioria, compactos e esportivos importados, como Honda Civic, Fiat 128 e Toyota Corolla. Os automáticos são, em grande parte, sedãs grandes e pesados, como Cadillac, Lincoln e Chrysler.
+
+```{python}
+
+# Peso médio por câmbio, em kg
+(
+    mtcars
+    .groupby("transmission")
+    .weight_kg
+    .mean()
+    .round(0)
+)
+
+```
+
+```{python}
+
+# Consumo versus peso, por câmbio
+fig, ax = plt.subplots(figsize=(7, 4.5))
+
+sns.scatterplot(
+    data=mtcars,
+    x="weight_kg",
+    y="mpg",
+    hue="transmission",
+    palette={"Manual": "#1F4E79", "Automático": "#A1C9F4"},
+    edgecolor="#333333",
+    s=70,
+    ax=ax,
+)
+ax.set(
+    title="Carros leves consomem menos, e os manuais são mais leves",
+    xlabel="Peso do carro (kg)",
+    ylabel="Consumo (mpg)",
+)
+ax.legend(title="")
+
+plt.tight_layout()
+plt.show()
+
+```
+
+O peso influencia as duas variáveis. Carros leves consomem menos, e os carros leves da amostra são, em sua maioria, manuais. Uma variável que afeta tanto o grupo quanto o desfecho, criando uma associação sem relação causal direta, é chamada de **confundidor**.
+
+```{mermaid}
+flowchart TB
+    W([Peso]) --> A([Câmbio])
+    W --> M([Consumo])
+    A -. "?" .-> M
+```
+
+Para separar os dois efeitos, precisamos comparar carros **de mesmo peso**. Uma regressão linear faz essa comparação. O modelo `mpg ~ am` reproduz a diferença de médias, e o modelo `mpg ~ am + wt` estima o efeito do câmbio mantendo o peso constante.
+
+```{python}
+
+# Efeito do câmbio sem e com controle pelo peso
+models = {
+    "mpg ~ am": smf.ols("mpg ~ am", data=mtcars).fit(),  # <1>
+    "mpg ~ am + wt": smf.ols("mpg ~ am + wt", data=mtcars).fit(),
+}
+
+(
+    pd.DataFrame(
+        {
+            name: {
+                "efeito_manual": model.params["am"],  # <2>
+                "p": model.pvalues["am"],
+                "R2": model.rsquared,  # <3>
+            }
+            for name, model in models.items()
+        }
+    )
+    .T
+    .round(4)
+)
+
+```
+
+1. `smf.ols` ajusta uma regressão por mínimos quadrados a partir de uma fórmula. À esquerda do `~` fica a variável resposta, e à direita, as explicativas.
+2. O coeficiente de `am` estima a diferença de consumo entre manuais e automáticos.
+3. O $R^2$ indica a fração da variação do consumo explicada pelo modelo.
+
+Sem controlar pelo peso, o coeficiente de `am` é exatamente $\Delta_{obs} = 7{,}24$ mpg. Ao controlar pelo peso, o efeito do câmbio **desaparece**: fica próximo de zero, com $p \approx 0{,}99$. O $R^2$ dobra, e o peso explica a maior parte da variação do consumo. Cada 1.000 libras (cerca de 454 kg) a mais custam aproximadamente 5,4 mpg.
+
+::: {.callout-note collapse="true"}
+## Regressão linear
+
+A regressão linear será estudada em detalhe mais adiante no curso. Aqui, basta a intuição: o modelo `mpg ~ am + wt` pergunta quanto o consumo difere entre manuais e automáticos **entre carros de mesmo peso**. Se a diferença some quando o peso é fixado, era o peso, e não o câmbio, que separava os grupos.
+:::
+
+::: {.callout-important}
+Um *p*-valor pequeno mostra que a diferença dificilmente é acaso. Ele não mostra **o que** a causa.
+:::
+
+# 7. Guia rápido
+
+A sequência abaixo responde à pergunta norteadora da aula.
+
+| Passo | Ação | Ferramenta |
+|---|---|---|
+| 1. Medir | Calcular $\Delta_{obs}$ e inspecionar os grupos | `groupby`, boxplot |
+| 2. Duvidar | Formular $H_0$: só há acaso | Hipóteses nula e alternativa |
+| 3. Simular | Construir a distribuição nula | Permutação ou distribuição *t* |
+| 4. Calcular | Obter o *p*-valor | `np.mean(np.abs(null) >= abs(obs))` ou `stats.ttest_ind` |
+| 5. Decidir | Comparar *p* com $\alpha$, avaliar o tamanho do efeito e procurar confundidores | *d* de Cohen, contexto, regressão |
+
+## Síntese
+
+1. **Efeito observado.** $\Delta_{obs}$ descreve a amostra. Sozinho, não prova um efeito populacional, porque a variabilidade amostral gera diferenças mesmo sem efeito real.
+2. **Hipótese nula.** $H_0$ formaliza o acaso. Sob ela, os rótulos dos grupos são intercambiáveis.
+3. **Distribuição nula.** A permutação, por simulação, e o teste *t*, por fórmula, constroem a distribuição da estatística sob $H_0$. O erro-padrão é a largura dessa distribuição.
+4. **Decisão.** $p \leq \alpha$ leva à rejeição de $H_0$. Tamanho do efeito, valores atípicos e confundidores decidem o que concluir.
+
+Um efeito é "real" quando seria improvável sob o acaso. E só importa se for grande e não for explicado por outra variável.
+
+## Glossário
+
+| Termo | Definição |
+|---|---|
+| $\Delta_{obs}$ | Diferença entre as estatísticas, como as médias, dos grupos na amostra |
+| Erro-padrão (SE) | Variabilidade de uma estimativa entre amostras repetidas |
+| Hipótese nula ($H_0$) | Modelo cético: não há efeito, e a diferença é fruto do acaso |
+| Distribuição nula | Valores que a estatística assume quando $H_0$ é verdadeira |
+| *p*-valor | Probabilidade de um resultado tão ou mais extremo que o observado, supondo $H_0$ |
+| Significância ($\alpha$) | Limiar fixado antes da análise. Risco aceito de falso positivo |
+| Poder ($1 - \beta$) | Probabilidade de detectar um efeito que de fato existe |
+| Confundidor | Variável que afeta o grupo e o desfecho, criando associação sem causa |
+
+# Perguntas para consolidar
+
+## Pergunta 1: o que o *p*-valor da lua cheia diz, e o que não diz?
+
+Na lua cheia, $p \approx 0{,}23$. Um colega conclui: "há 23% de chance de a lua não ter efeito". A frase está correta?
+
+::: {.callout-note collapse="true"}
+## Como pensar sobre isso
+
+Não. O *p*-valor é calculado **supondo** que $H_0$ seja verdadeira. Ele diz que, se a lua não tivesse efeito, cerca de 23% dos sorteios de 12 dias produziriam uma diferença pelo menos tão grande quanto a observada. Ele não atribui uma probabilidade à própria $H_0$.
+
+Também não podemos concluir que a lua não tem efeito. Não rejeitar $H_0$ significa apenas que os dados são compatíveis com o acaso. A seção 6.1 mostrou que, com 12 noites por ano, mesmo um efeito real de 5 atendimentos passaria despercebido na maior parte das vezes.
+:::
+
+## Pergunta 2: significativo quer dizer correto?
+
+No `mtcars`, a permutação deu $p < 0{,}001$. Isso significa que trocar o câmbio de um carro faria ele economizar combustível?
+
+::: {.callout-note collapse="true"}
+## Como pensar sobre isso
+
+Não. O teste mostra que a diferença entre os grupos dificilmente é acaso, mas não identifica sua causa. Os manuais da amostra são mais leves, e o peso, sozinho, explica a diferença de consumo. Outras características também separam os grupos, como potência, número de cilindros e a origem dos modelos.
+
+Para atribuir um efeito causal, seria necessário comparar carros semelhantes em tudo, exceto no câmbio. Um experimento controlado faria isso por construção. Com dados observacionais, só podemos ajustar pelos confundidores que medimos.
+:::
+
+## Pergunta 3: quando permutação e teste *t* discordam?
+
+Nos dois exemplos, os métodos levaram à mesma decisão. Em que situação você esperaria que eles discordassem, e em qual confiaria mais?
+
+::: {.callout-note collapse="true"}
+## Como pensar sobre isso
+
+O teste *t* supõe que a diferença de médias seja aproximadamente normal. Isso é razoável com amostras moderadas ou grandes, pelo teorema central do limite. Com amostras pequenas e distribuições muito assimétricas ou com valores atípicos, a aproximação pode falhar, e o *p*-valor do teste *t* fica impreciso.
+
+A permutação exige apenas que os rótulos sejam intercambiáveis sob $H_0$. Ela continua válida nesses casos e ainda permite trocar a estatística, por exemplo pela diferença de medianas. Em contrapartida, ambos os métodos supõem observações independentes. Nenhum dos dois é adequado, sem adaptação, para dados pareados ou séries temporais.
+:::
+
+# Para casa
+
+1. Adapte `permutation_null` para usar a diferença de **medianas**. Aplique-a ao cenário com o automático de 60 mpg e compare o *p*-valor com o do teste *t* da seção 5.5.
+2. Repita a simulação de poder da seção 6.1 com um efeito de 10 atendimentos. Quantas noites de lua cheia são necessárias para atingir um poder de 80%?
+3. Na base de imóveis da Aula 6, compare o aluguel de imóveis mobiliados e não mobiliados. Calcule $\Delta_{obs}$, o *p*-valor por permutação e pelo teste *t*, e o *d* de Cohen. Repita a análise com o $\log$ do aluguel e discuta as diferenças.
+4. Ainda na base de imóveis, a diferença de aluguel entre mobiliados e não mobiliados poderia ser explicada por outra variável? Proponha um confundidor e verifique sua hipótese com um gráfico.
+5. Antes de considerar o notebook pronto, use Restart Kernel and Run All.
+
+## Referências
+
+1. Adhikari, A.; DeNero, J.; Wagner, D. *Computational and Inferential Thinking: The Foundations of Data Science*. 2. ed. UC Berkeley. [inferentialthinking.com](https://inferentialthinking.com)
+2. Bruce, P.; Bruce, A.; Gedeck, P. *Practical Statistics for Data Scientists*. 2. ed. O'Reilly, 2020.
+3. Student. The probable error of a mean. *Biometrika*, 6(1), 1-25, 1908.
+4. Welch, B. L. The generalization of "Student's" problem when several different population variances are involved. *Biometrika*, 34(1-2), 28-35, 1947.
+5. Wasserstein, R. L.; Lazar, N. A. The ASA statement on p-values: context, process, and purpose. *The American Statistician*, 70(2), 129-133, 2016.
+6. Fisher, R. A. *The Design of Experiments*. Edinburgh: Oliver & Boyd, 1935.
+7. Rotton, J.; Kelly, I. W. Much ado about the full moon: a meta-analysis of lunar-lunacy research. *Psychological Bulletin*, 97(2), 286-306, 1985.
+8. Henderson, H. V.; Velleman, P. F. Building multiple regression models interactively. *Biometrics*, 37(2), 391-411, 1981.
+
+> Pode-se dizer que todo experimento existe apenas para dar aos fatos a chance de refutar a hipótese nula. (R. A. Fisher, *The Design of Experiments*, 1935, tradução livre)

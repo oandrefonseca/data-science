@@ -238,12 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#clientes-mais-relevantes-para-o-negócio" id="toc-clientes-mais-relevantes-para-o-negócio" class="nav-link" data-scroll-target="#clientes-mais-relevantes-para-o-negócio">Clientes mais relevantes para o negócio</a></li>
   </ul></li>
   <li><a href="#cancelamentos-e-devoluções" id="toc-cancelamentos-e-devoluções" class="nav-link" data-scroll-target="#cancelamentos-e-devoluções">8. Cancelamentos e devoluções</a></li>
-  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
-  <ul class="collapse">
-  <li><a href="#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" id="toc-pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" class="nav-link" data-scroll-target="#pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução">Pergunta 1: cancelamento é a mesma coisa que devolução?</a></li>
-  <li><a href="#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" id="toc-pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" class="nav-link" data-scroll-target="#pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo">Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</a></li>
-  <li><a href="#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" id="toc-pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" class="nav-link" data-scroll-target="#pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender">Pergunta 3: qual recorte de “vendas válidas” você vai defender?</a></li>
-  </ul></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a></li>
   <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/03-analise-vendas.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="03-analise-vendas.ipynb" download="03-analise-vendas.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -264,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 de outubro de 2026</p>
+      <p class="date">7 de outubro de 2026</p>
     </div>
   </div>
   
@@ -1570,8 +1565,7 @@ Receita liquida de toda a base: £ 9,747,747.93</code></pre>
 <section id="perguntas-para-consolidar" class="level1">
 <h1>Perguntas para consolidar</h1>
 <p>Três perguntas para testar seus critérios antes de considerar a análise pronta. Elas não têm uma resposta única certa: o que importa é que você consiga justificar a escolha que fez.</p>
-<section id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-1-cancelamento-é-a-mesma-coisa-que-devolução">Pergunta 1: cancelamento é a mesma coisa que devolução?</h2>
+<p><strong>Pergunta 1: cancelamento é a mesma coisa que devolução?</strong></p>
 <p>O critério de vendas válidas da seção 6 trata toda linha com <code>is_cancelled</code> verdadeiro ou <code>quantity</code> negativa da mesma forma. Isso é preciso o suficiente para o enunciado, que pede o impacto de cancelamentos e devoluções separadamente?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -1589,9 +1583,7 @@ Como pensar sobre isso
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-2-quando-um-outlier-é-erro-e-quando-é-atacado-legítimo">Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</h2>
+<p><strong>Pergunta 2: quando um outlier é erro e quando é atacado legítimo?</strong></p>
 <p>O describe da seção 5 mostra valores de <code>quantity</code> na casa das dezenas de milhares em uma única linha. Excluir essas linhas do faturamento por serem outliers, sem verificar mais nada, é uma decisão segura?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -1609,9 +1601,7 @@ Como pensar sobre isso
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-3-qual-recorte-de-vendas-válidas-você-vai-defender">Pergunta 3: qual recorte de “vendas válidas” você vai defender?</h2>
+<p><strong>Pergunta 3: qual recorte de “vendas válidas” você vai defender?</strong></p>
 <p>Além de cancelamentos, a seção 6 também exclui <code>quantity</code> igual a zero e <code>unit_price</code> igual a zero. Existem linhas com preço zero e <code>customer_id</code> ausente ao mesmo tempo, como a Aula 2 pediu para você investigar?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
@@ -1629,7 +1619,6 @@ Como pensar sobre isso
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>

@@ -238,12 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#o-ritual-de-inspeção-inicial" id="toc-o-ritual-de-inspeção-inicial" class="nav-link" data-scroll-target="#o-ritual-de-inspeção-inicial">5. O ritual de inspeção inicial</a></li>
   <li><a href="#interrogando-os-dados-seleção-e-filtragem" id="toc-interrogando-os-dados-seleção-e-filtragem" class="nav-link" data-scroll-target="#interrogando-os-dados-seleção-e-filtragem">6. Interrogando os dados: seleção e filtragem</a></li>
   <li><a href="#a-caça-aos-problemas-diagnóstico-de-qualidade" id="toc-a-caça-aos-problemas-diagnóstico-de-qualidade" class="nav-link" data-scroll-target="#a-caça-aos-problemas-diagnóstico-de-qualidade">7. A caça aos problemas: diagnóstico de qualidade</a></li>
-  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
-  <ul class="collapse">
-  <li><a href="#pergunta-1-o-cliente-com-casas-decimais" id="toc-pergunta-1-o-cliente-com-casas-decimais" class="nav-link" data-scroll-target="#pergunta-1-o-cliente-com-casas-decimais">Pergunta 1: o cliente com casas decimais</a></li>
-  <li><a href="#pergunta-2-a-documentação-contra-os-dados" id="toc-pergunta-2-a-documentação-contra-os-dados" class="nav-link" data-scroll-target="#pergunta-2-a-documentação-contra-os-dados">Pergunta 2: a documentação contra os dados</a></li>
-  <li><a href="#pergunta-3-o-repositório-sem-os-dados" id="toc-pergunta-3-o-repositório-sem-os-dados" class="nav-link" data-scroll-target="#pergunta-3-o-repositório-sem-os-dados">Pergunta 3: o repositório sem os dados</a></li>
-  </ul></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a></li>
   <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/02-introducao-dados-tabulares.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="02-introducao-dados-tabulares.ipynb" download="02-introducao-dados-tabulares.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -264,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 de outubro de 2026</p>
+      <p class="date">7 de outubro de 2026</p>
     </div>
   </div>
   
@@ -1481,8 +1476,7 @@ Total de negativas: 10,624</code></pre>
 <section id="perguntas-para-consolidar" class="level1">
 <h1>Perguntas para consolidar</h1>
 <p>Três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação.</p>
-<section id="pergunta-1-o-cliente-com-casas-decimais" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-1-o-cliente-com-casas-decimais">Pergunta 1: o cliente com casas decimais</h2>
+<p><strong>Pergunta 1: o cliente com casas decimais</strong></p>
 <p>O info revelou que a coluna customer_id foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -1501,9 +1495,7 @@ Explicação
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-2-a-documentação-contra-os-dados" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-2-a-documentação-contra-os-dados">Pergunta 2: a documentação contra os dados</h2>
+<p><strong>Pergunta 2: a documentação contra os dados</strong></p>
 <p>A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em customer_id e milhares em description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -1523,9 +1515,7 @@ Explicação
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-3-o-repositório-sem-os-dados" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-3-o-repositório-sem-os-dados">Pergunta 3: o repositório sem os dados</h2>
+<p><strong>Pergunta 3: o repositório sem os dados</strong></p>
 <p>Sua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
@@ -1545,7 +1535,6 @@ Explicação
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>

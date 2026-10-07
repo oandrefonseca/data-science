@@ -232,12 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#o-projeto-ganha-dependências-instalação-e-registro-de-versões" id="toc-o-projeto-ganha-dependências-instalação-e-registro-de-versões" class="nav-link" data-scroll-target="#o-projeto-ganha-dependências-instalação-e-registro-de-versões">6. O projeto ganha dependências: instalação e registro de versões</a></li>
   <li><a href="#fechamento-o-histórico-conta-a-história" id="toc-fechamento-o-histórico-conta-a-história" class="nav-link" data-scroll-target="#fechamento-o-histórico-conta-a-história">7. Fechamento: o histórico conta a história</a></li>
-  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a>
-  <ul class="collapse">
-  <li><a href="#pergunta-1-o-colega-cético" id="toc-pergunta-1-o-colega-cético" class="nav-link" data-scroll-target="#pergunta-1-o-colega-cético">Pergunta 1: o colega cético</a></li>
-  <li><a href="#pergunta-2-ignorar-não-é-proteger" id="toc-pergunta-2-ignorar-não-é-proteger" class="nav-link" data-scroll-target="#pergunta-2-ignorar-não-é-proteger">Pergunta 2: ignorar não é proteger</a></li>
-  <li><a href="#pergunta-3-o-teste-definitivo-da-aula" id="toc-pergunta-3-o-teste-definitivo-da-aula" class="nav-link" data-scroll-target="#pergunta-3-o-teste-definitivo-da-aula">Pergunta 3: o teste definitivo da aula</a></li>
-  </ul></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a></li>
   <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/01-ferramentas-ambiente-versionamento.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="01-ferramentas-ambiente-versionamento.ipynb" download="01-ferramentas-ambiente-versionamento.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -258,7 +253,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 de outubro de 2026</p>
+      <p class="date">7 de outubro de 2026</p>
     </div>
   </div>
   
@@ -680,8 +675,7 @@ analise_final_v2_AGORA_VAI_revisado_prof.ipynb
 <section id="perguntas-para-consolidar" class="level1">
 <h1>Perguntas para consolidar</h1>
 <p>Agora que o projeto está de pé, três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação: o aprendizado acontece na tentativa, não na leitura da solução.</p>
-<section id="pergunta-1-o-colega-cético" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-1-o-colega-cético">Pergunta 1: o colega cético</h2>
+<p><strong>Pergunta 1: o colega cético</strong></p>
 <p>Um colega afirma: “Ambiente virtual é exagero. Eu instalo tudo no Python global e nunca tive problema.” Ele trabalha sozinho e mantém um único projeto. Ele está errado? E o que muda quando ele tiver dois projetos, ou um colega de equipe?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -703,9 +697,7 @@ Explicação
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-2-ignorar-não-é-proteger" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-2-ignorar-não-é-proteger">Pergunta 2: ignorar não é proteger</h2>
+<p><strong>Pergunta 2: ignorar não é proteger</strong></p>
 <p>No nosso projeto, o .gitignore exclui a pasta data/ do versionamento. Suponha que você coloque um arquivo valioso, digamos data/vendas.csv, nessa pasta, e meses depois o apague por acidente. O Git consegue recuperá-lo, como recuperaria o README.md? O que isso ensina sobre a diferença entre ignorar e versionar, e qual seria a estratégia correta para proteger esse arquivo?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -725,9 +717,7 @@ Explicação
 </div>
 </div>
 </div>
-</section>
-<section id="pergunta-3-o-teste-definitivo-da-aula" class="level2">
-<h2 class="anchored" data-anchor-id="pergunta-3-o-teste-definitivo-da-aula">Pergunta 3: o teste definitivo da aula</h2>
+<p><strong>Pergunta 3: o teste definitivo da aula</strong></p>
 <p>Sua colega clonou o repositório do projeto-vendas na máquina dela. Ela recebeu o README.md, o .gitignore e o requirements.txt, mas não recebeu a pasta .venv, que está no .gitignore. Descreva, passo a passo, o que ela precisa fazer para executar o projeto com exatamente as mesmas versões de bibliotecas que você usou. Em seguida, responda: por que o fato de o .venv não viajar junto não é um defeito, e sim o próprio desenho da reprodutibilidade?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
@@ -753,7 +743,6 @@ Explicação
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>

@@ -1072,7 +1072,7 @@ Três classes de tratamento foram aplicadas à base de imóveis:
 
 # Perguntas para consolidar
 
-## Pergunta 1: imputar sempre melhora a análise?
+**Pergunta 1: imputar sempre melhora a análise?**
 
 A seção 2 mostrou lacunas que não deveriam ser preenchidas. Em que situação uma estratégia com MAE baixo no experimento controlado ainda pode piorar a análise quando aplicada à base real?
 
@@ -1084,7 +1084,7 @@ O MAE mede a distância entre valores imputados e valores verdadeiros nas posiç
 No caso do andar de uma casa, não existe valor verdadeiro a estimar, pois o atributo não se aplica à observação. O MAE nem sequer é uma métrica conceitualmente válida para esse caso. Em lacunas não estruturais, uma estratégia também pode apresentar baixo MAE sob MCAR e introduzir viés quando a ausência real depende do valor omitido. Imputações por constantes ainda reduzem a variabilidade observada e criam concentrações artificiais. Sem uma coluna indicadora, deixa de ser possível separar o que foi observado do que foi estimado.
 :::
 
-## Pergunta 2: por que o `StandardScaler` não resolveu a assimetria?
+**Pergunta 2: por que o `StandardScaler` não resolveu a assimetria?**
 
 Na seção 4.1, os três escaladores produziram a mesma assimetria do aluguel original. Por que isso acontece?
 
@@ -1096,7 +1096,7 @@ Os escaladores estudados aplicam uma transformação afim. Eles subtraem um cent
 Como todas as distâncias são multiplicadas pelo mesmo fator, os momentos padronizados que definem assimetria e curtose permanecem iguais. Para mudar a forma, precisamos de uma transformação não linear, como `log` ou Box-Cox.
 :::
 
-## Pergunta 3: qual escala você apresentaria ao gestor?
+**Pergunta 3: qual escala você apresentaria ao gestor?**
 
 O `log` reduziu fortemente a assimetria do aluguel. Você apresentaria ao gestor um gráfico do aluguel em escala log?
 

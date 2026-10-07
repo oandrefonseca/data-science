@@ -496,7 +496,7 @@ Recapitulando o que você conquistou:
 
 Três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação.
 
-## Pergunta 1: o cliente com casas decimais
+**Pergunta 1: o cliente com casas decimais**
 
 O info revelou que a coluna customer_id foi carregada como float64, ou seja, número com casas decimais, e você viu valores como 17850.0. Um código de cliente não deveria ser um inteiro, ou melhor, uma categoria? Explique por que o pandas tomou essa decisão e o que ela revela sobre a relação entre valores ausentes e tipos de dados. (Dica: qual coluna tinha dezenas de milhares de ausentes?)
 
@@ -508,7 +508,7 @@ A causa é a combinação de dois fatos. Primeiro, a coluna customer_id tem milh
 O aprendizado tem duas camadas. A técnica: um tipo inesperado em uma coluna é frequentemente um sintoma de outro problema, e aqui o float estranho era a impressão digital dos ausentes. Quando o info mostrar um tipo que não faz sentido, pergunte-se o que o forçou. A conceitual: como discutimos na teoria, customer_id nem deveria ser tratado como número, pois é um identificador, uma variável categórica nominal composta de dígitos. Fazer média de códigos de cliente não significa nada. Na próxima aula, ao tratar os dados, uma das decisões será justamente converter essa coluna para um tipo adequado.
 :::
 
-## Pergunta 2: a documentação contra os dados
+**Pergunta 2: a documentação contra os dados**
 
 A página oficial do dataset na UCI afirma que ele não possui valores ausentes, mas o seu isna().sum() encontrou dezenas de milhares de vazios em customer_id e milhares em description. Diante de uma contradição entre a documentação e os dados, qual dos dois vence, e que hábito profissional essa experiência deve deixar em você?
 
@@ -522,7 +522,7 @@ O hábito profissional é o ceticismo verificador: leia toda a documentação di
 E há uma lição de espelho: um dia você será a pessoa que escreve a documentação. O README que atualizamos hoje é o começo dessa responsabilidade, e mantê-lo fiel aos dados é o mesmo dever, visto do outro lado.
 :::
 
-## Pergunta 3: o repositório sem os dados
+**Pergunta 3: o repositório sem os dados**
 
 Sua colega clonou o projeto-vendas para colaborar na análise. Ela recebeu o código, o requirements.txt e o README, mas a pasta data/ chegou vazia, pois está no .gitignore. Descreva o caminho completo que ela deve percorrer para reproduzir o seu ambiente de trabalho, incluindo os dados, e explique que papel o README atualizado nesta aula cumpre nesse desenho. O projeto continua reprodutível mesmo sem os dados viajarem no repositório?
 

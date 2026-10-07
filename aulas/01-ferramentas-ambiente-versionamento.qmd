@@ -373,7 +373,7 @@ Recapitulando o que você conquistou:
 
 Agora que o projeto está de pé, três perguntas para exercitar o que foi aprendido. Tente responder cada uma antes de expandir a explicação: o aprendizado acontece na tentativa, não na leitura da solução.
 
-## Pergunta 1: o colega cético
+**Pergunta 1: o colega cético**
 
 Um colega afirma: "Ambiente virtual é exagero. Eu instalo tudo no Python global e nunca tive problema." Ele trabalha sozinho e mantém um único projeto. Ele está errado? E o que muda quando ele tiver dois projetos, ou um colega de equipe?
 
@@ -391,7 +391,7 @@ O futuro: mesmo sem colegas, o eu de daqui a seis meses é, na prática, outra p
 Ou seja: não é exagero, é um seguro contra um acidente que vai acontecer. E com ferramentas como o uv, criar um ambiente custa segundos. O seguro ficou barato demais para ser recusado.
 :::
 
-## Pergunta 2: ignorar não é proteger
+**Pergunta 2: ignorar não é proteger**
 
 No nosso projeto, o .gitignore exclui a pasta data/ do versionamento. Suponha que você coloque um arquivo valioso, digamos data/vendas.csv, nessa pasta, e meses depois o apague por acidente. O Git consegue recuperá-lo, como recuperaria o README.md? O que isso ensina sobre a diferença entre ignorar e versionar, e qual seria a estratégia correta para proteger esse arquivo?
 
@@ -405,7 +405,7 @@ Por isso a decisão sobre o que entra no .gitignore é uma decisão de engenhari
 A síntese: versionamos a receita, ignoramos o que a receita recria, e protegemos os dados por outros meios.
 :::
 
-## Pergunta 3: o teste definitivo da aula
+**Pergunta 3: o teste definitivo da aula**
 
 Sua colega clonou o repositório do projeto-vendas na máquina dela. Ela recebeu o README.md, o .gitignore e o requirements.txt, mas não recebeu a pasta .venv, que está no .gitignore. Descreva, passo a passo, o que ela precisa fazer para executar o projeto com exatamente as mesmas versões de bibliotecas que você usou. Em seguida, responda: por que o fato de o .venv não viajar junto não é um defeito, e sim o próprio desenho da reprodutibilidade?
 

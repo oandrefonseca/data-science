@@ -985,7 +985,7 @@ Um efeito é "real" quando seria improvável sob o acaso. E só importa se for g
 
 # Perguntas para consolidar
 
-## Pergunta 1: o que o *p*-valor da lua cheia diz, e o que não diz?
+**Pergunta 1: o que o *p*-valor da lua cheia diz, e o que não diz?**
 
 Na lua cheia, $p \approx 0{,}23$. Um colega conclui: "há 23% de chance de a lua não ter efeito". A frase está correta?
 
@@ -997,7 +997,7 @@ Não. O *p*-valor é calculado **supondo** que $H_0$ seja verdadeira. Ele diz qu
 Também não podemos concluir que a lua não tem efeito. Não rejeitar $H_0$ significa apenas que os dados são compatíveis com o acaso. Como discutido na seção 6.1, com apenas 12 noites por ano o teste tem pouco poder, e mesmo um efeito real, mas pequeno, poderia passar despercebido.
 :::
 
-## Pergunta 2: significativo quer dizer correto?
+**Pergunta 2: significativo quer dizer correto?**
 
 No `mtcars`, a permutação deu $p < 0{,}001$. Isso significa que trocar o câmbio de um carro faria ele economizar combustível?
 
@@ -1009,7 +1009,7 @@ Não. O teste mostra que a diferença entre os grupos dificilmente é acaso, mas
 Para atribuir um efeito causal, seria necessário comparar carros semelhantes em tudo, exceto no câmbio. Um experimento controlado faria isso por construção. Com dados observacionais, só podemos ajustar pelos confundidores que medimos.
 :::
 
-## Pergunta 3: quando permutação e teste *t* discordam?
+**Pergunta 3: quando permutação e teste *t* discordam?**
 
 Nos dois exemplos, os métodos levaram à mesma decisão. Em que situação você esperaria que eles discordassem, e em qual confiaria mais?
 

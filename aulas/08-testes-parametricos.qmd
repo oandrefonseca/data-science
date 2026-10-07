@@ -47,7 +47,7 @@ Além das bibliotecas da Aula 7, usamos o `statsmodels` no caso 6.
 
 # 1. Preparando os dados
 
-Começamos com as bibliotecas e as cinco bases. Cada caso usa apenas algumas colunas, apresentadas quando o caso começar.
+Começamos com as bibliotecas e as cinco bases. A seção 1.1 apresenta as bases que aparecem pela primeira vez no curso.
 
 ```{python}
 
@@ -74,17 +74,90 @@ titanic = pd.read_csv("titanic/data/titanic.csv")
 
 ```
 
-As cinco bases têm tamanhos bem diferentes, do ensaio clínico com 20 registros ao Titanic com quase 900 passageiros:
+## 1.1 Conhecendo as bases
 
-| Base | Linhas | Colunas | Cada linha representa |
-|---|---|---|---|
-| `mtcars` | 32 | 12 | Um modelo de carro |
-| `penguins` | 344 | 8 | Um pinguim |
-| `sleep` | 20 | 3 | Um paciente com uma das duas drogas |
-| `iris` | 150 | 5 | Uma flor |
-| `titanic` | 891 | 15 | Um passageiro |
+O `mtcars` já foi apresentado na Aula 7: são 32 linhas, uma por modelo de carro, e 12 colunas. As outras quatro bases aparecem pela primeira vez. Para cada uma, olhamos as cinco primeiras linhas e descrevemos suas variáveis.
 
-O tamanho da amostra influencia diretamente as decisões desta aula. Com 20 registros, a normalidade precisa ser verificada com cuidado. Com centenas, o teorema central do limite torna o teste *t* robusto, mas o Shapiro-Wilk passa a rejeitar desvios pequenos.
+As bases têm tamanhos bem diferentes, do ensaio clínico com 20 registros ao Titanic com quase 900 passageiros. Isso influencia diretamente as decisões desta aula. Com 20 registros, a normalidade precisa ser **verificada com cuidado**. Com centenas, o teorema central do limite torna o teste *t* robusto, mas o Shapiro-Wilk passa a rejeitar desvios pequenos.
+
+### `penguins`
+
+Medidas de pinguins adultos coletadas entre 2007 e 2009 em três ilhas do arquipélago Palmer, na Antártida. São 344 linhas, uma por pinguim, e 8 colunas.
+
+```{python}
+
+# Cinco primeiras linhas da base de pinguins
+penguins.head()
+
+```
+
+- `species`: espécie do pinguim (Adelie, Chinstrap ou Gentoo).
+- `island`: ilha onde o animal foi observado (Biscoe, Dream ou Torgersen).
+- `bill_len`: comprimento do bico, em milímetros.
+- `bill_dep`: profundidade (altura) do bico, em milímetros.
+- `flipper_len`: comprimento da nadadeira, em milímetros.
+- `body_mass`: massa corporal, em gramas.
+- `sex`: sexo do animal (`female` ou `male`). Está ausente em 11 pinguins.
+- `year`: ano da observação (2007, 2008 ou 2009).
+
+### `sleep`
+
+Dados do ensaio clínico usado por Student em 1908 para apresentar o teste *t*. Dez pacientes receberam dois soníferos, em períodos diferentes. São 20 linhas, uma por paciente e droga, e 3 colunas.
+
+```{python}
+
+# Cinco primeiras linhas da base do ensaio de sono
+sleep.head()
+
+```
+
+- `extra`: aumento nas horas de sono em relação ao período sem medicamento. Valores negativos indicam que o paciente dormiu menos.
+- `group`: droga administrada (1 ou 2).
+- `ID`: identificação do paciente (1 a 10). Cada paciente aparece duas vezes, uma com cada droga.
+
+### `iris`
+
+Medidas de flores de três espécies do gênero *Iris*, publicadas por R. A. Fisher em 1936. São 150 linhas, uma por flor (50 de cada espécie), e 5 colunas.
+
+```{python}
+
+# Cinco primeiras linhas da base de íris
+iris.head()
+
+```
+
+- `sepal_length` e `sepal_width`: comprimento e largura da sépala, a parte externa e geralmente verde que protege a flor, em centímetros.
+- `petal_length` e `petal_width`: comprimento e largura da pétala, em centímetros.
+- `species`: espécie da flor (setosa, versicolor ou virginica).
+
+### `titanic`
+
+Registros de passageiros do naufrágio do Titanic, em abril de 1912. São 891 linhas, uma por passageiro, e 15 colunas.
+
+```{python}
+
+# Cinco primeiras linhas da base do Titanic
+titanic.head()
+
+```
+
+- `survived`: se o passageiro sobreviveu (1) ou não (0).
+- `pclass`: classe da passagem (1, 2 ou 3).
+- `sex`: sexo do passageiro (`female` ou `male`).
+- `age`: idade, em anos. Está ausente em 177 passageiros.
+- `sibsp`: número de irmãos e cônjuges a bordo.
+- `parch`: número de pais e filhos a bordo.
+- `fare`: valor pago pela passagem, em libras esterlinas.
+- `embarked`: porto de embarque, abreviado (C, Q ou S).
+- `class`: classe da passagem, por extenso (First, Second ou Third).
+- `who`: categoria do passageiro (`man`, `woman` ou `child`).
+- `adult_male`: se o passageiro é um homem adulto (`True` ou `False`).
+- `deck`: convés da cabine. Está ausente em 688 passageiros.
+- `embark_town`: porto de embarque, por extenso (Cherbourg, Queenstown ou Southampton).
+- `alive`: sobrevivência em texto (`yes` ou `no`), equivalente a `survived`.
+- `alone`: se o passageiro viajava sem familiares (`True` ou `False`).
+
+Algumas colunas do Titanic repetem a mesma informação em formatos diferentes: `class` e `pclass`, `alive` e `survived`, `embark_town` e `embarked`. Nos casos 6 e 7, usamos as versões numéricas ou abreviadas.
 
 # 2. O que um teste paramétrico exige
 
@@ -271,9 +344,58 @@ Respondidas as três, o teste fica determinado, e resta verificar suas premissas
 
 Errar a escolha, por exemplo usando um teste para amostras independentes em dados pareados, ou vários testes *t* no lugar da ANOVA, altera as taxas de erro dos tipos I e II.
 
-## 2.7 Intervalo de confiança
+# 3. Conceitos importantes
 
-Outro conceito importante é o **intervalo de confiança**. Assim como o *p*-valor responde se um valor específico, o de $H_0$, é compatível com os dados. O **intervalo de confiança** delimita: que valores do parâmetro são compatíveis com os dados. Em uma média, ele é construído a partir da estimativa e do erro-padrão:
+Esta seção reúne os conceitos que atravessam os sete casos. Os três primeiros já foram vistos na Aula 7 e aparecem aqui apenas como lembrete. Os demais são novos e ajudam a ler as saídas dos testes.
+
+## 3.1 Hipóteses e *p*-valor
+
+Todo teste confronta a hipótese nula $H_0$, de que não há efeito, com a hipótese alternativa $H_1$, de que há. O *p*-valor é a probabilidade, **supondo $H_0$ verdadeira**, de obter um resultado tão ou mais extremo que o observado. Ele não é a probabilidade de $H_0$ ser verdadeira. Neste roteiro, todos os testes são **bilaterais**: admitem diferenças nos dois sentidos.
+
+## 3.2 Nível de significância e erros de decisão
+
+O nível de significância $\alpha$, em geral 0,05, é fixado antes da análise: se $p \leq \alpha$, rejeitamos $H_0$. Rejeitar uma $H_0$ verdadeira é um erro do tipo I, cuja taxa é o próprio $\alpha$. Não rejeitar uma $H_0$ falsa é um erro do tipo II. A probabilidade de detectar um efeito que existe é o **poder** do teste, que cresce com o tamanho da amostra.
+
+## 3.3 Tamanho do efeito
+
+Um *p*-valor pequeno indica que a diferença dificilmente é acaso, mas não diz se ela é grande. Por isso, além do *p*-valor, reportamos o **tamanho do efeito**. Nesta aula, ele aparece de várias formas: a diferença de médias em gramas ou mpg, o coeficiente $r$ de Pearson, a fração da variação explicada pela espécie na ANOVA ($\eta^2$) e o V de Cramér no qui-quadrado.
+
+## 3.4 Estatística de teste
+
+Cada teste resume os dados em um único número, a **estatística de teste**. Em quase todos os casos, ela tem a forma de uma razão entre **sinal** e **ruído**: o efeito observado dividido pela variação que o acaso produziria. Quanto maior a razão, mais o efeito se destaca do acaso. Cada estatística tem a sua distribuição de referência sob $H_0$:
+
+| Teste | Estatística | Sinal ÷ ruído | Distribuição sob $H_0$ |
+|---|---|---|---|
+| Testes *t* | $t$ | Diferença de médias ÷ erro-padrão | *t* de Student |
+| ANOVA | $F$ | Variação entre grupos ÷ variação dentro dos grupos | *F* |
+| Pearson | $r$ | Covariação ÷ variação de cada variável | *t* de Student, após conversão |
+| *Z* de proporções | $Z$ | Diferença de proporções ÷ erro-padrão | Normal padrão |
+| Qui-quadrado | $\chi^2$ | Soma das discrepâncias $(O - E)^2 / E$ | Qui-quadrado |
+
+## 3.5 Graus de liberdade
+
+As distribuições *t*, *F* e $\chi^2$ não são curvas únicas: cada uma é uma família, e o membro certo é escolhido pelos **graus de liberdade** (gl). Intuitivamente, eles contam quantas informações independentes restam para estimar a variabilidade.
+
+Pense em três números cuja média precisa ser 10. Você pode escolher os dois primeiros à vontade, por exemplo 8 e 15, mas o terceiro já está decidido: tem de ser 7. São três números, e só dois são livres. Da mesma forma, cada parâmetro estimado a partir dos dados, como uma média, "consome" um grau de liberdade.
+
+Quanto menos graus de liberdade, menos confiável é a estimativa da variabilidade, e mais cautelosa é a curva de referência: com poucos gl, a curva *t* tem caudas mais pesadas e exige uma estatística maior para rejeitar $H_0$. A tabela mostra como os graus de liberdade são contados nos casos desta aula:
+
+| Caso | Teste | Graus de liberdade | Valor no caso |
+|---|---|---|---|
+| 1 | *t* de uma amostra | $n - 1$ | 31 |
+| 2 | *t* de Welch | Aproximação de Welch-Satterthwaite | ≈ 324 |
+| 3 | *t* pareado | $n_{\text{pares}} - 1$ | 9 |
+| 4 | ANOVA | $k - 1$ entre grupos e $N - k$ dentro | 2 e 147 |
+| 5 | Pearson | $n - 2$ | 30 |
+| 6 | *Z* de proporções | Não usa: a referência é a normal padrão | · |
+| 7 | Qui-quadrado | $(\text{linhas} - 1)(\text{colunas} - 1)$ | 2 |
+
+No teste pareado, a unidade de análise é o par, e não cada medida. Por isso o `sleep`, com 20 medidas, tem apenas 9 graus de liberdade. No qui-quadrado, os graus de liberdade dependem do tamanho da tabela, e não do número de passageiros.
+
+## 3.6 Intervalo de confiança
+
+
+O *p*-valor responde se um valor específico, o de $H_0$, é compatível com os dados. O **intervalo de confiança** amplia a pergunta e delimita quais valores do parâmetro são compatíveis com os dados. Em uma média, ele é construído a partir da estimativa e do erro-padrão:
 
 $$
 \bar{x} \pm t_{crit} \cdot SE
@@ -289,7 +411,7 @@ Três pontos orientam a leitura:
 
 Nos casos a seguir, o intervalo é obtido com o método `.confidence_interval()`, disponível nos resultados dos testes *t* e da correlação de Pearson.
 
-# 3. Sete casos, sete testes
+# 4. Sete casos, sete testes
 
 Cada caso segue o mesmo roteiro: o cenário com as hipóteses, em destaque, as premissas do teste, o cálculo passo a passo, a verificação das premissas nos dados, o gráfico e a interpretação.
 
@@ -473,7 +595,7 @@ report("t de Welch", case2, stat="t")
 
 Os machos pesam, em média, 4.546 g, e as fêmeas, 3.862 g: uma diferença de 683 g. O erro-padrão da diferença é de cerca de 80 g, e a diferença cabe 8,55 vezes nele. Os graus de liberdade, cerca de 324, vêm da correção de Welch-Satterthwaite, que ajusta a curva *t* quando as variâncias diferem.
 
-Com mais de 160 animais por grupo, o teorema central do limite garante a normalidade das médias. E as variâncias, diferem? O teste de Levene verifica a homocedasticidade:
+Com mais de 160 animais por grupo, o teorema central do limite garante a normalidade das médias. E as variâncias, diferem? O teste de **Levene** verifica a homocedasticidade:
 
 ```{python}
 
@@ -516,6 +638,67 @@ plt.show()
 ```
 
 **Interpretação.** Os dois grupos se sobrepõem bastante: cerca de 25% das fêmeas pesam mais que o macho médio. Ainda assim, a média dos machos fica bem acima da média das fêmeas. Se machos e fêmeas tivessem a mesma massa média, uma diferença de 683 g seria praticamente impossível por acaso ($p < 0{,}001$). Rejeitamos $H_0$: há evidência de dimorfismo sexual, com machos mais pesados. Note que o teste fala de **médias**. Ele não afirma que todo macho é mais pesado que toda fêmea.
+
+### Existe dimorfismo dentro de cada espécie?
+
+A base reúne três espécies de pinguim, com tamanhos bem diferentes. Ao comparar todos os machos com todas as fêmeas, misturamos essa variação entre espécies com a variação entre os sexos. Vejamos o desvio-padrão da massa em cada combinação de espécie e sexo:
+
+```{python}
+
+# Média e desvio-padrão da massa por espécie e sexo
+(
+    penguins_sex
+    .groupby(["species", "sex"])
+    .body_mass
+    .agg(["size", "mean", "std"])
+    .round(0)
+)
+
+```
+
+O boxplot mostra a mesma informação por espécie, com os sexos lado a lado:
+
+```{python}
+
+# Massa corporal por espécie e sexo
+fig, ax = plt.subplots(figsize=(8, 4.5))
+
+sns.boxplot(
+    data=penguins_sex,
+    x="species",
+    y="body_mass",
+    order=["Adelie", "Chinstrap", "Gentoo"],
+    hue="sex",  # <1>
+    hue_order=["female", "male"],
+    palette={"female": "#A1C9F4", "male": "#1F4E79"},
+    ax=ax,
+)
+ax.set(xlabel="Espécie", ylabel="Massa corporal (g)")
+
+handles, _ = ax.get_legend_handles_labels()  # <2>
+ax.legend(handles, ["Fêmeas", "Machos"], title="Sexo")
+
+plt.tight_layout()
+plt.show()
+
+```
+
+1. `hue` divide cada espécie em uma caixa por sexo, com cores diferentes.
+2. Reaproveitamos os marcadores coloridos da legenda e trocamos apenas os rótulos, de `female`/`male` para português.
+
+Em todas as espécies, a caixa dos machos fica acima da caixa das fêmeas. As caixas, porém, são bem mais curtas do que a variação total da massa, porque a espécie pesa mais que o sexo: o macho Adelie típico, com cerca de 4.000 g, é mais leve que a fêmea Gentoo típica, com cerca de 4.700 g. Dentro de cada espécie, o desvio-padrão fica entre cerca de 270 e 360 g. No teste geral, ele passava de 660 g, porque cada grupo misturava pinguins pequenos e grandes. Repetimos então o teste de Welch separadamente em cada espécie:
+
+```{python}
+
+# Teste de Welch dentro de cada espécie
+for species, group in penguins_sex.groupby("species"):
+    male = group.loc[group["sex"] == "male", "body_mass"]
+    female = group.loc[group["sex"] == "female", "body_mass"]
+    report(species, stats.ttest_ind(male, female, equal_var=False), stat="t")
+
+```
+
+O dimorfismo aparece nas três espécies, com $p < 0{,}001$ em todas. Em Adelie e Gentoo, a estatística *t* fica bem maior que a do teste geral (8,6), mesmo com menos animais, porque o erro-padrão cai de cerca de 80 g para cerca de 50 g. A diferença também varia entre as espécies: os machos Gentoo pesam cerca de 800 g a mais que as fêmeas, e os machos Chinstrap, cerca de 410 g. Separar os grupos torna a pergunta mais honesta e o teste mais preciso, uma ideia que retomaremos ao estudar modelos com mais de uma variável explicativa.
 
 ## Caso 3. Teste *t* pareado
 
@@ -626,7 +809,7 @@ Um botânico mede flores de três espécies de íris e quer saber se o comprimen
 - Resíduos aproximadamente normais em cada grupo.
 - Variâncias iguais entre os grupos (homocedasticidade).
 
-Por que não comparar as espécies duas a duas com três testes *t*? Porque cada teste tem 5% de chance de falso positivo, e a chance de errar pelo menos uma vez cresce com o número de comparações, como vimos na seção 6.2 da Aula 7. Com $k$ grupos, há $k(k-1)/2$ pares: 3 pares para 3 grupos, 10 para 5. A ANOVA responde à pergunta com **um único teste** e mantém o $\alpha$ em 5%.
+Por que não comparar as espécies duas a duas com três testes *t*? Porque cada teste acrescenta uma chance de falso positivo, como demonstraremos ao fim deste caso. A ANOVA responde à pergunta com **um único teste** e mantém o $\alpha$ em 5%.
 
 A ideia da ANOVA é comparar duas fontes de variação. Se as médias das espécies se afastam muito da média geral, em relação à variação natural dentro de cada espécie, a estatística *F* fica grande:
 
@@ -681,6 +864,12 @@ anova = stats.f_oneway(setosa, versicolor, virginica)
 
 report("ANOVA", anova, stat="F", df=(k - 1, N - k))
 report("Levene", stats.levene(setosa, versicolor, virginica))
+
+```
+
+```{python}
+
+# Comparações de Tukey
 print(stats.tukey_hsd(setosa, versicolor, virginica))  # <1>
 
 ```
@@ -703,6 +892,53 @@ plt.show()
 **Interpretação.** As médias sobem de setosa (5,01 cm) para versicolor (5,94 cm) e virginica (6,59 cm), e a distância entre elas é grande em relação à dispersão dentro de cada espécie. Se as espécies tivessem a mesma sépala média, diferenças desse tamanho seriam praticamente impossíveis por acaso. Rejeitamos $H_0$: o comprimento da sépala distingue as três espécies, e todos os pares diferem entre si.
 
 Fica uma ressalva. O teste de Levene rejeita a igualdade de variâncias ($p \approx 0{,}002$): a dispersão cresce de setosa para virginica. Nesse caso, uma alternativa mais segura é a ANOVA de Welch, seguida do teste de Games-Howell. Com diferenças tão grandes, a conclusão não muda.
+
+### Por que não rodar múltiplos testes *t* de Student?
+
+Com três espécies, seria tentador fazer três testes *t*: setosa × versicolor, setosa × virginica e versicolor × virginica. O problema é que cada teste tem 5% de chance de um falso positivo, e essas chances se acumulam. A probabilidade de errar **pelo menos uma vez** em $c$ comparações independentes é:
+
+$$
+\alpha_{\text{conjunto}} = 1 - (1 - \alpha)^c
+$$
+
+Com $k$ grupos, há $c = k(k-1)/2$ pares. Com $\alpha = 0{,}05$:
+
+| Grupos ($k$) | Comparações ($c$) | Chance de pelo menos um falso positivo |
+|---|---|---|
+| 2 | 1 | 5% |
+| 3 | 3 | 14% |
+| 4 | 6 | 26% |
+| 5 | 10 | 40% |
+
+Podemos verificar isso com a própria `iris`. Embaralhando os rótulos de espécie, como no teste de permutação da Aula 7, criamos um mundo em que **sabemos** que $H_0$ é verdadeira: as "espécies" passam a ser grupos sorteados ao acaso. Repetimos o sorteio 2.000 vezes e, em cada um, registramos se os três testes *t* encontraram alguma diferença e se a ANOVA encontrou:
+
+```{python}
+
+# Falsos positivos com três testes t e com uma ANOVA, sob H0 verdadeira
+rng = np.random.default_rng(2026)
+values = iris["sepal_length"].to_numpy()
+labels = iris["species"].to_numpy()
+pairs = [(0, 1), (0, 2), (1, 2)]
+
+any_t, anova_rejects = [], []
+for _ in range(2_000):
+    shuffled = rng.permutation(labels)  # <1>
+    groups = [values[shuffled == species] for species in np.unique(labels)]
+    p_values = [stats.ttest_ind(groups[a], groups[b]).pvalue for a, b in pairs]
+    any_t.append(min(p_values) <= .05)  # <2>
+    anova_rejects.append(stats.f_oneway(*groups).pvalue <= .05)
+
+print(f"três testes t: algum falso positivo em {np.mean(any_t):.1%} dos sorteios")
+print(f"uma ANOVA: falso positivo em {np.mean(anova_rejects):.1%} dos sorteios")
+
+```
+
+1. Os valores ficam no lugar, e os rótulos de espécie são sorteados de novo. Qualquer diferença entre os grupos passa a ser puro acaso.
+2. Basta que o menor dos três *p*-valores fique abaixo de 0,05 para concluir, erradamente, que alguma espécie difere.
+
+Com três testes *t*, cerca de 13% dos sorteios produziram pelo menos uma "diferença significante", embora nenhuma exista. Com a ANOVA, a taxa fica em 5%, exatamente o $\alpha$ escolhido. O valor simulado fica um pouco abaixo dos 14% da fórmula porque os três testes compartilham grupos e, por isso, não são independentes.
+
+Por isso a sequência correta é **ANOVA primeiro, post-hoc depois**. A ANOVA decide, com um único teste, se existe alguma diferença. Só então o teste de Tukey identifica quais pares diferem, ajustando os *p*-valores para que o conjunto de comparações mantenha o $\alpha$ em 5%.
 
 ## Caso 5. Correlação de Pearson
 
@@ -776,6 +1012,46 @@ plt.show()
 **Interpretação.** Os pontos descem da esquerda para a direita e ficam próximos da reta. Se peso e consumo não tivessem relação linear, um *r* tão forte seria praticamente impossível por acaso. Rejeitamos $H_0$: carros mais pesados tendem a fazer menos milhas por galão.
 
 Dois limites merecem atenção. Pearson só enxerga relações **lineares**: uma relação em forma de U pode ter $r \approx 0$ e, para relações monotônicas mas curvas, o coeficiente de Spearman é mais adequado. E correlação **não é causalidade**: o coeficiente mede associação, e a causa exige um mecanismo ou um experimento.
+
+### A transformação log melhora a correlação?
+
+Ainda no `mtcars`, carros mais potentes (`hp`) tendem a consumir mais combustível (menos `mpg`). Como o coeficiente de Pearson mede apenas a parte **linear** da relação, ele perde força quando os pontos formam uma curva. A transformação log, vista na Aula 6, pode corrigir isso. Calculamos o Pearson com a potência na escala original e em log:
+
+```{python}
+
+# Pearson com a potência na escala original e em log
+log_hp = np.log(mtcars["hp"])
+
+report("Pearson com hp", stats.pearsonr(mtcars["hp"], mtcars["mpg"]), stat="r")
+report("Pearson com log(hp)", stats.pearsonr(log_hp, mtcars["mpg"]), stat="r")
+
+```
+
+```{python}
+
+# Consumo versus potência, na escala original e com a potência em log
+fig, axes = plt.subplots(1, 2, figsize=(11, 4), sharey=True)
+
+for ax, x, xlabel in zip(
+    axes,
+    [mtcars["hp"], log_hp],
+    ["Potência (hp)", "log da potência"],
+):
+    slope, intercept = np.polyfit(x, mtcars["mpg"], deg=1)
+    grid = np.linspace(x.min(), x.max(), 100)
+    ax.scatter(x, mtcars["mpg"], color="#1F4E79", alpha=.8)
+    ax.plot(grid, intercept + slope * grid, color="#DD8452", linewidth=2)
+    ax.set(xlabel=xlabel, title=f"r = {stats.pearsonr(x, mtcars['mpg']).statistic:.2f}")
+
+axes[0].set_ylabel("Consumo (mpg)")
+plt.tight_layout()
+plt.show()
+
+```
+
+Na escala original, à esquerda, o consumo cai rápido entre os carros de baixa potência e depois se estabiliza. Os pontos formam uma curva e ficam acima da reta nos dois extremos e abaixo dela no meio. O log comprime os valores altos de potência e estica os baixos, e os pontos passam a seguir melhor uma reta, à direita. Com isso, o coeficiente sobe de $r \approx -0{,}78$ para $r \approx -0{,}85$.
+
+A relação entre potência e consumo é a mesma nos dois gráficos. O que muda é a escala em que a medimos. Quando a relação é curva, transformar uma das variáveis pode torná-la mais linear e, assim, mais bem capturada pelo coeficiente de Pearson.
 
 ## Caso 6. Teste *Z* de duas proporções
 
@@ -952,7 +1228,7 @@ plt.show()
 O teste *Z* do caso 6 também pode ser escrito como um qui-quadrado sobre a tabela sexo × sobrevivência, que tem 2 linhas e 2 colunas. Nesse caso particular, $Z^2 = \chi^2$: $16{,}2^2 \approx 263$. As duas abordagens dão o mesmo *p*-valor. O qui-quadrado tem a vantagem de se estender a tabelas maiores, como a da classe, com três linhas.
 :::
 
-# 4. Quando as premissas falham
+# 5. Quando as premissas falham
 
 Se as premissas não se sustentam, troca-se o teste. As alternativas não paramétricas trabalham, em geral, com **postos**: a posição de cada valor na ordenação, em vez do valor em si. Isso as torna robustas a assimetria e a valores atípicos.
 
@@ -966,7 +1242,7 @@ Se as premissas não se sustentam, troca-se o teste. As alternativas não param�
 
 Amostras com menos de 10 observações, assimetria forte, valores atípicos extremos ou escala ordinal são sinais para trocar o teste. O preço é perder um pouco de poder nas situações em que as premissas valeriam.
 
-# 5. Guia rápido
+# 6. Guia rápido
 
 | Pergunta | Teste | Função |
 |---|---|---|
@@ -990,7 +1266,7 @@ Amostras com menos de 10 observações, assimetria forte, valores atípicos extr
 
 # Perguntas para consolidar
 
-## Pergunta 1: por que o pareamento mudou o resultado do `sleep`?
+**Pergunta 1: por que o pareamento mudou o resultado do `sleep`?**
 
 Os mesmos 20 números deram $p \approx 0{,}003$ no teste pareado e $p \approx 0{,}079$ no teste para amostras independentes. Como isso é possível?
 
@@ -1000,7 +1276,7 @@ Os mesmos 20 números deram $p \approx 0{,}003$ no teste pareado e $p \approx 0{
 A diferença média é a mesma nas duas análises: 1,58 h. O que muda é o erro-padrão. No teste independente, ele inclui a variação entre pacientes, que é grande: alguns dormem bem com qualquer droga, outros não. No teste pareado, cada paciente serve de controle para si mesmo. A diferença $D$ elimina o nível de base de cada pessoa, e sobra apenas a variação do efeito da droga, que é pequena. Com um erro-padrão menor, a mesma diferença se distingue do acaso. Ignorar o pareamento não é apenas menos eficiente: é usar um teste cuja premissa de independência foi violada.
 :::
 
-## Pergunta 2: não rejeitar $H_0$ no caso 1 prova que a frota cumpre a meta?
+**Pergunta 2: não rejeitar $H_0$ no caso 1 prova que a frota cumpre a meta?**
 
 No caso 1, $p \approx 0{,}93$. O gestor pode afirmar que o consumo médio da frota é de 20 mpg?
 
@@ -1010,7 +1286,7 @@ No caso 1, $p \approx 0{,}93$. O gestor pode afirmar que o consumo médio da fro
 Não. O teste mostra apenas que os dados são compatíveis com a meta. O intervalo de confiança, de 17,9 a 22,3 mpg, mostra que eles também são compatíveis com uma frota 2 mpg abaixo ou acima da meta. Com 32 carros e um desvio-padrão de 6 mpg, a precisão da média é limitada. Para afirmar que a frota está **dentro** de uma faixa aceitável, seria necessário outro desenho de teste, chamado teste de equivalência, ou uma amostra maior.
 :::
 
-## Pergunta 3: o caso 6 precisava de um teste diferente do caso 7?
+**Pergunta 3: o caso 6 precisava de um teste diferente do caso 7?**
 
 Os casos 6 e 7 usam a mesma base e a mesma resposta, a sobrevivência. Por que um usa *Z* e o outro $\chi^2$?
 
@@ -1024,9 +1300,8 @@ A diferença está na variável explicativa. No caso 6, ela é binária (sexo), 
 
 1. Repita o caso 2 comparando a massa corporal das espécies Adelie e Gentoo. Verifique as premissas antes de escolher entre o *t* clássico e o de Welch.
 2. Aplique a ANOVA do caso 4 ao comprimento da **pétala** (`petal_length`). O que o teste de Levene indica? Compare o resultado com o teste de Kruskal-Wallis (`stats.kruskal`).
-3. No `mtcars`, calcule a correlação de Pearson e a de Spearman (`stats.spearmanr`) entre a potência (`hp`) e o consumo (`mpg`). Faça o gráfico de dispersão e discuta qual coeficiente descreve melhor a relação.
-4. No Titanic, teste se a taxa de sobrevivência difere entre os portos de embarque (`embarked`). Qual teste você escolheu, e por quê?
-5. Antes de considerar o notebook pronto, use Restart Kernel and Run All.
+3. No Titanic, teste se a taxa de sobrevivência difere entre os portos de embarque (`embarked`). Qual teste você escolheu, e por quê?
+4. Antes de considerar o notebook pronto, use Restart Kernel and Run All.
 
 ## Referências
 

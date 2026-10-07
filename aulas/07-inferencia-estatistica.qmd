@@ -1,5 +1,5 @@
 ---
-title: 'Aula 7 - Inferência Estatística'
+title: 'Aula 7 - Estatística Inferencial'
 date: last-modified
 toc: true
 format:

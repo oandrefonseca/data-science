@@ -32,7 +32,7 @@ website:
             href: aulas/05-estatistica-descritiva.qmd
           - text: "6. Imputação e Normalização de Dados"
             href: aulas/06-imputacao-normalizacao-dados.qmd
-          - text: "7. Inferência Estatística"
+          - text: "7. Estatística Inferencial"
             href: aulas/07-inferencia-estatistica.qmd
           - text: "8. Testes Paramétricos"
             href: aulas/08-testes-parametricos.qmd

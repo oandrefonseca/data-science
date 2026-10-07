@@ -25,7 +25,7 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 6 - Imputação e Normalização de Dados](aulas/06-imputacao-normalizacao-dados.qmd)\
   Imputação de valores ausentes, escalonamento de atributos e transformações não lineares, orientados pelo diagnóstico da estatística descritiva.
 
-- [Aula 7 - Inferência Estatística](aulas/07-inferencia-estatistica.qmd)\
+- [Aula 7 - Estatística Inferencial](aulas/07-inferencia-estatistica.qmd)\
   Hipóteses nula e alternativa, teste de permutação, teste *t* de Student, *p*-valor, erros dos tipos I e II, tamanho do efeito e confundidores.
 
 - [Aula 8 - Testes Paramétricos](aulas/08-testes-parametricos.qmd)\

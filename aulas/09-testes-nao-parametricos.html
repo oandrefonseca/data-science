@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Aula 9 - Testes Não Paramétricos – Ciência de Dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-31c5116dce638bf40351868cd08965ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ba99d7a9af36e81ac0abe239f9976969.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/09-testes-nao-parametricos.html">9. Testes Não Paramétricos</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Ciência de Dados</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciência de Dados</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Roteiros de aula</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/01-ferramentas-ambiente-versionamento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Ferramentas, Ambiente e Versionamento</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/02-introducao-dados-tabulares.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Introdução aos Dados Tabulares</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/03-analise-vendas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Análise de Vendas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/04-analise-vendas-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Análise de Vendas em R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/05-estatistica-descritiva.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Estatística Descritiva</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/06-imputacao-normalizacao-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6. Imputação e Normalização de Dados</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/07-inferencia-estatistica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Estatística Inferencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/08-testes-parametricos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8. Testes Paramétricos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/09-testes-nao-parametricos.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">9. Testes Não Paramétricos</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link active" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
+  <li><a href="#preparando-o-ambiente" id="toc-preparando-o-ambiente" class="nav-link" data-scroll-target="#preparando-o-ambiente">1. Preparando o ambiente</a></li>
+  <li><a href="#recapitulação-o-que-precisamos-lembrar" id="toc-recapitulação-o-que-precisamos-lembrar" class="nav-link" data-scroll-target="#recapitulação-o-que-precisamos-lembrar">2. Recapitulação: o que precisamos lembrar</a></li>
+  <li><a href="#tratamentos-a-e-b-passo-a-passo" id="toc-tratamentos-a-e-b-passo-a-passo" class="nav-link" data-scroll-target="#tratamentos-a-e-b-passo-a-passo">3. Tratamentos A e B, passo a passo</a>
+  <ul class="collapse">
+  <li><a href="#os-dados" id="toc-os-dados" class="nav-link" data-scroll-target="#os-dados">3.1 Os dados</a></li>
+  <li><a href="#as-distribuições-de-cada-grupo" id="toc-as-distribuições-de-cada-grupo" class="nav-link" data-scroll-target="#as-distribuições-de-cada-grupo">3.2 As distribuições de cada grupo</a></li>
+  <li><a href="#assimetria-e-medidas-resumo" id="toc-assimetria-e-medidas-resumo" class="nav-link" data-scroll-target="#assimetria-e-medidas-resumo">3.3 Assimetria e medidas-resumo</a></li>
+  <li><a href="#o-que-diz-a-comparação-de-médias" id="toc-o-que-diz-a-comparação-de-médias" class="nav-link" data-scroll-target="#o-que-diz-a-comparação-de-médias">3.4 O que diz a comparação de médias</a></li>
+  <li><a href="#construindo-os-postos" id="toc-construindo-os-postos" class="nav-link" data-scroll-target="#construindo-os-postos">3.5 Construindo os postos</a></li>
+  <li><a href="#comparando-os-pares-a-estatística-u" id="toc-comparando-os-pares-a-estatística-u" class="nav-link" data-scroll-target="#comparando-os-pares-a-estatística-u">3.6 Comparando os pares: a estatística <span class="math inline">\(U\)</span></a></li>
+  <li><a href="#o-que-esperar-se-o-tratamento-não-importasse" id="toc-o-que-esperar-se-o-tratamento-não-importasse" class="nav-link" data-scroll-target="#o-que-esperar-se-o-tratamento-não-importasse">3.7 O que esperar se o tratamento não importasse?</a></li>
+  <li><a href="#o-atalho-pela-soma-dos-postos" id="toc-o-atalho-pela-soma-dos-postos" class="nav-link" data-scroll-target="#o-atalho-pela-soma-dos-postos">3.8 O atalho pela soma dos postos</a></li>
+  <li><a href="#o-p-valor-pela-aproximação-normal" id="toc-o-p-valor-pela-aproximação-normal" class="nav-link" data-scroll-target="#o-p-valor-pela-aproximação-normal">3.9 O <em>p</em>-valor pela aproximação normal</a></li>
+  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação">3.10 Interpretação</a></li>
+  </ul></li>
+  <li><a href="#caso-1.-mann-whitney-em-um-teste-ab" id="toc-caso-1.-mann-whitney-em-um-teste-ab" class="nav-link" data-scroll-target="#caso-1.-mann-whitney-em-um-teste-ab">4. Caso 1. Mann-Whitney em um teste A/B</a></li>
+  <li><a href="#caso-2.-pearson-e-spearman" id="toc-caso-2.-pearson-e-spearman" class="nav-link" data-scroll-target="#caso-2.-pearson-e-spearman">5. Caso 2. Pearson e Spearman</a>
+  <ul class="collapse">
+  <li><a href="#os-dois-coeficientes" id="toc-os-dois-coeficientes" class="nav-link" data-scroll-target="#os-dois-coeficientes">5.1 Os dois coeficientes</a></li>
+  <li><a href="#valores-e-postos-lado-a-lado" id="toc-valores-e-postos-lado-a-lado" class="nav-link" data-scroll-target="#valores-e-postos-lado-a-lado">5.2 Valores e postos lado a lado</a></li>
+  <li><a href="#quando-usar-cada-um" id="toc-quando-usar-cada-um" class="nav-link" data-scroll-target="#quando-usar-cada-um">5.3 Quando usar cada um</a></li>
+  </ul></li>
+  <li><a href="#guia-rápido" id="toc-guia-rápido" class="nav-link" data-scroll-target="#guia-rápido">6. Guia rápido</a>
+  <ul class="collapse">
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese">Síntese</a></li>
+  </ul></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a></li>
+  <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a>
+  <ul class="collapse">
+  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências">Referências</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/09-testes-nao-parametricos.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="09-testes-nao-parametricos.ipynb" download="09-testes-nao-parametricos.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/09-testes-nao-parametricos.html">9. Testes Não Paramétricos</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Aula 9 - Testes Não Paramétricos</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18 de outubro de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>Um hospital compara o tempo de internação de pacientes que receberam dois tratamentos, A e B. No grupo B, todos receberam alta entre 4 e 9 dias. No grupo A, sete pacientes saíram em até 5 dias, mas um teve uma complicação grave e ficou <strong>120 dias</strong> internado. Um único paciente pode mudar a conclusão sobre qual tratamento é melhor?</p>
+<p>Pense na pergunta antes de fazer qualquer conta. Se você fosse paciente desse hospital, qual tratamento escolheria? Olhando para a maioria dos pacientes, A parece melhor: quase todos saíram mais cedo. Olhando para o total de dias de leito, A parece pior, por causa de um único caso grave. As duas impressões são legítimas, e é justamente essa tensão que esta aula vai organizar.</p>
+<p>Na Aula 8, os testes paramétricos compararam <strong>médias</strong> e supuseram que os dados seguiam distribuições conhecidas, como a normal. Com oito pacientes por grupo e um valor tão extremo, essas suposições ficam frágeis: a média de A passa a descrever mais o paciente de 120 dias do que os outros sete. Nesta aula, aprendemos uma estratégia diferente. Em vez de usar os valores, usamos a <strong>posição</strong> de cada valor na ordenação, chamada de <strong>posto</strong>. Com os postos, o paciente de 120 dias continua na análise, mas deixa de dominá-la.</p>
+<p>O roteiro tem três partes. Primeiro, resolvemos o exemplo do hospital passo a passo com o teste de Mann-Whitney, do primeiro posto até o <em>p</em>-valor. Depois, aplicamos a mesma ideia a um teste A/B de layout de site. Por fim, usamos os postos para entender a diferença entre as correlações de Pearson e de Spearman.</p>
+<blockquote class="blockquote">
+<p><strong>O que muda quando comparamos posições em vez de valores?</strong></p>
+</blockquote>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
+<p>Ao final deste roteiro, você será capaz de:</p>
+<ol type="1">
+<li>Construir postos a partir de dois grupos, inclusive com empates.</li>
+<li>Calcular as somas de postos <span class="math inline">\(W\)</span> e a estatística <span class="math inline">\(U\)</span> do teste de Mann-Whitney.</li>
+<li>Obter o <em>p</em>-valor do Mann-Whitney pela aproximação normal.</li>
+<li>Distinguir a pergunta sobre médias (Welch) da pergunta sobre ordenação (Mann-Whitney).</li>
+<li>Comparar as correlações de Pearson e de Spearman e explicar quando cada uma é adequada.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como usar este roteiro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Os dados do hospital e do teste de layout são pequenos e são digitados no próprio roteiro. O caso 2 reutiliza a base <code>mtcars</code>, salva em <code>mtcars/data/</code>. Não é necessário instalar novas bibliotecas.</p>
+</div>
+</div>
+</section>
+<section id="preparando-o-ambiente" class="level1">
+<h1>1. Preparando o ambiente</h1>
+<p>Começamos pelas bibliotecas e pela função <code>report</code>, já usada na Aula 8, que resume o resultado de um teste em uma linha. Os dados de cada exemplo são apresentados na seção em que são usados.</p>
+<div id="e0b50042" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0416693f" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resume o resultado de um teste em uma linha legível</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> report(name, result, stat<span class="op">=</span><span class="st">"estatística"</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    parts <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>stat<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>result<span class="sc">.</span>statistic<span class="sc">:.3f}</span><span class="ss">"</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">hasattr</span>(result, <span class="st">"df"</span>):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        parts.append(<span class="ss">f"gl = </span><span class="sc">{</span>result<span class="sc">.</span>df<span class="sc">:.4g}</span><span class="ss">"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> result.pvalue</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    parts.append(<span class="st">"p &lt; 0.001"</span> <span class="cf">if</span> p <span class="op">&lt;</span> <span class="fl">0.001</span> <span class="cf">else</span> <span class="ss">f"p = </span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: "</span> <span class="op">+</span> <span class="st">" · "</span>.join(parts))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="recapitulação-o-que-precisamos-lembrar" class="level1">
+<h1>2. Recapitulação: o que precisamos lembrar</h1>
+<p>O teste de Mann-Whitney parece novo, mas é construído com peças que você já conhece. Vale relembrá-las antes do cálculo, porque cada uma vai reaparecer em algum passo da seção 3.</p>
+<p><strong>Hipóteses e <em>p</em>-valor.</strong> Todo teste confronta uma hipótese nula <span class="math inline">\(H_0\)</span>, que diz que não há efeito, com uma alternativa <span class="math inline">\(H_1\)</span>, que diz que há. O <em>p</em>-valor responde a uma pergunta condicional: <strong>se <span class="math inline">\(H_0\)</span> fosse verdadeira</strong>, qual seria a probabilidade de obter um resultado tão ou mais extremo que o observado? Um <em>p</em>-valor pequeno significa que o resultado seria raro em um mundo sem efeito. Neste roteiro, todos os testes são bilaterais: uma diferença em qualquer sentido conta como evidência contra <span class="math inline">\(H_0\)</span> (Aula 7).</p>
+<p><strong>Duas formas de obter o <em>p</em>-valor.</strong> Na Aula 7, obtivemos o <em>p</em>-valor de um teste de permutação simulando muitos cenários sem efeito. O Mann-Whitney também poderia ser resolvido assim, e com amostras pequenas daria o chamado <em>p</em>-valor exato. Nesta aula, porém, <strong>não</strong> seguiremos esse caminho. Usaremos a <strong>aproximação pela curva normal</strong>, que exige apenas duas fórmulas e funciona para amostras de qualquer tamanho.</p>
+<p><strong>Estatística de teste como sinal ÷ ruído.</strong> Na Aula 8, todo teste dividiu um efeito observado, o sinal, pela variação que o acaso produziria, o ruído. O resultado mede quantas “unidades de acaso” o efeito ocupa. Quando essa razão segue a curva normal padrão, o <em>p</em>-valor é simplesmente a área nas duas caudas da curva, além do valor observado. É assim que obteremos o <em>p</em>-valor do Mann-Whitney na seção 3.9.</p>
+<p><strong>Média e mediana diante de extremos.</strong> Na Aula 5, vimos que a média é puxada por valores extremos, enquanto a mediana depende só de quem está no meio da ordenação. Um bilionário que entra em uma sala muda a renda média, mas quase não muda a mediana. Os postos levam essa mesma robustez da estatística descritiva para um teste de hipóteses.</p>
+</section>
+<section id="tratamentos-a-e-b-passo-a-passo" class="level1">
+<h1>3. Tratamentos A e B, passo a passo</h1>
+<section id="os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="os-dados">3.1 Os dados</h2>
+<p>O hospital acompanhou oito pacientes em cada tratamento e registrou quantos dias cada um ficou internado. Como os dados são poucos, eles são digitados diretamente no roteiro:</p>
+<div id="e957d312" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tempos de internação dos dois tratamentos, em dias</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>days_a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">120</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>days_b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>uti <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"tratamento"</span>: [<span class="st">"A"</span>] <span class="op">*</span> <span class="bu">len</span>(days_a) <span class="op">+</span> [<span class="st">"B"</span>] <span class="op">*</span> <span class="bu">len</span>(days_b),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dias"</span>: days_a <span class="op">+</span> days_b,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Antes de qualquer medida, vale <strong>olhar</strong> para os dados. No gráfico abaixo, cada ponto é um paciente. O painel de cima mostra a escala completa, de 0 a 120 dias. O de baixo amplia a faixa de 0 a 10 dias, onde estão quase todos os pacientes:</p>
+<div id="bde94d61" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cada paciente em um ponto: escala completa e ampliação de 0 a 10 dias</span></span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>), height_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="fl">1.4</span>])</span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, xlim <span class="kw">in</span> <span class="bu">zip</span>(axes, [(<span class="op">-</span><span class="dv">3</span>, <span class="dv">125</span>), (<span class="dv">0</span>, <span class="dv">10</span>)]):</span>
+<span id="annotated-cell-4-5"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>    sns.swarmplot(</span>
+<span id="annotated-cell-4-6"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>uti, x<span class="op">=</span><span class="st">"dias"</span>, y<span class="op">=</span><span class="st">"tratamento"</span>, hue<span class="op">=</span><span class="st">"tratamento"</span>,</span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span>{<span class="st">"A"</span>: <span class="st">"#A1C9F4"</span>, <span class="st">"B"</span>: <span class="st">"#1F4E79"</span>}, size<span class="op">=</span><span class="dv">9</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"#333333"</span>, linewidth<span class="op">=</span><span class="dv">1</span>, legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax,</span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(xlim<span class="op">=</span>xlim, ylabel<span class="op">=</span><span class="st">""</span>)</span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axvspan(<span class="dv">0</span>, <span class="dv">10</span>, color<span class="op">=</span><span class="st">"#DDDDDD"</span>, alpha<span class="op">=</span><span class="fl">.5</span>)</span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Escala completa"</span>, xlabel<span class="op">=</span><span class="st">""</span>)</span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Ampliação: 0 a 10 dias"</span>, xlabel<span class="op">=</span><span class="st">"Dias de internação"</span>,</span>
+<span id="annotated-cell-4-15"><a href="#annotated-cell-4-15" aria-hidden="true" tabindex="-1"></a>            xticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">11</span>))</span>
+<span id="annotated-cell-4-16"><a href="#annotated-cell-4-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-4-17"><a href="#annotated-cell-4-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="8" data-code-annotation="1"><code>swarmplot</code> empilha os pontos com o mesmo valor, lado a lado, para que pacientes com o mesmo tempo não fiquem escondidos uns atrás dos outros.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="12" data-code-annotation="2">A faixa cinza marca, na escala completa, a região ampliada no painel de baixo.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-5-output-1.png" width="945" height="465" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Na escala completa, quase todos os pontos se amontoam no início do eixo, e um único paciente de A fica isolado em 120 dias. Na ampliação, aparece o que a escala completa escondia: os sete pacientes restantes de A ficam entre 1 e 5 dias, à esquerda de praticamente todos os pacientes de B, que ficam entre 4 e 9 dias.</p>
+</section>
+<section id="as-distribuições-de-cada-grupo" class="level2">
+<h2 class="anchored" data-anchor-id="as-distribuições-de-cada-grupo">3.2 As distribuições de cada grupo</h2>
+<p>O gráfico de pontos mostra cada paciente. Para enxergar a <strong>forma</strong> de cada distribuição, usamos histogramas, um para cada tratamento. Há um obstáculo: com o paciente de 120 dias no mesmo eixo, todas as outras barras ficariam espremidas no início do gráfico. Por isso, o eixo horizontal é <strong>interrompido</strong>. O trecho da esquerda mostra de 0 a 10 dias, e o da direita, de 115 a 125 dias. Cada barra tem a largura de um dia, e as linhas marcam a média e a mediana:</p>
+<div id="ef63da45" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogramas com o eixo interrompido entre 10 e 115 dias</span></span>
+<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>,</span>
+<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>                         gridspec_kw<span class="op">=</span>{<span class="st">"width_ratios"</span>: [<span class="dv">4</span>, <span class="dv">1</span>]})</span>
+<span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row, (group, color) <span class="kw">in</span> <span class="bu">zip</span>(axes, [(<span class="st">"A"</span>, <span class="st">"#A1C9F4"</span>), (<span class="st">"B"</span>, <span class="st">"#1F4E79"</span>)]):</span>
+<span id="annotated-cell-5-6"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> group, <span class="st">"dias"</span>]</span>
+<span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ax, (low, high) <span class="kw">in</span> <span class="bu">zip</span>(row, [(<span class="dv">0</span>, <span class="dv">10</span>), (<span class="dv">115</span>, <span class="dv">125</span>)]):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-8" class="code-annotation-target"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>        ax.hist(values, bins<span class="op">=</span>np.arange(low <span class="op">-</span> <span class="fl">.5</span>, high <span class="op">+</span> <span class="dv">1</span>), color<span class="op">=</span>color,</span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a>                edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-hidden="true" tabindex="-1"></a>        ax.set_xlim(low <span class="op">-</span> <span class="fl">.5</span>, high <span class="op">+</span> <span class="fl">.5</span>)</span>
+<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> stat, style, label <span class="kw">in</span> [(values.mean(), <span class="st">"-"</span>, <span class="st">"média"</span>),</span>
+<span id="annotated-cell-5-12"><a href="#annotated-cell-5-12" aria-hidden="true" tabindex="-1"></a>                                   (values.median(), <span class="st">"--"</span>, <span class="st">"mediana"</span>)]:</span>
+<span id="annotated-cell-5-13"><a href="#annotated-cell-5-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> low <span class="op">&lt;=</span> stat <span class="op">&lt;=</span> high:</span>
+<span id="annotated-cell-5-14"><a href="#annotated-cell-5-14" aria-hidden="true" tabindex="-1"></a>                ax.axvline(stat, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span>style, linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="annotated-cell-5-15"><a href="#annotated-cell-5-15" aria-hidden="true" tabindex="-1"></a>                           label<span class="op">=</span>label)</span>
+<span id="annotated-cell-5-16"><a href="#annotated-cell-5-16" aria-hidden="true" tabindex="-1"></a>    row[<span class="dv">0</span>].<span class="bu">set</span>(ylabel<span class="op">=</span><span class="ss">f"Tratamento </span><span class="sc">{</span>group<span class="sc">}</span><span class="ch">\n</span><span class="ss">(pacientes)"</span>, yticks<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>])</span>
+<span id="annotated-cell-5-17"><a href="#annotated-cell-5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-5-18"><a href="#annotated-cell-5-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].annotate(<span class="st">"média = 17,5 →"</span>, xy<span class="op">=</span>(<span class="fl">10.4</span>, <span class="fl">1.6</span>), ha<span class="op">=</span><span class="st">"right"</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-19" class="code-annotation-target"><a href="#annotated-cell-5-19" aria-hidden="true" tabindex="-1"></a>                   color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
+<span id="annotated-cell-5-20"><a href="#annotated-cell-5-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="annotated-cell-5-21"><a href="#annotated-cell-5-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">"Dias de internação (0 a 10)"</span>)</span>
+<span id="annotated-cell-5-22"><a href="#annotated-cell-5-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].set_xlabel(<span class="st">"115 a 125"</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-23" class="code-annotation-target"><a href="#annotated-cell-5-23" aria-hidden="true" tabindex="-1"></a>fig.subplots_adjust(wspace<span class="op">=</span><span class="fl">.05</span>, hspace<span class="op">=</span><span class="fl">.3</span>)</span>
+<span id="annotated-cell-5-24"><a href="#annotated-cell-5-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="8" data-code-annotation="1">As bordas das barras ficam em meios dias, como 1,5 e 2,5, para que cada barra fique centrada sobre um número inteiro de dias.</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="19" data-code-annotation="2">A média de A, 17,5 dias, cai no trecho interrompido do eixo, onde não há nenhum paciente. A anotação indica onde ela estaria.</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="23" data-code-annotation="3"><code>subplots_adjust</code> aproxima os dois trechos de cada linha, para que pareçam um único eixo interrompido.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-6-output-1.png" width="905" height="437" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Agora as duas formas ficam evidentes:</p>
+<ul>
+<li><strong>Tratamento B.</strong> Os oito pacientes formam um bloco compacto entre 4 e 9 dias, com o pico em 5 e 6 dias e os valores distribuídos de modo aproximadamente simétrico. Média e mediana praticamente coincidem: quando os dados são simétricos e sem extremos, as duas medidas contam a mesma história.</li>
+<li><strong>Tratamento A.</strong> Sete pacientes se concentram entre 1 e 5 dias, e um único paciente aparece isolado no trecho da direita, em 120 dias. É uma <strong>assimetria à direita</strong> acentuada: a maior parte dos valores é pequena, e uma cauda longa se estende até um valor extremo. A mediana, em 3 dias, continua junto da maioria dos pacientes. A média, em 17,5 dias, cai no trecho interrompido do eixo, uma região onde <strong>não há nenhum paciente</strong>.</li>
+</ul>
+<p>Esse é o primeiro sinal de alerta: quando a média cai em uma região vazia dos dados, ela deixa de representar um paciente típico.</p>
+</section>
+<section id="assimetria-e-medidas-resumo" class="level2">
+<h2 class="anchored" data-anchor-id="assimetria-e-medidas-resumo">3.3 Assimetria e medidas-resumo</h2>
+<p>O histograma mostrou a forma de cada grupo. Agora, descrevemos essa forma com números. O coeficiente de assimetria da Aula 5 transforma em número o que o histograma mostrou:</p>
+<div id="e6a45d98" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coeficiente de assimetria de cada grupo</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group <span class="kw">in</span> [<span class="st">"A"</span>, <span class="st">"B"</span>]:</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> group, <span class="st">"dias"</span>]</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Tratamento </span><span class="sc">{</span>group<span class="sc">}</span><span class="ss">: assimetria = </span><span class="sc">{</span>stats<span class="sc">.</span>skew(values)<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="1"><code>stats.skew</code> calcula o coeficiente de assimetria. Valores perto de 0 indicam simetria, e valores positivos, uma cauda à direita.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tratamento A: assimetria = 2.26
+Tratamento B: assimetria = 0.37</code></pre>
+</div>
+</div>
+<p>Como ler esses números? O coeficiente de assimetria diz para que lado a distribuição se “inclina”, ou seja, para que lado ela se alonga, e com que intensidade:</p>
+<ul>
+<li><strong>O sinal indica a direção da cauda.</strong> Um valor positivo indica uma cauda que se estende para a <strong>direita</strong>, na direção dos valores altos. A maior parte dos dados fica concentrada à esquerda, e alguns valores grandes puxam a distribuição para a direita. Um valor negativo indica o contrário, uma cauda à esquerda. Um valor próximo de zero indica uma distribuição equilibrada, com os dois lados parecidos.</li>
+<li><strong>O tamanho indica a intensidade.</strong> Como referência prática, valores entre −0,5 e 0,5 costumam ser lidos como distribuição aproximadamente simétrica, valores entre 0,5 e 1 (em módulo) como assimetria moderada, e valores acima de 1 como assimetria forte.</li>
+</ul>
+<p>Com essa régua, os dois grupos ficam em lados opostos:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th>Assimetria</th>
+<th>Leitura</th>
+<th>O que se vê no histograma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>B</td>
+<td>0,37</td>
+<td>Aproximadamente simétrica, com uma leve cauda à direita</td>
+<td>Pico em 5 e 6 dias, com os valores de 7, 8 e 9 dias um pouco mais espalhados à direita do que os de 4 dias à esquerda</td>
+</tr>
+<tr class="even">
+<td>A</td>
+<td>2,26</td>
+<td>Assimetria forte à direita</td>
+<td>Sete pacientes concentrados entre 1 e 5 dias e um único paciente isolado em 120 dias</td>
+</tr>
+</tbody>
+</table>
+<p>Por que a assimetria de A é tão grande? A fórmula da Aula 5 eleva ao <strong>cubo</strong> a distância de cada valor até a média. O cubo tem duas propriedades importantes: preserva o sinal, então valores abaixo da média contribuem negativamente e valores acima, positivamente; e amplia muito as distâncias grandes. Em A, os sete pacientes de 1 a 5 dias ficam abaixo da média de 17,5 dias, a uma distância de 12 a 16 dias, e somam juntos cerca de −22 mil. O paciente de 120 dias está a 102,5 dias da média, e o cubo dessa distância passa de <strong>1 milhão</strong>. Sozinho, ele determina o resultado. Sem ele, a assimetria dos outros sete pacientes cairia para cerca de 0,27, um valor de distribuição praticamente simétrica.</p>
+<p>O sinal positivo também combina com a relação entre média e mediana vista na Aula 5: em uma distribuição com cauda à direita, a média é puxada pela cauda e fica <strong>acima</strong> da mediana. Em B, a diferença é pequena (6,25 contra 6). Em A, ela é enorme (17,5 contra 3). É exatamente o tipo de dado em que média e desvio-padrão deixam de representar bem o grupo. As medidas-resumo confirmam:</p>
+<div id="b3100543" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média, desvio-padrão, mediana e total de dias por tratamento</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>uti_summary <span class="op">=</span> (</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    uti</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">"tratamento"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    .dias</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    .agg([<span class="st">"mean"</span>, <span class="st">"std"</span>, <span class="st">"median"</span>, <span class="st">"sum"</span>])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>uti_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="531">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">median</th>
+<th data-quarto-table-cell-role="th">sum</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">tratamento</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">A</td>
+<td>17.50</td>
+<td>41.43</td>
+<td>3.0</td>
+<td>140</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">B</td>
+<td>6.25</td>
+<td>1.67</td>
+<td>6.0</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>As medidas apontam em direções opostas, e vale ler a tabela com calma:</p>
+<ul>
+<li><strong>Média.</strong> A média de A (17,50 dias) é quase o triplo da de B (6,25). Se olhássemos só para ela, concluiríamos que A é muito pior.</li>
+<li><strong>Total de dias.</strong> Dos 140 dias de leito de A, 120 vêm de um único paciente. Os outros sete somam apenas 20 dias.</li>
+<li><strong>Desvio-padrão.</strong> O de A chega a 41,4 dias, contra 1,7 em B. Esse número enorme não descreve uma variação “espalhada” entre os pacientes: ele é praticamente todo produzido pelo valor extremo.</li>
+<li><strong>Mediana.</strong> A mediana de A (3 dias) é a <strong>metade</strong> da de B (6 dias). Se olhássemos só para ela, concluiríamos que A é melhor.</li>
+</ul>
+<p>A média e a mediana não estão erradas. Elas respondem a perguntas diferentes: a média distribui o total de dias igualmente entre os pacientes, e a mediana descreve o paciente do meio.</p>
+</section>
+<section id="o-que-diz-a-comparação-de-médias" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-diz-a-comparação-de-médias">3.4 O que diz a comparação de médias</h2>
+<p>Aplicamos o teste de Welch da Aula 8:</p>
+<div id="de5c8b1a" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste t de Welch comparando os tempos médios</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>group_a <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"dias"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>group_b <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"B"</span>, <span class="st">"dias"</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>welch_uti <span class="op">=</span> stats.ttest_ind(group_a, group_b, equal_var<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"t de Welch"</span>, welch_uti, stat<span class="op">=</span><span class="st">"t"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>t de Welch: t = 0.767 · gl = 7.023 · p = 0.468</code></pre>
+</div>
+</div>
+<p>Com <span class="math inline">\(p \approx 0{,}47\)</span>, não rejeitamos a igualdade das médias. Por que uma diferença de 11,25 dias, quase o dobro da média de B, não é suficiente? Lembre que o <em>t</em> divide o sinal pelo ruído. O sinal é a diferença de médias, 11,25 dias. O ruído é o erro-padrão, que depende dos desvios-padrão dos grupos. Como o desvio-padrão de A foi inflado pelo paciente de 120 dias, o erro-padrão chega a cerca de 14,7 dias, maior que a própria diferença. O resultado é <span class="math inline">\(t \approx 0{,}77\)</span>: a diferença observada ocupa menos de um erro-padrão.</p>
+<p>Três cuidados ajudam a interpretar esse resultado:</p>
+<ul>
+<li><strong>O teste não errou a conta.</strong> 17,5 dias é a média correta dos oito pacientes, e o teste respondeu exatamente à pergunta feita: há evidência de que as médias diferem? Com estes dados, não há.</li>
+<li><strong>Não rejeitar <span class="math inline">\(H_0\)</span> não prova que os tratamentos são equivalentes.</strong> Significa apenas que a comparação de médias não encontrou evidência suficiente.</li>
+<li><strong>Excluir o paciente não é uma opção.</strong> A complicação foi um efeito adverso do tratamento A e faz parte do resultado. Tirá-lo esconderia justamente o que o tratamento causou.</li>
+</ul>
+<p>Precisamos, então, de uma pergunta diferente: uma que mantenha o paciente na análise, mas não deixe que a <strong>distância</strong> dele aos demais domine o resultado.</p>
+</section>
+<section id="construindo-os-postos" class="level2">
+<h2 class="anchored" data-anchor-id="construindo-os-postos">3.5 Construindo os postos</h2>
+<p>Pense em uma corrida. O resultado oficial registra a <strong>ordem de chegada</strong>: primeiro, segundo, terceiro. Se o último colocado chega uma hora depois de todos, ele continua sendo o último, e não “vale mais” por ter chegado muito atrasado. O <strong>posto</strong> aplica essa mesma ideia aos dados: é a posição de cada observação na ordenação de todas elas, da menor para a maior.</p>
+<p>A construção tem três passos:</p>
+<ol type="1">
+<li><strong>Juntar</strong> os 16 pacientes, ignorando o grupo.</li>
+<li><strong>Ordenar</strong> do menor para o maior tempo e numerar as posições de 1 a 16.</li>
+<li><strong>Resolver os empates.</strong> Valores iguais recebem a média das posições que ocupam. Os três pacientes com 5 dias, por exemplo, ocupam as posições 8, 9 e 10 e recebem, cada um, o posto <span class="math inline">\((8 + 9 + 10)/3 = 9\)</span>.</li>
+</ol>
+<p>Fazemos cada passo separadamente e, no fim, reunimos tudo em uma única tabela:</p>
+<div id="454a9105" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Passo 1: juntar os 16 pacientes e ordenar do menor para o maior tempo</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-2" class="code-annotation-target"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>uti_sorted <span class="op">=</span> uti.sort_values(<span class="st">"dias"</span>, kind<span class="op">=</span><span class="st">"stable"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Passo 2: numerar as posições de 1 a 16</span></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-hidden="true" tabindex="-1"></a>positions <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(uti_sorted) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Passo 3: calcular os postos, com a média das posições nos empates</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-8" class="code-annotation-target"><a href="#annotated-cell-9-8" aria-hidden="true" tabindex="-1"></a>ranks <span class="op">=</span> uti_sorted[<span class="st">"dias"</span>].rank(method<span class="op">=</span><span class="st">"average"</span>)</span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Combina os dados ordenados, as posições e os postos em uma tabela</span></span>
+<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> uti_sorted.assign(posicao<span class="op">=</span>positions, posto<span class="op">=</span>ranks)</span>
+<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-9-13" class="code-annotation-target"><a href="#annotated-cell-9-13" aria-hidden="true" tabindex="-1"></a>ranked.T</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="2" data-code-annotation="1"><code>kind="stable"</code> mantém a ordem original entre valores empatados, e <code>.reset_index(drop=True)</code> renumera as linhas de 0 a 15 depois da ordenação.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="8" data-code-annotation="2"><code>.rank(method="average")</code> atribui a cada valor a média das posições ocupadas pelos valores iguais a ele.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="13" data-code-annotation="3"><code>.T</code> transpõe a tabela para exibir os 16 pacientes lado a lado.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="533">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+<th data-quarto-table-cell-role="th">5</th>
+<th data-quarto-table-cell-role="th">6</th>
+<th data-quarto-table-cell-role="th">7</th>
+<th data-quarto-table-cell-role="th">8</th>
+<th data-quarto-table-cell-role="th">9</th>
+<th data-quarto-table-cell-role="th">10</th>
+<th data-quarto-table-cell-role="th">11</th>
+<th data-quarto-table-cell-role="th">12</th>
+<th data-quarto-table-cell-role="th">13</th>
+<th data-quarto-table-cell-role="th">14</th>
+<th data-quarto-table-cell-role="th">15</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">tratamento</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>A</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">dias</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>120</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">posicao</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">posto</td>
+<td>1.0</td>
+<td>2.5</td>
+<td>2.5</td>
+<td>4.5</td>
+<td>4.5</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>9.0</td>
+<td>9.0</td>
+<td>9.0</td>
+<td>11.5</td>
+<td>11.5</td>
+<td>13.0</td>
+<td>14.0</td>
+<td>15.0</td>
+<td>16.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Leia a tabela linha a linha. A linha <code>posicao</code> numera os pacientes de 1 a 16, mesmo os empatados. A linha <code>posto</code> corrige os empates com a média das posições: 2,5 para os dois pacientes com 2 dias (posições 2 e 3), 4,5 para os de 3 dias, 6,5 para os de 4 dias, 9 para os três de 5 dias e 11,5 para os de 6 dias. Por que tirar a média, e não dar a todos a menor posição? Porque assim a soma total dos postos continua sendo <span class="math inline">\(1 + 2 + \dots + 16 = 136\)</span>, com ou sem empates, e nenhum grupo é favorecido.</p>
+<p>Agora observe o último paciente. Com 120 dias, ele recebe o posto 16. Na escala de dias, ele estava a 111 dias do vizinho mais próximo, o paciente de 9 dias. Na escala de postos, está a <strong>uma posição</strong> dele. A ordem é preservada, e a distância desaparece.</p>
+<p>Isso não significa que o paciente foi ignorado: ele continua na análise e ocupa o maior posto. O que deixa de ser usado é a <strong>magnitude</strong> da diferença. A importância clínica da complicação também não desaparece. Ela apenas deixa de dominar o teste.</p>
+</section>
+<section id="comparando-os-pares-a-estatística-u" class="level2">
+<h2 class="anchored" data-anchor-id="comparando-os-pares-a-estatística-u">3.6 Comparando os pares: a estatística <span class="math inline">\(U\)</span></h2>
+<p>Com os postos definidos, podemos comparar os grupos de uma forma muito intuitiva: promovendo “duelos”. Cada paciente de A enfrenta cada paciente de B, e em cada duelo perguntamos apenas quem ficou mais tempo internado. Com 8 pacientes em cada grupo, são <span class="math inline">\(n_A \times n_B = 8 \times 8 = 64\)</span> duelos.</p>
+<p>Em cada duelo, só importa <strong>quem</strong> ficou mais tempo, e não por quantos dias. O paciente de 120 dias vence todos os seus duelos, mas cada vitória vale o mesmo que a de um paciente que ficou apenas um dia a mais. Por isso, comparar os dias ou os postos dá exatamente o mesmo resultado.</p>
+<p>Na matriz, cada linha é um paciente de A, e cada coluna, um paciente de B. O símbolo em cada célula indica o resultado do duelo do ponto de vista de A:</p>
+<div id="5e39ac74" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparação de cada paciente de A com cada paciente de B</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-2" class="code-annotation-target"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>duels <span class="op">=</span> np.sign(np.subtract.outer(days_a, days_b))</span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-10-5" class="code-annotation-target"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> ListedColormap([<span class="st">"#A1C9F4"</span>, <span class="st">"#DDDDDD"</span>, <span class="st">"#DD8452"</span>])</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>ax.imshow(duels, cmap<span class="op">=</span>colors, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i, j), value <span class="kw">in</span> np.ndenumerate(duels):</span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a>    ax.text(j, i, {<span class="op">-</span><span class="dv">1</span>: <span class="st">"&lt;"</span>, <span class="dv">0</span>: <span class="st">"="</span>, <span class="dv">1</span>: <span class="st">"&gt;"</span>}[value], ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">8</span>), xticklabels<span class="op">=</span>days_b, yticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">8</span>), yticklabels<span class="op">=</span>days_a,</span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>       xlabel<span class="op">=</span><span class="st">"Paciente de B (dias)"</span>, ylabel<span class="op">=</span><span class="st">"Paciente de A (dias)"</span>)</span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">False</span>)</span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="2" data-code-annotation="1"><code>np.subtract.outer</code> calcula a diferença entre cada valor de A e cada valor de B, e <code>np.sign</code> reduz cada diferença a −1, 0 ou +1.</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="5" data-code-annotation="2">Azul para os pares em que A ficou menos tempo, cinza para os empates e laranja para os pares em que A ficou mais tempo.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-11-output-1.png" width="478" height="464" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A estatística <span class="math inline">\(U\)</span> conta esses pares. <span class="math inline">\(U_A\)</span> é o número de pares em que o paciente de A fica <strong>mais</strong> tempo, e cada empate vale meio ponto. <span class="math inline">\(U_B\)</span> faz o mesmo para B:</p>
+<div id="e00a4f94" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contagem dos pares e estatísticas U de cada grupo</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n_a, n_b <span class="op">=</span> <span class="bu">len</span>(days_a), <span class="bu">len</span>(days_b)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>a_less, ties_ab, a_more <span class="op">=</span> (duels <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (duels <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (duels <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>u_a <span class="op">=</span> a_more <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> ties_ab</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>u_b <span class="op">=</span> a_less <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> ties_ab</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A &lt; B: </span><span class="sc">{</span>a_less<span class="sc">}</span><span class="ss"> · empates: </span><span class="sc">{</span>ties_ab<span class="sc">}</span><span class="ss"> · A &gt; B: </span><span class="sc">{</span>a_more<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"U_A = </span><span class="sc">{</span>u_a<span class="sc">}</span><span class="ss"> · U_B = </span><span class="sc">{</span>u_b<span class="sc">}</span><span class="ss"> · U_A + U_B = </span><span class="sc">{</span>u_a <span class="op">+</span> u_b<span class="sc">}</span><span class="ss"> = n_A × n_B"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>A &lt; B: 52 · empates: 3 · A &gt; B: 9
+U_A = 10.5 · U_B = 53.5 · U_A + U_B = 64.0 = n_A × n_B</code></pre>
+</div>
+</div>
+<p>Vamos ler a matriz com atenção. A primeira linha, do paciente de A com 1 dia, é toda azul: ele saiu antes de todos os pacientes de B. As cinco primeiras linhas são inteiramente azuis. As células cinza marcam os empates: o paciente de A com 4 dias empata com o de B com 4 dias, e o de A com 5 dias empata com os dois de B com 5 dias. A última linha é toda laranja, por causa do paciente de 120 dias. Note que ele conta como apenas <strong>oito</strong> duelos perdidos para A, por maior que tenha sido a sua internação.</p>
+<p>No total, em 52 pares o paciente de A ficou menos tempo, em 3 houve empate e em 9 o paciente de A ficou mais tempo. Assim:</p>
+<p><span class="math display">\[
+U_A = 9 + \tfrac{1}{2} \times 3 = 10{,}5
+\qquad\qquad
+U_B = 52 + \tfrac{1}{2} \times 3 = 53{,}5
+\]</span></p>
+<p>Os empates são divididos ao meio, como em um jogo que termina empatado e dá meio ponto a cada lado. Por isso, <span class="math inline">\(U_A + U_B\)</span> é sempre 64, o total de pares. Os dois valores carregam a mesma informação, e o teste costuma reportar o menor deles, 10,5.</p>
+<p>Há também uma leitura descritiva direta: <span class="math inline">\(U_B / 64 = 53{,}5 / 64 \approx 83{,}6\%\)</span> dos duelos favorecem A, com tempos menores. Se nenhum tratamento tendesse a tempos menores, esperaríamos cerca de 50%, como em uma moeda honesta. Essa proporção é uma estimativa obtida nesta amostra, comparando pacientes de grupos diferentes. Ela não é a probabilidade de um mesmo paciente se beneficiar de A.</p>
+</section>
+<section id="o-que-esperar-se-o-tratamento-não-importasse" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-esperar-se-o-tratamento-não-importasse">3.7 O que esperar se o tratamento não importasse?</h2>
+<p>Temos <span class="math inline">\(U_A = 10{,}5\)</span>. Esse valor é alto ou baixo? Para responder, precisamos de uma régua: quais valores <span class="math inline">\(U_A\)</span> pode assumir, e qual seria o valor esperado se nenhum tratamento fosse melhor que o outro?</p>
+<p>Os extremos da régua são fáceis de imaginar. Se <strong>todos</strong> os pacientes de A saíssem antes de todos os de B, A não venceria nenhum duelo, e <span class="math inline">\(U_A\)</span> seria 0. Se todos os pacientes de A saíssem <strong>depois</strong> de todos os de B, A venceria os 64 duelos, e <span class="math inline">\(U_A\)</span> seria 64. Entre esses dois extremos está a situação em que nenhum tratamento domina:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Situação</th>
+<th>O que acontece nos duelos</th>
+<th><span class="math inline">\(U_A\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A sempre sai antes</td>
+<td>A não fica mais tempo em nenhum dos 64 duelos</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><strong>Observado</strong></td>
+<td>A fica mais tempo em 9 duelos e empata em 3</td>
+<td><strong>10,5</strong></td>
+</tr>
+<tr class="odd">
+<td>Nenhum tratamento domina</td>
+<td>Cada duelo tem a mesma chance de favorecer qualquer lado</td>
+<td>32</td>
+</tr>
+<tr class="even">
+<td>A sempre sai depois</td>
+<td>A fica mais tempo em todos os 64 duelos</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+<p>Se o tratamento não importasse, cada duelo seria como o lançamento de uma moeda honesta, e A ficaria, em média, com metade dos 64 pares: <strong>32</strong>. Esse é o valor típico sob <span class="math inline">\(H_0\)</span>.</p>
+<p>O observado, 10,5, está bem abaixo do típico, muito mais perto do extremo “A sempre sai antes” do que do centro. A pergunta do teste se resume, então, a: se <span class="math inline">\(H_0\)</span> fosse verdadeira, quão raro seria um <span class="math inline">\(U_A\)</span> tão afastado de 32? É isso que a seção 3.9 vai medir.</p>
+</section>
+<section id="o-atalho-pela-soma-dos-postos" class="level2">
+<h2 class="anchored" data-anchor-id="o-atalho-pela-soma-dos-postos">3.8 O atalho pela soma dos postos</h2>
+<p>Contar os 64 duelos à mão é trabalhoso, e com amostras maiores seria inviável: dois grupos de 100 observações gerariam 10.000 duelos. Felizmente, a mesma estatística pode ser obtida de forma muito mais simples, somando os postos de cada grupo. Antes, vejamos como os postos se distribuem em A e em B:</p>
+<div id="116f7b5b" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma dos postos de cada tratamento</span></span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (group, color) <span class="kw">in</span> <span class="bu">zip</span>(axes, [(<span class="st">"A"</span>, <span class="st">"#A1C9F4"</span>), (<span class="st">"B"</span>, <span class="st">"#1F4E79"</span>)]):</span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-hidden="true" tabindex="-1"></a>    ranks <span class="op">=</span> ranked.loc[ranked[<span class="st">"tratamento"</span>] <span class="op">==</span> group, <span class="st">"posto"</span>]</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-6" class="code-annotation-target"><a href="#annotated-cell-12-6" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> ranks.value_counts()</span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-hidden="true" tabindex="-1"></a>    ax.bar(counts.index, counts.values, width<span class="op">=</span><span class="fl">.8</span>, color<span class="op">=</span>color)</span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Tratamento </span><span class="sc">{</span>group<span class="sc">}</span><span class="ss">: soma dos postos = </span><span class="sc">{</span>ranks<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:g}</span><span class="ss">"</span>,</span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-hidden="true" tabindex="-1"></a>           xlabel<span class="op">=</span><span class="st">"Posto"</span>, xticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">17</span>))</span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Pacientes"</span>)</span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-lines="6" data-code-annotation="1">Como há postos fracionários, como 2,5 e 11,5, desenhamos uma barra exatamente sobre cada valor de posto, em vez de agrupá-los em faixas.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-13-output-1.png" width="1128" height="349" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Compare com os histogramas da seção 3.2. Na escala de dias, o paciente de 120 dias esticava o eixo e escondia todo o resto. Na escala de postos, os dois grupos ocupam o mesmo intervalo, de 1 a 16, e ele é apenas a última barra de A. Fica fácil ver o que os dias escondiam: os postos de A se concentram à esquerda, nos menores tempos, e os de B, à direita.</p>
+<p>Como a soma dos postos vira <span class="math inline">\(U\)</span>? Imagine que o grupo A tivesse os 8 menores postos. A soma seria <span class="math inline">\(1 + 2 + \dots + 8 = 36\)</span>, e A não ficaria mais tempo em nenhum duelo, ou seja, <span class="math inline">\(U_A = 0\)</span>. Esse é o <strong>mínimo</strong> possível, e vale <span class="math inline">\(n_A(n_A + 1)/2\)</span>. Agora, troque um paciente de A de posição com o paciente de B imediatamente à sua direita. A soma dos postos de A aumenta em 1 e, ao mesmo tempo, A passa a vencer exatamente um duelo a mais. Cada ponto da soma acima do mínimo corresponde, portanto, a um duelo em que A fica mais tempo, com meio ponto nos empates. Por isso:</p>
+<p><span class="math display">\[
+U_A = W_A - \frac{n_A(n_A + 1)}{2}
+\]</span></p>
+<div id="a9ffebcc" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Soma dos postos de cada grupo e U pela fórmula</span></span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a>w_a <span class="op">=</span> ranked.loc[ranked[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"posto"</span>].<span class="bu">sum</span>()</span>
+<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a>w_b <span class="op">=</span> ranked.loc[ranked[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"B"</span>, <span class="st">"posto"</span>].<span class="bu">sum</span>()</span>
+<span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(ranked)</span>
+<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-hidden="true" tabindex="-1"></a>minimum <span class="op">=</span> n_a <span class="op">*</span> (n_a <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-7" class="code-annotation-target"><a href="#annotated-cell-13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"W_A = </span><span class="sc">{</span>w_a<span class="sc">}</span><span class="ss"> · W_B = </span><span class="sc">{</span>w_b<span class="sc">}</span><span class="ss"> · total = </span><span class="sc">{</span>w_a <span class="op">+</span> w_b<span class="sc">}</span><span class="ss"> = N(N + 1)/2"</span>)</span>
+<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"U_A = </span><span class="sc">{</span>w_a<span class="sc">}</span><span class="ss"> − </span><span class="sc">{</span>minimum<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>w_a <span class="op">-</span> minimum<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"U_B = </span><span class="sc">{</span>w_b<span class="sc">}</span><span class="ss"> − </span><span class="sc">{</span>minimum<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>w_b <span class="op">-</span> minimum<span class="sc">}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-lines="7" data-code-annotation="1">A soma de todos os postos de 1 a <span class="math inline">\(N\)</span> é sempre <span class="math inline">\(N(N + 1)/2 = 136\)</span>, com ou sem empates.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>W_A = 46.5 · W_B = 89.5 · total = 136.0 = N(N + 1)/2
+U_A = 46.5 − 36.0 = 10.5
+U_B = 89.5 − 36.0 = 53.5</code></pre>
+</div>
+</div>
+<p>Somar os postos e contar os duelos dão os mesmos valores: <span class="math inline">\(U_A = 46{,}5 - 36 = 10{,}5\)</span> e <span class="math inline">\(U_B = 89{,}5 - 36 = 53{,}5\)</span>. Na prática, é a soma dos postos que os programas calculam, porque ela exige apenas ordenar os dados uma vez.</p>
+</section>
+<section id="o-p-valor-pela-aproximação-normal" class="level2">
+<h2 class="anchored" data-anchor-id="o-p-valor-pela-aproximação-normal">3.9 O <em>p</em>-valor pela aproximação normal</h2>
+<p>Para saber quão raro é <span class="math inline">\(U_A = 10{,}5\)</span>, usamos um atalho que já conhecemos da Aula 8. Quando <span class="math inline">\(H_0\)</span> é verdadeira, os valores que <span class="math inline">\(U_A\)</span> pode assumir formam uma distribuição com <strong>forma de sino</strong>, muito parecida com a curva normal. E, para usar uma curva normal, basta conhecer duas coisas: o seu <strong>centro</strong> e a sua <strong>largura</strong>. Com elas, o <em>p</em>-valor sai de uma área sob a curva, sem nenhuma simulação. O cálculo tem quatro passos.</p>
+<p><strong>1. Média esperada: onde fica o centro?</strong> Sob <span class="math inline">\(H_0\)</span>, nenhum tratamento tende a tempos menores, e cada duelo tem a mesma chance de favorecer qualquer lado, como uma moeda honesta. Dos 64 duelos, espera-se metade para cada grupo:</p>
+<p><span class="math display">\[
+\mu_U = \frac{n_A n_B}{2} = \frac{64}{2} = 32
+\]</span></p>
+<p><strong>2. Dispersão: qual a largura da curva?</strong> O centro não basta. Um <span class="math inline">\(U_A\)</span> a 21,5 pontos do centro pode ser comum ou raro, dependendo de quanto <span class="math inline">\(U_A\)</span> costuma variar de uma amostra para outra quando <span class="math inline">\(H_0\)</span> é verdadeira. Essa variação é medida pelo desvio-padrão <span class="math inline">\(\sigma_U\)</span>. Repare que a fórmula usa apenas os tamanhos dos grupos: como <span class="math inline">\(U\)</span> depende só dos postos, e os postos são sempre os números de 1 a <span class="math inline">\(N\)</span>, a variação possível é a mesma para quaisquer dados com esses tamanhos. Sem empates:</p>
+<p><span class="math display">\[
+\sigma_U = \sqrt{\frac{n_A n_B (N + 1)}{12}} = \sqrt{\frac{64 \times 17}{12}} \approx 9{,}52
+\]</span></p>
+<p><strong>3. Correção para empates.</strong> Quando há valores repetidos, eles recebem o mesmo posto médio. Isso “achata” um pouco a ordenação: dois pacientes empatados ocupam sempre o mesmo posto e não podem ser separados, e a variação possível de <span class="math inline">\(U_A\)</span> diminui. A correção desconta essa redução. Cada grupo de <span class="math inline">\(t\)</span> valores empatados contribui com <span class="math inline">\(t^3 - t\)</span>, e valores sem empate contribuem com zero:</p>
+<p><span class="math display">\[
+\sigma_U = \sqrt{\frac{n_A n_B}{12}\left[(N + 1) - \frac{\sum (t^3 - t)}{N(N - 1)}\right]}
+\]</span></p>
+<p><strong>4. Padronização e <em>p</em>-valor: quão longe estamos do centro?</strong> Com o centro e a largura, transformamos <span class="math inline">\(U_A\)</span> em um <span class="math inline">\(Z\)</span>, que mede a quantos desvios-padrão o valor observado está do centro. É a mesma ideia de sinal ÷ ruído da Aula 8: o sinal é a distância <span class="math inline">\(U_A - \mu_U\)</span>, e o ruído é <span class="math inline">\(\sigma_U\)</span>. Sob <span class="math inline">\(H_0\)</span>, <span class="math inline">\(Z\)</span> segue aproximadamente a normal padrão, com média 0 e desvio-padrão 1. O <em>p</em>-valor é a área das duas caudas além de <span class="math inline">\(|Z|\)</span>:</p>
+<p><span class="math display">\[
+Z = \frac{U_A - \mu_U + 0{,}5}{\sigma_U}
+\qquad\qquad
+p = 2 \times P(Z \leq -|Z|)
+\]</span></p>
+<p>O <span class="math inline">\(+0{,}5\)</span> é a <strong>correção de continuidade</strong>. <span class="math inline">\(U\)</span> é uma contagem e só assume valores em saltos de meio ponto, como 10, 10,5 e 11. A curva normal, por outro lado, é contínua. Para que a curva represente bem a contagem, deslocamos <span class="math inline">\(U_A\)</span> meio ponto <strong>em direção ao centro</strong>, o que torna o teste um pouco mais conservador. Como aqui <span class="math inline">\(U_A\)</span> está abaixo de <span class="math inline">\(\mu_U\)</span>, somamos 0,5. Se estivesse acima, subtrairíamos.</p>
+<p>O fator 2 no <em>p</em>-valor vem do teste bilateral: um <span class="math inline">\(U_A\)</span> tão afastado do centro <strong>para cima</strong>, como o espelho 53,5, seria tão surpreendente quanto o observado, e as duas caudas entram na conta.</p>
+<div id="e219470a" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os quatro passos da aproximação normal</span></span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>mu_u <span class="op">=</span> n_a <span class="op">*</span> n_b <span class="op">/</span> <span class="dv">2</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a>sd_no_ties <span class="op">=</span> np.sqrt(n_a <span class="op">*</span> n_b <span class="op">*</span> (N <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">12</span>)</span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-5" class="code-annotation-target"><a href="#annotated-cell-14-5" aria-hidden="true" tabindex="-1"></a>ties <span class="op">=</span> ranked[<span class="st">"dias"</span>].value_counts()</span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-hidden="true" tabindex="-1"></a>tie_sum <span class="op">=</span> (ties <span class="op">**</span> <span class="dv">3</span> <span class="op">-</span> ties).<span class="bu">sum</span>()</span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-hidden="true" tabindex="-1"></a>sd_u <span class="op">=</span> np.sqrt(n_a <span class="op">*</span> n_b <span class="op">/</span> <span class="dv">12</span> <span class="op">*</span> ((N <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> tie_sum <span class="op">/</span> (N <span class="op">*</span> (N <span class="op">-</span> <span class="dv">1</span>))))</span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-14-9" class="code-annotation-target"><a href="#annotated-cell-14-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> (u_a <span class="op">-</span> mu_u <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> np.sign(mu_u <span class="op">-</span> u_a)) <span class="op">/</span> sd_u</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-14-10" class="code-annotation-target"><a href="#annotated-cell-14-10" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> stats.norm.cdf(<span class="op">-</span><span class="bu">abs</span>(z))</span>
+<span id="annotated-cell-14-11"><a href="#annotated-cell-14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-12"><a href="#annotated-cell-14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. μ_U = </span><span class="sc">{</span>mu_u<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. σ_U sem empates = </span><span class="sc">{</span>sd_no_ties<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-14-14"><a href="#annotated-cell-14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"3. Σ(t³ − t) = </span><span class="sc">{</span>tie_sum<span class="sc">}</span><span class="ss"> · σ_U com empates = </span><span class="sc">{</span>sd_u<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-14-15"><a href="#annotated-cell-14-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"4. Z = </span><span class="sc">{</span>z<span class="sc">:.2f}</span><span class="ss"> · p = </span><span class="sc">{</span>p<span class="sc">:.4f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="5" data-code-annotation="1"><code>.value_counts()</code> conta quantas vezes cada valor aparece. Valores sem empate contribuem com <span class="math inline">\(1^3 - 1 = 0\)</span>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="9" data-code-annotation="2"><code>np.sign(mu_u - u_a)</code> escolhe o sinal da correção de continuidade: <span class="math inline">\(+0{,}5\)</span> quando <span class="math inline">\(U_A\)</span> está abaixo do centro, <span class="math inline">\(-0{,}5\)</span> quando está acima.</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-lines="10" data-code-annotation="3"><code>stats.norm.cdf</code> devolve a área da cauda esquerda da normal padrão. Multiplicamos por 2 porque o teste é bilateral.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. μ_U = 32.0
+2. σ_U sem empates = 9.52
+3. Σ(t³ − t) = 48 · σ_U com empates = 9.47
+4. Z = -2.22 · p = 0.0265</code></pre>
+</div>
+</div>
+<p>Vamos conferir cada passo com os números:</p>
+<ul>
+<li><strong>Centro.</strong> <span class="math inline">\(\mu_U = 32\)</span>: sem efeito, A ficaria com metade dos 64 duelos.</li>
+<li><strong>Largura sem empates.</strong> <span class="math inline">\(\sigma_U \approx 9{,}52\)</span>.</li>
+<li><strong>Empates.</strong> Há quatro pares de valores repetidos (2, 3, 4 e 6 dias) e um trio (5 dias). Cada par contribui com <span class="math inline">\(2^3 - 2 = 6\)</span>, e o trio, com <span class="math inline">\(3^3 - 3 = 24\)</span>, o que dá <span class="math inline">\(\sum (t^3 - t) = 4 \times 6 + 24 = 48\)</span>. A correção é pequena, de 9,52 para 9,47, mas deixa <span class="math inline">\(\sigma_U\)</span> coerente com os dados.</li>
+<li><strong>Padronização.</strong> <span class="math inline">\(Z = (10{,}5 - 32 + 0{,}5)/9{,}47 \approx -2{,}22\)</span>. O valor observado está a mais de dois desvios-padrão abaixo do centro.</li>
+<li><strong><em>p</em>-valor.</strong> A área das duas caudas além de 2,22 é <span class="math inline">\(p \approx 0{,}0265\)</span>.</li>
+</ul>
+<p>A figura mostra a curva normal na escala de <span class="math inline">\(U_A\)</span>, com o <span class="math inline">\(Z\)</span> correspondente no eixo de baixo. As áreas em laranja são as duas caudas do <em>p</em>-valor, além do valor observado (10,5) e do seu espelho (53,5), à mesma distância do centro:</p>
+<div id="c10cd540" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curva normal de U sob H0, com as duas caudas do p-valor</span></span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, n_a <span class="op">*</span> n_b, <span class="dv">400</span>)</span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> stats.norm.pdf(grid, mu_u, sd_u)</span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a>mirror <span class="op">=</span> n_a <span class="op">*</span> n_b <span class="op">-</span> u_a</span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-hidden="true" tabindex="-1"></a>ax.plot(grid, density, color<span class="op">=</span><span class="st">"#1F4E79"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-hidden="true" tabindex="-1"></a>tails <span class="op">=</span> (grid <span class="op">&lt;=</span> u_a <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">|</span> (grid <span class="op">&gt;=</span> mirror <span class="op">-</span> <span class="fl">0.5</span>)</span>
+<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-hidden="true" tabindex="-1"></a>ax.fill_between(grid, density, where<span class="op">=</span>tails, color<span class="op">=</span><span class="st">"#DD8452"</span>, label<span class="op">=</span><span class="ss">f"p = </span><span class="sc">{</span>p<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> value, label <span class="kw">in</span> [(u_a, <span class="st">"observado"</span>), (mirror, <span class="st">"espelho"</span>)]:</span>
+<span id="annotated-cell-15-11"><a href="#annotated-cell-15-11" aria-hidden="true" tabindex="-1"></a>    ax.axvline(value, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12" aria-hidden="true" tabindex="-1"></a>    ax.text(value, density.<span class="bu">max</span>() <span class="op">*</span> <span class="fl">0.6</span>, label, ha<span class="op">=</span><span class="st">"center"</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
+<span id="annotated-cell-15-13"><a href="#annotated-cell-15-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(mu_u, color<span class="op">=</span><span class="st">"#333333"</span>, linestyle<span class="op">=</span><span class="st">":"</span>)</span>
+<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"U_A"</span>, ylabel<span class="op">=</span><span class="st">"Densidade"</span>, xticks<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">10.5</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">48</span>, <span class="fl">53.5</span>, <span class="dv">64</span>])</span>
+<span id="annotated-cell-15-15"><a href="#annotated-cell-15-15" aria-hidden="true" tabindex="-1"></a>z_axis <span class="op">=</span> ax.secondary_xaxis(<span class="op">-</span><span class="fl">0.22</span>, functions<span class="op">=</span>(<span class="kw">lambda</span> u: (u <span class="op">-</span> mu_u) <span class="op">/</span> sd_u,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-16" class="code-annotation-target"><a href="#annotated-cell-15-16" aria-hidden="true" tabindex="-1"></a>                                              <span class="kw">lambda</span> v: v <span class="op">*</span> sd_u <span class="op">+</span> mu_u))</span>
+<span id="annotated-cell-15-17"><a href="#annotated-cell-15-17" aria-hidden="true" tabindex="-1"></a>z_axis.set_xlabel(<span class="st">"Z correspondente"</span>)</span>
+<span id="annotated-cell-15-18"><a href="#annotated-cell-15-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="annotated-cell-15-19"><a href="#annotated-cell-15-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-15-20"><a href="#annotated-cell-15-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="16" data-code-annotation="1"><code>secondary_xaxis</code> cria um segundo eixo horizontal que converte cada valor de <span class="math inline">\(U_A\)</span> no seu <span class="math inline">\(Z\)</span>.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-16-output-1.png" width="849" height="355" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>O SciPy faz todo o cálculo com <code>stats.mannwhitneyu</code>:</p>
+<div id="4126200a" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mann-Whitney pela aproximação normal no SciPy</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-2" class="code-annotation-target"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>mw_uti <span class="op">=</span> stats.mannwhitneyu(group_a, group_b, method<span class="op">=</span><span class="st">"asymptotic"</span>)</span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"Mann-Whitney"</span>, mw_uti, stat<span class="op">=</span><span class="st">"U"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-16" data-code-lines="2" data-code-annotation="1"><code>method="asymptotic"</code> pede o <em>p</em>-valor pela aproximação normal, com a correção para empates e a correção de continuidade.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mann-Whitney: U = 10.500 · p = 0.027</code></pre>
+</div>
+</div>
+<p>O resultado coincide com o cálculo à mão. Em palavras: se o tratamento não importasse, um <span class="math inline">\(U_A\)</span> tão ou mais distante de 32 teria probabilidade de apenas 2,65%. Como <span class="math inline">\(p &lt; 0{,}05\)</span>, rejeitamos <span class="math inline">\(H_0\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+E o <em>p</em>-valor exato?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Com amostras pequenas, também seria possível obter o <em>p</em>-valor <strong>exato</strong> por permutação, como na Aula 7. Para este exemplo, ele vale cerca de 0,0238, muito próximo da aproximação normal. Não faremos esse cálculo nesta aula: com amostras maiores, ele exige recursos computacionais muito maiores, e a aproximação normal é o caminho usual.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretação" class="level2">
+<h2 class="anchored" data-anchor-id="interpretação">3.10 Interpretação</h2>
+<p>O Mann-Whitney testa uma pergunta diferente da do Welch:</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: nenhum tratamento tende a ter tempos menores. As distribuições de A e B são iguais.</li>
+<li><span class="math inline">\(H_1\)</span>: os tempos de um tratamento tendem a ser menores que os do outro.</li>
+</ul>
+<p>Com <span class="math inline">\(p \approx 0{,}027\)</span>, rejeitamos <span class="math inline">\(H_0\)</span>: pacientes do tratamento A tendem a ficar internados menos tempo que os de B. O Welch não rejeitou a igualdade das médias (<span class="math inline">\(p \approx 0{,}47\)</span>). Não há contradição, porque os dois testes respondem a perguntas diferentes, e cada um dá um peso diferente ao paciente de 120 dias:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Leitura</th>
+<th>Resultado</th>
+<th>Como o paciente de 120 dias pesa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Média · Welch</td>
+<td><span class="math inline">\(p \approx 0{,}47\)</span></td>
+<td>Pela magnitude: infla a média, o desvio-padrão e o erro-padrão</td>
+</tr>
+<tr class="even">
+<td>Ordem · Mann-Whitney</td>
+<td><span class="math inline">\(p \approx 0{,}027\)</span></td>
+<td>Só pela posição: é o posto 16</td>
+</tr>
+<tr class="odd">
+<td>Total de leitos</td>
+<td>140 contra 50 dias</td>
+<td>Integralmente: é o custo real em dias de leito</td>
+</tr>
+</tbody>
+</table>
+<p>Nenhuma das leituras está errada. Para o paciente típico, A leva a altas mais rápidas. Para o planejamento de leitos, A consumiu quase o triplo de dias. A pergunta científica deve orientar a escolha do teste, e a significância não deve orientar a escolha da pergunta.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Mann-Whitney não é, por si só, um teste de medianas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>O Mann-Whitney avalia se os valores de um grupo <strong>tendem</strong> a ser menores que os do outro, o que se chama <strong>dominância</strong>. Ele só pode ser lido como diferença de medianas se as duas distribuições tiverem a mesma forma e diferirem apenas pela posição. Com formas diferentes, o teste pode rejeitar <span class="math inline">\(H_0\)</span> mesmo com medianas iguais.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="caso-1.-mann-whitney-em-um-teste-ab" class="level1">
+<h1>4. Caso 1. Mann-Whitney em um teste A/B</h1>
+<p>Este caso corresponde ao <strong>caso 2 da aula teórica</strong> (slides 48 a 51). Ele usa os mesmos dados e a mesma pergunta, agora resolvidos com o cálculo passo a passo da seção 3.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cenário
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Um site testa dois layouts. Cada visitante vê o layout A ou o B, e medimos os segundos até o primeiro clique. Um visitante do layout A demorou 14 segundos, muito acima dos demais. Qual layout leva ao clique mais rápido?</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: nenhum layout domina o outro: <span class="math inline">\(P(A &gt; B) = P(B &gt; A)\)</span>.</li>
+<li><span class="math inline">\(H_1\)</span>: um layout tende a gerar tempos menores que o outro.</li>
+</ul>
+</div>
+</div>
+<p><strong>Premissas do teste</strong></p>
+<ul>
+<li>Observações independentes: cada visitante aparece em um único grupo.</li>
+<li>Variável resposta pelo menos ordinal, para que os valores possam ser ordenados.</li>
+<li>Para interpretar o resultado como diferença de localização, as duas distribuições devem ter formas semelhantes.</li>
+</ul>
+<div id="e7b65706" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Segundos até o primeiro clique em cada layout</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>layout_a <span class="op">=</span> [<span class="fl">2.1</span>, <span class="fl">2.8</span>, <span class="fl">3.0</span>, <span class="fl">3.4</span>, <span class="fl">3.7</span>, <span class="fl">4.2</span>, <span class="fl">4.6</span>, <span class="fl">14.0</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>layout_b <span class="op">=</span> [<span class="fl">3.9</span>, <span class="fl">4.8</span>, <span class="fl">5.0</span>, <span class="fl">5.8</span>, <span class="fl">6.1</span>, <span class="fl">6.9</span>, <span class="fl">7.7</span>, <span class="fl">9.5</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O gráfico mostra cada visitante:</p>
+<div id="6e151036" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tempo até o primeiro clique por layout</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>clicks <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"layout"</span>: [<span class="st">"A"</span>] <span class="op">*</span> <span class="dv">8</span> <span class="op">+</span> [<span class="st">"B"</span>] <span class="op">*</span> <span class="dv">8</span>, <span class="st">"segundos"</span>: layout_a <span class="op">+</span> layout_b}</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">4.5</span>))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>clicks, x<span class="op">=</span><span class="st">"layout"</span>, y<span class="op">=</span><span class="st">"segundos"</span>, color<span class="op">=</span><span class="st">"#A1C9F4"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            showfliers<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>sns.stripplot(data<span class="op">=</span>clicks, x<span class="op">=</span><span class="st">"layout"</span>, y<span class="op">=</span><span class="st">"segundos"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>              size<span class="op">=</span><span class="dv">7</span>, jitter<span class="op">=</span><span class="fl">.15</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Layout"</span>, ylabel<span class="op">=</span><span class="st">"Tempo até o primeiro clique (s)"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-19-output-1.png" width="561" height="416" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A caixa do layout A fica inteira abaixo da mediana do B, com um único ponto isolado em 14 segundos. Talvez esse visitante tenha se distraído, atendido o telefone ou demorado para encontrar o botão. Não sabemos, e não temos motivo para descartá-lo. É a mesma situação do hospital: um grupo concentrado em valores baixos e um único valor extremo. Por isso, é um bom momento para verificar se você consegue repetir sozinho o raciocínio da seção 3.</p>
+<p>Como vamos repetir todos os passos da seção 3, eles ficam reunidos em uma função. Aplicamos a função ao teste de layout e, para conferir, ao exemplo do hospital:</p>
+<div id="fc866d10" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="annotated-cell-19"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Postos, U, z e p-valor pela aproximação normal</span></span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mann_whitney_steps(a, b):</span>
+<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> pd.Series(<span class="bu">list</span>(a) <span class="op">+</span> <span class="bu">list</span>(b))</span>
+<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-hidden="true" tabindex="-1"></a>    ranks <span class="op">=</span> values.rank(method<span class="op">=</span><span class="st">"average"</span>)</span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-hidden="true" tabindex="-1"></a>    n_a, n_b, N <span class="op">=</span> <span class="bu">len</span>(a), <span class="bu">len</span>(b), <span class="bu">len</span>(values)</span>
+<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-hidden="true" tabindex="-1"></a>    w_a <span class="op">=</span> ranks[:n_a].<span class="bu">sum</span>()</span>
+<span id="annotated-cell-19-7"><a href="#annotated-cell-19-7" aria-hidden="true" tabindex="-1"></a>    u_a <span class="op">=</span> w_a <span class="op">-</span> n_a <span class="op">*</span> (n_a <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="annotated-cell-19-8"><a href="#annotated-cell-19-8" aria-hidden="true" tabindex="-1"></a>    ties <span class="op">=</span> values.value_counts()</span>
+<span id="annotated-cell-19-9"><a href="#annotated-cell-19-9" aria-hidden="true" tabindex="-1"></a>    tie_term <span class="op">=</span> (ties <span class="op">**</span> <span class="dv">3</span> <span class="op">-</span> ties).<span class="bu">sum</span>() <span class="op">/</span> (N <span class="op">*</span> (N <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-hidden="true" tabindex="-1"></a>    sd_u <span class="op">=</span> np.sqrt(n_a <span class="op">*</span> n_b <span class="op">/</span> <span class="dv">12</span> <span class="op">*</span> ((N <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> tie_term))</span>
+<span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-hidden="true" tabindex="-1"></a>    mu_u <span class="op">=</span> n_a <span class="op">*</span> n_b <span class="op">/</span> <span class="dv">2</span></span>
+<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> (u_a <span class="op">-</span> mu_u <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> np.sign(mu_u <span class="op">-</span> u_a)) <span class="op">/</span> sd_u</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-19-13" class="code-annotation-target"><a href="#annotated-cell-19-13" aria-hidden="true" tabindex="-1"></a>    delta <span class="op">=</span> (<span class="dv">2</span> <span class="op">*</span> u_a <span class="op">-</span> n_a <span class="op">*</span> n_b) <span class="op">/</span> (n_a <span class="op">*</span> n_b)</span>
+<span id="annotated-cell-19-14"><a href="#annotated-cell-19-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"W_A = </span><span class="sc">{</span>w_a<span class="sc">:g}</span><span class="ss"> · W_B = </span><span class="sc">{</span>ranks[n_a:]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:g}</span><span class="ss"> · U_A = </span><span class="sc">{</span>u_a<span class="sc">:g}</span><span class="ss"> · "</span></span>
+<span id="annotated-cell-19-15"><a href="#annotated-cell-19-15" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"Z = </span><span class="sc">{</span>z<span class="sc">:.2f}</span><span class="ss"> · p = </span><span class="sc">{</span><span class="dv">2</span> <span class="op">*</span> stats<span class="sc">.</span>norm<span class="sc">.</span>cdf(<span class="op">-</span><span class="bu">abs</span>(z))<span class="sc">:.4f}</span><span class="ss"> · δ = </span><span class="sc">{</span>delta<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-19-16"><a href="#annotated-cell-19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-19-17"><a href="#annotated-cell-19-17" aria-hidden="true" tabindex="-1"></a>mann_whitney_steps(layout_a, layout_b)</span>
+<span id="annotated-cell-19-18"><a href="#annotated-cell-19-18" aria-hidden="true" tabindex="-1"></a>mann_whitney_steps(days_a, days_b)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="13" data-code-annotation="1"><span class="math inline">\(\delta = (U_A - U_B)/(n_A n_B)\)</span>, com <span class="math inline">\(U_B = n_A n_B - U_A\)</span>. É o δ de Cliff, explicado logo abaixo.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>W_A = 46 · W_B = 90 · U_A = 10 · Z = -2.26 · p = 0.0239 · δ = -0.69
+W_A = 46.5 · W_B = 89.5 · U_A = 10.5 · Z = -2.22 · p = 0.0265 · δ = -0.67</code></pre>
+</div>
+</div>
+<p>Vamos ler a primeira linha passo a passo:</p>
+<ul>
+<li><strong>Somas dos postos.</strong> A soma dos postos de A é 46, e a de B, 90. Juntas, dão 136, como no hospital.</li>
+<li><strong>Estatística U.</strong> <span class="math inline">\(U_A = 46 - 36 = 10\)</span>: em apenas 10 dos 64 duelos o visitante de A demorou mais. Nos outros 54, o visitante de A clicou antes.</li>
+<li><strong>Aproximação normal.</strong> <span class="math inline">\(Z \approx -2{,}26\)</span> e <span class="math inline">\(p \approx 0{,}024\)</span>. Não há tempos repetidos no layout, e a correção para empates vale zero.</li>
+</ul>
+<p>A segunda linha reproduz os números da seção 3, o que confirma que a função faz os mesmos passos que fizemos à mão.</p>
+<p>A função também calcula o <strong>δ de Cliff</strong>, o tamanho de efeito do Mann-Whitney. Assim como o <em>d</em> de Cohen mede o tamanho de uma diferença de médias, o δ mede o tamanho da dominância. Ele é a diferença entre duas proporções de duelos:</p>
+<p><span class="math display">\[
+\delta = P(A &gt; B) - P(A &lt; B) = \frac{U_A - U_B}{n_A n_B}
+\]</span></p>
+<p>No layout, A vence 10 dos 64 duelos (16%) e perde 54 (84%). O δ é <span class="math inline">\(0{,}16 - 0{,}84 \approx -0{,}69\)</span>. O valor varia de −1, quando todos os valores de A são menores, a +1, quando todos são maiores, e vale 0 quando nenhum grupo domina. Valores de <span class="math inline">\(|\delta|\)</span> acima de cerca de 0,47 costumam ser descritos como efeitos grandes. Aqui, o sinal negativo indica que A tende a ter tempos <strong>menores</strong>, e o tamanho indica um efeito grande.</p>
+<p>Comparamos com o teste de Welch:</p>
+<div id="71bbfc8e" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mann-Whitney e Welch no teste de layout</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>mw_layout <span class="op">=</span> stats.mannwhitneyu(layout_a, layout_b, method<span class="op">=</span><span class="st">"asymptotic"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>welch_layout <span class="op">=</span> stats.ttest_ind(layout_a, layout_b, equal_var<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"Mann-Whitney"</span>, mw_layout, stat<span class="op">=</span><span class="st">"U"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"t de Welch"</span>, welch_layout, stat<span class="op">=</span><span class="st">"t"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mann-Whitney: U = 10.000 · p = 0.024
+t de Welch: t = -0.995 · gl = 9.926 · p = 0.343</code></pre>
+</div>
+</div>
+<p><strong>Interpretação.</strong> Se os dois layouts fossem equivalentes, uma ordenação tão desequilibrada seria rara (<span class="math inline">\(p \approx 0{,}024\)</span>). Rejeitamos <span class="math inline">\(H_0\)</span>: visitantes do layout A tendem a clicar antes, com efeito grande.</p>
+<p>O teste de Welch conta outra história (<span class="math inline">\(p \approx 0{,}34\)</span>). O visitante de 14 segundos infla a média do layout A para 4,7 segundos, perto da média de B, e aumenta muito o desvio-padrão de A. Com o sinal menor e o ruído maior, a diferença desaparece na comparação de médias. Para a equipe de produto, a mensagem do Mann-Whitney é a mais útil: o visitante típico do layout A encontra o que procura mais rápido.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Os slides apresentam <span class="math inline">\(p = 0{,}021\)</span> para este caso. É o <em>p</em>-valor <strong>exato</strong>, obtido por permutação, um cálculo que não fazemos nesta aula. A aproximação normal dá um valor muito próximo, 0,024, e leva à mesma decisão.</p>
+</div>
+</div>
+</section>
+<section id="caso-2.-pearson-e-spearman" class="level1">
+<h1>5. Caso 2. Pearson e Spearman</h1>
+<p>Este caso corresponde ao <strong>caso 5 da aula teórica</strong> (slides 60 a 63). Aqui ele se concentra na comparação entre os coeficientes de Pearson e de Spearman. O coeficiente de Kendall, também apresentado nos slides, fica de fora deste roteiro.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cenário
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>No <code>mtcars</code>, carros mais potentes (<code>hp</code>) fazem menos milhas por galão (<code>mpg</code>). Mas a relação entre potência e consumo é uma reta ou só uma tendência que sempre desce? A escolha do coeficiente de correlação depende dessa resposta.</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: não há associação monotônica entre potência e consumo (<span class="math inline">\(\rho = 0\)</span>).</li>
+<li><span class="math inline">\(H_1\)</span>: há associação monotônica (<span class="math inline">\(\rho \neq 0\)</span>).</li>
+</ul>
+</div>
+</div>
+<p><strong>Premissas do teste</strong></p>
+<ul>
+<li>Pares de observações independentes entre si.</li>
+<li>Variáveis pelo menos ordinais, para que possam ser ordenadas.</li>
+<li>Relação <strong>monotônica</strong>: quando uma variável cresce, a outra sempre cresce ou sempre decresce, em linha reta ou não.</li>
+</ul>
+<div id="daa96443" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a base de carros</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">=</span> pd.read_csv(<span class="st">"mtcars/data/mtcars.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="os-dois-coeficientes" class="level2">
+<h2 class="anchored" data-anchor-id="os-dois-coeficientes">5.1 Os dois coeficientes</h2>
+<p>O coeficiente de <strong>Pearson</strong>, visto na Aula 8, mede o quanto os pontos seguem uma <strong>reta</strong>. Ele usa os valores originais e, por isso, é sensível à forma da relação e a valores extremos.</p>
+<p>O coeficiente de <strong>Spearman</strong> aplica a ideia dos postos à correlação. Cada variável é ordenada separadamente: o carro menos potente recebe o posto 1 em <code>hp</code>, e o menos econômico recebe o posto 1 em <code>mpg</code>. Depois, calculamos a correlação de Pearson entre essas posições. A pergunta deixa de ser “os pontos seguem uma reta?” e passa a ser “quando um carro sobe no ranking de potência, ele desce no ranking de consumo?”.</p>
+<p>Calculamos os dois coeficientes e, para mostrar que Spearman é de fato um Pearson sobre os postos, calculamos também o Pearson dos postos à mão:</p>
+<div id="8f2006b6" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="annotated-cell-22"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-22-1"><a href="#annotated-cell-22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson nos valores, Spearman e Pearson calculado sobre os postos</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-22-2" class="code-annotation-target"><a href="#annotated-cell-22-2" aria-hidden="true" tabindex="-1"></a>ranks_hp <span class="op">=</span> mtcars[<span class="st">"hp"</span>].rank()</span>
+<span id="annotated-cell-22-3"><a href="#annotated-cell-22-3" aria-hidden="true" tabindex="-1"></a>ranks_mpg <span class="op">=</span> mtcars[<span class="st">"mpg"</span>].rank()</span>
+<span id="annotated-cell-22-4"><a href="#annotated-cell-22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-22-5"><a href="#annotated-cell-22-5" aria-hidden="true" tabindex="-1"></a>pearson_values <span class="op">=</span> stats.pearsonr(mtcars[<span class="st">"hp"</span>], mtcars[<span class="st">"mpg"</span>])</span>
+<span id="annotated-cell-22-6"><a href="#annotated-cell-22-6" aria-hidden="true" tabindex="-1"></a>spearman <span class="op">=</span> stats.spearmanr(mtcars[<span class="st">"hp"</span>], mtcars[<span class="st">"mpg"</span>])</span>
+<span id="annotated-cell-22-7"><a href="#annotated-cell-22-7" aria-hidden="true" tabindex="-1"></a>pearson_ranks <span class="op">=</span> stats.pearsonr(ranks_hp, ranks_mpg)</span>
+<span id="annotated-cell-22-8"><a href="#annotated-cell-22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-22-9"><a href="#annotated-cell-22-9" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"Pearson (valores)"</span>, pearson_values, stat<span class="op">=</span><span class="st">"r"</span>)</span>
+<span id="annotated-cell-22-10"><a href="#annotated-cell-22-10" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"Spearman"</span>, spearman, stat<span class="op">=</span><span class="st">"ρ"</span>)</span>
+<span id="annotated-cell-22-11"><a href="#annotated-cell-22-11" aria-hidden="true" tabindex="-1"></a>report(<span class="st">"Pearson (postos)"</span>, pearson_ranks, stat<span class="op">=</span><span class="st">"r"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-22" data-code-lines="2" data-code-annotation="1">Por padrão, <code>.rank()</code> usa o posto médio nos empates, como na seção 3.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pearson (valores): r = -0.776 · p &lt; 0.001
+Spearman: ρ = -0.895 · p &lt; 0.001
+Pearson (postos): r = -0.895 · p &lt; 0.001</code></pre>
+</div>
+</div>
+<p>O Pearson dos valores dá <span class="math inline">\(r \approx -0{,}78\)</span>, uma correlação negativa forte. O Spearman dá <span class="math inline">\(\rho \approx -0{,}89\)</span>, ainda mais forte, e é exatamente o mesmo número que o Pearson calculado sobre os postos. Não há mágica no Spearman: ele é a correlação de sempre, aplicada às posições.</p>
+<p>Existe também uma fórmula clássica, construída a partir das diferenças <span class="math inline">\(d_i\)</span> entre os dois postos de cada carro. Veja três exemplos:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Carro</th>
+<th>Posto em <code>hp</code></th>
+<th>Posto em <code>mpg</code></th>
+<th><span class="math inline">\(d\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Honda Civic</td>
+<td>1 (menos potente)</td>
+<td>29,5 (entre os mais econômicos)</td>
+<td>−28,5</td>
+</tr>
+<tr class="even">
+<td>Merc 280</td>
+<td>16,5</td>
+<td>16,5</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>Maserati Bora</td>
+<td>32 (mais potente)</td>
+<td>6 (entre os menos econômicos)</td>
+<td>+26</td>
+</tr>
+</tbody>
+</table>
+<p>Se a associação fosse perfeitamente negativa, o carro com o posto 1 em potência teria o posto 32 em consumo, e assim por diante, e as diferenças seriam máximas. Se não houvesse associação, as diferenças seriam aleatórias. A fórmula resume tudo isso em um número entre −1 e +1:</p>
+<p><span class="math display">\[
+\rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}
+\]</span></p>
+<div id="e71c3365" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fórmula clássica de Spearman com as diferenças de postos</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> ranks_hp <span class="op">-</span> ranks_mpg</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(mtcars)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Σd² = </span><span class="sc">{</span>(d <span class="op">**</span> <span class="dv">2</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ρ pela fórmula = </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> <span class="dv">6</span> <span class="op">*</span> (d <span class="op">**</span> <span class="dv">2</span>)<span class="sc">.</span><span class="bu">sum</span>() <span class="op">/</span> (n <span class="op">*</span> (n <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>))<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Σd² = 10315.5
+ρ pela fórmula = -0.891</code></pre>
+</div>
+</div>
+<p>A fórmula dá −0,891, muito perto do valor do SciPy (−0,895). A pequena diferença vem dos empates: há carros com a mesma potência e outros com o mesmo consumo, e a fórmula clássica só é exata quando não há valores repetidos. Ela é útil para entender a lógica do coeficiente, mas, na prática, usamos <code>stats.spearmanr</code>, que trata os empates corretamente.</p>
+</section>
+<section id="valores-e-postos-lado-a-lado" class="level2">
+<h2 class="anchored" data-anchor-id="valores-e-postos-lado-a-lado">5.2 Valores e postos lado a lado</h2>
+<p>O gráfico mostra por que os coeficientes diferem. À esquerda, os valores originais. À direita, os postos das mesmas variáveis. Em cada painel, a reta laranja é a que melhor descreve os pontos:</p>
+<div id="8d0d74c1" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dispersão dos valores e dos postos, com a reta de mínimos quadrados</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">4.5</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>panels <span class="op">=</span> [</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    (mtcars[<span class="st">"hp"</span>], mtcars[<span class="st">"mpg"</span>], <span class="st">"Potência (hp)"</span>, <span class="st">"Consumo (mpg)"</span>, <span class="st">"Pearson"</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    (ranks_hp, ranks_mpg, <span class="st">"Posto da potência"</span>, <span class="st">"Posto do consumo"</span>, <span class="st">"Spearman"</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (x, y, xlabel, ylabel, name) <span class="kw">in</span> <span class="bu">zip</span>(axes, panels):</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    slope, intercept <span class="op">=</span> np.polyfit(x, y, deg<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    grid <span class="op">=</span> np.linspace(x.<span class="bu">min</span>(), x.<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    ax.scatter(x, y, color<span class="op">=</span><span class="st">"#1F4E79"</span>, alpha<span class="op">=</span><span class="fl">.8</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    ax.plot(grid, intercept <span class="op">+</span> slope <span class="op">*</span> grid, color<span class="op">=</span><span class="st">"#DD8452"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(xlabel<span class="op">=</span>xlabel, ylabel<span class="op">=</span>ylabel,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>           title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>stats<span class="sc">.</span>pearsonr(x, y)<span class="sc">.</span>statistic<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-25-output-1.png" width="1137" height="416" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Compare os dois painéis com calma:</p>
+<ul>
+<li><strong>Valores originais, à esquerda.</strong> Os pontos descem em curva: o consumo cai rápido entre os carros de baixa potência, até cerca de 150 hp, e depois se estabiliza. A reta não consegue acompanhar essa curva. Ela fica abaixo dos pontos nos dois extremos e acima deles no meio, e o Pearson perde força por isso.</li>
+<li><strong>Postos, à direita.</strong> A curva é “esticada”. Como os postos guardam só a ordem, as distâncias entre os carros de baixa potência e entre os de alta potência passam a valer o mesmo. Os pontos se alinham muito melhor ao longo da reta.</li>
+</ul>
+<p>A relação entre potência e consumo é a mesma nos dois painéis. O que muda é o que cada coeficiente pergunta. O Pearson pergunta se a relação é uma reta, e a resposta é “mais ou menos”. O Spearman pergunta se a ordem se mantém, e a resposta é “quase sempre”: mais potência quase sempre significa menos milhas por galão.</p>
+<p><strong>Interpretação.</strong> Se potência e consumo não tivessem associação, um <span class="math inline">\(\rho\)</span> tão forte seria praticamente impossível por acaso (<span class="math inline">\(p &lt; 0{,}001\)</span>). Rejeitamos <span class="math inline">\(H_0\)</span>: a associação é negativa, forte e monotônica. O Pearson subestima essa força porque mede só a parte linear de uma relação curva. Na Aula 8, vimos que transformar a potência em log aproxima o Pearson do Spearman, pelo mesmo motivo.</p>
+</section>
+<section id="quando-usar-cada-um" class="level2">
+<h2 class="anchored" data-anchor-id="quando-usar-cada-um">5.3 Quando usar cada um</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Pearson (<span class="math inline">\(r\)</span>)</th>
+<th>Spearman (<span class="math inline">\(\rho\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Usa</td>
+<td>Os valores</td>
+<td>Os postos</td>
+</tr>
+<tr class="even">
+<td>Mede</td>
+<td>Associação <strong>linear</strong></td>
+<td>Associação <strong>monotônica</strong></td>
+</tr>
+<tr class="odd">
+<td>Valores atípicos</td>
+<td>Muito sensível</td>
+<td>Influência limitada</td>
+</tr>
+<tr class="even">
+<td>Escala</td>
+<td>Intervalar ou razão</td>
+<td>Também ordinal</td>
+</tr>
+<tr class="odd">
+<td>Transformação crescente (log, raiz)</td>
+<td>Muda o coeficiente</td>
+<td>Não muda: a ordem é a mesma</td>
+</tr>
+<tr class="even">
+<td>Quando preferir</td>
+<td>Relação reta, dados sem extremos</td>
+<td>Relação curva, extremos ou escala ordinal</td>
+</tr>
+</tbody>
+</table>
+<p>Uma regra prática: calcule os dois coeficientes e compare. Se forem parecidos, a relação é aproximadamente linear, e o Pearson descreve bem os dados. Se o Spearman for bem mais forte, a relação provavelmente é curva ou há valores extremos influenciando o Pearson. Em qualquer caso, o gráfico de dispersão é obrigatório: nenhum coeficiente substitui olhar os dados.</p>
+</section>
+</section>
+<section id="guia-rápido" class="level1">
+<h1>6. Guia rápido</h1>
+<p>A tabela reúne os testes não paramétricos mais usados e o teste paramétrico que cada um substitui. Os testes marcados com ✓ foram trabalhados neste roteiro. Os demais foram apresentados na aula teórica e seguem a mesma lógica: trocam os valores pelos postos.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Desenho</th>
+<th>Paramétrico (Aula 8)</th>
+<th>Não paramétrico</th>
+<th>Python (<code>scipy.stats</code>)</th>
+<th>Tamanho de efeito</th>
+<th>Neste roteiro</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 amostra contra uma meta</td>
+<td><em>t</em> de uma amostra</td>
+<td>Wilcoxon de 1 amostra</td>
+<td><code>wilcoxon(x - meta)</code></td>
+<td><span class="math inline">\(r = z / \sqrt{n}\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2 grupos independentes</td>
+<td><em>t</em> de Welch</td>
+<td>Mann-Whitney U</td>
+<td><code>mannwhitneyu(x, y)</code></td>
+<td>δ de Cliff</td>
+<td>✓ seção 3 e caso 1</td>
+</tr>
+<tr class="odd">
+<td>2 grupos pareados (antes e depois)</td>
+<td><em>t</em> pareado</td>
+<td>Wilcoxon pareado</td>
+<td><code>wilcoxon(x, y)</code></td>
+<td><span class="math inline">\(r = z / \sqrt{n}\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>3 ou mais grupos independentes</td>
+<td>ANOVA one-way</td>
+<td>Kruskal-Wallis + Dunn</td>
+<td><code>kruskal(g1, g2, g3)</code></td>
+<td><span class="math inline">\(\eta^2_H\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Associação entre duas variáveis</td>
+<td>Pearson (<span class="math inline">\(r\)</span>)</td>
+<td>Spearman (<span class="math inline">\(\rho\)</span>) · Kendall (<span class="math inline">\(\tau\)</span>)</td>
+<td><code>spearmanr(x, y)</code> · <code>kendalltau(x, y)</code></td>
+<td>O próprio <span class="math inline">\(\rho\)</span> ou <span class="math inline">\(\tau\)</span></td>
+<td>✓ caso 2 (Spearman)</td>
+</tr>
+</tbody>
+</table>
+<p>Duas observações ajudam a usar a tabela:</p>
+<ul>
+<li><strong>Wilcoxon de 1 amostra e pareado.</strong> São o mesmo teste. No pareado, ele é aplicado às diferenças <span class="math inline">\(D_i = X_{2i} - X_{1i}\)</span> de cada par. Os postos são calculados sobre o tamanho das diferenças, <span class="math inline">\(|D_i|\)</span>, e depois recebem o sinal da diferença.</li>
+<li><strong>Kruskal-Wallis.</strong> Generaliza o Mann-Whitney para três ou mais grupos, como a ANOVA generaliza o teste <em>t</em>. Quando ele rejeita <span class="math inline">\(H_0\)</span>, o teste de Dunn, disponível no pacote <code>scikit_posthocs</code>, indica quais pares de grupos diferem, com correção para múltiplas comparações.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Conceito</th>
+<th>Resumo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Posto</td>
+<td>Posição na ordenação conjunta. Empates recebem o posto médio</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(W\)</span></td>
+<td>Soma dos postos de um grupo. As somas dos dois grupos totalizam <span class="math inline">\(N(N+1)/2\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(U\)</span></td>
+<td><span class="math inline">\(W - n(n+1)/2\)</span>: número de pares em que o grupo tem o maior valor, com meio ponto por empate</td>
+</tr>
+<tr class="even">
+<td>Aproximação normal</td>
+<td><span class="math inline">\(Z = (U_A - n_A n_B / 2 \pm 0{,}5) / \sigma_U\)</span>, com correção para empates. O <span class="math inline">\(\pm 0{,}5\)</span> aproxima <span class="math inline">\(U_A\)</span> do centro</td>
+</tr>
+<tr class="odd">
+<td>δ de Cliff</td>
+<td><span class="math inline">\((U_A - U_B)/(n_A n_B)\)</span>: tamanho de efeito entre −1 e +1</td>
+</tr>
+</tbody>
+</table>
+<section id="síntese" class="level2">
+<h2 class="anchored" data-anchor-id="síntese">Síntese</h2>
+<ol type="1">
+<li><strong>Postos preservam a ordem e limitam a magnitude.</strong> O paciente de 120 dias continua na análise, mas vale apenas uma posição.</li>
+<li><strong>Mann-Whitney mede dominância.</strong> <span class="math inline">\(U\)</span> conta, entre todos os pares de grupos diferentes, quantas vezes um grupo supera o outro.</li>
+<li><strong>A aproximação normal dá o <em>p</em>-valor.</strong> <span class="math inline">\(U\)</span> é padronizado pelo seu valor esperado e pelo seu desvio-padrão sob <span class="math inline">\(H_0\)</span>, como as estatísticas da Aula 8.</li>
+<li><strong>Cada teste responde à sua pergunta.</strong> O Welch pergunta pelas médias, e o Mann-Whitney, pela ordenação. Resultados diferentes não são contraditórios.</li>
+<li><strong>Spearman é Pearson sobre os postos.</strong> Ele capta relações monotônicas, curvas ou não, e é menos sensível a valores extremos.</li>
+<li><strong>Livre de distribuição não é livre de premissas.</strong> A independência das observações continua obrigatória.</li>
+</ol>
+</section>
+</section>
+<section id="perguntas-para-consolidar" class="level1">
+<h1>Perguntas para consolidar</h1>
+<p><strong>Pergunta 1: Mann-Whitney significante quer dizer medianas diferentes?</strong></p>
+<p>No exemplo do hospital, o Mann-Whitney rejeitou <span class="math inline">\(H_0\)</span>. Isso prova que a mediana de A é menor que a de B?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Não necessariamente. O Mann-Whitney mostra que os tempos de A <strong>tendem</strong> a ser menores nas comparações entre pacientes dos dois grupos. Essa tendência só equivale a uma diferença de medianas quando as duas distribuições têm a mesma forma e diferem apenas pela posição. No hospital, as formas são bem diferentes: A tem sete pacientes concentrados e um extremo, e B é um bloco compacto. Com formas diferentes, é possível ter dominância mesmo com medianas iguais.</p>
+</div>
+</div>
+</div>
+<p><strong>Pergunta 2: e se o paciente tivesse ficado 3.650 dias?</strong></p>
+<p>Se o paciente de 120 dias tivesse ficado 3.650 dias internado, o que aconteceria com o seu posto, com <span class="math inline">\(W_A\)</span>, com <span class="math inline">\(U\)</span> e com o <em>p</em>-valor do Mann-Whitney? E com o <em>p</em>-valor do Welch?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O posto continuaria sendo 16, porque ele já era o maior valor. Por isso, <span class="math inline">\(W_A = 46{,}5\)</span>, <span class="math inline">\(U_A = 10{,}5\)</span> e o <em>p</em>-valor do Mann-Whitney não mudariam. Já o Welch mudaria bastante: a média e o desvio-padrão de A ficariam ainda maiores, e o erro-padrão cresceria junto. A importância clínica de uma internação de dez anos, porém, não desaparece. Os postos limitam a influência da magnitude no teste, e não no significado do resultado.</p>
+</div>
+</div>
+</div>
+<p><strong>Pergunta 3: o paciente de 120 dias mudou a conclusão?</strong></p>
+<p>Pela média, não rejeitamos a igualdade. Pela ordenação, A tende a tempos menores. Pelos leitos, A consumiu 140 dias contra 50 de B. Qual dessas leituras está certa?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Todas estão certas, porque respondem a perguntas diferentes. Se a pergunta é sobre o paciente típico, a ordenação mostra que A leva a altas mais rápidas. Se a pergunta é sobre a ocupação total de leitos, o total de dias mostra que A foi mais custoso. Um único paciente pode mudar a conclusão quando a pergunta é sobre médias. A exceção não é um erro a descartar: ela entra de formas diferentes em cada medida.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="para-casa" class="level1">
+<h1>Para casa</h1>
+<ol type="1">
+<li>No exemplo do hospital, meça o tempo em horas e, depois, aplique o log aos dias. Em cada caso, o <em>p</em>-valor do Welch muda? E o do Mann-Whitney? Explique o resultado pela ordem dos valores.</li>
+<li>Use <code>mann_whitney_steps</code> para comparar a massa corporal de pinguins machos e fêmeas da espécie Adelie (Aula 8). Compare o <em>p</em>-valor com o do teste de Welch e o δ de Cliff com a diferença de médias.</li>
+<li>No <code>mtcars</code>, compare Pearson e Spearman entre o peso (<code>wt</code>) e o consumo (<code>mpg</code>). Os coeficientes divergem tanto quanto no caso 2? O que isso indica sobre a forma da relação?</li>
+<li>Antes de considerar o notebook pronto, use Restart Kernel and Run All.</li>
+</ol>
+<section id="referências" class="level2">
+<h2 class="anchored" data-anchor-id="referências">Referências</h2>
+<ol type="1">
+<li>Mann, H. B.; Whitney, D. R. On a test of whether one of two random variables is stochastically larger than the other. <em>Annals of Mathematical Statistics</em>, 18(1), 50-60, 1947.</li>
+<li>Spearman, C. The proof and measurement of association between two things. <em>American Journal of Psychology</em>, 15(1), 72-101, 1904.</li>
+<li>Cliff, N. Dominance statistics: ordinal analyses to answer ordinal questions. <em>Psychological Bulletin</em>, 114(3), 494-509, 1993.</li>
+<li>Bruce, P.; Bruce, A.; Gedeck, P. <em>Practical Statistics for Data Scientists</em>. 2. ed.&nbsp;O’Reilly, 2020.</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/data-science\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/09-testes-nao-parametricos.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>

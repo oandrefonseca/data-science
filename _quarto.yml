@@ -36,6 +36,8 @@ website:
             href: aulas/07-inferencia-estatistica.qmd
           - text: "8. Testes Paramétricos"
             href: aulas/08-testes-parametricos.qmd
+          - text: "9. Testes Não Paramétricos"
+            href: aulas/09-testes-nao-parametricos.qmd
 
 language:
   title-block-author-single: "Autor"

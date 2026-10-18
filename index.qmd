@@ -31,6 +31,9 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 8 - Testes Paramétricos](aulas/08-testes-parametricos.qmd)\
   Premissas e diagnóstico de normalidade, escolha do teste e sete casos: *t* de uma amostra, Welch, pareado, ANOVA, Pearson, *Z* de proporções e qui-quadrado.
 
+- [Aula 9 - Testes Não Paramétricos](aulas/09-testes-nao-parametricos.qmd)\
+  Postos e empates, teste de Mann-Whitney passo a passo com aproximação normal, δ de Cliff e comparação entre as correlações de Pearson e Spearman.
+
 ::: {.callout-tip}
 ## Como usar este material
 

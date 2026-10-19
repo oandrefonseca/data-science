@@ -547,7 +547,41 @@ Somar os postos e contar os duelos dão os mesmos valores: $U_A = 46{,}5 - 36 = 
 
 ## 3.9 O *p*-valor pela aproximação normal
 
-Para saber quão raro é $U_A = 10{,}5$, usamos um atalho que já conhecemos da Aula 8. Quando $H_0$ é verdadeira, os valores que $U_A$ pode assumir formam uma distribuição com **forma de sino**, muito parecida com a curva normal. E, para usar uma curva normal, basta conhecer duas coisas: o seu **centro** e a sua **largura**. Com elas, o *p*-valor sai de uma área sob a curva, sem nenhuma simulação. O cálculo tem quatro passos.
+Para saber quão raro é $U_A = 10{,}5$, precisamos saber como $U_A$ se distribui quando $H_0$ é verdadeira. Os valores extremos de $U_A$, perto de 0 ou de 64, são raros, porque exigem que um grupo fique com todos os menores ou todos os maiores tempos. Os valores perto do centro, 32, são comuns, porque podem ser formados de muitas maneiras. Por isso, a distribuição de $U_A$ tem **forma de sino** e pode ser aproximada por uma curva normal, como vimos na seção 2.2.
+
+A figura mostra essa distribuição. Cada barra indica em quantas das 12.870 formas de escolher 8 dos 16 pacientes para o grupo A aparece cada valor de $U_A$. A curva sobreposta é a normal que usaremos nos passos a seguir:
+
+```{python}
+#| echo: false
+
+from itertools import combinations
+
+all_ranks = ranked["posto"].to_numpy()
+u_values = np.array([all_ranks[list(c)].sum() - 36 for c in combinations(range(16), 8)])
+counts = pd.Series(u_values).value_counts().sort_index()
+
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.bar(counts.index, counts.values, width=0.45, color="#A1C9F4")
+grid = np.linspace(0, 64, 400)
+ax.plot(grid, stats.norm.pdf(grid, 32, u_values.std()) * len(u_values) * 0.5,
+        color="#1F4E79", linewidth=2, label="curva normal aproximada")
+for x, text in [(0, "U_A = 0\nA fica com os\n8 menores tempos"),
+                (32, "U_A = 32\ncentro: nenhum\ntratamento domina"),
+                (64, "U_A = 64\nA fica com os\n8 maiores tempos")]:
+    ax.vlines(x, 0, counts.max() * 1.03, color="#DD8452", linestyle="--")
+    ax.annotate(text, xy=(x, counts.max() * 1.08), ha="center", va="bottom", fontsize=9,
+                color="#DD8452")
+ax.set(xlabel="U_A", ylabel="Número de formas", xlim=(-6, 70), ylim=(0, counts.max() * 1.5),
+       xticks=[0, 8, 16, 24, 32, 40, 48, 56, 64])
+ax.legend(loc="center left", bbox_to_anchor=(0.01, 0.45))
+plt.tight_layout()
+plt.show()
+
+```
+
+Nas pontas, em $U_A = 0$ e $U_A = 64$, as barras quase desaparecem: cada extremo só pode ser formado de uma ou poucas maneiras. Perto de 32, as barras são as mais altas. O desenho resultante é um sino, e a curva normal acompanha bem o seu contorno.
+
+Para usar a curva normal, basta conhecer o seu **centro** e a sua **largura**. Com eles, o *p*-valor é uma área sob a curva. O cálculo tem quatro passos.
 
 **1. Média esperada: onde fica o centro?** Sob $H_0$, nenhum tratamento tende a tempos menores, e cada duelo tem a mesma chance de favorecer qualquer lado, como uma moeda honesta. Dos 64 duelos, espera-se metade para cada grupo:
 

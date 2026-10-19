@@ -362,7 +362,7 @@ Como usar este roteiro
 <section id="preparando-o-ambiente" class="level1">
 <h1>1. Preparando o ambiente</h1>
 <p>Começamos pelas bibliotecas e pela função <code>report</code>, já usada na Aula 8, que resume o resultado de um teste em uma linha. Os dados de cada exemplo são apresentados na seção em que são usados.</p>
-<div id="ef90ace6" class="cell" data-execution_count="1">
+<div id="3add1a0f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -373,7 +373,7 @@ Como usar este roteiro
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="af1d21cd" class="cell" data-execution_count="2">
+<div id="447aeaa6" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resume o resultado de um teste em uma linha legível</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> report(name, result, stat<span class="op">=</span><span class="st">"estatística"</span>):</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    parts <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>stat<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>result<span class="sc">.</span>statistic<span class="sc">:.3f}</span><span class="ss">"</span>]</span>
@@ -404,7 +404,7 @@ z = \frac{x - \mu}{\sigma}
 <p>Para 190 cm, <span class="math inline">\(z = (190 - 170)/10 = +2\)</span>: a pessoa está dois desvios-padrão acima da média. Para 155 cm, <span class="math inline">\(z = (155 - 170)/10 = -1{,}5\)</span>: um desvio-padrão e meio abaixo. O sinal indica o lado, e o tamanho indica a distância. Foi exatamente essa conta que o <code>StandardScaler</code> da Aula 6 fez com cada coluna.</p>
 <p><strong>Uma curva para todas as normais.</strong> Distribuições normais podem ter qualquer média e qualquer desvio-padrão: alturas em centímetros, tempos em segundos, notas de prova. Mas, depois de padronizadas, todas viram <strong>a mesma curva</strong>, com média 0 e desvio-padrão 1. Essa é a distribuição normal padrão. A vantagem é enorme: em vez de uma tabela para cada normal, basta conhecer uma única curva.</p>
 <p><strong>A regra 68-95-99,7.</strong> Na normal padrão, a área sob a curva entre dois valores é a probabilidade de observar um valor nesse intervalo. Três faixas valem a pena memorizar:</p>
-<div id="94a92ba2" class="cell" data-execution_count="3">
+<div id="ed218a4b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normal padrão com as faixas de 1, 2 e 3 desvios-padrão</span></span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">400</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-3" class="code-annotation-target"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> stats.norm.pdf(grid)</span>
@@ -438,7 +438,7 @@ z = \frac{x - \mu}{\sigma}
 </div>
 <p>Cerca de 68% dos valores ficam a menos de 1 desvio-padrão da média, 95% a menos de 2, e 99,7% a menos de 3. Daí vem a regra prática da Aula 7: sob o acaso, uma estatística padronizada quase nunca passa de 2. Valores além de 3 são raríssimos.</p>
 <p><strong>Área é probabilidade.</strong> O SciPy oferece três funções para trabalhar com essas áreas:</p>
-<div id="8533d60e" class="cell" data-execution_count="4">
+<div id="c6fef662" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Áreas da normal padrão e o caminho inverso, da área para o z</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Z ≤ −2) = </span><span class="sc">{</span>stats<span class="sc">.</span>norm<span class="sc">.</span>cdf(<span class="op">-</span><span class="dv">2</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Z ≥ +2) = </span><span class="sc">{</span>stats<span class="sc">.</span>norm<span class="sc">.</span>sf(<span class="dv">2</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
@@ -520,7 +520,7 @@ p = 2 \times P(Z \leq -|z|)
 <section id="os-dados" class="level2">
 <h2 class="anchored" data-anchor-id="os-dados">3.1 Os dados</h2>
 <p>O hospital acompanhou oito pacientes em cada tratamento e registrou quantos dias cada um ficou internado. Como os dados são poucos, eles são digitados diretamente no roteiro:</p>
-<div id="c95a1517" class="cell" data-execution_count="5">
+<div id="e2f0c2d8" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tempos de internação dos dois tratamentos, em dias</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>days_a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">120</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>days_b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]</span>
@@ -533,7 +533,7 @@ p = 2 \times P(Z \leq -|z|)
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Antes de qualquer medida, vale <strong>olhar</strong> para os dados. No gráfico abaixo, cada ponto é um paciente. O painel de cima mostra a escala completa, de 0 a 120 dias. O de baixo amplia a faixa de 0 a 10 dias, onde estão quase todos os pacientes:</p>
-<div id="4c2fba31" class="cell" data-execution_count="6">
+<div id="5874e3cb" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cada paciente em um ponto: escala completa e ampliação de 0 a 10 dias</span></span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>), height_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="fl">1.4</span>])</span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -576,7 +576,7 @@ p = 2 \times P(Z \leq -|z|)
 <section id="as-distribuições-de-cada-grupo" class="level2">
 <h2 class="anchored" data-anchor-id="as-distribuições-de-cada-grupo">3.2 As distribuições de cada grupo</h2>
 <p>O gráfico de pontos mostra cada paciente. Para enxergar a <strong>forma</strong> de cada distribuição, usamos histogramas, um para cada tratamento. Há um obstáculo: com o paciente de 120 dias no mesmo eixo, todas as outras barras ficariam espremidas no início do gráfico. Por isso, o eixo horizontal é <strong>interrompido</strong>. O trecho da esquerda mostra de 0 a 10 dias, e o da direita, de 115 a 125 dias. Cada barra tem a largura de um dia, e as linhas marcam a média e a mediana:</p>
-<div id="efc5ef32" class="cell" data-execution_count="7">
+<div id="ca1cbd9c" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogramas com o eixo interrompido entre 10 e 115 dias</span></span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">5</span>), sharey<span class="op">=</span><span class="va">True</span>,</span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>                         gridspec_kw<span class="op">=</span>{<span class="st">"width_ratios"</span>: [<span class="dv">4</span>, <span class="dv">1</span>]})</span>
@@ -635,7 +635,7 @@ p = 2 \times P(Z \leq -|z|)
 <section id="assimetria-e-medidas-resumo" class="level2">
 <h2 class="anchored" data-anchor-id="assimetria-e-medidas-resumo">3.3 Assimetria e medidas-resumo</h2>
 <p>O histograma mostrou a forma de cada grupo. Agora, descrevemos essa forma com números. O coeficiente de assimetria da Aula 5 transforma em número o que o histograma mostrou:</p>
-<div id="968a9a91" class="cell" data-execution_count="8">
+<div id="4997f644" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coeficiente de assimetria de cada grupo</span></span>
 <span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> group <span class="kw">in</span> [<span class="st">"A"</span>, <span class="st">"B"</span>]:</span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> group, <span class="st">"dias"</span>]</span>
@@ -691,7 +691,7 @@ Tratamento B: assimetria = 0.37</code></pre>
 </table>
 <p>Por que a assimetria de A é tão grande? A fórmula da Aula 5 eleva ao <strong>cubo</strong> a distância de cada valor até a média. O cubo tem duas propriedades importantes: preserva o sinal, então valores abaixo da média contribuem negativamente e valores acima, positivamente; e amplia muito as distâncias grandes. Em A, os sete pacientes de 1 a 5 dias ficam abaixo da média de 17,5 dias, a uma distância de 12 a 16 dias, e somam juntos cerca de −22 mil. O paciente de 120 dias está a 102,5 dias da média, e o cubo dessa distância passa de <strong>1 milhão</strong>. Sozinho, ele determina o resultado. Sem ele, a assimetria dos outros sete pacientes cairia para cerca de 0,27, um valor de distribuição praticamente simétrica.</p>
 <p>O sinal positivo também combina com a relação entre média e mediana vista na Aula 5: em uma distribuição com cauda à direita, a média é puxada pela cauda e fica <strong>acima</strong> da mediana. Em B, a diferença é pequena (6,25 contra 6). Em A, ela é enorme (17,5 contra 3). É exatamente o tipo de dado em que média e desvio-padrão deixam de representar bem o grupo. As medidas-resumo confirmam:</p>
-<div id="ba59e486" class="cell" data-execution_count="9">
+<div id="fdbf490f" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média, desvio-padrão, mediana e total de dias por tratamento</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>uti_summary <span class="op">=</span> (</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    uti</span>
@@ -702,7 +702,7 @@ Tratamento B: assimetria = 0.37</code></pre>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>uti_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="229">
+<div class="cell-output cell-output-display" data-execution_count="305">
 <div>
 
 
@@ -756,7 +756,7 @@ Tratamento B: assimetria = 0.37</code></pre>
 <section id="o-que-diz-a-comparação-de-médias" class="level2">
 <h2 class="anchored" data-anchor-id="o-que-diz-a-comparação-de-médias">3.4 O que diz a comparação de médias</h2>
 <p>Aplicamos o teste de Welch da Aula 8:</p>
-<div id="95116fc9" class="cell" data-execution_count="10">
+<div id="e455d22f" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste t de Welch comparando os tempos médios</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>group_a <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"dias"</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>group_b <span class="op">=</span> uti.loc[uti[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"B"</span>, <span class="st">"dias"</span>]</span>
@@ -787,7 +787,7 @@ Tratamento B: assimetria = 0.37</code></pre>
 <li><strong>Resolver os empates.</strong> Valores iguais recebem a média das posições que ocupam. Os três pacientes com 5 dias, por exemplo, ocupam as posições 8, 9 e 10 e recebem, cada um, o posto <span class="math inline">\((8 + 9 + 10)/3 = 9\)</span>.</li>
 </ol>
 <p>Fazemos cada passo separadamente e, no fim, reunimos tudo em uma única tabela:</p>
-<div id="49baee01" class="cell" data-execution_count="11">
+<div id="398ffcfb" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Passo 1: juntar os 16 pacientes e ordenar do menor para o maior tempo</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-2" class="code-annotation-target"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>uti_sorted <span class="op">=</span> uti.sort_values(<span class="st">"dias"</span>, kind<span class="op">=</span><span class="st">"stable"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -817,7 +817,7 @@ Tratamento B: assimetria = 0.37</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="231">
+<div class="cell-output cell-output-display" data-execution_count="307">
 <div>
 
 
@@ -947,7 +947,7 @@ Os postos são uma espécie de normalização?
 <li><strong>Como o log, reduzem a influência dos extremos</strong>, só que de forma muito mais radical. A distância entre vizinhos passa a ser sempre 1, e só a ordem permanece.</li>
 </ul>
 <p>O gráfico compara os 16 pacientes em três escalas: os dias originais, o log dos dias e os postos.</p>
-<div id="c9696d1d" class="cell" data-execution_count="12">
+<div id="1ebb3c6c" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os mesmos 16 pacientes em três escalas: dias, log dos dias e postos</span></span>
 <span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a>scales <span class="op">=</span> {</span>
 <span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Dias"</span>: ranked[<span class="st">"dias"</span>],</span>
@@ -998,7 +998,7 @@ Os postos são uma espécie de normalização?
 <p>Com os postos definidos, podemos comparar os grupos de uma forma muito intuitiva: promovendo “duelos”. Cada paciente de A enfrenta cada paciente de B, e em cada duelo perguntamos apenas quem ficou mais tempo internado. Com 8 pacientes em cada grupo, são <span class="math inline">\(n_A \times n_B = 8 \times 8 = 64\)</span> duelos.</p>
 <p>Em cada duelo, só importa <strong>quem</strong> ficou mais tempo, e não por quantos dias. O paciente de 120 dias vence todos os seus duelos, mas cada vitória vale o mesmo que a de um paciente que ficou apenas um dia a mais. Por isso, comparar os dias ou os postos dá exatamente o mesmo resultado.</p>
 <p>Na matriz, cada linha é um paciente de A, e cada coluna, um paciente de B. O símbolo em cada célula indica o resultado do duelo do ponto de vista de A:</p>
-<div id="6af6c3b7" class="cell" data-execution_count="13">
+<div id="87fc2759" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparação de cada paciente de A com cada paciente de B</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-2" class="code-annotation-target"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>duels <span class="op">=</span> np.sign(np.subtract.outer(days_a, days_b))</span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1033,7 +1033,7 @@ Os postos são uma espécie de normalização?
 </div>
 </div>
 <p>A estatística <span class="math inline">\(U\)</span> conta esses pares. <span class="math inline">\(U_A\)</span> é o número de pares em que o paciente de A fica <strong>mais</strong> tempo, e cada empate vale meio ponto. <span class="math inline">\(U_B\)</span> faz o mesmo para B:</p>
-<div id="597c39ce" class="cell" data-execution_count="14">
+<div id="5a275dfc" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contagem dos pares e estatísticas U de cada grupo</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>n_a, n_b <span class="op">=</span> <span class="bu">len</span>(days_a), <span class="bu">len</span>(days_b)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>a_less, ties_ab, a_more <span class="op">=</span> (duels <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (duels <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (duels <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>()</span>
@@ -1104,7 +1104,7 @@ U_B = 52 + \tfrac{1}{2} \times 3 = 53{,}5
 <section id="o-atalho-pela-soma-dos-postos" class="level2">
 <h2 class="anchored" data-anchor-id="o-atalho-pela-soma-dos-postos">3.8 O atalho pela soma dos postos</h2>
 <p>Contar os 64 duelos à mão é trabalhoso, e com amostras maiores seria inviável: dois grupos de 100 observações gerariam 10.000 duelos. Felizmente, a mesma estatística pode ser obtida de forma muito mais simples, somando os postos de cada grupo. Antes, vejamos como os postos se distribuem em A e em B:</p>
-<div id="a6bd12c1" class="cell" data-execution_count="15">
+<div id="9d3fd6ec" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma dos postos de cada tratamento</span></span>
 <span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1139,7 +1139,7 @@ U_B = 52 + \tfrac{1}{2} \times 3 = 53{,}5
 <p><span class="math display">\[
 U_A = W_A - \frac{n_A(n_A + 1)}{2}
 \]</span></p>
-<div id="af83c4e6" class="cell" data-execution_count="16">
+<div id="aaafbf43" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Soma dos postos de cada grupo e U pela fórmula</span></span>
 <span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>w_a <span class="op">=</span> ranked.loc[ranked[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"posto"</span>].<span class="bu">sum</span>()</span>
 <span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a>w_b <span class="op">=</span> ranked.loc[ranked[<span class="st">"tratamento"</span>] <span class="op">==</span> <span class="st">"B"</span>, <span class="st">"posto"</span>].<span class="bu">sum</span>()</span>
@@ -1167,7 +1167,19 @@ U_B = 89.5 − 36.0 = 53.5</code></pre>
 </section>
 <section id="o-p-valor-pela-aproximação-normal" class="level2">
 <h2 class="anchored" data-anchor-id="o-p-valor-pela-aproximação-normal">3.9 O <em>p</em>-valor pela aproximação normal</h2>
-<p>Para saber quão raro é <span class="math inline">\(U_A = 10{,}5\)</span>, usamos um atalho que já conhecemos da Aula 8. Quando <span class="math inline">\(H_0\)</span> é verdadeira, os valores que <span class="math inline">\(U_A\)</span> pode assumir formam uma distribuição com <strong>forma de sino</strong>, muito parecida com a curva normal. E, para usar uma curva normal, basta conhecer duas coisas: o seu <strong>centro</strong> e a sua <strong>largura</strong>. Com elas, o <em>p</em>-valor sai de uma área sob a curva, sem nenhuma simulação. O cálculo tem quatro passos.</p>
+<p>Para saber quão raro é <span class="math inline">\(U_A = 10{,}5\)</span>, precisamos saber como <span class="math inline">\(U_A\)</span> se distribui quando <span class="math inline">\(H_0\)</span> é verdadeira. Os valores extremos de <span class="math inline">\(U_A\)</span>, perto de 0 ou de 64, são raros, porque exigem que um grupo fique com todos os menores ou todos os maiores tempos. Os valores perto do centro, 32, são comuns, porque podem ser formados de muitas maneiras. Por isso, a distribuição de <span class="math inline">\(U_A\)</span> tem <strong>forma de sino</strong> e pode ser aproximada por uma curva normal, como vimos na seção 2.2.</p>
+<p>A figura mostra essa distribuição. Cada barra indica em quantas das 12.870 formas de escolher 8 dos 16 pacientes para o grupo A aparece cada valor de <span class="math inline">\(U_A\)</span>. A curva sobreposta é a normal que usaremos nos passos a seguir:</p>
+<div id="8f7645bb" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-18-output-1.png" width="945" height="367" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Nas pontas, em <span class="math inline">\(U_A = 0\)</span> e <span class="math inline">\(U_A = 64\)</span>, as barras quase desaparecem: cada extremo só pode ser formado de uma ou poucas maneiras. Perto de 32, as barras são as mais altas. O desenho resultante é um sino, e a curva normal acompanha bem o seu contorno.</p>
+<p>Para usar a curva normal, basta conhecer o seu <strong>centro</strong> e a sua <strong>largura</strong>. Com eles, o <em>p</em>-valor é uma área sob a curva. O cálculo tem quatro passos.</p>
 <p><strong>1. Média esperada: onde fica o centro?</strong> Sob <span class="math inline">\(H_0\)</span>, nenhum tratamento tende a tempos menores, e cada duelo tem a mesma chance de favorecer qualquer lado, como uma moeda honesta. Dos 64 duelos, espera-se metade para cada grupo:</p>
 <p><span class="math display">\[
 \mu_U = \frac{n_A n_B}{2} = \frac{64}{2} = 32
@@ -1188,7 +1200,7 @@ p = 2 \times P(Z \leq -|Z|)
 \]</span></p>
 <p>O <span class="math inline">\(+0{,}5\)</span> é a <strong>correção de continuidade</strong>. <span class="math inline">\(U\)</span> é uma contagem e só assume valores em saltos de meio ponto, como 10, 10,5 e 11. A curva normal, por outro lado, é contínua. Para que a curva represente bem a contagem, deslocamos <span class="math inline">\(U_A\)</span> meio ponto <strong>em direção ao centro</strong>, o que torna o teste um pouco mais conservador. Como aqui <span class="math inline">\(U_A\)</span> está abaixo de <span class="math inline">\(\mu_U\)</span>, somamos 0,5. Se estivesse acima, subtrairíamos.</p>
 <p>O fator 2 no <em>p</em>-valor vem do teste bilateral: um <span class="math inline">\(U_A\)</span> tão afastado do centro <strong>para cima</strong>, como o espelho 53,5, seria tão surpreendente quanto o observado, e as duas caudas entram na conta.</p>
-<div id="4b2635fd" class="cell" data-execution_count="17">
+<div id="e63ec990" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os quatro passos da aproximação normal</span></span>
 <span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>mu_u <span class="op">=</span> n_a <span class="op">*</span> n_b <span class="op">/</span> <span class="dv">2</span></span>
 <span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a>sd_no_ties <span class="op">=</span> np.sqrt(n_a <span class="op">*</span> n_b <span class="op">*</span> (N <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">12</span>)</span>
@@ -1236,7 +1248,7 @@ p = 2 \times P(Z \leq -|Z|)
 <li><strong><em>p</em>-valor.</strong> Como vimos na tabela da seção 2.2, um <span class="math inline">\(|Z|\)</span> de 2,22 deixa cerca de 1,3% em cada cauda. Somando as duas, <span class="math inline">\(p \approx 0{,}0265\)</span>.</li>
 </ul>
 <p>A figura mostra a curva normal na escala de <span class="math inline">\(U_A\)</span>, com o <span class="math inline">\(Z\)</span> correspondente no eixo de baixo. As áreas em laranja são as duas caudas do <em>p</em>-valor, além do valor observado (10,5) e do seu espelho (53,5), à mesma distância do centro:</p>
-<div id="3df6172d" class="cell" data-execution_count="18">
+<div id="0fabc68c" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="annotated-cell-17"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-17-1"><a href="#annotated-cell-17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curva normal de U sob H0, com as duas caudas do p-valor</span></span>
 <span id="annotated-cell-17-2"><a href="#annotated-cell-17-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, n_a <span class="op">*</span> n_b, <span class="dv">400</span>)</span>
 <span id="annotated-cell-17-3"><a href="#annotated-cell-17-3" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> stats.norm.pdf(grid, mu_u, sd_u)</span>
@@ -1268,13 +1280,13 @@ p = 2 \times P(Z \leq -|Z|)
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="09-testes-nao-parametricos_files/figure-html/cell-19-output-1.png" width="849" height="355" class="figure-img"></p>
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-20-output-1.png" width="849" height="355" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>O SciPy faz todo o cálculo com <code>stats.mannwhitneyu</code>:</p>
-<div id="bf6b5457" class="cell" data-execution_count="19">
+<div id="6ddd7c48" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="annotated-cell-18"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mann-Whitney pela aproximação normal no SciPy</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-2" class="code-annotation-target"><a href="#annotated-cell-18-2" aria-hidden="true" tabindex="-1"></a>mw_uti <span class="op">=</span> stats.mannwhitneyu(group_a, group_b, method<span class="op">=</span><span class="st">"asymptotic"</span>)</span>
 <span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1306,7 +1318,7 @@ Teste bilateral ou unilateral?
 <div class="callout-body-container callout-body">
 <p>Até aqui, usamos o teste <strong>bilateral</strong>: a hipótese alternativa diz apenas que um dos tratamentos tende a tempos menores, qualquer que seja. Por isso, o <em>p</em>-valor soma as duas caudas da curva. Um <span class="math inline">\(U_A\)</span> tão afastado de 32 <strong>para cima</strong>, como o espelho 53,5, seria tão surpreendente quanto o observado.</p>
 <p>Às vezes, a pergunta tem uma direção definida desde o início. Se o hospital quisesse testar apenas se A <strong>reduz</strong> o tempo de internação, a alternativa seria unilateral: “A tende a tempos menores que B”. Nesse caso, só a cauda do lado previsto conta como evidência. O SciPy controla a direção com o argumento <code>alternative</code>:</p>
-<div id="bd3754b5" class="cell" data-execution_count="20">
+<div id="42d5d075" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># O mesmo teste com as três hipóteses alternativas possíveis</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> alternative, h1 <span class="kw">in</span> [(<span class="st">"two-sided"</span>, <span class="st">"A e B diferem"</span>),</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                        (<span class="st">"less"</span>, <span class="st">"A tende a tempos menores"</span>),</span>
@@ -1321,7 +1333,7 @@ Teste bilateral ou unilateral?
 </div>
 </div>
 <p>A figura mostra as áreas que formam cada <em>p</em>-valor:</p>
-<div id="86534d16" class="cell" data-execution_count="21">
+<div id="c322e650" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Área do p-valor no teste bilateral e no unilateral à esquerda</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">400</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>density <span class="op">=</span> stats.norm.pdf(grid)</span>
@@ -1340,7 +1352,7 @@ Teste bilateral ou unilateral?
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="09-testes-nao-parametricos_files/figure-html/cell-22-output-1.png" width="1041" height="320" class="figure-img"></p>
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-23-output-1.png" width="1041" height="320" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1453,13 +1465,13 @@ Cenário
 <li>Variável resposta pelo menos ordinal, para que os valores possam ser ordenados.</li>
 <li>Para interpretar o resultado como diferença de localização, as duas distribuições devem ter formas semelhantes.</li>
 </ul>
-<div id="6687c4f9" class="cell" data-execution_count="22">
+<div id="faceff63" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Segundos até o primeiro clique em cada layout</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>layout_a <span class="op">=</span> [<span class="fl">2.1</span>, <span class="fl">2.8</span>, <span class="fl">3.0</span>, <span class="fl">3.4</span>, <span class="fl">3.7</span>, <span class="fl">4.2</span>, <span class="fl">4.6</span>, <span class="fl">14.0</span>]</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>layout_b <span class="op">=</span> [<span class="fl">3.9</span>, <span class="fl">4.8</span>, <span class="fl">5.0</span>, <span class="fl">5.8</span>, <span class="fl">6.1</span>, <span class="fl">6.9</span>, <span class="fl">7.7</span>, <span class="fl">9.5</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>O gráfico mostra cada visitante:</p>
-<div id="ae584ed0" class="cell" data-execution_count="23">
+<div id="9ca4b5da" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tempo até o primeiro clique por layout</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>clicks <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"layout"</span>: [<span class="st">"A"</span>] <span class="op">*</span> <span class="dv">8</span> <span class="op">+</span> [<span class="st">"B"</span>] <span class="op">*</span> <span class="dv">8</span>, <span class="st">"segundos"</span>: layout_a <span class="op">+</span> layout_b}</span>
@@ -1476,14 +1488,14 @@ Cenário
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="09-testes-nao-parametricos_files/figure-html/cell-24-output-1.png" width="561" height="416" class="figure-img"></p>
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-25-output-1.png" width="561" height="416" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>A caixa do layout A fica inteira abaixo da mediana do B, com um único ponto isolado em 14 segundos. Talvez esse visitante tenha se distraído, atendido o telefone ou demorado para encontrar o botão. Não sabemos, e não temos motivo para descartá-lo. É a mesma situação do hospital: um grupo concentrado em valores baixos e um único valor extremo. Por isso, é um bom momento para verificar se você consegue repetir sozinho o raciocínio da seção 3.</p>
 <p>Como vamos repetir todos os passos da seção 3, eles ficam reunidos em uma função. Aplicamos a função ao teste de layout e, para conferir, ao exemplo do hospital:</p>
-<div id="56e22bf9" class="cell" data-execution_count="24">
+<div id="2a032007" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="annotated-cell-21"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Postos, U, z e p-valor pela aproximação normal</span></span>
 <span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mann_whitney_steps(a, b):</span>
 <span id="annotated-cell-21-3"><a href="#annotated-cell-21-3" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> pd.Series(<span class="bu">list</span>(a) <span class="op">+</span> <span class="bu">list</span>(b))</span>
@@ -1528,7 +1540,7 @@ W_A = 46.5 · W_B = 89.5 · U_A = 10.5 · Z = -2.22 · p = 0.0265 · δ = -0.67<
 \]</span></p>
 <p>No layout, A vence 10 dos 64 duelos (16%) e perde 54 (84%). O δ é <span class="math inline">\(0{,}16 - 0{,}84 \approx -0{,}69\)</span>. O valor varia de −1, quando todos os valores de A são menores, a +1, quando todos são maiores, e vale 0 quando nenhum grupo domina. Valores de <span class="math inline">\(|\delta|\)</span> acima de cerca de 0,47 costumam ser descritos como efeitos grandes. Aqui, o sinal negativo indica que A tende a ter tempos <strong>menores</strong>, e o tamanho indica um efeito grande.</p>
 <p>Comparamos com o teste de Welch:</p>
-<div id="b99117d1" class="cell" data-execution_count="25">
+<div id="cb682a6d" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mann-Whitney e Welch no teste de layout</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mw_layout <span class="op">=</span> stats.mannwhitneyu(layout_a, layout_b, method<span class="op">=</span><span class="st">"asymptotic"</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1583,7 +1595,7 @@ Cenário
 <li>Variáveis pelo menos ordinais, para que possam ser ordenadas.</li>
 <li>Relação <strong>monotônica</strong>: quando uma variável cresce, a outra sempre cresce ou sempre decresce, em linha reta ou não.</li>
 </ul>
-<div id="27cd2632" class="cell" data-execution_count="26">
+<div id="ce290ef6" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a base de carros</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">=</span> pd.read_csv(<span class="st">"mtcars/data/mtcars.csv"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1592,7 +1604,7 @@ Cenário
 <p>O coeficiente de <strong>Pearson</strong>, visto na Aula 8, mede o quanto os pontos seguem uma <strong>reta</strong>. Ele usa os valores originais e, por isso, é sensível à forma da relação e a valores extremos.</p>
 <p>O coeficiente de <strong>Spearman</strong> aplica a ideia dos postos à correlação. Cada variável é ordenada separadamente: o carro menos potente recebe o posto 1 em <code>hp</code>, e o menos econômico recebe o posto 1 em <code>mpg</code>. Depois, calculamos a correlação de Pearson entre essas posições. A pergunta deixa de ser “os pontos seguem uma reta?” e passa a ser “quando um carro sobe no ranking de potência, ele desce no ranking de consumo?”.</p>
 <p>Calculamos os dois coeficientes e, para mostrar que Spearman é de fato um Pearson sobre os postos, calculamos também o Pearson dos postos à mão:</p>
-<div id="06581b3f" class="cell" data-execution_count="27">
+<div id="724e0842" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="annotated-cell-24"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-24-1"><a href="#annotated-cell-24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson nos valores, Spearman e Pearson calculado sobre os postos</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-24" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-24-2" class="code-annotation-target"><a href="#annotated-cell-24-2" aria-hidden="true" tabindex="-1"></a>ranks_hp <span class="op">=</span> mtcars[<span class="st">"hp"</span>].rank()</span>
 <span id="annotated-cell-24-3"><a href="#annotated-cell-24-3" aria-hidden="true" tabindex="-1"></a>ranks_mpg <span class="op">=</span> mtcars[<span class="st">"mpg"</span>].rank()</span>
@@ -1660,7 +1672,7 @@ Pearson (postos): r = -0.895 · p &lt; 0.001</code></pre>
 <p><span class="math display">\[
 \rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}
 \]</span></p>
-<div id="3a449c6e" class="cell" data-execution_count="28">
+<div id="48c1824c" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fórmula clássica de Spearman com as diferenças de postos</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> ranks_hp <span class="op">-</span> ranks_mpg</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(mtcars)</span>
@@ -1677,7 +1689,7 @@ Pearson (postos): r = -0.895 · p &lt; 0.001</code></pre>
 <section id="valores-e-postos-lado-a-lado" class="level2">
 <h2 class="anchored" data-anchor-id="valores-e-postos-lado-a-lado">5.2 Valores e postos lado a lado</h2>
 <p>O gráfico mostra por que os coeficientes diferem. À esquerda, os valores originais. À direita, os postos das mesmas variáveis. Em cada painel, a reta laranja é a que melhor descreve os pontos:</p>
-<div id="4b016556" class="cell" data-execution_count="29">
+<div id="185ab2aa" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dispersão dos valores e dos postos, com a reta de mínimos quadrados</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">4.5</span>))</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1699,7 +1711,7 @@ Pearson (postos): r = -0.895 · p &lt; 0.001</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="09-testes-nao-parametricos_files/figure-html/cell-30-output-1.png" width="1137" height="416" class="figure-img"></p>
+<p><img src="09-testes-nao-parametricos_files/figure-html/cell-31-output-1.png" width="1137" height="416" class="figure-img"></p>
 </figure>
 </div>
 </div>

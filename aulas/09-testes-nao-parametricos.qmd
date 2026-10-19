@@ -72,15 +72,92 @@ def report(name, result, stat="estatística"):
 
 # 2. Recapitulação: o que precisamos lembrar
 
+## 2.1 As peças do teste
+
 O teste de Mann-Whitney parece novo, mas é construído com peças que você já conhece. Vale relembrá-las antes do cálculo, porque cada uma vai reaparecer em algum passo da seção 3.
 
 **Hipóteses e *p*-valor.** Todo teste confronta uma hipótese nula $H_0$, que diz que não há efeito, com uma alternativa $H_1$, que diz que há. O *p*-valor responde a uma pergunta condicional: **se $H_0$ fosse verdadeira**, qual seria a probabilidade de obter um resultado tão ou mais extremo que o observado? Um *p*-valor pequeno significa que o resultado seria raro em um mundo sem efeito. Neste roteiro, todos os testes são bilaterais: uma diferença em qualquer sentido conta como evidência contra $H_0$ (Aula 7).
 
 **Duas formas de obter o *p*-valor.** Na Aula 7, obtivemos o *p*-valor de um teste de permutação simulando muitos cenários sem efeito. O Mann-Whitney também poderia ser resolvido assim, e com amostras pequenas daria o chamado *p*-valor exato. Nesta aula, porém, **não** seguiremos esse caminho. Usaremos a **aproximação pela curva normal**, que exige apenas duas fórmulas e funciona para amostras de qualquer tamanho.
 
-**Estatística de teste como sinal ÷ ruído.** Na Aula 8, todo teste dividiu um efeito observado, o sinal, pela variação que o acaso produziria, o ruído. O resultado mede quantas "unidades de acaso" o efeito ocupa. Quando essa razão segue a curva normal padrão, o *p*-valor é simplesmente a área nas duas caudas da curva, além do valor observado. É assim que obteremos o *p*-valor do Mann-Whitney na seção 3.9.
+**Estatística de teste como sinal ÷ ruído.** Na Aula 8, todo teste dividiu um efeito observado, o sinal, pela variação que o acaso produziria, o ruído. O resultado mede quantas "unidades de acaso" o efeito ocupa. Quando essa razão segue a curva normal padrão, o *p*-valor é simplesmente a área nas duas caudas da curva, além do valor observado. É assim que obteremos o *p*-valor do Mann-Whitney na seção 3.9. Como essa curva é central para a aula, a seção 2.2 faz uma revisão mais detalhada dela.
 
 **Média e mediana diante de extremos.** Na Aula 5, vimos que a média é puxada por valores extremos, enquanto a mediana depende só de quem está no meio da ordenação. Um bilionário que entra em uma sala muda a renda média, mas quase não muda a mediana. Os postos levam essa mesma robustez da estatística descritiva para um teste de hipóteses.
+
+## 2.2 Revisão estendida: a distribuição Z
+
+A distribuição normal padrão, também chamada de distribuição **Z**, já apareceu várias vezes no curso: no z-score do `StandardScaler` da Aula 6, na regra dos "2 erros-padrão" da Aula 7 e no teste *Z* de proporções da Aula 8. Nesta aula, ela é a peça que transforma a estatística $U$ em um *p*-valor. Vale, então, olhar para ela com calma.
+
+**Padronizar: a quantos desvios-padrão da média?** Imagine que a altura dos adultos de uma cidade tenha média de 170 cm e desvio-padrão de 10 cm. Uma pessoa com 190 cm é alta, mas quão alta? A pergunta fica mais fácil de responder se medirmos a distância em desvios-padrão:
+
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+Para 190 cm, $z = (190 - 170)/10 = +2$: a pessoa está dois desvios-padrão acima da média. Para 155 cm, $z = (155 - 170)/10 = -1{,}5$: um desvio-padrão e meio abaixo. O sinal indica o lado, e o tamanho indica a distância. Foi exatamente essa conta que o `StandardScaler` da Aula 6 fez com cada coluna.
+
+**Uma curva para todas as normais.** Distribuições normais podem ter qualquer média e qualquer desvio-padrão: alturas em centímetros, tempos em segundos, notas de prova. Mas, depois de padronizadas, todas viram **a mesma curva**, com média 0 e desvio-padrão 1. Essa é a distribuição normal padrão. A vantagem é enorme: em vez de uma tabela para cada normal, basta conhecer uma única curva.
+
+**A regra 68-95-99,7.** Na normal padrão, a área sob a curva entre dois valores é a probabilidade de observar um valor nesse intervalo. Três faixas valem a pena memorizar:
+
+```{python}
+
+# Normal padrão com as faixas de 1, 2 e 3 desvios-padrão
+grid = np.linspace(-4, 4, 400)
+density = stats.norm.pdf(grid)  # <1>
+
+fig, ax = plt.subplots(figsize=(9, 3.8))
+ax.plot(grid, density, color="#1F4E79", linewidth=2)
+for k, color in [(3, "#DDEBF7"), (2, "#A1C9F4"), (1, "#5B9BD5")]:
+    area = stats.norm.cdf(k) - stats.norm.cdf(-k)
+    ax.fill_between(grid, density, where=np.abs(grid) <= k, color=color,
+                    label=f"entre −{k} e +{k}: {area:.1%}")
+ax.set(xlabel="z (desvios-padrão a partir da média)", ylabel="Densidade",
+       xticks=range(-4, 5))
+ax.legend(loc="upper right")
+plt.tight_layout()
+plt.show()
+
+```
+
+1. `stats.norm.pdf` devolve a altura da curva normal padrão em cada ponto.
+
+Cerca de 68% dos valores ficam a menos de 1 desvio-padrão da média, 95% a menos de 2, e 99,7% a menos de 3. Daí vem a regra prática da Aula 7: sob o acaso, uma estatística padronizada quase nunca passa de 2. Valores além de 3 são raríssimos.
+
+**Área é probabilidade.** O SciPy oferece três funções para trabalhar com essas áreas:
+
+```{python}
+
+# Áreas da normal padrão e o caminho inverso, da área para o z
+print(f"P(Z ≤ −2) = {stats.norm.cdf(-2):.4f}")  # <1>
+print(f"P(Z ≥ +2) = {stats.norm.sf(2):.4f}")  # <2>
+print(f"z que deixa 2,5% em cada cauda = {stats.norm.ppf(0.975):.2f}")  # <3>
+
+```
+
+1. `stats.norm.cdf(z)` devolve a área **à esquerda** de $z$.
+2. `stats.norm.sf(z)` devolve a área **à direita** de $z$. O nome vem de *survival function*.
+3. `stats.norm.ppf(área)` faz o caminho inverso: recebe uma área acumulada e devolve o $z$ correspondente.
+
+A curva é simétrica, por isso a área abaixo de −2 é igual à área acima de +2, cerca de 2,3% cada. O valor 1,96 é o famoso limite dos 95%: entre −1,96 e +1,96 ficam 95% da área, e sobram 2,5% em cada cauda.
+
+**Do Z ao *p*-valor bilateral.** Em um teste bilateral, um resultado tão extremo **para qualquer lado** conta como evidência contra $H_0$. Por isso, o *p*-valor soma as duas caudas além de $|z|$:
+
+$$
+p = 2 \times P(Z \leq -|z|)
+$$
+
+| $|z|$ observado | *p*-valor bilateral | Leitura com $\alpha = 0{,}05$ |
+|---|---|---|
+| 1,00 | 0,317 | Comum sob $H_0$ |
+| 1,96 | 0,050 | Exatamente no limite |
+| **2,22** | **0,026** | **Raro: rejeita $H_0$. É o valor que encontraremos na seção 3.9** |
+| 2,58 | 0,010 | Muito raro |
+| 3,00 | 0,003 | Raríssimo |
+
+Quanto mais longe de zero está o $z$, menor a área nas caudas e menor o *p*-valor. Não é preciso decorar a tabela: basta lembrar que $|z|$ acima de cerca de 2 corresponde a *p* abaixo de 0,05.
+
+**Por que a estatística $U$ fica perto de uma normal?** $U$ é uma soma de muitas parcelas pequenas: cada um dos 64 duelos vale 0, ½ ou 1. Pelo teorema central do limite, somas de muitas parcelas tendem a ter distribuição em forma de sino, mesmo quando cada parcela isolada não tem. É isso que autoriza usar a curva normal para obter o *p*-valor do Mann-Whitney. Com grupos muito pequenos, de poucas observações, a aproximação piora, e o *p*-valor exato passa a ser preferível.
 
 # 3. Tratamentos A e B, passo a passo
 
@@ -297,6 +374,51 @@ Agora observe o último paciente. Com 120 dias, ele recebe o posto 16. Na escala
 
 Isso não significa que o paciente foi ignorado: ele continua na análise e ocupa o maior posto. O que deixa de ser usado é a **magnitude** da diferença. A importância clínica da complicação também não desaparece. Ela apenas deixa de dominar o teste.
 
+::: {.callout-note collapse="true"}
+## Os postos são uma espécie de normalização?
+
+Em parte. Na Aula 6, vimos que "normalização" tem dois sentidos, e os postos têm algo de cada um:
+
+- **Como o escalonamento, eliminam a unidade.** Dias, horas ou segundos viram sempre posições de 1 a $N$.
+- **Como o log, reduzem a influência dos extremos**, só que de forma muito mais radical. A distância entre vizinhos passa a ser sempre 1, e só a ordem permanece.
+
+O gráfico compara os 16 pacientes em três escalas: os dias originais, o log dos dias e os postos.
+
+```{python}
+
+# Os mesmos 16 pacientes em três escalas: dias, log dos dias e postos
+scales = {
+    "Dias": ranked["dias"],
+    "log(dias)": np.log(ranked["dias"]),
+    "Postos": ranked["posto"],
+}
+
+fig, axes = plt.subplots(3, 1, figsize=(10, 4.5))
+for ax, (label, values) in zip(axes, scales.items()):
+    sns.swarmplot(x=values, hue=ranked["tratamento"], size=8, ax=ax,
+                  palette={"A": "#A1C9F4", "B": "#1F4E79"},
+                  edgecolor="#333333", linewidth=1, legend=(label == "Dias"))
+    ax.set(title=label, xlabel="")
+sns.move_legend(axes[0], "upper left", bbox_to_anchor=(1.01, 1),  # <1>
+                title="Tratamento")
+plt.tight_layout()
+plt.show()
+
+```
+
+1. `move_legend` leva a legenda para fora da área do gráfico, para que ela não cubra os pontos.
+
+Na escala de dias, o paciente de 120 dias fica isolado e espreme todos os outros no início do eixo. O log aproxima esse paciente dos demais, mas ele ainda se destaca à direita. Nos postos, os 16 pacientes ficam espaçados de forma regular, e o de 120 dias é apenas o último da fila.
+
+Três diferenças, porém, separam os postos de uma normalização propriamente dita:
+
+1. **O resultado não é uma normal.** Sem empates, os postos de 1 a $N$ formam uma distribuição **uniforme**: cada posição aparece uma única vez. No painel de baixo, a distribuição é praticamente plana, e só os valores empatados aparecem empilhados. A forma de sino usada na seção 3.9 não descreve os postos, e sim a estatística $U$, que é uma soma de muitos duelos.
+2. **O posto depende das outras observações.** O log de 120 é sempre o mesmo número. Já o posto do paciente de 120 dias é 16 nesta amostra, mas mudaria se houvesse mais ou menos pacientes. Um posto só tem significado dentro da amostra em que foi calculado.
+3. **A transformação não tem volta.** Do log é possível voltar aos dias com a exponencial. Dos postos não: sabemos que o paciente ficou mais tempo que todos, mas não quanto.
+
+Em resumo, os postos são uma transformação que **preserva a ordem e descarta as distâncias**. Existe uma técnica que vai um passo além e de fato aproxima os dados de uma normal: a **transformação inversa normal dos postos**, que troca cada posto pelo quantil correspondente da normal padrão. Ela é usada em áreas como a genética, mas foge do escopo desta aula.
+:::
+
 ## 3.6 Comparando os pares: a estatística $U$
 
 Com os postos definidos, podemos comparar os grupos de uma forma muito intuitiva: promovendo "duelos". Cada paciente de A enfrenta cada paciente de B, e em cada duelo perguntamos apenas quem ficou mais tempo internado. Com 8 pacientes em cada grupo, são $n_A \times n_B = 8 \times 8 = 64$ duelos.
@@ -445,7 +567,7 @@ $$
 \sigma_U = \sqrt{\frac{n_A n_B}{12}\left[(N + 1) - \frac{\sum (t^3 - t)}{N(N - 1)}\right]}
 $$
 
-**4. Padronização e *p*-valor: quão longe estamos do centro?** Com o centro e a largura, transformamos $U_A$ em um $Z$, que mede a quantos desvios-padrão o valor observado está do centro. É a mesma ideia de sinal ÷ ruído da Aula 8: o sinal é a distância $U_A - \mu_U$, e o ruído é $\sigma_U$. Sob $H_0$, $Z$ segue aproximadamente a normal padrão, com média 0 e desvio-padrão 1. O *p*-valor é a área das duas caudas além de $|Z|$:
+**4. Padronização e *p*-valor: quão longe estamos do centro?** Com o centro e a largura, padronizamos $U_A$ exatamente como padronizamos as alturas na seção 2.2: a distância até o centro, dividida pelo desvio-padrão. O resultado é um $Z$ que, sob $H_0$, segue aproximadamente a normal padrão. O *p*-valor é a área das duas caudas além de $|Z|$:
 
 $$
 Z = \frac{U_A - \mu_U + 0{,}5}{\sigma_U}
@@ -487,7 +609,7 @@ Vamos conferir cada passo com os números:
 - **Largura sem empates.** $\sigma_U \approx 9{,}52$.
 - **Empates.** Há quatro pares de valores repetidos (2, 3, 4 e 6 dias) e um trio (5 dias). Cada par contribui com $2^3 - 2 = 6$, e o trio, com $3^3 - 3 = 24$, o que dá $\sum (t^3 - t) = 4 \times 6 + 24 = 48$. A correção é pequena, de 9,52 para 9,47, mas deixa $\sigma_U$ coerente com os dados.
 - **Padronização.** $Z = (10{,}5 - 32 + 0{,}5)/9{,}47 \approx -2{,}22$. O valor observado está a mais de dois desvios-padrão abaixo do centro.
-- ***p*-valor.** A área das duas caudas além de 2,22 é $p \approx 0{,}0265$.
+- ***p*-valor.** Como vimos na tabela da seção 2.2, um $|Z|$ de 2,22 deixa cerca de 1,3% em cada cauda. Somando as duas, $p \approx 0{,}0265$.
 
 A figura mostra a curva normal na escala de $U_A$, com o $Z$ correspondente no eixo de baixo. As áreas em laranja são as duas caudas do *p*-valor, além do valor observado (10,5) e do seu espelho (53,5), à mesma distância do centro:
 
@@ -534,6 +656,57 @@ report("Mann-Whitney", mw_uti, stat="U")
 O resultado coincide com o cálculo à mão. Em palavras: se o tratamento não importasse, um $U_A$ tão ou mais distante de 32 teria probabilidade de apenas 2,65%. Como $p < 0{,}05$, rejeitamos $H_0$.
 
 ::: {.callout-note collapse="true"}
+## Teste bilateral ou unilateral?
+
+Até aqui, usamos o teste **bilateral**: a hipótese alternativa diz apenas que um dos tratamentos tende a tempos menores, qualquer que seja. Por isso, o *p*-valor soma as duas caudas da curva. Um $U_A$ tão afastado de 32 **para cima**, como o espelho 53,5, seria tão surpreendente quanto o observado.
+
+Às vezes, a pergunta tem uma direção definida desde o início. Se o hospital quisesse testar apenas se A **reduz** o tempo de internação, a alternativa seria unilateral: "A tende a tempos menores que B". Nesse caso, só a cauda do lado previsto conta como evidência. O SciPy controla a direção com o argumento `alternative`:
+
+```{python}
+
+# O mesmo teste com as três hipóteses alternativas possíveis
+for alternative, h1 in [("two-sided", "A e B diferem"),
+                        ("less", "A tende a tempos menores"),
+                        ("greater", "A tende a tempos maiores")]:
+    result = stats.mannwhitneyu(group_a, group_b, alternative=alternative,
+                                method="asymptotic")
+    print(f"{alternative:>9} · H1: {h1:<25} · p = {result.pvalue:.4f}")
+
+```
+
+A figura mostra as áreas que formam cada *p*-valor:
+
+```{python}
+
+# Área do p-valor no teste bilateral e no unilateral à esquerda
+grid = np.linspace(-4, 4, 400)
+density = stats.norm.pdf(grid)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 3.5), sharey=True)
+for ax, tails, title in [
+    (axes[0], np.abs(grid) >= abs(z), "Bilateral: duas caudas"),
+    (axes[1], grid <= -abs(z), "Unilateral (less): só a cauda esquerda"),
+]:
+    ax.plot(grid, density, color="#1F4E79", linewidth=2)
+    ax.fill_between(grid, density, where=tails, color="#DD8452")
+    ax.set(title=title, xlabel="Z")
+axes[0].set_ylabel("Densidade")
+plt.tight_layout()
+plt.show()
+
+```
+
+Os três resultados têm uma relação simples:
+
+- **Bilateral** ($p \approx 0{,}0265$): soma as duas caudas além de $|Z| = 2{,}22$.
+- **Unilateral `less`** ($p \approx 0{,}0133$): fica só com a cauda esquerda, a do lado previsto. Por isso, vale cerca de **metade** do bilateral.
+- **Unilateral `greater`** ($p \approx 0{,}99$): aponta para o lado oposto ao que os dados mostram. A evidência a favor dessa alternativa é praticamente nula, e o *p* fica perto de 1.
+
+Se o unilateral dá um *p* menor, por que não usá-lo sempre? Porque a direção precisa ser escolhida **antes** de olhar os dados, com base na pergunta científica. Escolher o lado depois de ver qual grupo teve valores menores é desenhar o alvo depois dos tiros, como discutimos na Aula 7: o *p*-valor cai pela metade sem nenhuma evidência nova. Na dúvida, e sempre que um resultado na direção oposta também seria relevante, use o teste bilateral. No hospital, se B fosse o melhor tratamento, também gostaríamos de saber.
+:::
+
+::: {.callout-note collapse="true"}
+
 ## E o *p*-valor exato?
 
 Com amostras pequenas, também seria possível obter o *p*-valor **exato** por permutação, como na Aula 7. Para este exemplo, ele vale cerca de 0,0238, muito próximo da aproximação normal. Não faremos esse cálculo nesta aula: com amostras maiores, ele exige recursos computacionais muito maiores, e a aproximação normal é o caminho usual.
@@ -830,6 +1003,7 @@ Duas observações ajudam a usar a tabela:
 | $U$ | $W - n(n+1)/2$: número de pares em que o grupo tem o maior valor, com meio ponto por empate |
 | Aproximação normal | $Z = (U_A - n_A n_B / 2 \pm 0{,}5) / \sigma_U$, com correção para empates. O $\pm 0{,}5$ aproxima $U_A$ do centro |
 | δ de Cliff | $(U_A - U_B)/(n_A n_B)$: tamanho de efeito entre −1 e +1 |
+| Distribuição Z | Normal padronizada, com média 0 e desvio-padrão 1. O *p* bilateral é `2 * stats.norm.cdf(-abs(z))` |
 
 ## Síntese
 
@@ -870,6 +1044,16 @@ Pela média, não rejeitamos a igualdade. Pela ordenação, A tende a tempos men
 ## Como pensar sobre isso
 
 Todas estão certas, porque respondem a perguntas diferentes. Se a pergunta é sobre o paciente típico, a ordenação mostra que A leva a altas mais rápidas. Se a pergunta é sobre a ocupação total de leitos, o total de dias mostra que A foi mais custoso. Um único paciente pode mudar a conclusão quando a pergunta é sobre médias. A exceção não é um erro a descartar: ela entra de formas diferentes em cada medida.
+:::
+
+**Pergunta 4: o sinal de Z importa?**
+
+No exemplo do hospital, obtivemos $Z \approx -2{,}22$. Se um colega tivesse comparado B contra A, em vez de A contra B, obteria $Z \approx +2{,}22$. O *p*-valor muda?
+
+::: {.callout-note collapse="true"}
+## Como pensar sobre isso
+
+Não. Trocar a ordem dos grupos troca $U_A$ por $U_B$ e, com isso, apenas o sinal de $Z$: o valor observado passa a ficar à mesma distância do centro, do outro lado. Como a curva normal é simétrica e o teste é bilateral, o *p*-valor soma as duas caudas além de $|Z|$ e é o mesmo nos dois casos, cerca de 0,027. O sinal só informa **qual** grupo tende a valores menores. Em um teste unilateral, que olha para um único lado, o sinal passaria a importar para a decisão.
 :::
 
 # Para casa

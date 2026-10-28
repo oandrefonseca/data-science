@@ -1000,7 +1000,42 @@ A relação entre potência e consumo é a mesma nos dois painéis. O que muda �
 
 **Interpretação.** Se potência e consumo não tivessem associação, um $\rho$ tão forte seria praticamente impossível por acaso ($p < 0{,}001$). Rejeitamos $H_0$: a associação é negativa, forte e monotônica. O Pearson subestima essa força porque mede só a parte linear de uma relação curva. Na Aula 8, vimos que transformar a potência em log aproxima o Pearson do Spearman, pelo mesmo motivo.
 
-## 5.3 Quando usar cada um
+## 5.3 Todas as variáveis de uma vez
+
+O par `hp` × `mpg` é só uma das 55 combinações possíveis entre as 11 variáveis numéricas do `mtcars`. O método `.corr()` do pandas calcula a matriz de correlação inteira, e o argumento `method` escolhe entre Pearson e Spearman. Colocamos as duas matrizes lado a lado como mapas de calor:
+
+```{python}
+
+# Matrizes de Pearson e de Spearman entre todas as variáveis numéricas
+numeric = mtcars.drop(columns="model")
+mask = np.triu(np.ones((numeric.shape[1],) * 2, dtype=bool))  # <1>
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+for ax, method in zip(axes, ["pearson", "spearman"]):
+    sns.heatmap(numeric.corr(method=method), mask=mask, ax=ax,
+                cmap="vlag", vmin=-1, vmax=1, center=0,  # <2>
+                annot=True, fmt=".2f", annot_kws={"size": 8},
+                square=True, cbar_kws={"shrink": .7})
+    ax.set_title(method.capitalize())
+
+plt.tight_layout()
+plt.show()
+
+```
+
+1. A matriz é simétrica e a diagonal vale sempre 1. A máscara esconde o triângulo superior para mostrar cada par uma única vez.
+2. Uma escala divergente centrada em zero: azul para correlações negativas, vermelho para positivas, e branco perto de zero.
+
+Leia os dois mapas procurando o par `hp` × `mpg`: as mesmas −0,78 e −0,89 da seção 5.1 estão lá. Depois, compare as demais células:
+
+- **Os padrões gerais coincidem.** Os blocos de cores são quase iguais nos dois mapas. As variáveis ligadas ao tamanho do motor (`cyl`, `disp`, `hp`, `wt`) se correlacionam positivamente entre si e negativamente com `mpg`. Essa estrutura não depende do coeficiente.
+- **As diferenças estão na intensidade.** Quando o Spearman é visivelmente mais forte que o Pearson em um par, como em `hp` × `mpg`, a relação provavelmente é monotônica, mas curva, ou tem valores extremos. Quando os dois são parecidos, a relação é aproximadamente linear.
+- **Variáveis com poucos valores.** `vs` e `am` só valem 0 ou 1, e `cyl`, `gear` e `carb` têm poucos valores distintos. Nessas colunas há muitos empates nos postos, e as duas medidas descrevem mais uma diferença entre grupos do que uma tendência contínua.
+
+O mapa de calor serve para explorar, não para concluir. Ele aponta quais pares merecem um gráfico de dispersão. Com 55 correlações, algumas vão parecer relevantes por acaso, o mesmo problema de múltiplos testes visto na Aula 7.
+
+## 5.4 Quando usar cada um
 
 | | Pearson ($r$) | Spearman ($\rho$) |
 |---|---|---|

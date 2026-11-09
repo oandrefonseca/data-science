@@ -1702,11 +1702,22 @@
     ]
   },
   {
+    "objectID": "aulas/09-testes-nao-parametricos.html#todas-as-variáveis-de-uma-vez",
+    "href": "aulas/09-testes-nao-parametricos.html#todas-as-variáveis-de-uma-vez",
+    "title": "Aula 9 - Testes Não Paramétricos",
+    "section": "5.3 Todas as variáveis de uma vez",
+    "text": "5.3 Todas as variáveis de uma vez\nO par hp × mpg é só uma das 55 combinações possíveis entre as 11 variáveis numéricas do mtcars. O método .corr() do pandas calcula a matriz de correlação inteira, e o argumento method escolhe entre Pearson e Spearman. Colocamos as duas matrizes lado a lado como mapas de calor:\n\n# Matrizes de Pearson e de Spearman entre todas as variáveis numéricas\nnumeric = mtcars.drop(columns=\"model\")\n1mask = np.triu(np.ones((numeric.shape[1],) * 2, dtype=bool))\n\nfig, axes = plt.subplots(1, 2, figsize=(14, 6))\n\nfor ax, method in zip(axes, [\"pearson\", \"spearman\"]):\n    sns.heatmap(numeric.corr(method=method), mask=mask, ax=ax,\n2                cmap=\"vlag\", vmin=-1, vmax=1, center=0,\n                annot=True, fmt=\".2f\", annot_kws={\"size\": 8},\n                square=True, cbar_kws={\"shrink\": .7})\n    ax.set_title(method.capitalize())\n\nplt.tight_layout()\nplt.show()\n\n\n1\n\nA matriz é simétrica e a diagonal vale sempre 1. A máscara esconde o triângulo superior para mostrar cada par uma única vez.\n\n2\n\nUma escala divergente centrada em zero: azul para correlações negativas, vermelho para positivas, e branco perto de zero.\n\n\n\n\n\n\n\n\n\n\n\nLeia os dois mapas procurando o par hp × mpg: as mesmas −0,78 e −0,89 da seção 5.1 estão lá. Depois, compare as demais células:\n\nOs padrões gerais coincidem. Os blocos de cores são quase iguais nos dois mapas. As variáveis ligadas ao tamanho do motor (cyl, disp, hp, wt) se correlacionam positivamente entre si e negativamente com mpg. Essa estrutura não depende do coeficiente.\nAs diferenças estão na intensidade. Quando o Spearman é visivelmente mais forte que o Pearson em um par, como em hp × mpg, a relação provavelmente é monotônica, mas curva, ou tem valores extremos. Quando os dois são parecidos, a relação é aproximadamente linear.\nVariáveis com poucos valores. vs e am só valem 0 ou 1, e cyl, gear e carb têm poucos valores distintos. Nessas colunas há muitos empates nos postos, e as duas medidas descrevem mais uma diferença entre grupos do que uma tendência contínua.\n\nO mapa de calor serve para explorar, não para concluir. Ele aponta quais pares merecem um gráfico de dispersão. Com 55 correlações, algumas vão parecer relevantes por acaso, o mesmo problema de múltiplos testes visto na Aula 7.",
+    "crumbs": [
+      "Roteiros de aula",
+      "9. Testes Não Paramétricos"
+    ]
+  },
+  {
     "objectID": "aulas/09-testes-nao-parametricos.html#quando-usar-cada-um",
     "href": "aulas/09-testes-nao-parametricos.html#quando-usar-cada-um",
     "title": "Aula 9 - Testes Não Paramétricos",
-    "section": "5.3 Quando usar cada um",
-    "text": "5.3 Quando usar cada um\n\n\n\n\n\n\n\n\n\nPearson (\\(r\\))\nSpearman (\\(\\rho\\))\n\n\n\n\nUsa\nOs valores\nOs postos\n\n\nMede\nAssociação linear\nAssociação monotônica\n\n\nValores atípicos\nMuito sensível\nInfluência limitada\n\n\nEscala\nIntervalar ou razão\nTambém ordinal\n\n\nTransformação crescente (log, raiz)\nMuda o coeficiente\nNão muda: a ordem é a mesma\n\n\nQuando preferir\nRelação reta, dados sem extremos\nRelação curva, extremos ou escala ordinal\n\n\n\nUma regra prática: calcule os dois coeficientes e compare. Se forem parecidos, a relação é aproximadamente linear, e o Pearson descreve bem os dados. Se o Spearman for bem mais forte, a relação provavelmente é curva ou há valores extremos influenciando o Pearson. Em qualquer caso, o gráfico de dispersão é obrigatório: nenhum coeficiente substitui olhar os dados.",
+    "section": "5.4 Quando usar cada um",
+    "text": "5.4 Quando usar cada um\n\n\n\n\n\n\n\n\n\nPearson (\\(r\\))\nSpearman (\\(\\rho\\))\n\n\n\n\nUsa\nOs valores\nOs postos\n\n\nMede\nAssociação linear\nAssociação monotônica\n\n\nValores atípicos\nMuito sensível\nInfluência limitada\n\n\nEscala\nIntervalar ou razão\nTambém ordinal\n\n\nTransformação crescente (log, raiz)\nMuda o coeficiente\nNão muda: a ordem é a mesma\n\n\nQuando preferir\nRelação reta, dados sem extremos\nRelação curva, extremos ou escala ordinal\n\n\n\nUma regra prática: calcule os dois coeficientes e compare. Se forem parecidos, a relação é aproximadamente linear, e o Pearson descreve bem os dados. Se o Spearman for bem mais forte, a relação provavelmente é curva ou há valores extremos influenciando o Pearson. Em qualquer caso, o gráfico de dispersão é obrigatório: nenhum coeficiente substitui olhar os dados.",
     "crumbs": [
       "Roteiros de aula",
       "9. Testes Não Paramétricos"

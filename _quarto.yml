@@ -4,6 +4,7 @@ project:
   render:
     - index.qmd
     - aulas/*.qmd
+    - recursos/*.qmd
     - "!aulas/06-atividade-pratica.qmd"
 
 website:
@@ -24,7 +25,7 @@ website:
             href: aulas/01-ferramentas-ambiente-versionamento.qmd
           - text: "2. Introdução aos Dados Tabulares"
             href: aulas/02-introducao-dados-tabulares.qmd
-          - text: "3. Análise de Vendas"
+          - text: "3. Análise de Vendas em Python"
             href: aulas/03-analise-vendas.qmd
           - text: "4. Análise de Vendas em R"
             href: aulas/04-analise-vendas-r.qmd
@@ -40,6 +41,12 @@ website:
             href: aulas/09-testes-nao-parametricos.qmd
           - text: "10. Regressão Linear"
             href: aulas/10-regressao-linear.qmd
+      - section: "Recursos"
+        contents:
+          - text: "Fontes de dados"
+            href: recursos/fontes-de-dados.qmd
+          - text: "Web scraping"
+            href: recursos/web-scraping.qmd
 
 language:
   title-block-author-single: "Autor"

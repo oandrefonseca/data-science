@@ -1,0 +1,38 @@
+---
+title: "Web Scraping"
+subtitle: "Tutoriais e cursos para coletar dados da web"
+---
+
+Quando os dados de que você precisa estão espalhados em páginas da web, e não em um arquivo pronto para baixar, a saída é a raspagem de dados (*web scraping*): um programa que acessa as páginas, lê o HTML e extrai as informações para uma tabela. A lista abaixo reúne vídeos recentes e cursos de plataformas de referência para aprender o processo, em Python e em R.
+
+Em geral, páginas estáticas se resolvem com `requests` e Beautiful Soup, em Python, ou com `rvest`, em R. Páginas que montam o conteúdo com JavaScript pedem um navegador automatizado, como o Playwright ou o Selenium. Projetos maiores, com muitas páginas, costumam usar o Scrapy.
+
+## Vídeos
+
+| Vídeo | Canal | Idioma | Ano | Duração | Ferramentas | Nível |
+|---|---|---|---|---|---|---|
+| [Aula de Web Scraping com Python](https://www.youtube.com/watch?v=PPw7HoYYlkQ) | DataV | Português | 2026 | 2 h 06 min | Python | Iniciante |
+| [Web Scraping com Python 2025 – Módulo Básico](https://www.youtube.com/playlist?list=PLt3SoevkcuhFkqRzdOXzdw9gYJ-MFEesq) | André Dourado – TI na Prática | Português | 2025 | Playlist | Python | Iniciante |
+| [Web Scraping & APIs for Beginners: requests + BeautifulSoup](https://www.youtube.com/watch?v=BEIzFMEP3hQ) | Mathew K Analytics | Inglês | 2026 | 56 min | requests, Beautiful Soup, APIs | Iniciante |
+| ["Requests + BS4" but for 2025](https://www.youtube.com/watch?v=8PasVDbUZqU) | John Watson Rooney | Inglês | 2025 | 9 min | Python | Iniciante–intermediário |
+| [How I Write Web Scrapers w/ Python](https://www.youtube.com/watch?v=XVgHHGu0lb8) | John Watson Rooney | Inglês | 2025 | 10 min | Python | Intermediário |
+| [Playwright Python Browser Automation Crash Course](https://www.youtube.com/watch?v=cO997sPYZ9U) | Jie Jenn | Inglês | 2024 | 19 min | Playwright | Iniciante–intermediário |
+| [Playwright: Advanced Web Scraping in Python](https://www.youtube.com/watch?v=biFzRHk4xpY) | Vincent Codes Finance | Inglês | 2024 | 13 min | Playwright | Intermediário |
+| [Scrapy Course – Python Web Scraping for Beginners](https://www.youtube.com/watch?v=mBoX_JCKZTE) | freeCodeCamp.org | Inglês | 2023 | 4 h 37 min | Scrapy | Intermediário |
+| [rvest — Web Scraping in R](https://www.youtube.com/watch?v=MxX2za5x3IQ) | Uplatz | Inglês | 2026 | 9 min | R, rvest | Iniciante |
+
+## Cursos e tutoriais
+
+| Curso | Plataforma | Formato | Ferramentas | Acesso | Nível |
+|---|---|---|---|---|---|
+| [Web Scraping in Python](https://www.datacamp.com/courses/web-scraping-with-python) | DataCamp | Curso interativo, 4 h | Scrapy, XPath, seletores CSS | Pago (assinatura) | Intermediário |
+| [Web Scraping with Python (Short Course)](https://www.coursera.org/learn/python-web-scraping) | Coursera (Duke University) | Projeto guiado, 2 h | Scrapy, XPath | Pago (Coursera Plus) | Intermediário |
+| [Web Scraping for Python using Beautiful Soup](https://cognitiveclass.ai/courses/web-scraping-for-python-using-beautiful-soup) | IBM Skills Network (Cognitive Class) | Projeto guiado, 30 min | Beautiful Soup | Ver condições no site | Iniciante |
+| [Web scraping with rvest (useR! 2024)](https://github.com/hadley/web-scraping) | GitHub (Hadley Wickham) | Material de tutorial | R, rvest, httr2 | Gratuito | Iniciante–intermediário |
+| [Web scraping 101](https://cran.r-project.org/web/packages/rvest/vignettes/rvest.html) | CRAN (documentação do rvest) | Tutorial em texto | R, rvest | Gratuito | Iniciante |
+
+::: {.callout-warning}
+## Antes de raspar um site
+
+Confira os termos de uso do site e o arquivo `robots.txt`, que indica quais páginas podem ser acessadas por programas. Se houver uma API oficial, prefira-a. Espace as requisições para não sobrecarregar o servidor e tome cuidado redobrado com dados pessoais, que estão sujeitos à LGPD.
+:::

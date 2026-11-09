@@ -1,0 +1,38 @@
+---
+title: "Fontes de Dados"
+subtitle: "Onde procurar bases para projetos e exercícios"
+---
+
+Esta página reúne repositórios e portais onde vale a pena procurar dados para os projetos da disciplina. Há fontes internacionais e brasileiras, de domínios variados, e a coluna **Nível** indica o grau de dificuldade esperado para trabalhar com cada uma.
+
+::: {.callout-important}
+## Escolha dados que deem trabalho
+
+Procure conjuntos de dados desafiadores do ponto de vista da análise exploratória: com valores ausentes, inconsistências, categorias a padronizar, tabelas a integrar ou distribuições que peçam investigação. Uma base muito limpa, pronta para o modelo, deixa pouco espaço para mostrar o que você aprendeu sobre inspeção, limpeza e preparação dos dados, e isso pode prejudicar a sua avaliação.
+:::
+
+| Fonte | Domínio | Descrição | Nível |
+|---|---|---|---|
+| [Kaggle Datasets](https://www.kaggle.com/datasets) | Multidisciplinar | Amplo catálogo de datasets. Priorizar bases reais, documentadas e com múltiplas tabelas, que demandem limpeza, integração e investigação antes da análise. | Iniciante–intermediário |
+| [UCI Machine Learning Repository](https://archive.ics.uci.edu/) | Negócios e problemas tabulares | Bases documentadas e geralmente manejáveis. Conjuntos como *Online Retail* permitem explorar transações, cancelamentos, agregações e padrões temporais. | Iniciante–intermediário |
+| [Awesome Dirty Datasets](https://github.com/gpenessot/awesome-dirty-datasets) | Treinamento em limpeza de dados | Catálogo de fontes para praticar tratamento de ausências, inconsistências e problemas de organização. Funciona como entrada única para descobrir exercícios de limpeza. | Iniciante–intermediário |
+| [OxfordIHTM/messy-data](https://github.com/OxfordIHTM/messy-data) | Organização e preparação de dados | Materiais para trabalhar tabelas desorganizadas e reestruturar dados antes da análise. Adequado para introduzir boas práticas de organização tabular. | Iniciante |
+| [FiveThirtyEight/data](https://github.com/fivethirtyeight/data) | Jornalismo; sociedade, política e esportes | Dados associados a reportagens, úteis para formular perguntas, explorar distribuições e produzir narrativas apoiadas em visualizações. | Iniciante–intermediário |
+| [BuzzFeedNews/everything](https://github.com/BuzzFeedNews/everything) | Jornalismo investigativo | Índice de dados e análises de investigações. Permite selecionar projetos com integração de fontes e reconstrução das etapas de preparação. | Intermediário |
+| [Base dos Dados](https://basedosdados.org/) | Dados públicos brasileiros | Catálogo para descobrir e integrar bases de diferentes setores. Usar tabelas tratadas para EDA ou fontes originais quando o objetivo incluir limpeza. | Intermediário |
+| [INEP — Microdados](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados) | Educação | Censos, avaliações e exames. Permite trabalhar dicionários de variáveis, categorias, ausências e comparações entre escolas, regiões e períodos. | Intermediário |
+| [IBGE — PNAD Contínua](https://www.ibge.gov.br/estatisticas/sociais/trabalho/9173-pesquisa-nacional-por-amostra-de-domicilios-continua-trimestral.html) | População, trabalho e renda | Dados para explorar desigualdades e perfis socioeconômicos. Requer orientação sobre pesos amostrais e interpretação das variáveis. | Intermediário–avançado |
+| [PRF — Dados abertos](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos) | Segurança viária | Registros de acidentes para explorar horários, localização, condições e gravidade. Bom para praticar integração de arquivos e transformação de datas. | Intermediário |
+| [TSE — Dados abertos](https://dadosabertos.tse.jus.br/) | Eleições e sociedade | Dados de candidaturas, eleitorado e resultados. Permite integrar tabelas e investigar diferenças territoriais e mudanças entre eleições. | Intermediário |
+| [Portal de Dados Abertos do SUS](https://dadosabertos.saude.gov.br/) | Saúde pública | Bases para explorar completude, sazonalidade e diferenças regionais. Selecionar conjuntos com documentação clara e variáveis acessíveis à turma. | Intermediário |
+| [CVM — Dados abertos](https://dados.cvm.gov.br/) | Empresas e finanças | Dados de companhias e fundos para integrar cadastros, comparar organizações e explorar séries históricas. | Intermediário–avançado |
+| [UFRN — Dados abertos](https://dados.ufrn.br/) | Educação superior e gestão universitária | Dados institucionais para projetos próximos à realidade dos alunos. Permite relacionar registros, padronizar descrições e explorar a organização acadêmica. | Iniciante–intermediário |
+| [NOAA — Climate Data Online](https://www.ncei.noaa.gov/cdo-web/) | Clima e meteorologia | Séries de temperatura, precipitação e outras observações. Permite investigar lacunas, sazonalidade, extremos e diferenças entre estações. | Intermediário |
+| [NYC TLC — Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) | Mobilidade urbana | Registros de viagens com horários, distâncias e tarifas. Bom para investigar valores implausíveis, criar variáveis e comparar padrões por região e horário. | Intermediário |
+| [StatsBomb Open Data](https://github.com/hudl/open-data) | Esportes; futebol | Dados de partidas e eventos em JSON. Permite transformar estruturas aninhadas em tabelas e explorar padrões de passes, finalizações e desempenho. | Intermediário |
+
+::: {.callout-note}
+## Sobre a seleção
+
+Para reduzir a repetição, a lista não inclui vários repositórios individuais de exercícios que já estão reunidos no **Awesome Dirty Datasets**. Também ficaram de fora geradores de dados sintéticos e coleções que exigem conhecimentos específicos de genômica, sinais biomédicos ou processamento de logs.
+:::

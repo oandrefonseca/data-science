@@ -1,5 +1,5 @@
 ---
-title: 'Aula 3 - Análise de Vendas'
+title: 'Aula 3 - Análise de Vendas em Python'
 date: last-modified
 toc: true
 format:

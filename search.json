@@ -1,5 +1,38 @@
 [
   {
+    "objectID": "recursos/web-scraping.html",
+    "href": "recursos/web-scraping.html",
+    "title": "Web Scraping",
+    "section": "",
+    "text": "Quando os dados de que você precisa estão espalhados em páginas da web, e não em um arquivo pronto para baixar, a saída é a raspagem de dados (web scraping): um programa que acessa as páginas, lê o HTML e extrai as informações para uma tabela. A lista abaixo reúne vídeos recentes e cursos de plataformas de referência para aprender o processo, em Python e em R.\nEm geral, páginas estáticas se resolvem com requests e Beautiful Soup, em Python, ou com rvest, em R. Páginas que montam o conteúdo com JavaScript pedem um navegador automatizado, como o Playwright ou o Selenium. Projetos maiores, com muitas páginas, costumam usar o Scrapy.",
+    "crumbs": [
+      "Recursos",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "recursos/web-scraping.html#vídeos",
+    "href": "recursos/web-scraping.html#vídeos",
+    "title": "Web Scraping",
+    "section": "Vídeos",
+    "text": "Vídeos\n\n\n\nVídeo\nCanal\nIdioma\nAno\nDuração\nFerramentas\nNível\n\n\n\n\nAula de Web Scraping com Python\nDataV\nPortuguês\n2026\n2 h 06 min\nPython\nIniciante\n\n\nWeb Scraping com Python 2025 – Módulo Básico\nAndré Dourado – TI na Prática\nPortuguês\n2025\nPlaylist\nPython\nIniciante\n\n\nWeb Scraping & APIs for Beginners: requests + BeautifulSoup\nMathew K Analytics\nInglês\n2026\n56 min\nrequests, Beautiful Soup, APIs\nIniciante\n\n\n“Requests + BS4” but for 2025\nJohn Watson Rooney\nInglês\n2025\n9 min\nPython\nIniciante–intermediário\n\n\nHow I Write Web Scrapers w/ Python\nJohn Watson Rooney\nInglês\n2025\n10 min\nPython\nIntermediário\n\n\nPlaywright Python Browser Automation Crash Course\nJie Jenn\nInglês\n2024\n19 min\nPlaywright\nIniciante–intermediário\n\n\nPlaywright: Advanced Web Scraping in Python\nVincent Codes Finance\nInglês\n2024\n13 min\nPlaywright\nIntermediário\n\n\nScrapy Course – Python Web Scraping for Beginners\nfreeCodeCamp.org\nInglês\n2023\n4 h 37 min\nScrapy\nIntermediário\n\n\nrvest — Web Scraping in R\nUplatz\nInglês\n2026\n9 min\nR, rvest\nIniciante",
+    "crumbs": [
+      "Recursos",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "recursos/web-scraping.html#cursos-e-tutoriais",
+    "href": "recursos/web-scraping.html#cursos-e-tutoriais",
+    "title": "Web Scraping",
+    "section": "Cursos e tutoriais",
+    "text": "Cursos e tutoriais\n\n\n\nCurso\nPlataforma\nFormato\nFerramentas\nAcesso\nNível\n\n\n\n\nWeb Scraping in Python\nDataCamp\nCurso interativo, 4 h\nScrapy, XPath, seletores CSS\nPago (assinatura)\nIntermediário\n\n\nWeb Scraping with Python (Short Course)\nCoursera (Duke University)\nProjeto guiado, 2 h\nScrapy, XPath\nPago (Coursera Plus)\nIntermediário\n\n\nWeb Scraping for Python using Beautiful Soup\nIBM Skills Network (Cognitive Class)\nProjeto guiado, 30 min\nBeautiful Soup\nVer condições no site\nIniciante\n\n\nWeb scraping with rvest (useR! 2024)\nGitHub (Hadley Wickham)\nMaterial de tutorial\nR, rvest, httr2\nGratuito\nIniciante–intermediário\n\n\nWeb scraping 101\nCRAN (documentação do rvest)\nTutorial em texto\nR, rvest\nGratuito\nIniciante\n\n\n\n\n\n\n\n\n\nAntes de raspar um site\n\n\n\nConfira os termos de uso do site e o arquivo robots.txt, que indica quais páginas podem ser acessadas por programas. Se houver uma API oficial, prefira-a. Espace as requisições para não sobrecarregar o servidor e tome cuidado redobrado com dados pessoais, que estão sujeitos à LGPD.",
+    "crumbs": [
+      "Recursos",
+      "Web scraping"
+    ]
+  },
+  {
     "objectID": "aulas/10-regressao-linear.html",
     "href": "aulas/10-regressao-linear.html",
     "title": "Aula 10 - Regressão Linear",
@@ -927,7 +960,17 @@
     "href": "index.html#roteiros-de-aula",
     "title": "Ciência de Dados",
     "section": "Roteiros de aula",
-    "text": "Roteiros de aula\n\nAula 1 - Ferramentas, Ambiente e Versionamento\nEstrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.\nAula 2 - Introdução aos Dados Tabulares\nConceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.\nAula 3 - Trabalho Final: Análise de Vendas\nEnunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.\nAula 4 - Análise de Vendas em R\nReproduz a análise da Aula 3 em R e tidyverse, e explora novas perguntas de negócio sobre o mesmo dataset.\nAula 5 - Estatística Descritiva\nMedidas de tendência central e de dispersão, assimetria e curtose, aplicadas ao valor dos pedidos do Online Retail.\nAula 6 - Imputação e Normalização de Dados\nImputação de valores ausentes, escalonamento de atributos e transformações não lineares, orientados pelo diagnóstico da estatística descritiva.\nAula 7 - Estatística Inferencial\nHipóteses nula e alternativa, teste de permutação, teste t de Student, p-valor, erros dos tipos I e II, tamanho do efeito e confundidores.\nAula 8 - Testes Paramétricos\nPremissas e diagnóstico de normalidade, escolha do teste e sete casos: t de uma amostra, Welch, pareado, ANOVA, Pearson, Z de proporções e qui-quadrado.\nAula 9 - Testes Não Paramétricos\nPostos e empates, teste de Mann-Whitney passo a passo com aproximação normal, δ de Cliff e comparação entre as correlações de Pearson e Spearman.\nAula 10 - Regressão Linear\nInício do bloco de aprendizado de máquina: regressão linear simples e múltipla no California Housing, métricas de erro, sobreajuste, teste cego com validação cruzada, diagnóstico de resíduos e regularização.\n\n\n\n\n\n\n\nComo usar este material\n\n\n\nOs roteiros seguem a ordem das aulas e constroem, passo a passo, um projeto real chamado projeto-vendas. Recomenda-se executar as aulas na ordem, acompanhando pelo terminal e por um notebook próprio.",
+    "text": "Roteiros de aula\n\nAula 1 - Ferramentas, Ambiente e Versionamento\nEstrutura de projeto, terminal, Git e versionamento, ambientes virtuais e gerenciamento de dependências.\nAula 2 - Introdução aos Dados Tabulares\nConceitos de dados tabulares, pandas (Series e DataFrame), o ritual de inspeção inicial e diagnóstico de qualidade de dados.\nAula 3 - Análise de Vendas em Python\nEnunciado do trabalho de avaliação e um script de referência para a análise do dataset Online Retail.\nAula 4 - Análise de Vendas em R\nReproduz a análise da Aula 3 em R e tidyverse, e explora novas perguntas de negócio sobre o mesmo dataset.\nAula 5 - Estatística Descritiva\nMedidas de tendência central e de dispersão, assimetria e curtose, aplicadas ao valor dos pedidos do Online Retail.\nAula 6 - Imputação e Normalização de Dados\nImputação de valores ausentes, escalonamento de atributos e transformações não lineares, orientados pelo diagnóstico da estatística descritiva.\nAula 7 - Estatística Inferencial\nHipóteses nula e alternativa, teste de permutação, teste t de Student, p-valor, erros dos tipos I e II, tamanho do efeito e confundidores.\nAula 8 - Testes Paramétricos\nPremissas e diagnóstico de normalidade, escolha do teste e sete casos: t de uma amostra, Welch, pareado, ANOVA, Pearson, Z de proporções e qui-quadrado.\nAula 9 - Testes Não Paramétricos\nPostos e empates, teste de Mann-Whitney passo a passo com aproximação normal, δ de Cliff e comparação entre as correlações de Pearson e Spearman.\nAula 10 - Regressão Linear\nInício do bloco de aprendizado de máquina: regressão linear simples e múltipla no California Housing, métricas de erro, sobreajuste, teste cego com validação cruzada, diagnóstico de resíduos e regularização.",
+    "crumbs": [
+      "Ciência de Dados"
+    ]
+  },
+  {
+    "objectID": "index.html#recursos",
+    "href": "index.html#recursos",
+    "title": "Ciência de Dados",
+    "section": "Recursos",
+    "text": "Recursos\n\nFontes de dados\nRepositórios e portais, internacionais e brasileiros, para procurar bases para projetos e exercícios.\nWeb scraping\nVídeos recentes e cursos de plataformas de referência para aprender a coletar dados da web, em Python e em R.\n\n\n\n\n\n\n\nComo usar este material\n\n\n\nOs roteiros seguem a ordem das aulas e constroem, passo a passo, um projeto real chamado projeto-vendas. Recomenda-se executar as aulas na ordem, acompanhando pelo terminal e por um notebook próprio.",
     "crumbs": [
       "Ciência de Dados"
     ]
@@ -995,7 +1038,7 @@
     "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1006,7 +1049,7 @@
     "text": "Nas duas últimas aulas você montou a bancada e aprendeu a interrogar dados. Na Aula 1, criou o projeto-vendas com Git e um ambiente isolado. Na Aula 2, carregou o Online Retail, executou o ritual de inspeção inicial e diagnosticou os primeiros problemas de qualidade: cancelamentos disfarçados de quantidade negativa, preços zerados, duplicatas. Você já sabe olhar para os dados. Falta agora responder, com eles, a uma pergunta de negócio de verdade.\nÉ isso que este roteiro propõe, e ele é diferente dos dois anteriores em um ponto importante: aqui não há uma sequência única de células que leva a um resultado combinado de antemão. Há um enunciado, um ponto de partida em código que carrega e prepara a base exatamente como você a deixou na Aula 2, e um espaço de decisões que só você pode tomar. Diagnosticar problemas, como fizemos na aula passada, é relativamente objetivo. Decidir o que fazer com eles, para responder a uma pergunta de gestão, é uma escolha analítica, e escolhas analíticas precisam ser justificadas, não apenas executadas.\nEsse é o salto desta aula: sair do papel de quem descreve os dados para o papel de quem os usa para recomendar uma ação.",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1017,7 +1060,7 @@
     "text": "Objetivos de aprendizagem\nAo final deste roteiro, você será capaz de:\n\nTraduzir uma pergunta de negócio em critérios de análise verificáveis nos dados;\nReaplicar o ritual de inspeção e diagnóstico da Aula 2 para separar vendas válidas de cancelamentos e registros anômalos;\nConstruir indicadores de negócio (faturamento, ticket médio, produtos e países mais relevantes) a partir de dados tabulares;\nQuantificar o impacto financeiro de cancelamentos e devoluções sobre o resultado;\nDocumentar e justificar, por escrito, os critérios usados na análise, transformando resultados em recomendações práticas.\n\n\n\n\n\n\n\nComo usar este roteiro\n\n\n\nEste roteiro pressupõe o projeto-vendas das Aulas 1 e 2 funcionando, com o Online Retail já baixado em data/. As primeiras células carregam e preparam a base, exatamente o ponto em que a Aula 2 parou; a partir daí, o enunciado é o guia. Este script não é a análise completa: é a fundação sobre a qual as respostas ao enunciado devem ser construídas, célula a célula, no seu próprio notebook. Ao final, três perguntas ajudam a testar se os seus critérios estão sólidos antes de entregar.",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1028,7 +1071,7 @@
     "text": "Valor médio dos pedidos\nPrimeiro, agregamos os itens de uma mesma fatura. O resultado terá uma linha por pedido, permitindo calcular seu valor médio sem dar mais peso aos pedidos que possuem muitos itens.\n\norders = (\n    sales\n1    .groupby(\"invoice_no\", as_index=False)\n    .agg(\n        order_date=(\"invoice_date\", \"min\"),\n        customer_id=(\"customer_id\", \"first\"),\n        country=(\"country\", \"first\"),\n        item_quantity=(\"quantity\", \"sum\"),\n        order_value=(\"revenue\", \"sum\"),\n2    )\n)\n\n\n1\n\nCada grupo representa uma fatura, portanto uma linha da tabela resultante representa um pedido.\n\n2\n\nA agregação nomeada documenta, para cada nova coluna, a variável de origem e a função aplicada.\n\n\n\n\n\norder_value_summary = pd.Series(\n    {\n        \"ticket_medio\": orders[\"order_value\"].mean(),\n        \"ticket_mediano\": orders[\"order_value\"].median(),\n    },\n    name=\"valor_em_libras\",\n)\n\norder_value_summary.round(2).to_frame()\n\n\n\n\n\n\n\n\nvalor_em_libras\n\n\n\n\nticket_medio\n534.40\n\n\nticket_mediano\n303.84\n\n\n\n\n\n\n\nDistribuição do valor dos pedidos:\n\norder_percentiles = [0.25, 0.50, 0.75, 0.90, 0.99]\norders[\"order_value\"].describe(percentiles=order_percentiles).round(2)\n\ncount     19960.00\nmean        534.40\nstd        1780.49\nmin           0.38\n25%         152.51\n50%         303.84\n75%         495.62\n90%         940.89\n99%        4821.17\nmax      168469.60\nName: order_value, dtype: float64\n\n\nO ticket médio responde diretamente à pergunta sobre o valor médio dos pedidos. A mediana e os percentis complementam a resposta: se a média estiver muito acima da mediana, poucos pedidos de alto valor estão puxando o indicador para cima.",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1039,7 +1082,7 @@
     "text": "Produtos com maior faturamento, volume e frequência\nPara comparar produtos, usamos três métricas diferentes:\n\nrevenue: faturamento gerado;\nunits_sold: unidades vendidas;\norder_count: quantidade de pedidos distintos em que o produto apareceu, nossa medida de frequência de compra.\n\n\nproducts = (\n    sales\n    .dropna(subset=[\"description\"])\n    .groupby([\"stock_code\", \"description\"], as_index=False)\n    .agg(\n        units_sold=(\"quantity\", \"sum\"),\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n    )\n)\n\nProdutos com maior faturamento:\n\ntop_products_by_revenue = products.nlargest(10, \"revenue\")\ntop_products_by_revenue.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n4150\nDOT\nDOTCOM POSTAGE\n706\n206248.77\n706\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n4151\nM\nManual\n7224\n78110.27\n289\n\n\n4153\nPOST\nPOSTAGE\n3150\n78101.88\n1126\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n\n\n\n\n\nProdutos com maior volume vendido:\n\ntop_products_by_volume = products.nlargest(10, \"units_sold\")\ntop_products_by_volume.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n2590\n23843\nPAPER CRAFT , LITTLE BIRDIE\n80995\n168469.60\n1\n\n\n2045\n23166\nMEDIUM CERAMIC TOP STORAGE JAR\n78033\n81700.92\n247\n\n\n2769\n84077\nWORLD WAR 2 GLIDERS ASSTD DESIGNS\n55047\n13841.85\n535\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n1051\n22197\nPOPCORN HOLDER\n36761\n34298.87\n803\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n1951\n23084\nRABBIT NIGHT LIGHT\n30788\n66964.99\n994\n\n\n1327\n22492\nMINI PAINT SET VINTAGE\n26633\n16937.82\n380\n\n\n\n\n\n\n\nProdutos com maior frequência de compra:\n\ntop_products_by_frequency = products.nlargest(10, \"order_count\")\ntop_products_by_frequency.round(2)\n\n\n\n\n\n\n\n\nstock_code\ndescription\nunits_sold\nrevenue\norder_count\n\n\n\n\n3773\n85123A\nWHITE HANGING HEART T-LIGHT HOLDER\n37599\n104340.29\n2189\n\n\n3761\n85099B\nJUMBO BAG RED RETROSPOT\n48474\n94340.05\n2089\n\n\n1262\n22423\nREGENCY CAKESTAND 3 TIER\n13879\n174484.74\n1988\n\n\n2669\n47566\nPARTY BUNTING\n18295\n99504.33\n1685\n\n\n101\n20725\nLUNCH BAG RED RETROSPOT\n19353\n35752.01\n1564\n\n\n2875\n84879\nASSORTED COLOUR BIRD ORNAMENT\n36461\n59094.93\n1455\n\n\n1552\n22720\nSET OF 3 CAKE TINS PANTRY DESIGN\n7493\n38158.39\n1385\n\n\n370\n21212\nPACK OF 72 RETROSPOT CAKE CASES\n36419\n21259.10\n1320\n\n\n104\n20727\nLUNCH BAG BLACK SKULL.\n12240\n22421.21\n1273\n\n\n1295\n22457\nNATURAL SLATE HEART CHALKBOARD\n9172\n28147.96\n1249\n\n\n\n\n\n\n\nOs três rankings não são necessariamente iguais. Um produto pode aparecer em muitos pedidos, mas com poucas unidades por pedido, enquanto outro pode ter grande volume concentrado em poucas compras de atacado.",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1050,7 +1093,7 @@
     "text": "Países mais relevantes para o negócio\nA relevância de um país é medida por faturamento, quantidade de pedidos e número de clientes identificados. O faturamento ordena a tabela, enquanto as demais colunas ajudam a distinguir mercados amplos de vendas concentradas em poucos compradores.\n\ncountries = (\n    sales\n    .groupby(\"country\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        customer_count=(\"customer_id\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n    )\n)\n\ntop_countries = countries.nlargest(10, \"revenue\")\ntop_countries.round(2)\n\n\n\n\n\n\n\n\ncountry\nrevenue\norder_count\ncustomer_count\nunits_sold\n\n\n\n\n36\nUnited Kingdom\n9025222.08\n18019\n3920\n4662390\n\n\n24\nNetherlands\n285446.34\n94\n9\n200361\n\n\n10\nEIRE\n283453.96\n288\n3\n147173\n\n\n14\nGermany\n228867.14\n457\n94\n119261\n\n\n13\nFrance\n209715.11\n392\n87\n112103\n\n\n0\nAustralia\n138521.31\n57\n9\n83901\n\n\n31\nSpain\n61577.11\n90\n30\n27940\n\n\n33\nSwitzerland\n57089.90\n54\n21\n30629\n\n\n3\nBelgium\n41196.34\n98\n25\n23237\n\n\n32\nSweden\n38378.33\n36\n8\n36083",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1061,7 +1104,7 @@
     "text": "Clientes mais relevantes para o negócio\nComo registros sem customer_id não podem ser atribuídos a uma pessoa específica, eles são excluídos somente desta agregação. Isso não os remove das demais análises de vendas válidas.\n\nidentified_sales = sales.dropna(subset=[\"customer_id\"])\n\ncustomers = (\n    identified_sales\n    .groupby(\"customer_id\", as_index=False)\n    .agg(\n        revenue=(\"revenue\", \"sum\"),\n        order_count=(\"invoice_no\", \"nunique\"),\n        units_sold=(\"quantity\", \"sum\"),\n        country=(\"country\", \"first\"),\n    )\n)\n\ntop_customers = customers.nlargest(10, \"revenue\")\ntop_customers.round(2)\n\n\n\n\n\n\n\n\ncustomer_id\nrevenue\norder_count\nunits_sold\ncountry\n\n\n\n\n1689\n14646.0\n280206.02\n73\n196915\nNetherlands\n\n\n4201\n18102.0\n259657.30\n60\n64124\nUnited Kingdom\n\n\n3728\n17450.0\n194550.79\n46\n69993\nUnited Kingdom\n\n\n3008\n16446.0\n168472.50\n2\n80997\nUnited Kingdom\n\n\n1879\n14911.0\n143825.06\n201\n80265\nEIRE\n\n\n55\n12415.0\n124914.53\n21\n77374\nAustralia\n\n\n1333\n14156.0\n117379.63\n55\n57885\nEIRE\n\n\n3771\n17511.0\n91062.38\n31\n64549\nUnited Kingdom\n\n\n2702\n16029.0\n81024.84\n63\n40208\nUnited Kingdom\n\n\n0\n12346.0\n77183.60\n1\n74215\nUnited Kingdom",
     "crumbs": [
       "Roteiros de aula",
-      "3. Análise de Vendas"
+      "3. Análise de Vendas em Python"
     ]
   },
   {
@@ -1689,6 +1732,17 @@
     "crumbs": [
       "Roteiros de aula",
       "9. Testes Não Paramétricos"
+    ]
+  },
+  {
+    "objectID": "recursos/fontes-de-dados.html",
+    "href": "recursos/fontes-de-dados.html",
+    "title": "Fontes de Dados",
+    "section": "",
+    "text": "Esta página reúne repositórios e portais onde vale a pena procurar dados para os projetos da disciplina. Há fontes internacionais e brasileiras, de domínios variados, e a coluna Nível indica o grau de dificuldade esperado para trabalhar com cada uma.\n\n\n\n\n\n\nEscolha dados que deem trabalho\n\n\n\nProcure conjuntos de dados desafiadores do ponto de vista da análise exploratória: com valores ausentes, inconsistências, categorias a padronizar, tabelas a integrar ou distribuições que peçam investigação. Uma base muito limpa, pronta para o modelo, deixa pouco espaço para mostrar o que você aprendeu sobre inspeção, limpeza e preparação dos dados, e isso pode prejudicar a sua avaliação.\n\n\n\n\n\nFonte\nDomínio\nDescrição\nNível\n\n\n\n\nKaggle Datasets\nMultidisciplinar\nAmplo catálogo de datasets. Priorizar bases reais, documentadas e com múltiplas tabelas, que demandem limpeza, integração e investigação antes da análise.\nIniciante–intermediário\n\n\nUCI Machine Learning Repository\nNegócios e problemas tabulares\nBases documentadas e geralmente manejáveis. Conjuntos como Online Retail permitem explorar transações, cancelamentos, agregações e padrões temporais.\nIniciante–intermediário\n\n\nAwesome Dirty Datasets\nTreinamento em limpeza de dados\nCatálogo de fontes para praticar tratamento de ausências, inconsistências e problemas de organização. Funciona como entrada única para descobrir exercícios de limpeza.\nIniciante–intermediário\n\n\nOxfordIHTM/messy-data\nOrganização e preparação de dados\nMateriais para trabalhar tabelas desorganizadas e reestruturar dados antes da análise. Adequado para introduzir boas práticas de organização tabular.\nIniciante\n\n\nFiveThirtyEight/data\nJornalismo; sociedade, política e esportes\nDados associados a reportagens, úteis para formular perguntas, explorar distribuições e produzir narrativas apoiadas em visualizações.\nIniciante–intermediário\n\n\nBuzzFeedNews/everything\nJornalismo investigativo\nÍndice de dados e análises de investigações. Permite selecionar projetos com integração de fontes e reconstrução das etapas de preparação.\nIntermediário\n\n\nBase dos Dados\nDados públicos brasileiros\nCatálogo para descobrir e integrar bases de diferentes setores. Usar tabelas tratadas para EDA ou fontes originais quando o objetivo incluir limpeza.\nIntermediário\n\n\nINEP — Microdados\nEducação\nCensos, avaliações e exames. Permite trabalhar dicionários de variáveis, categorias, ausências e comparações entre escolas, regiões e períodos.\nIntermediário\n\n\nIBGE — PNAD Contínua\nPopulação, trabalho e renda\nDados para explorar desigualdades e perfis socioeconômicos. Requer orientação sobre pesos amostrais e interpretação das variáveis.\nIntermediário–avançado\n\n\nPRF — Dados abertos\nSegurança viária\nRegistros de acidentes para explorar horários, localização, condições e gravidade. Bom para praticar integração de arquivos e transformação de datas.\nIntermediário\n\n\nTSE — Dados abertos\nEleições e sociedade\nDados de candidaturas, eleitorado e resultados. Permite integrar tabelas e investigar diferenças territoriais e mudanças entre eleições.\nIntermediário\n\n\nPortal de Dados Abertos do SUS\nSaúde pública\nBases para explorar completude, sazonalidade e diferenças regionais. Selecionar conjuntos com documentação clara e variáveis acessíveis à turma.\nIntermediário\n\n\nCVM — Dados abertos\nEmpresas e finanças\nDados de companhias e fundos para integrar cadastros, comparar organizações e explorar séries históricas.\nIntermediário–avançado\n\n\nUFRN — Dados abertos\nEducação superior e gestão universitária\nDados institucionais para projetos próximos à realidade dos alunos. Permite relacionar registros, padronizar descrições e explorar a organização acadêmica.\nIniciante–intermediário\n\n\nNOAA — Climate Data Online\nClima e meteorologia\nSéries de temperatura, precipitação e outras observações. Permite investigar lacunas, sazonalidade, extremos e diferenças entre estações.\nIntermediário\n\n\nNYC TLC — Trip Record Data\nMobilidade urbana\nRegistros de viagens com horários, distâncias e tarifas. Bom para investigar valores implausíveis, criar variáveis e comparar padrões por região e horário.\nIntermediário\n\n\nStatsBomb Open Data\nEsportes; futebol\nDados de partidas e eventos em JSON. Permite transformar estruturas aninhadas em tabelas e explorar padrões de passes, finalizações e desempenho.\nIntermediário\n\n\n\n\n\n\n\n\n\nSobre a seleção\n\n\n\nPara reduzir a repetição, a lista não inclui vários repositórios individuais de exercícios que já estão reunidos no Awesome Dirty Datasets. Também ficaram de fora geradores de dados sintéticos e coleções que exigem conhecimentos específicos de genômica, sinais biomédicos ou processamento de logs.",
+    "crumbs": [
+      "Recursos",
+      "Fontes de dados"
     ]
   }
 ]

@@ -38,6 +38,8 @@ website:
             href: aulas/08-testes-parametricos.qmd
           - text: "9. Testes Não Paramétricos"
             href: aulas/09-testes-nao-parametricos.qmd
+          - text: "10. Regressão Linear"
+            href: aulas/10-regressao-linear.qmd
 
 language:
   title-block-author-single: "Autor"

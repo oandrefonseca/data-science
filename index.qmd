@@ -34,6 +34,9 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 9 - Testes Não Paramétricos](aulas/09-testes-nao-parametricos.qmd)\
   Postos e empates, teste de Mann-Whitney passo a passo com aproximação normal, δ de Cliff e comparação entre as correlações de Pearson e Spearman.
 
+- [Aula 10 - Regressão Linear](aulas/10-regressao-linear.qmd)\
+  Início do bloco de aprendizado de máquina: regressão linear simples e múltipla no California Housing, métricas de erro, sobreajuste, teste cego com validação cruzada, diagnóstico de resíduos e regularização.
+
 ::: {.callout-tip}
 ## Como usar este material
 

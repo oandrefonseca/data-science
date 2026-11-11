@@ -141,7 +141,7 @@ E há tetos. O máximo de `MedHouseVal` é exatamente 5,0, e o de `HouseAge`, ex
 
 Qualquer decisão tomada olhando para os dados que servirão de avaliação provoca **vazamento**, e a avaliação deixa de medir o desempenho em dados realmente novos. Para evitar isso, o aprendizado de máquina segue um protocolo. Logo depois de carregar os dados, separamos uma parte deles e a guardamos, intocada, até o fim do roteiro.
 
-Essa parte, com 20% das linhas, é o **teste cego**. Os 80% restantes formam o **conjunto de desenvolvimento**, onde exploramos os dados e ajustamos e comparamos modelos. O teste cego só será aberto uma vez, no fim, para medir o desempenho do modelo escolhido.
+Essa parte, com 20% das linhas, é o **teste cego**. Os 80% restantes formam o **conjunto de treino**, onde exploramos os dados e ajustamos e comparamos modelos. O teste cego só será aberto uma vez, no fim, para medir o desempenho do modelo escolhido.
 
 ```{python}
 
@@ -149,21 +149,21 @@ Essa parte, com 20% das linhas, é o **teste cego**. Os 80% restantes formam o *
 X = housing.drop(columns="MedHouseVal")  # <1>
 y = housing["MedHouseVal"]
 
-X_dev, X_test, y_dev, y_test = train_test_split(
+X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.20, random_state=42  # <2>
 )
 
-dev = X_dev.assign(MedHouseVal=y_dev)  # <3>
+train = X_train.assign(MedHouseVal=y_train)  # <3>
 
-print(f"Desenvolvimento: {len(X_dev)} linhas · Teste cego: {len(X_test)} linhas")
+print(f"Treino: {len(X_train)} linhas · Teste cego: {len(X_test)} linhas")
 
 ```
 
-1. Por convenção, `X` (maiúsculo) é a tabela de atributos, as variáveis usadas para prever, e `y` (minúsculo) é a variável resposta, aquilo que queremos prever.
+1. Por convenção, `X` (maiúsculo) é a tabela de atributos, as variáveis usadas para prever, e `y` (minúsculo) é a variável resposta, aquilo que queremos prever. A resposta sai de `X` porque o modelo não pode usar o próprio valor que deve prever. Perceba, se ela ficasse, o modelo apenas copiaria a coluna e não serviria para bairros novos.
 2. `train_test_split` sorteia quais linhas vão para cada conjunto. Fixar `random_state` faz o sorteio sair igual toda vez que o roteiro é executado.
-3. `dev` junta atributos e resposta do conjunto de desenvolvimento em uma única tabela, útil para os gráficos.
+3. `train` junta atributos e resposta do conjunto de treino em uma única tabela, útil para os gráficos.
 
-Daqui em diante, toda exploração usa apenas `dev`, `X_dev` e `y_dev`.
+Daqui em diante, toda exploração usa apenas `train`, `X_train` e `y_train`.
 
 # 2. Recapitulação: o que precisamos lembrar
 
@@ -188,7 +188,7 @@ Os dois usam o mesmo modelo. A previsão, porém, traz uma exigência nova: o er
 
 ## 2.3 O vocabulário do aprendizado de máquina
 
-Alguns termos vão aparecer o tempo todo. No **aprendizado supervisionado**, o modelo aprende com exemplos cuja resposta é conhecida; aqui, cada bairro do desenvolvimento traz os atributos e o valor das casas. Quando a resposta é numérica, como esse valor, o problema é de **regressão**. Quando é uma categoria, como "sobreviveu" ou "não sobreviveu", é de **classificação**.
+Alguns termos vão aparecer o tempo todo. No **aprendizado supervisionado**, o modelo aprende com exemplos cuja resposta é conhecida; aqui, cada bairro do conjunto de treino traz os atributos e o valor das casas. Quando a resposta é numérica, como esse valor, o problema é de **regressão**. Quando é uma categoria, como "sobreviveu" ou "não sobreviveu", é de **classificação**.
 
 **Treinar**, ou ajustar, um modelo é encontrar os seus parâmetros a partir dos dados, o que no scikit-learn se faz com o método `.fit`. **Prever** é aplicar o modelo treinado a novos atributos, com `.predict`. E **generalização** é a capacidade de errar pouco em dados que o modelo nunca viu.
 
@@ -203,11 +203,11 @@ Começamos pela relação mais intuitiva: bairros de renda mais alta têm casas 
 # Distribuição do valor das casas e relação com a renda
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
-axes[0].hist(dev["MedHouseVal"], bins=50, color="#A1C9F4", edgecolor="white")
+axes[0].hist(train["MedHouseVal"], bins=50, color="#A1C9F4", edgecolor="white")
 axes[0].set(xlabel="Valor mediano das casas (US$ 100 mil)",
             ylabel="Grupos de quarteirões")
 
-hexes = axes[1].hexbin(dev["MedInc"], dev["MedHouseVal"], gridsize=45,
+hexes = axes[1].hexbin(train["MedInc"], train["MedHouseVal"], gridsize=45,
                        cmap="Blues", mincnt=1, bins="log")  # <1>
 fig.colorbar(hexes, ax=axes[1], label="Grupos (escala log)")
 axes[1].set(xlabel="Renda mediana (US$ 10 mil)",
@@ -223,7 +223,7 @@ plt.show()
 ```{python}
 
 # Proporção de grupos no teto de 5,0
-capped_share = (dev["MedHouseVal"] >= 5).mean()
+capped_share = (train["MedHouseVal"] >= 5).mean()
 
 print(f"Grupos no teto de 5,0: {capped_share:.1%}")
 
@@ -265,7 +265,7 @@ Não é preciso fazer essa minimização à mão. O scikit-learn faz isso por n�
 
 # Reta de mínimos quadrados ajustada com o scikit-learn
 m1 = LinearRegression()  # <1>
-m1.fit(X_dev[["MedInc"]], y_dev)  # <2>
+m1.fit(X_train[["MedInc"]], y_train)  # <2>
 
 print(f"β0 = {m1.intercept_:.4f} · β1 = {m1.coef_[0]:.4f}")  # <3>
 
@@ -275,7 +275,7 @@ m1.predict(new_incomes)  # <4>
 ```
 
 1. Criar o objeto só define o tipo de modelo. Nenhum cálculo é feito ainda.
-2. `.fit(X, y)` ajusta o modelo e encontra os coeficientes que minimizam $\text{SQ}_{\text{res}}$. Os colchetes duplos em `X_dev[["MedInc"]]` mantêm uma tabela de uma coluna, e não uma Series. O scikit-learn sempre espera os atributos em formato de tabela, mesmo quando há um só.
+2. `.fit(X, y)` ajusta o modelo e encontra os coeficientes que minimizam $\text{SQ}_{\text{res}}$. Os colchetes duplos em `X_train[["MedInc"]]` mantêm uma tabela de uma coluna, e não uma Series. O scikit-learn sempre espera os atributos em formato de tabela, mesmo quando há um só.
 3. Depois do ajuste, os parâmetros ficam em atributos terminados em `_`: `intercept_` guarda $\beta_0$, e `coef_`, a lista dos $\beta$ de cada atributo.
 4. `.predict(X)` aplica a reta a novos atributos, aqui três bairros com rendas medianas de US$ 20 mil, US$ 40 mil e US$ 80 mil.
 
@@ -300,7 +300,7 @@ Para ver o que significa minimizar os quadrados, sorteamos 15 bairros e comparam
 ```{python}
 
 # Resíduos de 15 grupos em relação à reta ajustada e a uma reta no olho
-sample = dev.sample(15, random_state=3)
+sample = train.sample(15, random_state=3)
 income_grid = pd.DataFrame(
     {"MedInc": np.linspace(sample["MedInc"].min(), sample["MedInc"].max(), 100)}
 )
@@ -329,7 +329,7 @@ plt.show()
 2. `vlines` desenha, para cada bairro, um segmento vertical entre o valor previsto pela reta e o valor observado: o resíduo.
 3. `mean_squared_error` calcula a média dos quadrados dos resíduos. Minimizar essa média é o mesmo que minimizar a soma $\text{SQ}_{\text{res}}$.
 
-A reta no olho chega mais perto de alguns pontos, como o bairro de renda mais alta, mas se afasta muito de outros, como o de renda 6,7 e valor 2,2. Elevados ao quadrado, esses resíduos grandes dominam a média. A reta de mínimos quadrados distribui os erros de modo a minimizar o total, e foi ajustada com os 16.512 bairros do desenvolvimento, não só com estes 15.
+A reta no olho chega mais perto de alguns pontos, como o bairro de renda mais alta, mas se afasta muito de outros, como o de renda 6,7 e valor 2,2. Elevados ao quadrado, esses resíduos grandes dominam a média. A reta de mínimos quadrados distribui os erros de modo a minimizar o total, e foi ajustada com os 16.512 bairros do conjunto de treino, não só com estes 15.
 
 ## 3.5 Interpretando os coeficientes
 
@@ -353,7 +353,7 @@ A regressão também pode ser lida como um teste de hipóteses, com $H_0: \beta_
 ```{python}
 
 # Inclinação, erro-padrão e p-valor da regressão simples
-slope_test = stats.linregress(dev["MedInc"], dev["MedHouseVal"])
+slope_test = stats.linregress(train["MedInc"], train["MedHouseVal"])
 
 print(f"β1 = {slope_test.slope:.4f} · erro-padrão = {slope_test.stderr:.4f} · "
       f"p = {slope_test.pvalue:.1e}")
@@ -382,16 +382,16 @@ O scikit-learn já traz esse modelo de referência pronto. É o `DummyRegressor`
 ```{python}
 
 # Previsões do modelo de referência e do M1 nos próprios dados de ajuste
-baseline = DummyRegressor(strategy="mean").fit(X_dev[["MedInc"]], y_dev)  # <1>
+baseline = DummyRegressor(strategy="mean").fit(X_train[["MedInc"]], y_train)  # <1>
 
 predictions = {
-    "Referência (média)": baseline.predict(X_dev[["MedInc"]]),
-    "M1 (renda)": m1.predict(X_dev[["MedInc"]]),
+    "Referência (média)": baseline.predict(X_train[["MedInc"]]),
+    "M1 (renda)": m1.predict(X_train[["MedInc"]]),
 }
 
 ```
 
-1. `DummyRegressor(strategy="mean")` segue a mesma interface `.fit` e `.predict` de qualquer modelo, mas só "aprende" a média de `y_dev`.
+1. `DummyRegressor(strategy="mean")` segue a mesma interface `.fit` e `.predict` de qualquer modelo, mas só "aprende" a média de `y_train`.
 
 E calculamos as três métricas para cada um:
 
@@ -402,9 +402,9 @@ fit_metrics = (
     pd.DataFrame(
         {
             name: {
-                "MAE": mean_absolute_error(y_dev, pred),
-                "RMSE": root_mean_squared_error(y_dev, pred),
-                "R²": r2_score(y_dev, pred),
+                "MAE": mean_absolute_error(y_train, pred),
+                "RMSE": root_mean_squared_error(y_train, pred),
+                "R²": r2_score(y_train, pred),
             }
             for name, pred in predictions.items()
         }
@@ -435,8 +435,8 @@ Com modelos acontece o mesmo. Chamamos de **erro de treino** o erro medido nos b
 #| echo: false
 
 # Reta e curva flexível ajustadas a 20 bairros, com o erro de cada uma
-few_train = dev.sample(20, random_state=5).sort_values("MedInc")
-new_districts = dev.drop(few_train.index)
+few_train = train.sample(20, random_state=5).sort_values("MedInc")
+new_districts = train.drop(few_train.index)
 
 line = LinearRegression().fit(few_train[["MedInc"]], few_train["MedHouseVal"])
 curve = CubicSpline(few_train["MedInc"], few_train["MedHouseVal"])
@@ -510,9 +510,9 @@ Por isso, o erro do modelo vencedor no conjunto de validação tende a ser um po
 
 É como estudar com simulados: eles servem para descobrir onde você precisa melhorar, mas a nota que vale é a da prova, que você não viu antes.
 
-Resta um problema prático. Se reservarmos mais uma fatia fixa dos dados só para validar, sobram menos bairros para treinar, e a escolha passa a depender de quais bairros caíram nessa fatia. A saída é criar avaliações dentro do próprio desenvolvimento, reaproveitando os mesmos dados. 
+Resta um problema prático. Se reservarmos mais uma fatia fixa dos dados só para validar, sobram menos bairros para treinar, e a escolha passa a depender de quais bairros caíram nessa fatia. A saída é criar avaliações dentro do próprio conjunto de treino, reaproveitando os mesmos dados. 
 
-A **validação cruzada com $k$ dobras** (*k-fold cross-validation*) divide o desenvolvimento em $k$ partes de tamanho parecido. Em cada rodada, uma parte faz o papel de validação e as outras $k - 1$, o de treino. Ao fim das $k$ rodadas, cada bairro terá sido usado exatamente uma vez para validar:
+A **validação cruzada com $k$ dobras** (*k-fold cross-validation*) divide o conjunto de treino em $k$ partes de tamanho parecido. Em cada rodada, uma parte faz o papel de validação e as outras $k - 1$, o de ajuste. Ao fim das $k$ rodadas, cada bairro terá sido usado exatamente uma vez para validar:
 
 ```{python}
 
@@ -524,10 +524,10 @@ for k in range(5):
                 edgecolor="white", linewidth=2)
     ax.barh(k, 0.2, left=0.8, color="#DDDDDD", edgecolor="white", linewidth=2)
 ax.text(0.9, -0.75, "teste cego (20%)", ha="center", color="#333333")
-ax.text(0.4, -0.75, "desenvolvimento (80%)", ha="center", color="#333333")
+ax.text(0.4, -0.75, "treino (80%)", ha="center", color="#333333")
 ax.set(yticks=range(5), yticklabels=[f"Rodada {k + 1}" for k in range(5)],
        xticks=[], ylim=(4.6, -1.1))
-ax.legend(handles=[Patch(color="#A1C9F4", label="treino"),
+ax.legend(handles=[Patch(color="#A1C9F4", label="ajuste"),
                    Patch(color="#DD8452", label="validação"),
                    Patch(color="#DDDDDD", label="intocado")],
           loc="upper left", bbox_to_anchor=(1.01, 1))
@@ -545,7 +545,7 @@ O resultado são cinco medidas de erro, e não uma. A média delas estima o erro
 kfold = KFold(n_splits=5, shuffle=True, random_state=42)  # <1>
 scoring = {"rmse": "neg_root_mean_squared_error", "r2": "r2"}  # <2>
 
-cv_m1 = cross_validate(LinearRegression(), X_dev[["MedInc"]], y_dev, cv=kfold,
+cv_m1 = cross_validate(LinearRegression(), X_train[["MedInc"]], y_train, cv=kfold,
                        scoring=scoring, return_train_score=True)  # <3>
 
 folds_m1 = pd.DataFrame(
@@ -563,7 +563,7 @@ folds_m1.round(4)
 
 1. `shuffle=True` embaralha os bairros antes de dividi-los. Sem isso, as dobras seguiriam a ordem das linhas, que pode ter algum padrão, como a região. O `random_state` fixa o embaralhamento, e as mesmas dobras serão reutilizadas por todos os modelos da aula.
 2. O scikit-learn segue a convenção "quanto maior, melhor" para todas as métricas. Como um RMSE menor é melhor, ele devolve o RMSE com o sinal trocado, daí o prefixo `neg_`.
-3. `return_train_score=True` guarda também o desempenho em cada conjunto de treino, para compará-lo com o da validação. Em cada rodada, `cross_validate` cria uma cópia nova do modelo, ajusta-a nos dados de treino e a avalia na validação.
+3. `return_train_score=True` guarda também o desempenho nas dobras de ajuste de cada rodada, para compará-lo com o da validação. Em cada rodada, `cross_validate` cria uma cópia nova do modelo, ajusta-a nas dobras de ajuste e a avalia na dobra de validação.
 4. Trocamos o sinal de volta para ler o RMSE na unidade original.
 
 O resumo das cinco dobras:
@@ -581,18 +581,18 @@ summary_m1
 
 ```
 
-O $R^2$ médio de validação fica em torno de 0,48, e o RMSE, em 0,84, praticamente os valores obtidos nos dados de ajuste. As médias do $R^2$ de treino e de validação coincidem em 0,477. Ao contrário da curva que decora os 20 bairros, uma reta com um único atributo e 13 mil bairros por treino não tem flexibilidade para decorar nada, e fica longe do sobreajuste.
+O $R^2$ médio de validação fica em torno de 0,48, e o RMSE, em 0,84, praticamente os valores obtidos nos dados de ajuste. As médias do $R^2$ de treino e de validação coincidem em 0,477. Ao contrário da curva que decora os 20 bairros, uma reta com um único atributo e 13 mil bairros por rodada de ajuste não tem flexibilidade para decorar nada, e fica longe do sobreajuste.
 
 As dobras também são estáveis. O desvio-padrão do $R^2$ passa pouco de 0,01, e o desempenho quase não muda com a divisão dos bairros.
 
 ## 4.3 Estabilidade dos coeficientes nas dobras
 
-A validação cruzada também mostra se o próprio modelo muda de uma dobra para outra. Ajustamos uma reta em cada conjunto de treino e desenhamos as cinco juntas. Para comparar, repetimos o procedimento com só 100 bairros sorteados do desenvolvimento:
+A validação cruzada também mostra se o próprio modelo muda de uma dobra para outra. Ajustamos uma reta nas dobras de ajuste de cada rodada e desenhamos as cinco juntas. Para comparar, repetimos o procedimento com só 100 bairros sorteados do conjunto de treino:
 
 ```{python}
 
 # Cinco retas de treino em cada base: todos os bairros e apenas 100 bairros
-bases = {"16.512 bairros": dev, "100 bairros": dev.sample(100, random_state=0)}
+bases = {"16.512 bairros": train, "100 bairros": train.sample(100, random_state=0)}
 
 fold_models = {
     label: cross_validate(LinearRegression(), data[["MedInc"]], data["MedHouseVal"],
@@ -644,7 +644,7 @@ coef_range
 
 ```
 
-Com 16.512 bairros, as cinco retas quase se sobrepõem, e a inclinação varia só entre 0,417 e 0,421. Com 100 bairros, o feixe se abre, e a inclinação de cada dobra passa a depender bastante de quais bairros caíram no treino. Quanto maior a amostra, menos a estimativa varia de uma amostra para outra.
+Com 16.512 bairros, as cinco retas quase se sobrepõem, e a inclinação varia só entre 0,417 e 0,421. Com 100 bairros, o feixe se abre, e a inclinação de cada dobra passa a depender bastante de quais bairros caíram nas dobras de ajuste. Quanto maior a amostra, menos a estimativa varia de uma amostra para outra.
 
 Com a base completa, o M1 é estável, mas limitado. Tem pouca variância e muito viés, porque a renda, sozinha, deixa metade da variação sem explicação.
 
@@ -676,7 +676,7 @@ Para que a comparação seja justa, o M2 é avaliado nas mesmas cinco dobras do 
 # M2: seis atributos, avaliados nas mesmas cinco dobras do M1
 features_m2 = ["MedInc", "HouseAge", "AveRooms", "AveBedrms", "Population", "AveOccup"]
 
-cv_m2 = cross_validate(LinearRegression(), X_dev[features_m2], y_dev, cv=kfold,
+cv_m2 = cross_validate(LinearRegression(), X_train[features_m2], y_train, cv=kfold,
                        scoring=scoring, return_train_score=True)
 
 comparison = pd.DataFrame(
@@ -732,14 +732,14 @@ O M2 vence em todas as cinco dobras. O $R^2$ sobe de cerca de 0,48 para 0,54, e 
 
 ## 5.2 Lendo os coeficientes
 
-Ajustamos o M2 em todo o desenvolvimento para examinar os coeficientes. Como os atributos têm unidades muito diferentes, de pessoas a cômodos, ajustamos também uma versão com os atributos padronizados pelo `StandardScaler`. Nela, cada coeficiente indica a mudança em $y$ quando o atributo aumenta um desvio-padrão, e os coeficientes ficam comparáveis entre si:
+Ajustamos o M2 em todo o conjunto de treino para examinar os coeficientes. Como os atributos têm unidades muito diferentes, de pessoas a cômodos, ajustamos também uma versão com os atributos padronizados pelo `StandardScaler`. Nela, cada coeficiente indica a mudança em $y$ quando o atributo aumenta um desvio-padrão, e os coeficientes ficam comparáveis entre si:
 
 ```{python}
 
 # Coeficientes do M2 em unidades originais e padronizadas
-m2 = LinearRegression().fit(X_dev[features_m2], y_dev)
+m2 = LinearRegression().fit(X_train[features_m2], y_train)
 m2_scaled = make_pipeline(StandardScaler(), LinearRegression()).fit(  # <1>
-    X_dev[features_m2], y_dev
+    X_train[features_m2], y_train
 )
 
 coefficients = (
@@ -747,7 +747,7 @@ coefficients = (
         {
             "original": m2.coef_,
             "padronizado": m2_scaled[-1].coef_,  # <2>
-            "correlacao_com_y": X_dev[features_m2].corrwith(y_dev),
+            "correlacao_com_y": X_train[features_m2].corrwith(y_train),
         },
         index=features_m2,
     )
@@ -779,10 +779,10 @@ specs = {
 }
 
 for name, cols in specs.items():
-    coefs = pd.Series(LinearRegression().fit(X_dev[cols], y_dev).coef_, index=cols)
+    coefs = pd.Series(LinearRegression().fit(X_train[cols], y_train).coef_, index=cols)
     print(f"{name:<20} β(AveRooms) = {coefs['AveRooms']:+.4f}")
 
-rooms_corr = X_dev[["AveBedrms", "MedInc"]].corrwith(X_dev["AveRooms"])
+rooms_corr = X_train[["AveBedrms", "MedInc"]].corrwith(X_train["AveRooms"])
 
 print(f"\nCorrelação AveRooms × AveBedrms = {rooms_corr['AveBedrms']:.2f}")
 print(f"Correlação AveRooms × MedInc    = {rooms_corr['MedInc']:.2f}")
@@ -801,23 +801,23 @@ As métricas resumem o erro em um número. Os resíduos mostram onde e como o mo
 
 ```{python}
 
-# Previsões fora da dobra para todo o conjunto de desenvolvimento
-oof_m2 = cross_val_predict(LinearRegression(), X_dev[features_m2], y_dev, cv=kfold)  # <1>
-residuals_m2 = y_dev - oof_m2
+# Previsões fora da dobra para todo o conjunto de treino
+oof_m2 = cross_val_predict(LinearRegression(), X_train[features_m2], y_train, cv=kfold)  # <1>
+residuals_m2 = y_train - oof_m2
 
 print(f"Previsões negativas: {(oof_m2 < 0).sum()} · "
       f"acima de 5,0: {(oof_m2 > 5).sum()} · máxima: {oof_m2.max():.2f}")
 
 ```
 
-1. *Out-of-fold*, ou "fora da dobra": a previsão de cada bairro vem de um modelo que não o usou no treino.
+1. *Out-of-fold*, ou "fora da dobra": a previsão de cada bairro vem de um modelo que não o usou no ajuste.
 
 ```{python}
 
 # Valor real versus previsto e resíduos versus previsto
 fig, axes = plt.subplots(1, 2, figsize=(13, 4.8))
 
-axes[0].scatter(y_dev, oof_m2, color="#1F4E79", alpha=0.08, s=6)
+axes[0].scatter(y_train, oof_m2, color="#1F4E79", alpha=0.08, s=6)
 axes[0].plot([0, 5], [0, 5], color="#DD8452", linestyle="--", linewidth=2,
              label="previsão perfeita")
 axes[0].set(xlabel="Valor real (US$ 100 mil)", ylabel="Valor previsto (US$ 100 mil)",
@@ -851,15 +851,15 @@ Nada disso invalida o M2 como previsor, já que ele erra menos que o M1 em dados
 
 ## 5.4 A avaliação final no teste cego
 
-O M2 venceu na validação cruzada, e só agora abrimos o teste cego. São dois passos. Primeiro, retreinamos cada modelo com todo o desenvolvimento, porque já não há motivo para deixar uma dobra de fora. Depois, avaliamos uma única vez no teste:
+O M2 venceu na validação cruzada, e só agora abrimos o teste cego. São dois passos. Primeiro, retreinamos cada modelo com todo o conjunto de treino, porque já não há motivo para deixar uma dobra de fora. Depois, avaliamos uma única vez no teste:
 
 ```{python}
 
-# Ajuste final no desenvolvimento inteiro e previsões no teste cego
+# Ajuste final no conjunto de treino inteiro e previsões no teste cego
 final_models = {"M1": (["MedInc"], cv_m1), "M2": (features_m2, cv_m2)}
 
 test_predictions = {
-    name: LinearRegression().fit(X_dev[cols], y_dev).predict(X_test[cols])
+    name: LinearRegression().fit(X_train[cols], y_train).predict(X_test[cols])
     for name, (cols, _) in final_models.items()
 }
 
@@ -919,7 +919,7 @@ A penalidade puxa os coeficientes para zero mesmo quando o valor verdadeiro não
 
 Ridge e Lasso diferem na forma da penalidade. A L2 cresce com o quadrado do coeficiente, de modo que coeficientes grandes ficam muito caros e os pequenos saem quase de graça. Por isso o Ridge encolhe todos, mas raramente leva algum exatamente a zero. A L1 cresce linearmente: cada unidade de coeficiente custa o mesmo, seja a primeira ou a última. Para um atributo pouco útil, sai mais barato zerar o coeficiente de vez, e o Lasso acaba fazendo uma seleção de atributos dentro do próprio ajuste. Diante de um par muito correlacionado, como cômodos e quartos, o Lasso tende a ficar com um e descartar o outro, enquanto o Ridge divide o peso entre os dois. O ElasticNet combina as duas penalidades e obtém a seleção do Lasso sem a escolha arbitrária dentro de grupos correlacionados.
 
-O intercepto $\beta_0$ não é penalizado. Como a penalidade soma os tamanhos dos coeficientes, os atributos precisam estar na mesma escala. Sem padronização, um atributo medido em pessoas, como `Population`, e outro medido em cômodos seriam penalizados de forma desigual. A regularização vem sempre depois de um `StandardScaler`, dentro de uma *pipeline*. Assim, em cada dobra da validação cruzada, a média e o desvio-padrão da padronização são aprendidos só no treino daquela dobra: é a regra contra o vazamento, aplicada automaticamente.
+O intercepto $\beta_0$ não é penalizado. Como a penalidade soma os tamanhos dos coeficientes, os atributos precisam estar na mesma escala. Sem padronização, um atributo medido em pessoas, como `Population`, e outro medido em cômodos seriam penalizados de forma desigual. A regularização vem sempre depois de um `StandardScaler`, dentro de uma *pipeline*. Assim, em cada dobra da validação cruzada, a média e o desvio-padrão da padronização são aprendidos só nas dobras de ajuste daquela rodada: é a regra contra o vazamento, aplicada automaticamente.
 
 E neste problema? Com 16.512 bairros e só seis atributos, o OLS já é estável, como mostrou o feixe de retas das dobras. Não sobra variância para a penalidade reduzir, e a regularização teria pouco a ganhar em previsão. Ela faz diferença quando há muitos atributos em relação ao número de observações, ou quando o modelo é flexível o bastante para decorar os dados. Nos modelos que vêm a seguir no curso, essas situações são a regra, e não a exceção.
 
@@ -1031,10 +1031,11 @@ O $R^2$ de treino nunca diminui quando se acrescenta um atributo. No pior caso, 
 
 # Para casa
 
-1. Construa o M3, acrescentando `Latitude` e `Longitude` ao M2, e avalie-o nas mesmas cinco dobras. O ganho em relação ao M2 é maior ou menor que o do M2 em relação ao M1? Por que a localização ajudaria a prever o valor das casas?
-2. Aplique o log a `Population` e `AveOccup` e repita a validação cruzada do M2. As métricas melhoram? Lembre-se de criar as colunas transformadas tanto no desenvolvimento quanto no teste.
-3. Repita a validação cruzada do M1 com 10 dobras e com outro `random_state`. O que muda na média e no desvio-padrão do $R^2$?
-4. Antes de considerar o notebook pronto, use Restart Kernel and Run All.
+1. Transforme os atributos do M2: aplique o log a `Population`, `AveOccup` e `AveRooms` e troque `AveBedrms` pela razão entre quartos e cômodos (`AveBedrms / AveRooms`). Repita a validação cruzada nas mesmas cinco dobras. As métricas melhoram? Os coeficientes ficam mais fáceis de interpretar agora que o par cômodos/quartos não é mais colinear?
+2. Construa o M3, acrescentando `Latitude` e `Longitude` ao M2 original, e avalie-o nas mesmas cinco dobras. O ganho em relação ao M2 é maior ou menor que o do M2 em relação ao M1? Por que a localização ajudaria a prever o valor das casas?
+3. Combine as duas ideias: ajuste o M3 com os atributos transformados do item 1. O ganho é a soma dos dois anteriores, ou um pouco mais, ou um pouco menos? Lembre-se de aplicar as mesmas transformações ao teste cego, e use um `Pipeline` com `FunctionTransformer` para que isso aconteça dentro de cada dobra.
+4. Repita a validação cruzada do M1 com 10 dobras e com outro `random_state`. O que muda na média e no desvio-padrão do $R^2$?
+5. Antes de considerar o notebook pronto, use Restart Kernel and Run All.
 
 ## Referências
 

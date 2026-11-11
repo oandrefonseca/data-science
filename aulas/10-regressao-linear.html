@@ -354,7 +354,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">9 de novembro de 2026</p>
+      <p class="date">11 de novembro de 2026</p>
     </div>
   </div>
   
@@ -403,7 +403,7 @@ Como usar este roteiro
 <section id="preparando-o-ambiente" class="level1">
 <h1>1. Preparando o ambiente</h1>
 <p>Começamos pelas bibliotecas. Do scikit-learn vêm as ferramentas de partição dos dados, os modelos, as etapas de pré-processamento e as métricas de erro:</p>
-<div id="502120e2" class="cell" data-execution_count="1">
+<div id="0e52eb97" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -435,7 +435,7 @@ Como usar este roteiro
 <h2 class="anchored" data-anchor-id="conhecendo-a-base">1.1 Conhecendo a base</h2>
 <p>A base California Housing vem do censo norte-americano de 1990. Cada linha não é uma casa, e sim um grupo de quarteirões (<em>block group</em>), a menor unidade geográfica para a qual o censo publica dados, com cerca de 600 a 3.000 moradores. No roteiro, chamamos cada linha de “grupo” ou “bairro”.</p>
 <p>A base vem com o scikit-learn. A cópia local em <code>california-housing/data/</code> foi gerada uma única vez com o código abaixo, que não é executado no roteiro:</p>
-<div id="ad9f5b88" class="cell" data-execution_count="2">
+<div id="7544d2b0" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Baixa a base pelo scikit-learn e salva a cópia local</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -454,12 +454,12 @@ Como usar este roteiro
 </div>
 </div>
 <p>Daqui em diante, lemos a cópia local:</p>
-<div id="9212943d" class="cell" data-execution_count="3">
+<div id="c6434d38" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a base de grupos de quarteirões da Califórnia</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> pd.read_csv(<span class="st">"california-housing/data/california_housing.csv"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>housing.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="172">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -602,7 +602,7 @@ Como usar este roteiro
 </tbody>
 </table>
 <p>Antes de qualquer modelo, inspecionamos a base:</p>
-<div id="639c38ae" class="cell" data-execution_count="4">
+<div id="7b9a984a" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumo das nove colunas</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>housing_summary <span class="op">=</span> (</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    housing</span>
@@ -612,7 +612,7 @@ Como usar este roteiro
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>housing_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="173">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -742,24 +742,24 @@ Como usar este roteiro
 <section id="antes-de-tudo-o-teste-cego" class="level2">
 <h2 class="anchored" data-anchor-id="antes-de-tudo-o-teste-cego">1.2 Antes de tudo: o teste cego</h2>
 <p>Qualquer decisão tomada olhando para os dados que servirão de avaliação provoca <strong>vazamento</strong>, e a avaliação deixa de medir o desempenho em dados realmente novos. Para evitar isso, o aprendizado de máquina segue um protocolo. Logo depois de carregar os dados, separamos uma parte deles e a guardamos, intocada, até o fim do roteiro.</p>
-<p>Essa parte, com 20% das linhas, é o <strong>teste cego</strong>. Os 80% restantes formam o <strong>conjunto de desenvolvimento</strong>, onde exploramos os dados e ajustamos e comparamos modelos. O teste cego só será aberto uma vez, no fim, para medir o desempenho do modelo escolhido.</p>
-<div id="a948d502" class="cell" data-execution_count="5">
+<p>Essa parte, com 20% das linhas, é o <strong>teste cego</strong>. Os 80% restantes formam o <strong>conjunto de treino</strong>, onde exploramos os dados e ajustamos e comparamos modelos. O teste cego só será aberto uma vez, no fim, para medir o desempenho do modelo escolhido.</p>
+<div id="d4979f13" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Separa 20% das linhas como teste cego, antes de qualquer análise</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> housing.drop(columns<span class="op">=</span><span class="st">"MedHouseVal"</span>)</span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> housing[<span class="st">"MedHouseVal"</span>]</span>
 <span id="annotated-cell-5-4"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>X_dev, X_test, y_dev, y_test <span class="op">=</span> train_test_split(</span>
+<span id="annotated-cell-5-5"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.20</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
 <span id="annotated-cell-5-7"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a>dev <span class="op">=</span> X_dev.assign(MedHouseVal<span class="op">=</span>y_dev)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-9" class="code-annotation-target"><a href="#annotated-cell-5-9" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> X_train.assign(MedHouseVal<span class="op">=</span>y_train)</span>
 <span id="annotated-cell-5-10"><a href="#annotated-cell-5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Desenvolvimento: </span><span class="sc">{</span><span class="bu">len</span>(X_dev)<span class="sc">}</span><span class="ss"> linhas · Teste cego: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> linhas"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-5-11"><a href="#annotated-cell-5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Treino: </span><span class="sc">{</span><span class="bu">len</span>(X_train)<span class="sc">}</span><span class="ss"> linhas · Teste cego: </span><span class="sc">{</span><span class="bu">len</span>(X_test)<span class="sc">}</span><span class="ss"> linhas"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1">Por convenção, <code>X</code> (maiúsculo) é a tabela de atributos, as variáveis usadas para prever, e <code>y</code> (minúsculo) é a variável resposta, aquilo que queremos prever.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1">Por convenção, <code>X</code> (maiúsculo) é a tabela de atributos, as variáveis usadas para prever, e <code>y</code> (minúsculo) é a variável resposta, aquilo que queremos prever. A resposta sai de <code>X</code> porque o modelo não pode usar o próprio valor que deve prever. Perceba, se ela ficasse, o modelo apenas copiaria a coluna e não serviria para bairros novos.</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
@@ -767,15 +767,15 @@ Como usar este roteiro
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="3"><code>dev</code> junta atributos e resposta do conjunto de desenvolvimento em uma única tabela, útil para os gráficos.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="9" data-code-annotation="3"><code>train</code> junta atributos e resposta do conjunto de treino em uma única tabela, útil para os gráficos.</span>
 </dd>
 </dl>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Desenvolvimento: 16512 linhas · Teste cego: 4128 linhas</code></pre>
+<pre><code>Treino: 16512 linhas · Teste cego: 4128 linhas</code></pre>
 </div>
 </div>
-<p>Daqui em diante, toda exploração usa apenas <code>dev</code>, <code>X_dev</code> e <code>y_dev</code>.</p>
+<p>Daqui em diante, toda exploração usa apenas <code>train</code>, <code>X_train</code> e <code>y_train</code>.</p>
 </section>
 </section>
 <section id="recapitulação-o-que-precisamos-lembrar" class="level1">
@@ -828,7 +828,7 @@ Como usar este roteiro
 </section>
 <section id="o-vocabulário-do-aprendizado-de-máquina" class="level2">
 <h2 class="anchored" data-anchor-id="o-vocabulário-do-aprendizado-de-máquina">2.3 O vocabulário do aprendizado de máquina</h2>
-<p>Alguns termos vão aparecer o tempo todo. No <strong>aprendizado supervisionado</strong>, o modelo aprende com exemplos cuja resposta é conhecida; aqui, cada bairro do desenvolvimento traz os atributos e o valor das casas. Quando a resposta é numérica, como esse valor, o problema é de <strong>regressão</strong>. Quando é uma categoria, como “sobreviveu” ou “não sobreviveu”, é de <strong>classificação</strong>.</p>
+<p>Alguns termos vão aparecer o tempo todo. No <strong>aprendizado supervisionado</strong>, o modelo aprende com exemplos cuja resposta é conhecida; aqui, cada bairro do conjunto de treino traz os atributos e o valor das casas. Quando a resposta é numérica, como esse valor, o problema é de <strong>regressão</strong>. Quando é uma categoria, como “sobreviveu” ou “não sobreviveu”, é de <strong>classificação</strong>.</p>
 <p><strong>Treinar</strong>, ou ajustar, um modelo é encontrar os seus parâmetros a partir dos dados, o que no scikit-learn se faz com o método <code>.fit</code>. <strong>Prever</strong> é aplicar o modelo treinado a novos atributos, com <code>.predict</code>. E <strong>generalização</strong> é a capacidade de errar pouco em dados que o modelo nunca viu.</p>
 </section>
 </section>
@@ -837,15 +837,15 @@ Como usar este roteiro
 <section id="olhando-para-os-dados" class="level2">
 <h2 class="anchored" data-anchor-id="olhando-para-os-dados">3.1 Olhando para os dados</h2>
 <p>Começamos pela relação mais intuitiva: bairros de renda mais alta têm casas mais caras? Antes do modelo, olhamos para a resposta e para a relação dela com a renda:</p>
-<div id="6f814889" class="cell" data-execution_count="6">
+<div id="9fa53977" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição do valor das casas e relação com a renda</span></span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">4.5</span>))</span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].hist(dev[<span class="st">"MedHouseVal"</span>], bins<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"#A1C9F4"</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].hist(train[<span class="st">"MedHouseVal"</span>], bins<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"#A1C9F4"</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
 <span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Valor mediano das casas (US$ 100 mil)"</span>,</span>
 <span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>            ylabel<span class="op">=</span><span class="st">"Grupos de quarteirões"</span>)</span>
 <span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>hexes <span class="op">=</span> axes[<span class="dv">1</span>].hexbin(dev[<span class="st">"MedInc"</span>], dev[<span class="st">"MedHouseVal"</span>], gridsize<span class="op">=</span><span class="dv">45</span>,</span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>hexes <span class="op">=</span> axes[<span class="dv">1</span>].hexbin(train[<span class="st">"MedInc"</span>], train[<span class="st">"MedHouseVal"</span>], gridsize<span class="op">=</span><span class="dv">45</span>,</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-9" class="code-annotation-target"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a>                       cmap<span class="op">=</span><span class="st">"Blues"</span>, mincnt<span class="op">=</span><span class="dv">1</span>, bins<span class="op">=</span><span class="st">"log"</span>)</span>
 <span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>fig.colorbar(hexes, ax<span class="op">=</span>axes[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"Grupos (escala log)"</span>)</span>
 <span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Renda mediana (US$ 10 mil)"</span>,</span>
@@ -869,9 +869,9 @@ Como usar este roteiro
 </div>
 </div>
 </div>
-<div id="b5cb6e0d" class="cell" data-execution_count="7">
+<div id="70159419" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proporção de grupos no teto de 5,0</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>capped_share <span class="op">=</span> (dev[<span class="st">"MedHouseVal"</span>] <span class="op">&gt;=</span> <span class="dv">5</span>).mean()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>capped_share <span class="op">=</span> (train[<span class="st">"MedHouseVal"</span>] <span class="op">&gt;=</span> <span class="dv">5</span>).mean()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Grupos no teto de 5,0: </span><span class="sc">{</span>capped_share<span class="sc">:.1%}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -901,10 +901,10 @@ e_i = y_i - \hat{y}_i
 <section id="ajustando-a-reta-com-o-scikit-learn" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-a-reta-com-o-scikit-learn">3.3 Ajustando a reta com o scikit-learn</h2>
 <p>Não é preciso fazer essa minimização à mão. O scikit-learn faz isso por nós e organiza todos os modelos em torno da mesma interface, de modo que o que se aprende com a regressão linear vale para o resto do bloco de aprendizado de máquina:</p>
-<div id="db38aa2c" class="cell" data-execution_count="8">
+<div id="30879d43" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reta de mínimos quadrados ajustada com o scikit-learn</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> LinearRegression()</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>m1.fit(X_dev[[<span class="st">"MedInc"</span>]], y_dev)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>m1.fit(X_train[[<span class="st">"MedInc"</span>]], y_train)</span>
 <span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-5" class="code-annotation-target"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"β0 = </span><span class="sc">{</span>m1<span class="sc">.</span>intercept_<span class="sc">:.4f}</span><span class="ss"> · β1 = </span><span class="sc">{</span>m1<span class="sc">.</span>coef_[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -918,7 +918,7 @@ e_i = y_i - \hat{y}_i
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="3" data-code-annotation="2"><code>.fit(X, y)</code> ajusta o modelo e encontra os coeficientes que minimizam <span class="math inline">\(\text{SQ}_{\text{res}}\)</span>. Os colchetes duplos em <code>X_dev[["MedInc"]]</code> mantêm uma tabela de uma coluna, e não uma Series. O scikit-learn sempre espera os atributos em formato de tabela, mesmo quando há um só.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="3" data-code-annotation="2"><code>.fit(X, y)</code> ajusta o modelo e encontra os coeficientes que minimizam <span class="math inline">\(\text{SQ}_{\text{res}}\)</span>. Os colchetes duplos em <code>X_train[["MedInc"]]</code> mantêm uma tabela de uma coluna, e não uma Series. O scikit-learn sempre espera os atributos em formato de tabela, mesmo quando há um só.</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
 <dd>
@@ -933,7 +933,7 @@ e_i = y_i - \hat{y}_i
 <div class="cell-output cell-output-stdout">
 <pre><code>β0 = 0.4446 · β1 = 0.4193</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="177">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>array([1.28327428, 2.12195127, 3.79930524])</code></pre>
 </div>
 </div>
@@ -950,9 +950,9 @@ e_i = y_i - \hat{y}_i
 <section id="o-que-a-minimização-faz" class="level2">
 <h2 class="anchored" data-anchor-id="o-que-a-minimização-faz">3.4 O que a minimização faz</h2>
 <p>Para ver o que significa minimizar os quadrados, sorteamos 15 bairros e comparamos os resíduos de duas retas. À esquerda está a reta ajustada pelo scikit-learn; à direita, uma reta traçada no olho, mais inclinada. Os segmentos laranja são os resíduos, e o título de cada painel traz o <strong>erro quadrático médio</strong> (EQM, ou MSE em inglês), a média dos quadrados dos resíduos:</p>
-<div id="14c62f46" class="cell" data-execution_count="9">
+<div id="cb208dfd" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resíduos de 15 grupos em relação à reta ajustada e a uma reta no olho</span></span>
-<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> dev.sample(<span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> train.sample(<span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a>income_grid <span class="op">=</span> pd.DataFrame(</span>
 <span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"MedInc"</span>: np.linspace(sample[<span class="st">"MedInc"</span>].<span class="bu">min</span>(), sample[<span class="st">"MedInc"</span>].<span class="bu">max</span>(), <span class="dv">100</span>)}</span>
 <span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -998,7 +998,7 @@ e_i = y_i - \hat{y}_i
 </div>
 </div>
 </div>
-<p>A reta no olho chega mais perto de alguns pontos, como o bairro de renda mais alta, mas se afasta muito de outros, como o de renda 6,7 e valor 2,2. Elevados ao quadrado, esses resíduos grandes dominam a média. A reta de mínimos quadrados distribui os erros de modo a minimizar o total, e foi ajustada com os 16.512 bairros do desenvolvimento, não só com estes 15.</p>
+<p>A reta no olho chega mais perto de alguns pontos, como o bairro de renda mais alta, mas se afasta muito de outros, como o de renda 6,7 e valor 2,2. Elevados ao quadrado, esses resíduos grandes dominam a média. A reta de mínimos quadrados distribui os erros de modo a minimizar o total, e foi ajustada com os 16.512 bairros do conjunto de treino, não só com estes 15.</p>
 </section>
 <section id="interpretando-os-coeficientes" class="level2">
 <h2 class="anchored" data-anchor-id="interpretando-os-coeficientes">3.5 Interpretando os coeficientes</h2>
@@ -1022,9 +1022,9 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>A regressão também pode ser lida como um teste de hipóteses, com <span class="math inline">\(H_0: \beta_1 = 0\)</span>, isto é, sem relação linear entre renda e valor. O <code>stats.linregress</code> do SciPy devolve, além dos coeficientes, o erro-padrão da inclinação e o <em>p</em>-valor:</p>
-<div id="c6f50715" class="cell" data-execution_count="10">
+<div id="983005a6" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inclinação, erro-padrão e p-valor da regressão simples</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>slope_test <span class="op">=</span> stats.linregress(dev[<span class="st">"MedInc"</span>], dev[<span class="st">"MedHouseVal"</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>slope_test <span class="op">=</span> stats.linregress(train[<span class="st">"MedInc"</span>], train[<span class="st">"MedHouseVal"</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"β1 = </span><span class="sc">{</span>slope_test<span class="sc">.</span>slope<span class="sc">:.4f}</span><span class="ss"> · erro-padrão = </span><span class="sc">{</span>slope_test<span class="sc">.</span>stderr<span class="sc">:.4f}</span><span class="ss"> · "</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"p = </span><span class="sc">{</span>slope_test<span class="sc">.</span>pvalue<span class="sc">:.1e}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1074,33 +1074,33 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </table>
 <p>No <span class="math inline">\(R^2\)</span>, <span class="math inline">\(\text{SQ}_{\text{tot}} = \sum (y_i - \bar{y})^2\)</span> é a soma dos quadrados dos resíduos do modelo de referência, que prevê sempre a média. O <span class="math inline">\(R^2\)</span> compara o modelo com esse palpite ingênuo: vale 0 quando o modelo não erra menos que a média e 1 quando acerta todos os pontos.</p>
 <p>O scikit-learn já traz esse modelo de referência pronto. É o <code>DummyRegressor</code>, que ignora os atributos e prevê sempre a média. Geramos as previsões dele e do M1 nos próprios dados de ajuste:</p>
-<div id="cd9153bd" class="cell" data-execution_count="11">
+<div id="d9b4be29" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Previsões do modelo de referência e do M1 nos próprios dados de ajuste</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-2" class="code-annotation-target"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> DummyRegressor(strategy<span class="op">=</span><span class="st">"mean"</span>).fit(X_dev[[<span class="st">"MedInc"</span>]], y_dev)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-2" class="code-annotation-target"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> DummyRegressor(strategy<span class="op">=</span><span class="st">"mean"</span>).fit(X_train[[<span class="st">"MedInc"</span>]], y_train)</span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> {</span>
-<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Referência (média)"</span>: baseline.predict(X_dev[[<span class="st">"MedInc"</span>]]),</span>
-<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"M1 (renda)"</span>: m1.predict(X_dev[[<span class="st">"MedInc"</span>]]),</span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Referência (média)"</span>: baseline.predict(X_train[[<span class="st">"MedInc"</span>]]),</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"M1 (renda)"</span>: m1.predict(X_train[[<span class="st">"MedInc"</span>]]),</span>
 <span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-10" data-code-lines="2" data-code-annotation="1"><code>DummyRegressor(strategy="mean")</code> segue a mesma interface <code>.fit</code> e <code>.predict</code> de qualquer modelo, mas só “aprende” a média de <code>y_dev</code>.</span>
+<span data-code-cell="annotated-cell-10" data-code-lines="2" data-code-annotation="1"><code>DummyRegressor(strategy="mean")</code> segue a mesma interface <code>.fit</code> e <code>.predict</code> de qualquer modelo, mas só “aprende” a média de <code>y_train</code>.</span>
 </dd>
 </dl>
 </div>
 </div>
 <p>E calculamos as três métricas para cada um:</p>
-<div id="97056de5" class="cell" data-execution_count="12">
+<div id="6ce56d25" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE, RMSE e R² de cada modelo</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit_metrics <span class="op">=</span> (</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        {</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            name: {</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"MAE"</span>: mean_absolute_error(y_dev, pred),</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"RMSE"</span>: root_mean_squared_error(y_dev, pred),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"R²"</span>: r2_score(y_dev, pred),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"MAE"</span>: mean_absolute_error(y_train, pred),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"RMSE"</span>: root_mean_squared_error(y_train, pred),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"R²"</span>: r2_score(y_train, pred),</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            }</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> name, pred <span class="kw">in</span> predictions.items()</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        }</span>
@@ -1110,7 +1110,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>fit_metrics</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="181">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
 
@@ -1153,7 +1153,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <h2 class="anchored" data-anchor-id="um-modelo-que-decora">4.1 Um modelo que decora</h2>
 <p>Pense em um aluno que se prepara estudando só as questões das provas anteriores. Se ele entende a matéria, vai bem também em questões novas. Se apenas decora as respostas, tira nota máxima nas provas antigas e se perde na primeira questão diferente. A nota nas provas antigas não separa um aluno do outro. Só uma prova nova faz isso.</p>
 <p>Com modelos acontece o mesmo. Chamamos de <strong>erro de treino</strong> o erro medido nos bairros usados no ajuste, e de <strong>erro de validação</strong> o erro medido em bairros que ficaram de fora. Suponha que houvesse só 20 bairros para treinar. Uma reta passa entre eles sem tocar a maioria e erra um pouco em cada um. Uma curva flexível o bastante, cheia de dobras, consegue passar exatamente por cima dos 20 pontos, e o erro de treino vai a zero. Parece perfeita, mas essa curva aprendeu também o ruído daqueles 20 bairros, as particularidades que não se repetem. Diante de um bairro novo, ela oscila entre os pontos que memorizou e dá previsões absurdas, sobretudo fora da faixa de renda que viu no treino.</p>
-<div id="f2a3c6a7" class="cell" data-execution_count="14">
+<div id="0830de49" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1241,9 +1241,9 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <p>A ordem importa porque toda escolha feita olhando um conjunto de dados deixa o erro medido nele otimista. O erro de um modelo em uma amostra tem uma parte que reflete a sua qualidade e outra que é sorte, ou seja, o quanto aquela amostra em particular favoreceu o modelo. Ao comparar vários modelos e ficar com o que errou menos, escolhemos, em parte, o que teve mais sorte naquela amostra. Com dois modelos, o efeito é pequeno. Com dezenas, ele cresce, pelo mesmo motivo do problema dos múltiplos testes: quanto mais comparações, maior a chance de algum resultado parecer bom só por acaso.</p>
 <p>Por isso, o erro do modelo vencedor no conjunto de validação tende a ser um pouco melhor do que o erro que ele terá na prática. Se o teste também participasse da escolha, sofreria do mesmo viés e deixaria de ser uma medida honesta. Mantido intocado até o fim, ele é o único conjunto em que o modelo escolhido é avaliado sem que nenhuma decisão tenha sido tomada a seu favor.</p>
 <p>É como estudar com simulados: eles servem para descobrir onde você precisa melhorar, mas a nota que vale é a da prova, que você não viu antes.</p>
-<p>Resta um problema prático. Se reservarmos mais uma fatia fixa dos dados só para validar, sobram menos bairros para treinar, e a escolha passa a depender de quais bairros caíram nessa fatia. A saída é criar avaliações dentro do próprio desenvolvimento, reaproveitando os mesmos dados.</p>
-<p>A <strong>validação cruzada com <span class="math inline">\(k\)</span> dobras</strong> (<em>k-fold cross-validation</em>) divide o desenvolvimento em <span class="math inline">\(k\)</span> partes de tamanho parecido. Em cada rodada, uma parte faz o papel de validação e as outras <span class="math inline">\(k - 1\)</span>, o de treino. Ao fim das <span class="math inline">\(k\)</span> rodadas, cada bairro terá sido usado exatamente uma vez para validar:</p>
-<div id="86623538" class="cell" data-execution_count="15">
+<p>Resta um problema prático. Se reservarmos mais uma fatia fixa dos dados só para validar, sobram menos bairros para treinar, e a escolha passa a depender de quais bairros caíram nessa fatia. A saída é criar avaliações dentro do próprio conjunto de treino, reaproveitando os mesmos dados.</p>
+<p>A <strong>validação cruzada com <span class="math inline">\(k\)</span> dobras</strong> (<em>k-fold cross-validation</em>) divide o conjunto de treino em <span class="math inline">\(k\)</span> partes de tamanho parecido. Em cada rodada, uma parte faz o papel de validação e as outras <span class="math inline">\(k - 1\)</span>, o de ajuste. Ao fim das <span class="math inline">\(k\)</span> rodadas, cada bairro terá sido usado exatamente uma vez para validar:</p>
+<div id="3dbe12c1" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esquema do protocolo: teste cego e cinco rodadas de validação cruzada</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">3.2</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
@@ -1252,10 +1252,10 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                edgecolor<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    ax.barh(k, <span class="fl">0.2</span>, left<span class="op">=</span><span class="fl">0.8</span>, color<span class="op">=</span><span class="st">"#DDDDDD"</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.9</span>, <span class="op">-</span><span class="fl">0.75</span>, <span class="st">"teste cego (20%)"</span>, ha<span class="op">=</span><span class="st">"center"</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.4</span>, <span class="op">-</span><span class="fl">0.75</span>, <span class="st">"desenvolvimento (80%)"</span>, ha<span class="op">=</span><span class="st">"center"</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.4</span>, <span class="op">-</span><span class="fl">0.75</span>, <span class="st">"treino (80%)"</span>, ha<span class="op">=</span><span class="st">"center"</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(yticks<span class="op">=</span><span class="bu">range</span>(<span class="dv">5</span>), yticklabels<span class="op">=</span>[<span class="ss">f"Rodada </span><span class="sc">{</span>k <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)],</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>       xticks<span class="op">=</span>[], ylim<span class="op">=</span>(<span class="fl">4.6</span>, <span class="op">-</span><span class="fl">1.1</span>))</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[Patch(color<span class="op">=</span><span class="st">"#A1C9F4"</span>, label<span class="op">=</span><span class="st">"treino"</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[Patch(color<span class="op">=</span><span class="st">"#A1C9F4"</span>, label<span class="op">=</span><span class="st">"ajuste"</span>),</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                   Patch(color<span class="op">=</span><span class="st">"#DD8452"</span>, label<span class="op">=</span><span class="st">"validação"</span>),</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                   Patch(color<span class="op">=</span><span class="st">"#DDDDDD"</span>, label<span class="op">=</span><span class="st">"intocado"</span>)],</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>          loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
@@ -1271,12 +1271,12 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </div>
 </div>
 <p>O resultado são cinco medidas de erro, e não uma. A média delas estima o erro em dados novos; o desvio-padrão mostra o quanto essa estimativa depende de quais bairros caíram em cada dobra. No scikit-learn, <code>KFold</code> define as dobras e <code>cross_validate</code> executa as cinco rodadas:</p>
-<div id="0ec3b2e9" class="cell" data-execution_count="16">
+<div id="79593620" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validação cruzada com 5 dobras para o M1</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-2" class="code-annotation-target"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-13-3" class="code-annotation-target"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a>scoring <span class="op">=</span> {<span class="st">"rmse"</span>: <span class="st">"neg_root_mean_squared_error"</span>, <span class="st">"r2"</span>: <span class="st">"r2"</span>}</span>
 <span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-hidden="true" tabindex="-1"></a>cv_m1 <span class="op">=</span> cross_validate(LinearRegression(), X_dev[[<span class="st">"MedInc"</span>]], y_dev, cv<span class="op">=</span>kfold,</span>
+<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-hidden="true" tabindex="-1"></a>cv_m1 <span class="op">=</span> cross_validate(LinearRegression(), X_train[[<span class="st">"MedInc"</span>]], y_train, cv<span class="op">=</span>kfold,</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-13-6" class="code-annotation-target"><a href="#annotated-cell-13-6" aria-hidden="true" tabindex="-1"></a>                       scoring<span class="op">=</span>scoring, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
 <span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-hidden="true" tabindex="-1"></a>folds_m1 <span class="op">=</span> pd.DataFrame(</span>
@@ -1301,7 +1301,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="6" data-code-annotation="3"><code>return_train_score=True</code> guarda também o desempenho em cada conjunto de treino, para compará-lo com o da validação. Em cada rodada, <code>cross_validate</code> cria uma cópia nova do modelo, ajusta-a nos dados de treino e a avalia na validação.</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="6" data-code-annotation="3"><code>return_train_score=True</code> guarda também o desempenho nas dobras de ajuste de cada rodada, para compará-lo com o da validação. Em cada rodada, <code>cross_validate</code> cria uma cópia nova do modelo, ajusta-a nas dobras de ajuste e a avalia na dobra de validação.</span>
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="4">4</dt>
 <dd>
@@ -1309,7 +1309,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="185">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 
 
@@ -1366,7 +1366,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </div>
 </div>
 <p>O resumo das cinco dobras:</p>
-<div id="777d271a" class="cell" data-execution_count="17">
+<div id="511b8471" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média e desvio-padrão das métricas nas cinco dobras</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>summary_m1 <span class="op">=</span> (</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    folds_m1</span>
@@ -1375,7 +1375,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>summary_m1</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="186">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 
 
@@ -1407,15 +1407,15 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </div>
 </div>
 </div>
-<p>O <span class="math inline">\(R^2\)</span> médio de validação fica em torno de 0,48, e o RMSE, em 0,84, praticamente os valores obtidos nos dados de ajuste. As médias do <span class="math inline">\(R^2\)</span> de treino e de validação coincidem em 0,477. Ao contrário da curva que decora os 20 bairros, uma reta com um único atributo e 13 mil bairros por treino não tem flexibilidade para decorar nada, e fica longe do sobreajuste.</p>
+<p>O <span class="math inline">\(R^2\)</span> médio de validação fica em torno de 0,48, e o RMSE, em 0,84, praticamente os valores obtidos nos dados de ajuste. As médias do <span class="math inline">\(R^2\)</span> de treino e de validação coincidem em 0,477. Ao contrário da curva que decora os 20 bairros, uma reta com um único atributo e 13 mil bairros por rodada de ajuste não tem flexibilidade para decorar nada, e fica longe do sobreajuste.</p>
 <p>As dobras também são estáveis. O desvio-padrão do <span class="math inline">\(R^2\)</span> passa pouco de 0,01, e o desempenho quase não muda com a divisão dos bairros.</p>
 </section>
 <section id="estabilidade-dos-coeficientes-nas-dobras" class="level2">
 <h2 class="anchored" data-anchor-id="estabilidade-dos-coeficientes-nas-dobras">4.3 Estabilidade dos coeficientes nas dobras</h2>
-<p>A validação cruzada também mostra se o próprio modelo muda de uma dobra para outra. Ajustamos uma reta em cada conjunto de treino e desenhamos as cinco juntas. Para comparar, repetimos o procedimento com só 100 bairros sorteados do desenvolvimento:</p>
-<div id="c4dbd33d" class="cell" data-execution_count="18">
+<p>A validação cruzada também mostra se o próprio modelo muda de uma dobra para outra. Ajustamos uma reta nas dobras de ajuste de cada rodada e desenhamos as cinco juntas. Para comparar, repetimos o procedimento com só 100 bairros sorteados do conjunto de treino:</p>
+<div id="6ffc4c24" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cinco retas de treino em cada base: todos os bairros e apenas 100 bairros</span></span>
-<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>bases <span class="op">=</span> {<span class="st">"16.512 bairros"</span>: dev, <span class="st">"100 bairros"</span>: dev.sample(<span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">0</span>)}</span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>bases <span class="op">=</span> {<span class="st">"16.512 bairros"</span>: train, <span class="st">"100 bairros"</span>: train.sample(<span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">0</span>)}</span>
 <span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a>fold_models <span class="op">=</span> {</span>
 <span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a>    label: cross_validate(LinearRegression(), data[[<span class="st">"MedInc"</span>]], data[<span class="st">"MedHouseVal"</span>],</span>
@@ -1431,7 +1431,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </dl>
 </div>
 </div>
-<div id="90fcb0d3" class="cell" data-execution_count="19">
+<div id="72cc180b" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Uma reta por dobra, desenhada sobre cada base</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>income_grid <span class="op">=</span> pd.DataFrame({<span class="st">"MedInc"</span>: np.linspace(<span class="dv">0</span>, <span class="dv">15</span>, <span class="dv">100</span>)})</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1454,7 +1454,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </div>
 </div>
 <p>A tabela mostra o menor e o maior valor de cada coeficiente entre as cinco dobras:</p>
-<div id="37727c76" class="cell" data-execution_count="20">
+<div id="0022de3f" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Menor e maior coeficiente entre as cinco dobras de cada base</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>coef_range <span class="op">=</span> (</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
@@ -1470,7 +1470,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>coef_range</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="189">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 
 
@@ -1517,7 +1517,7 @@ E o <em>p</em>-valor de <span class="math inline">\(\beta_1\)</span>?
 </div>
 </div>
 </div>
-<p>Com 16.512 bairros, as cinco retas quase se sobrepõem, e a inclinação varia só entre 0,417 e 0,421. Com 100 bairros, o feixe se abre, e a inclinação de cada dobra passa a depender bastante de quais bairros caíram no treino. Quanto maior a amostra, menos a estimativa varia de uma amostra para outra.</p>
+<p>Com 16.512 bairros, as cinco retas quase se sobrepõem, e a inclinação varia só entre 0,417 e 0,421. Com 100 bairros, o feixe se abre, e a inclinação de cada dobra passa a depender bastante de quais bairros caíram nas dobras de ajuste. Quanto maior a amostra, menos a estimativa varia de uma amostra para outra.</p>
 <p>Com a base completa, o M1 é estável, mas limitado. Tem pouca variância e muito viés, porque a renda, sozinha, deixa metade da variação sem explicação.</p>
 </section>
 </section>
@@ -1548,11 +1548,11 @@ Cenário
 <section id="o-m2-nas-mesmas-dobras" class="level2">
 <h2 class="anchored" data-anchor-id="o-m2-nas-mesmas-dobras">5.1 O M2 nas mesmas dobras</h2>
 <p>Para que a comparação seja justa, o M2 é avaliado nas mesmas cinco dobras do M1, o que se garante reutilizando o objeto <code>kfold</code>. Em cada rodada, os dois modelos são treinados e validados nos mesmos bairros, e as diferenças passam a vir só dos modelos, não da sorte da divisão. É uma comparação pareada:</p>
-<div id="622f4404" class="cell" data-execution_count="21">
+<div id="f4c897fd" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># M2: seis atributos, avaliados nas mesmas cinco dobras do M1</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>features_m2 <span class="op">=</span> [<span class="st">"MedInc"</span>, <span class="st">"HouseAge"</span>, <span class="st">"AveRooms"</span>, <span class="st">"AveBedrms"</span>, <span class="st">"Population"</span>, <span class="st">"AveOccup"</span>]</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cv_m2 <span class="op">=</span> cross_validate(LinearRegression(), X_dev[features_m2], y_dev, cv<span class="op">=</span>kfold,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cv_m2 <span class="op">=</span> cross_validate(LinearRegression(), X_train[features_m2], y_train, cv<span class="op">=</span>kfold,</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                       scoring<span class="op">=</span>scoring, return_train_score<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> pd.DataFrame(</span>
@@ -1566,7 +1566,7 @@ Cenário
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A média e o desvio-padrão de cada métrica nas cinco dobras:</p>
-<div id="675d3411" class="cell" data-execution_count="22">
+<div id="76f76962" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média e desvio-padrão de M1 e M2 nas cinco dobras</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>comparison_summary <span class="op">=</span> (</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    comparison</span>
@@ -1575,7 +1575,7 @@ Cenário
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>comparison_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="191">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <div>
 
 
@@ -1611,7 +1611,7 @@ Cenário
 </div>
 </div>
 <p>O gráfico liga, em cada dobra, o desempenho do M1 ao do M2:</p>
-<div id="4bd9ffa1" class="cell" data-execution_count="23">
+<div id="51f2ef24" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="annotated-cell-20"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Desempenho pareado de M1 e M2 em cada dobra</span></span>
 <span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.2</span>))</span>
 <span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1645,12 +1645,12 @@ Cenário
 </section>
 <section id="lendo-os-coeficientes" class="level2">
 <h2 class="anchored" data-anchor-id="lendo-os-coeficientes">5.2 Lendo os coeficientes</h2>
-<p>Ajustamos o M2 em todo o desenvolvimento para examinar os coeficientes. Como os atributos têm unidades muito diferentes, de pessoas a cômodos, ajustamos também uma versão com os atributos padronizados pelo <code>StandardScaler</code>. Nela, cada coeficiente indica a mudança em <span class="math inline">\(y\)</span> quando o atributo aumenta um desvio-padrão, e os coeficientes ficam comparáveis entre si:</p>
-<div id="b68dfd9d" class="cell" data-execution_count="24">
+<p>Ajustamos o M2 em todo o conjunto de treino para examinar os coeficientes. Como os atributos têm unidades muito diferentes, de pessoas a cômodos, ajustamos também uma versão com os atributos padronizados pelo <code>StandardScaler</code>. Nela, cada coeficiente indica a mudança em <span class="math inline">\(y\)</span> quando o atributo aumenta um desvio-padrão, e os coeficientes ficam comparáveis entre si:</p>
+<div id="19a098c0" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="annotated-cell-21"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-21-1"><a href="#annotated-cell-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coeficientes do M2 em unidades originais e padronizadas</span></span>
-<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> LinearRegression().fit(X_dev[features_m2], y_dev)</span>
+<span id="annotated-cell-21-2"><a href="#annotated-cell-21-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> LinearRegression().fit(X_train[features_m2], y_train)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-21-3" class="code-annotation-target"><a href="#annotated-cell-21-3" aria-hidden="true" tabindex="-1"></a>m2_scaled <span class="op">=</span> make_pipeline(StandardScaler(), LinearRegression()).fit(</span>
-<span id="annotated-cell-21-4"><a href="#annotated-cell-21-4" aria-hidden="true" tabindex="-1"></a>    X_dev[features_m2], y_dev</span>
+<span id="annotated-cell-21-4"><a href="#annotated-cell-21-4" aria-hidden="true" tabindex="-1"></a>    X_train[features_m2], y_train</span>
 <span id="annotated-cell-21-5"><a href="#annotated-cell-21-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="annotated-cell-21-6"><a href="#annotated-cell-21-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-21-7"><a href="#annotated-cell-21-7" aria-hidden="true" tabindex="-1"></a>coefficients <span class="op">=</span> (</span>
@@ -1658,7 +1658,7 @@ Cenário
 <span id="annotated-cell-21-9"><a href="#annotated-cell-21-9" aria-hidden="true" tabindex="-1"></a>        {</span>
 <span id="annotated-cell-21-10"><a href="#annotated-cell-21-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"original"</span>: m2.coef_,</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-21" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-21-11" class="code-annotation-target"><a href="#annotated-cell-21-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"padronizado"</span>: m2_scaled[<span class="op">-</span><span class="dv">1</span>].coef_,</span>
-<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"correlacao_com_y"</span>: X_dev[features_m2].corrwith(y_dev),</span>
+<span id="annotated-cell-21-12"><a href="#annotated-cell-21-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"correlacao_com_y"</span>: X_train[features_m2].corrwith(y_train),</span>
 <span id="annotated-cell-21-13"><a href="#annotated-cell-21-13" aria-hidden="true" tabindex="-1"></a>        },</span>
 <span id="annotated-cell-21-14"><a href="#annotated-cell-21-14" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>features_m2,</span>
 <span id="annotated-cell-21-15"><a href="#annotated-cell-21-15" aria-hidden="true" tabindex="-1"></a>    )</span>
@@ -1678,7 +1678,7 @@ Cenário
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="193">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
 
@@ -1738,7 +1738,7 @@ Cenário
 <p>Veja <code>MedInc</code>. Entre bairros com a mesma idade das casas, o mesmo número de cômodos e de quartos, a mesma população e a mesma ocupação, US$ 10 mil a mais de renda estão associados a US$ 54,6 mil a mais no valor. É o atributo de maior peso: um desvio-padrão de renda equivale a cerca de 1,04 unidade de valor.</p>
 <p>Com os demais atributos fixos, casas mais antigas (<code>HouseAge</code>) estão associadas a valores um pouco maiores. Uma explicação possível é que bairros antigos tendem a ser mais centrais, mas os dados não permitem confirmar. Já o coeficiente original de <code>Population</code> parece zero, o que é efeito da unidade: uma pessoa a mais no bairro é uma mudança minúscula. Na escala padronizada, o efeito é pequeno, mas não nulo. Tamanhos de coeficientes, por isso, só devem ser comparados na escala padronizada.</p>
 <p>O coeficiente de <code>AveRooms</code> traz uma surpresa. É negativo, embora a correlação de <code>AveRooms</code> com o valor seja positiva. Mais cômodos desvalorizariam as casas? Vejamos como o coeficiente muda à medida que outros atributos entram no modelo:</p>
-<div id="fd490f5e" class="cell" data-execution_count="25">
+<div id="bf99c1d2" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coeficiente de AveRooms em três especificações diferentes</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>specs <span class="op">=</span> {</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"só AveRooms"</span>: [<span class="st">"AveRooms"</span>],</span>
@@ -1747,10 +1747,10 @@ Cenário
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, cols <span class="kw">in</span> specs.items():</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    coefs <span class="op">=</span> pd.Series(LinearRegression().fit(X_dev[cols], y_dev).coef_, index<span class="op">=</span>cols)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    coefs <span class="op">=</span> pd.Series(LinearRegression().fit(X_train[cols], y_train).coef_, index<span class="op">=</span>cols)</span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&lt;20}</span><span class="ss"> β(AveRooms) = </span><span class="sc">{</span>coefs[<span class="st">'AveRooms'</span>]<span class="sc">:+.4f}</span><span class="ss">"</span>)</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>rooms_corr <span class="op">=</span> X_dev[[<span class="st">"AveBedrms"</span>, <span class="st">"MedInc"</span>]].corrwith(X_dev[<span class="st">"AveRooms"</span>])</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>rooms_corr <span class="op">=</span> X_train[[<span class="st">"AveBedrms"</span>, <span class="st">"MedInc"</span>]].corrwith(X_train[<span class="st">"AveRooms"</span>])</span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Correlação AveRooms × AveBedrms = </span><span class="sc">{</span>rooms_corr[<span class="st">'AveBedrms'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correlação AveRooms × MedInc    = </span><span class="sc">{</span>rooms_corr[<span class="st">'MedInc'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1770,10 +1770,10 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 <section id="diagnóstico-pelos-resíduos" class="level2">
 <h2 class="anchored" data-anchor-id="diagnóstico-pelos-resíduos">5.3 Diagnóstico pelos resíduos</h2>
 <p>As métricas resumem o erro em um número. Os resíduos mostram onde e como o modelo erra. Para não avaliar o modelo em dados que ele viu, usamos <code>cross_val_predict</code>, e cada bairro recebe a previsão do modelo treinado nas outras quatro dobras.</p>
-<div id="a9fdb764" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Previsões fora da dobra para todo o conjunto de desenvolvimento</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-2" class="code-annotation-target"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>oof_m2 <span class="op">=</span> cross_val_predict(LinearRegression(), X_dev[features_m2], y_dev, cv<span class="op">=</span>kfold)</span>
-<span id="annotated-cell-23-3"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>residuals_m2 <span class="op">=</span> y_dev <span class="op">-</span> oof_m2</span>
+<div id="5fd0b146" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Previsões fora da dobra para todo o conjunto de treino</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-2" class="code-annotation-target"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>oof_m2 <span class="op">=</span> cross_val_predict(LinearRegression(), X_train[features_m2], y_train, cv<span class="op">=</span>kfold)</span>
+<span id="annotated-cell-23-3"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>residuals_m2 <span class="op">=</span> y_train <span class="op">-</span> oof_m2</span>
 <span id="annotated-cell-23-4"><a href="#annotated-cell-23-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-23-5"><a href="#annotated-cell-23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Previsões negativas: </span><span class="sc">{</span>(oof_m2 <span class="op">&lt;</span> <span class="dv">0</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> · "</span></span>
 <span id="annotated-cell-23-6"><a href="#annotated-cell-23-6" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"acima de 5,0: </span><span class="sc">{</span>(oof_m2 <span class="op">&gt;</span> <span class="dv">5</span>)<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> · máxima: </span><span class="sc">{</span>oof_m2<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2f}</span><span class="ss">"</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1781,7 +1781,7 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-23" data-code-lines="2" data-code-annotation="1"><em>Out-of-fold</em>, ou “fora da dobra”: a previsão de cada bairro vem de um modelo que não o usou no treino.</span>
+<span data-code-cell="annotated-cell-23" data-code-lines="2" data-code-annotation="1"><em>Out-of-fold</em>, ou “fora da dobra”: a previsão de cada bairro vem de um modelo que não o usou no ajuste.</span>
 </dd>
 </dl>
 </div>
@@ -1789,11 +1789,11 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 <pre><code>Previsões negativas: 7 · acima de 5,0: 185 · máxima: 8.01</code></pre>
 </div>
 </div>
-<div id="408121da" class="cell" data-execution_count="27">
+<div id="5bdfb8ea" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="annotated-cell-24"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-24-1"><a href="#annotated-cell-24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Valor real versus previsto e resíduos versus previsto</span></span>
 <span id="annotated-cell-24-2"><a href="#annotated-cell-24-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">4.8</span>))</span>
 <span id="annotated-cell-24-3"><a href="#annotated-cell-24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-24-4"><a href="#annotated-cell-24-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(y_dev, oof_m2, color<span class="op">=</span><span class="st">"#1F4E79"</span>, alpha<span class="op">=</span><span class="fl">0.08</span>, s<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="annotated-cell-24-4"><a href="#annotated-cell-24-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(y_train, oof_m2, color<span class="op">=</span><span class="st">"#1F4E79"</span>, alpha<span class="op">=</span><span class="fl">0.08</span>, s<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="annotated-cell-24-5"><a href="#annotated-cell-24-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot([<span class="dv">0</span>, <span class="dv">5</span>], [<span class="dv">0</span>, <span class="dv">5</span>], color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="annotated-cell-24-6"><a href="#annotated-cell-24-6" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="st">"previsão perfeita"</span>)</span>
 <span id="annotated-cell-24-7"><a href="#annotated-cell-24-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Valor real (US$ 100 mil)"</span>, ylabel<span class="op">=</span><span class="st">"Valor previsto (US$ 100 mil)"</span>,</span>
@@ -1835,17 +1835,17 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 </section>
 <section id="a-avaliação-final-no-teste-cego" class="level2">
 <h2 class="anchored" data-anchor-id="a-avaliação-final-no-teste-cego">5.4 A avaliação final no teste cego</h2>
-<p>O M2 venceu na validação cruzada, e só agora abrimos o teste cego. São dois passos. Primeiro, retreinamos cada modelo com todo o desenvolvimento, porque já não há motivo para deixar uma dobra de fora. Depois, avaliamos uma única vez no teste:</p>
-<div id="dc83e57b" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final no desenvolvimento inteiro e previsões no teste cego</span></span>
+<p>O M2 venceu na validação cruzada, e só agora abrimos o teste cego. São dois passos. Primeiro, retreinamos cada modelo com todo o conjunto de treino, porque já não há motivo para deixar uma dobra de fora. Depois, avaliamos uma única vez no teste:</p>
+<div id="43921232" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final no conjunto de treino inteiro e previsões no teste cego</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>final_models <span class="op">=</span> {<span class="st">"M1"</span>: ([<span class="st">"MedInc"</span>], cv_m1), <span class="st">"M2"</span>: (features_m2, cv_m2)}</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>test_predictions <span class="op">=</span> {</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    name: LinearRegression().fit(X_dev[cols], y_dev).predict(X_test[cols])</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    name: LinearRegression().fit(X_train[cols], y_train).predict(X_test[cols])</span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, (cols, _) <span class="kw">in</span> final_models.items()</span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="59ba3f0d" class="cell" data-execution_count="29">
+<div id="e7418b90" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Desempenho na validação cruzada e no teste cego, lado a lado</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>final_results <span class="op">=</span> (</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    pd.DataFrame(</span>
@@ -1866,7 +1866,7 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 <span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>final_results</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="198">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <div>
 
 
@@ -1963,7 +1963,7 @@ Correlação AveRooms × MedInc    = 0.34</code></pre>
 <p>A força da penalidade é controlada por <span class="math inline">\(\lambda\)</span>, chamado <code>alpha</code> no scikit-learn, que funciona como um botão de complexidade. Com <span class="math inline">\(\lambda = 0\)</span>, voltamos ao OLS. Com <span class="math inline">\(\lambda\)</span> muito grande, todos os coeficientes vão a zero, e o modelo prevê sempre a média, como o <code>DummyRegressor</code>. Entre um extremo e outro, <span class="math inline">\(\lambda\)</span> regula quanta flexibilidade o modelo pode usar. Quem define <span class="math inline">\(\lambda\)</span> é quem constrói o modelo, e não o ajuste. Por isso ele é um <strong>hiperparâmetro</strong>, e o seu valor é escolhido pela validação cruzada.</p>
 <p>A penalidade puxa os coeficientes para zero mesmo quando o valor verdadeiro não é zero, o que introduz um pouco de viés. Em troca, os coeficientes variam menos de uma amostra para outra, e a variância cai. Num modelo com sobreajuste, essa troca diminui o erro em dados novos. É o dilema viés-variância, agora com um controle explícito.</p>
 <p>Ridge e Lasso diferem na forma da penalidade. A L2 cresce com o quadrado do coeficiente, de modo que coeficientes grandes ficam muito caros e os pequenos saem quase de graça. Por isso o Ridge encolhe todos, mas raramente leva algum exatamente a zero. A L1 cresce linearmente: cada unidade de coeficiente custa o mesmo, seja a primeira ou a última. Para um atributo pouco útil, sai mais barato zerar o coeficiente de vez, e o Lasso acaba fazendo uma seleção de atributos dentro do próprio ajuste. Diante de um par muito correlacionado, como cômodos e quartos, o Lasso tende a ficar com um e descartar o outro, enquanto o Ridge divide o peso entre os dois. O ElasticNet combina as duas penalidades e obtém a seleção do Lasso sem a escolha arbitrária dentro de grupos correlacionados.</p>
-<p>O intercepto <span class="math inline">\(\beta_0\)</span> não é penalizado. Como a penalidade soma os tamanhos dos coeficientes, os atributos precisam estar na mesma escala. Sem padronização, um atributo medido em pessoas, como <code>Population</code>, e outro medido em cômodos seriam penalizados de forma desigual. A regularização vem sempre depois de um <code>StandardScaler</code>, dentro de uma <em>pipeline</em>. Assim, em cada dobra da validação cruzada, a média e o desvio-padrão da padronização são aprendidos só no treino daquela dobra: é a regra contra o vazamento, aplicada automaticamente.</p>
+<p>O intercepto <span class="math inline">\(\beta_0\)</span> não é penalizado. Como a penalidade soma os tamanhos dos coeficientes, os atributos precisam estar na mesma escala. Sem padronização, um atributo medido em pessoas, como <code>Population</code>, e outro medido em cômodos seriam penalizados de forma desigual. A regularização vem sempre depois de um <code>StandardScaler</code>, dentro de uma <em>pipeline</em>. Assim, em cada dobra da validação cruzada, a média e o desvio-padrão da padronização são aprendidos só nas dobras de ajuste daquela rodada: é a regra contra o vazamento, aplicada automaticamente.</p>
 <p>E neste problema? Com 16.512 bairros e só seis atributos, o OLS já é estável, como mostrou o feixe de retas das dobras. Não sobra variância para a penalidade reduzir, e a regularização teria pouco a ganhar em previsão. Ela faz diferença quando há muitos atributos em relação ao número de observações, ou quando o modelo é flexível o bastante para decorar os dados. Nos modelos que vêm a seguir no curso, essas situações são a regra, e não a exceção.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
@@ -2143,8 +2143,9 @@ Como pensar sobre isso
 <section id="para-casa" class="level1">
 <h1>Para casa</h1>
 <ol type="1">
-<li>Construa o M3, acrescentando <code>Latitude</code> e <code>Longitude</code> ao M2, e avalie-o nas mesmas cinco dobras. O ganho em relação ao M2 é maior ou menor que o do M2 em relação ao M1? Por que a localização ajudaria a prever o valor das casas?</li>
-<li>Aplique o log a <code>Population</code> e <code>AveOccup</code> e repita a validação cruzada do M2. As métricas melhoram? Lembre-se de criar as colunas transformadas tanto no desenvolvimento quanto no teste.</li>
+<li>Transforme os atributos do M2: aplique o log a <code>Population</code>, <code>AveOccup</code> e <code>AveRooms</code> e troque <code>AveBedrms</code> pela razão entre quartos e cômodos (<code>AveBedrms / AveRooms</code>). Repita a validação cruzada nas mesmas cinco dobras. As métricas melhoram? Os coeficientes ficam mais fáceis de interpretar agora que o par cômodos/quartos não é mais colinear?</li>
+<li>Construa o M3, acrescentando <code>Latitude</code> e <code>Longitude</code> ao M2 original, e avalie-o nas mesmas cinco dobras. O ganho em relação ao M2 é maior ou menor que o do M2 em relação ao M1? Por que a localização ajudaria a prever o valor das casas?</li>
+<li>Combine as duas ideias: ajuste o M3 com os atributos transformados do item 1. O ganho é a soma dos dois anteriores, ou um pouco mais, ou um pouco menos? Lembre-se de aplicar as mesmas transformações ao teste cego, e use um <code>Pipeline</code> com <code>FunctionTransformer</code> para que isso aconteça dentro de cada dobra.</li>
 <li>Repita a validação cruzada do M1 com 10 dobras e com outro <code>random_state</code>. O que muda na média e no desvio-padrão do <span class="math inline">\(R^2\)</span>?</li>
 <li>Antes de considerar o notebook pronto, use Restart Kernel and Run All.</li>
 </ol>

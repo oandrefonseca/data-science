@@ -192,6 +192,7 @@ fig, ax = plt.subplots(figsize=(8, 4.5))
 ax.scatter(gene_stats["mean"], gene_stats["std"], color="#A1C9F4", s=14)
 ax.scatter(gene_stats.loc[highlight, "mean"], gene_stats.loc[highlight, "std"],
            color="#1F4E79", s=30)
+           
 for gene in highlight:
     ax.annotate(gene, gene_stats.loc[gene, ["mean", "std"]], xytext=(5, 3),
                 textcoords="offset points", fontsize=9, color="#333333")
@@ -519,7 +520,7 @@ Esse ranking tem duas limitações. Ele compara cada cluster com a média geral,
 
 ### A ANOVA como régua de separação
 
-A **ANOVA de um fator** é o teste clássico para comparar as médias de três ou mais grupos. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A **soma de quadrados entre grupos** ($SQG$) mede quanto as médias dos clusters se afastam da média geral. A **soma de quadrados dentro dos grupos** ($SQR$, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:
+Como podemos identificar quais variáveis mais contribuem para separar os clusters? Um bom gene separador tem médias bem diferentes de um cluster para outro e, dentro de cada cluster, pacientes parecidos entre si. A **ANOVA de um fator**, o teste clássico para comparar as médias de três ou mais grupos, mede exatamente esse contraste. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A **soma de quadrados entre grupos** ($SQG$) mede quanto as médias dos clusters se afastam da média geral. A **soma de quadrados dentro dos grupos** ($SQR$, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:
 
 $$
 SQG = \sum_{g=1}^{k} n_g (\bar{x}_g - \bar{x})^2,

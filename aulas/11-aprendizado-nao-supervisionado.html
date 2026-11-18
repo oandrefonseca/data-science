@@ -73,8 +73,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ea0db42993f3daa763beb005ca7de5e1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-7103d716a658a3fa4e6d0133eeaba5d0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f6e23303f39f4266b41a90194ee6d7de.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-46ebb8e0b7352a860548b3baf97698af.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -409,7 +409,7 @@ Como usar este roteiro
 <section id="preparando-o-ambiente" class="level1">
 <h1>1. Preparando o ambiente</h1>
 <p>Do scikit-learn vêm a padronização, a PCA, o K-means, as métricas de agrupamento e os dois modelos supervisionados do fim da aula. O UMAP vem do pacote <code>umap-learn</code>:</p>
-<div id="bd963e43" class="cell" data-execution_count="1">
+<div id="e182e821" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -468,12 +468,12 @@ Como usar este roteiro
 <li><strong>Rótulos de referência guardados à parte.</strong> A classificação clínica dos subtipos, que só aparece no fim da aula, foi alinhada aos mesmos pacientes e salva em outro arquivo. Ela falta em 253 deles. Como os rótulos não entram na análise, nenhum paciente precisou ser descartado por isso.</li>
 </ol>
 <p>Depois de carregar a matriz, vale repetir as verificações básicas. Um arquivo pode ter sido corrompido, ou uma etapa pode ter mudado sem aviso:</p>
-<div id="4632fac2" class="cell" data-execution_count="2">
+<div id="820aa584" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a matriz de expressão: pacientes nas linhas, genes nas colunas</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> pd.read_parquet(<span class="st">"tcga-brca/data/brca_hvgs_log2.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>expr.iloc[:<span class="dv">5</span>, :<span class="dv">8</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="150">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -564,7 +564,7 @@ Como usar este roteiro
 </div>
 </div>
 </div>
-<div id="10616070" class="cell" data-execution_count="3">
+<div id="b7ffaf9a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificações de qualidade: ausentes, repetidos, constantes e faixa de valores</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>quality_checks <span class="op">=</span> pd.Series(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    {</span>
@@ -579,7 +579,7 @@ Como usar este roteiro
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>quality_checks</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="151">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>valores ausentes            0
 pacientes repetidos         0
 genes constantes            0
@@ -589,7 +589,7 @@ Name: resultado, dtype: object</code></pre>
 </div>
 </div>
 <p>São 1.095 pacientes e 505 genes, sem valores ausentes nem repetições, com expressão entre 0 e 17,9. Para o algoritmo, <code>ESR1</code> ou <code>KRT5</code> são apenas nomes de colunas, como <code>MedInc</code> ou <code>HouseAge</code>. O dicionário, que será usado só para dar nome aos grupos, liga alguns genes a cinco perfis moleculares:</p>
-<div id="acd33c38" class="cell" data-execution_count="4">
+<div id="92c27d36" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dicionário de assinaturas: perfil -&gt; genes marcadores</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"tcga-brca/data/dicionario_marcadores.json"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    markers <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
@@ -603,7 +603,7 @@ Name: resultado, dtype: object</code></pre>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>markers_table</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="152">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
@@ -654,7 +654,7 @@ Name: resultado, dtype: object</code></pre>
 <section id="o-problema" class="level2">
 <h2 class="anchored" data-anchor-id="o-problema">2.1 O problema</h2>
 <p>PCA e K-means são métodos geométricos. A PCA procura as direções de maior variância, e o K-means agrupa pontos pela distância euclidiana. Nos dois casos, um atributo com variância grande pesa mais que um com variância pequena, só por causa da sua escala. Mesmo em escala logarítmica, os genes não estão no mesmo pé:</p>
-<div id="5c98445c" class="cell" data-execution_count="5">
+<div id="13d5e482" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média e desvio-padrão de cada gene, resumidos sobre os 505 genes</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>gene_stats <span class="op">=</span> (</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    expr</span>
@@ -665,7 +665,7 @@ Name: resultado, dtype: object</code></pre>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>gene_stats_summary <span class="op">=</span> gene_stats.describe().<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>gene_stats_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="153">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -725,7 +725,7 @@ Name: resultado, dtype: object</code></pre>
 </div>
 </div>
 <p>As médias vão de 1,01 a 10,09, e os desvios-padrão, de 1,14 a 4,49. Em variância, que é o que a PCA soma, o gene mais disperso pesa cerca de 15 vezes mais que o menos disperso (<span class="math inline">\(4{,}49^2 / 1{,}14^2 \approx 15{,}5\)</span>). Os 50 genes de maior variância, 10% das colunas, concentram 20,5% da variância total.</p>
-<div id="9bc57b88" class="cell" data-execution_count="6">
+<div id="e8748267" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média versus desvio-padrão de cada gene, com alguns marcadores em destaque</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>highlight <span class="op">=</span> [<span class="st">"ESR1"</span>, <span class="st">"KRT5"</span>, <span class="st">"ERBB2"</span>, <span class="st">"MKI67"</span>, <span class="st">"COL14A1"</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -733,12 +733,13 @@ Name: resultado, dtype: object</code></pre>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax.scatter(gene_stats[<span class="st">"mean"</span>], gene_stats[<span class="st">"std"</span>], color<span class="op">=</span><span class="st">"#A1C9F4"</span>, s<span class="op">=</span><span class="dv">14</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.scatter(gene_stats.loc[highlight, <span class="st">"mean"</span>], gene_stats.loc[highlight, <span class="st">"std"</span>],</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene <span class="kw">in</span> highlight:</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ax.annotate(gene, gene_stats.loc[gene, [<span class="st">"mean"</span>, <span class="st">"std"</span>]], xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">3</span>),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                textcoords<span class="op">=</span><span class="st">"offset points"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Média da expressão (log2 TPM + 1)"</span>, ylabel<span class="op">=</span><span class="st">"Desvio-padrão"</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene <span class="kw">in</span> highlight:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ax.annotate(gene, gene_stats.loc[gene, [<span class="st">"mean"</span>, <span class="st">"std"</span>]], xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">3</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                textcoords<span class="op">=</span><span class="st">"offset points"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Média da expressão (log2 TPM + 1)"</span>, ylabel<span class="op">=</span><span class="st">"Desvio-padrão"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -749,7 +750,7 @@ Name: resultado, dtype: object</code></pre>
 </div>
 <p>Tanto a PCA quanto a distância euclidiana ignoram a <strong>média</strong> de cada atributo: a PCA centraliza cada coluna antes de começar, e somar a mesma constante a uma coluna não muda a distância entre dois pontos. O que distorce a geometria é a <strong>dispersão</strong>. Sem padronizar, <code>KRT5</code>, com desvio de 2,92, puxa as distâncias muito mais que <code>MKI67</code>, com 1,24, mesmo que a variação de <code>MKI67</code> seja tão informativa quanto a de <code>KRT5</code>.</p>
 <p>O <code>StandardScaler</code> resolve isso: subtrai a média de cada gene e divide pelo seu desvio-padrão. Cada coluna passa a ter média 0 e desvio 1, e o valor vira um <strong>escore-z</strong>, que diz a quantos desvios da média do gene um paciente está.</p>
-<div id="3854ef16" class="cell" data-execution_count="7">
+<div id="2d4429ab" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Padroniza cada gene para média 0 e desvio-padrão 1</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> pd.DataFrame(</span>
@@ -768,7 +769,7 @@ Name: resultado, dtype: object</code></pre>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>scaled_check</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="155">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -801,7 +802,7 @@ Name: resultado, dtype: object</code></pre>
 <section id="o-efeito-na-pca" class="level2">
 <h2 class="anchored" data-anchor-id="o-efeito-na-pca">2.2 O efeito na PCA</h2>
 <p>Para ver o efeito da padronização, ajustamos a PCA nos dados brutos e nos padronizados e comparamos a primeira componente, a PC1. Para cada versão, listamos a variância que ela explica e os cinco genes com maior peso (<em>loading</em>) em valor absoluto:</p>
-<div id="56826522" class="cell" data-execution_count="8">
+<div id="dab20cda" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PC1 com e sem padronização: variância explicada e genes de maior peso</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pca_by_input <span class="op">=</span> {</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    name: PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(data)</span>
@@ -823,7 +824,7 @@ Name: resultado, dtype: object</code></pre>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>).T</span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>pc1_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="156">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -862,7 +863,7 @@ Name: resultado, dtype: object</code></pre>
 <h2 class="anchored" data-anchor-id="pca-o-espaço-de-trabalho">3.1 PCA: o espaço de trabalho</h2>
 <p>Cada paciente é um ponto em um espaço de 505 dimensões. Há dois motivos para não agrupar diretamente nesse espaço. O primeiro é que muitos genes variam juntos, e boa parte das 505 colunas é redundante. O segundo é a <strong>maldição da dimensionalidade</strong>: em muitas dimensões, as distâncias entre pontos ficam todas parecidas, e “perto” e “longe” perdem o contraste de que o K-means depende.</p>
 <p>A PCA ajustada com todas as componentes mostra quanto da variância cada uma acumula:</p>
-<div id="78455a1a" class="cell" data-execution_count="9">
+<div id="674db182" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variância explicada acumulada por todas as componentes</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>).fit(X_scaled)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>cumulative_variance <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
@@ -885,18 +886,18 @@ Name: resultado, dtype: object</code></pre>
 </div>
 </div>
 <p>A curva sobe rápido nas primeiras componentes e depois se arrasta. As 15 primeiras explicam 52,6% da variância, e seriam necessárias 95 para chegar a 80%. Ficamos com 15: elas guardam a estrutura de grande escala, compartilhada por muitos genes, e deixam de fora uma longa cauda de componentes que capturam, cada uma, menos de 1% da variância e são em boa parte ruído.</p>
-<div id="dc091cbf" class="cell" data-execution_count="10">
+<div id="f4587a6d" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta os pacientes nas 15 primeiras componentes principais</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X_scaled)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>X_pca.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="158">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(1095, 15)</code></pre>
 </div>
 </div>
 <p>Para ver a maldição da dimensionalidade em números, comparamos a dispersão das distâncias entre todos os pares de pacientes nos 505 genes padronizados, nas 15 componentes e em uma tabela de ruído puro do mesmo tamanho. A medida é o coeficiente de variação das distâncias, o desvio-padrão dividido pela média: quanto menor, mais parecidas são todas as distâncias.</p>
-<div id="e7c9e8ad" class="cell" data-execution_count="11">
+<div id="072949e7" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contraste das distâncias entre pares de pacientes em três espaços</span></span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a>spaces <span class="op">=</span> {</span>
@@ -931,7 +932,7 @@ Name: resultado, dtype: object</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="159">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
 
@@ -966,7 +967,7 @@ Name: resultado, dtype: object</code></pre>
 <section id="umap-o-espaço-de-visualização" class="level2">
 <h2 class="anchored" data-anchor-id="umap-o-espaço-de-visualização">3.2 UMAP: o espaço de visualização</h2>
 <p>Quinze dimensões ainda não cabem em um gráfico. Poderíamos plotar só a PC1 contra a PC2, mas elas resumem pouco mais de um quarto da variância. O <strong>UMAP</strong> (<em>Uniform Manifold Approximation and Projection</em>) é um método não linear que constrói um grafo de vizinhos no espaço original e procura uma disposição em 2D que preserve esses vizinhos. Aplicamos o UMAP às 15 componentes:</p>
-<div id="cbe68222" class="cell" data-execution_count="12">
+<div id="9069eced" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta as 15 componentes em 2D com o UMAP, apenas para visualização</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-2" class="code-annotation-target"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>umap_model <span class="op">=</span> UMAP(n_neighbors<span class="op">=</span><span class="dv">15</span>, min_dist<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> pd.DataFrame(</span>
@@ -984,7 +985,7 @@ Name: resultado, dtype: object</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="160">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
@@ -1033,7 +1034,7 @@ Name: resultado, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="47badd2e" class="cell" data-execution_count="13">
+<div id="0b2f6785" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os mesmos pacientes no plano PC1 x PC2 e no plano do UMAP</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(X_pca[:, <span class="dv">0</span>], X_pca[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
@@ -1096,7 +1097,7 @@ Os clusters vêm da PCA, não do UMAP
 s = \frac{b - a}{\max(a, b)}.
 \]</span></p>
 <p>Ela vai de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>. Valores perto de 1 indicam uma amostra bem dentro do seu grupo e longe do vizinho; perto de 0, uma amostra na fronteira. A silhueta da partição é a média sobre todas as amostras.</p>
-<div id="c4241390" class="cell" data-execution_count="14">
+<div id="72045176" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inércia e silhueta para k de 2 a 8, no espaço das 15 componentes</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">9</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>kmeans_by_k <span class="op">=</span> {</span>
@@ -1115,7 +1116,7 @@ s = \frac{b - a}{\max(a, b)}.
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>k_selection</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="162">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
 
@@ -1174,7 +1175,7 @@ s = \frac{b - a}{\max(a, b)}.
 </div>
 </div>
 </div>
-<div id="17af1e51" class="cell" data-execution_count="15">
+<div id="6e41e9d8" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curvas de inércia e silhueta em função de k</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(k_selection.index, k_selection[<span class="st">"inércia"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
@@ -1197,7 +1198,7 @@ s = \frac{b - a}{\max(a, b)}.
 </section>
 <section id="o-modelo-com-k-4" class="level2">
 <h2 class="anchored" data-anchor-id="o-modelo-com-k-4">4.3 O modelo com <span class="math inline">\(k = 4\)</span></h2>
-<div id="2dc1bf22" class="cell" data-execution_count="16">
+<div id="7ab402d4" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means com k = 4 e o tamanho de cada grupo</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> kmeans_by_k[<span class="dv">4</span>]</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> pd.Series(kmeans.labels_, index<span class="op">=</span>expr.index, name<span class="op">=</span><span class="st">"cluster"</span>)</span>
@@ -1205,7 +1206,7 @@ s = \frac{b - a}{\max(a, b)}.
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>cluster_sizes <span class="op">=</span> clusters.value_counts().sort_index()</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>cluster_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="164">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>cluster
 0    181
 1    374
@@ -1215,7 +1216,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Os quatro grupos têm 181, 374, 346 e 194 pacientes. Os números de 0 a 3 são apenas identificadores, sem ordem nem significado. Rodar de novo com outro <code>random_state</code> poderia trocar os números entre os grupos sem mudar a partição.</p>
-<div id="c60c7251" class="cell" data-execution_count="17">
+<div id="98e53640" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelo identificador bruto do cluster</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>cluster_colors <span class="op">=</span> {<span class="dv">0</span>: <span class="st">"#1F4E79"</span>, <span class="dv">1</span>: <span class="st">"#DD8452"</span>, <span class="dv">2</span>: <span class="st">"#A1C9F4"</span>, <span class="dv">3</span>: <span class="st">"#333333"</span>}</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1245,7 +1246,7 @@ Name: count, dtype: int64</code></pre>
 <section id="atributos-discriminantes" class="level2">
 <h2 class="anchored" data-anchor-id="atributos-discriminantes">5.1 Atributos discriminantes</h2>
 <p>A primeira é olhar, em cada cluster, a média do escore-z de cada gene. Como cada gene tem média 0 no conjunto todo, uma média de <span class="math inline">\(+1\)</span> em um cluster quer dizer que, ali, o gene está em média um desvio-padrão acima do habitual. Os cinco genes de maior escore-z médio em cada cluster:</p>
-<div id="e08d9039" class="cell" data-execution_count="18">
+<div id="046f3ce5" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore-z médio de cada gene dentro de cada cluster</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cluster_zscores <span class="op">=</span> X_scaled.groupby(clusters).mean()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1258,7 +1259,7 @@ Name: count, dtype: int64</code></pre>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>top_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="166">
+<div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
 
@@ -1325,7 +1326,7 @@ Name: count, dtype: int64</code></pre>
 <p>Esse ranking tem duas limitações. Ele compara cada cluster com a média geral, um de cada vez, e olha só para as médias. Um gene pode ter média alta em um cluster porque alguns poucos pacientes têm valores extremos, enquanto os outros pacientes do mesmo cluster se espalham por toda a escala. Para medir quanto um gene separa os quatro grupos ao mesmo tempo, levando em conta essa dispersão interna, usamos a ANOVA.</p>
 <section id="a-anova-como-régua-de-separação" class="level3">
 <h3 class="anchored" data-anchor-id="a-anova-como-régua-de-separação">A ANOVA como régua de separação</h3>
-<p>A <strong>ANOVA de um fator</strong> é o teste clássico para comparar as médias de três ou mais grupos. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A <strong>soma de quadrados entre grupos</strong> (<span class="math inline">\(SQG\)</span>) mede quanto as médias dos clusters se afastam da média geral. A <strong>soma de quadrados dentro dos grupos</strong> (<span class="math inline">\(SQR\)</span>, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:</p>
+<p>Como podemos identificar quais variáveis mais contribuem para separar os clusters? Um bom gene separador tem médias bem diferentes de um cluster para outro e, dentro de cada cluster, pacientes parecidos entre si. A <strong>ANOVA de um fator</strong>, o teste clássico para comparar as médias de três ou mais grupos, mede exatamente esse contraste. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A <strong>soma de quadrados entre grupos</strong> (<span class="math inline">\(SQG\)</span>) mede quanto as médias dos clusters se afastam da média geral. A <strong>soma de quadrados dentro dos grupos</strong> (<span class="math inline">\(SQR\)</span>, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:</p>
 <p><span class="math display">\[
 SQG = \sum_{g=1}^{k} n_g (\bar{x}_g - \bar{x})^2,
 \qquad
@@ -1337,7 +1338,7 @@ F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
 \]</span></p>
 <p>Com <span class="math inline">\(N = 1.095\)</span> pacientes e <span class="math inline">\(k = 4\)</span> clusters, os graus de liberdade são 3 e 1.091. Se os clusters não diferissem nesse gene, as médias dos grupos oscilariam só por acaso, e <span class="math inline">\(F\)</span> ficaria perto de 1. Quanto mais as médias se afastam umas das outras em relação à variação dentro de cada grupo, maior o <span class="math inline">\(F\)</span>.</p>
 <p>No aprendizado de máquina, essa mesma conta é uma ferramenta de <strong>seleção de atributos</strong>. O scikit-learn a oferece como <code>f_classif</code>, que roda uma ANOVA para cada coluna de <code>X</code> usando as classes de <code>y</code> como grupos. Em um problema supervisionado, ela costuma ser usada para reter os <strong>atributos que mais separam as classes antes de treinar um modelo</strong>. Aqui não temos classes, então usamos os identificadores dos clusters no papel de <code>y</code>:</p>
-<div id="dbf7d47d" class="cell" data-execution_count="19">
+<div id="69844c03" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="annotated-cell-19"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estatística F e p-valor da ANOVA de cada gene, com os clusters como grupos</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-19-2" class="code-annotation-target"><a href="#annotated-cell-19-2" aria-hidden="true" tabindex="-1"></a>f_statistic, p_values <span class="op">=</span> f_classif(expr, clusters)</span>
 <span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-hidden="true" tabindex="-1"></a>f_scores <span class="op">=</span> pd.Series(f_statistic, index<span class="op">=</span>expr.columns, name<span class="op">=</span><span class="st">"F"</span>)</span>
@@ -1358,7 +1359,7 @@ F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="167">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 
 
@@ -1418,7 +1419,7 @@ F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
 </div>
 <p><code>FOXA1</code> e <code>MLPH</code> lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. <code>FOXC1</code>, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já <code>ESR1</code>, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7).</p>
 <p>Para ver o que o <span class="math inline">\(F\)</span> mede, comparamos o gene de maior <span class="math inline">\(F\)</span> com o de menor <span class="math inline">\(F\)</span> entre os 505:</p>
-<div id="8da1c706" class="cell" data-execution_count="20">
+<div id="be56ddf6" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expressão por cluster do gene de maior F e do gene de menor F</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>contrast_genes <span class="op">=</span> [f_scores.idxmax(), f_scores.idxmin()]</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cluster_ids <span class="op">=</span> <span class="bu">sorted</span>(clusters.unique())</span>
@@ -1450,7 +1451,7 @@ F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
 <section id="por-que-não-ler-os-p-valores" class="level3">
 <h3 class="anchored" data-anchor-id="por-que-não-ler-os-p-valores">Por que não ler os <span class="math inline">\(p\)</span>-valores</h3>
 <p>A ANOVA também devolve um <span class="math inline">\(p\)</span>-valor por gene. É tentador usá-lo para dizer quais genes diferem “significativamente” entre os clusters:</p>
-<div id="d32283f8" class="cell" data-execution_count="21">
+<div id="8aec5324" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantos genes seriam "significantes" pela ANOVA</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>significant_genes <span class="op">=</span> pd.Series(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    {</span>
@@ -1462,7 +1463,7 @@ F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>significant_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="169">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>p &lt; 0,05          501
 p &lt; 1e-10         472
 total de genes    505
@@ -1476,14 +1477,14 @@ Name: genes, dtype: int64</code></pre>
 <section id="tradução-pelo-dicionário" class="level2">
 <h2 class="anchored" data-anchor-id="tradução-pelo-dicionário">5.2 Tradução pelo dicionário</h2>
 <p>Com os genes de cada cluster em mãos, entra o dicionário. Em vez de procurar os marcadores um a um nas listas de cinco, calculamos para cada cluster um <strong>escore de assinatura</strong>: a média dos escores-z médios dos genes de cada perfil. Assim, todo o dicionário é comparado com todos os clusters de uma vez:</p>
-<div id="78628fce" class="cell" data-execution_count="22">
+<div id="270c8861" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore de assinatura: média do escore-z dos genes de cada perfil, por cluster</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>signature_scores <span class="op">=</span> pd.DataFrame(</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    {profile: cluster_zscores[genes].mean(axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> profile, genes <span class="kw">in</span> markers.items()}</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>).rename_axis(<span class="st">"cluster"</span>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>signature_scores.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="170">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <div>
 
 
@@ -1545,7 +1546,7 @@ Name: genes, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="4c17430f" class="cell" data-execution_count="23">
+<div id="1bdfcb13" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapa de calor dos escores de assinatura</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>diverging <span class="op">=</span> LinearSegmentedColormap.from_list(</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diverging"</span>, [<span class="st">"#1F4E79"</span>, <span class="st">"#FFFFFF"</span>, <span class="st">"#DD8452"</span>]</span>
@@ -1567,7 +1568,7 @@ Name: genes, dtype: int64</code></pre>
 </div>
 </div>
 <p>Cada cluster tem um perfil que se destaca: o 0 é HER2 (0,81), o 1 é Estromal (0,83), o 2 é Hormonal (0,56) e o 3 é Basal (1,27), com o Hormonal em <span class="math inline">\(-1{,}60\)</span>, o valor mais negativo da tabela. O nome de cada cluster é o perfil de maior escore na sua linha:</p>
-<div id="d35d3479" class="cell" data-execution_count="24">
+<div id="bbc24fa0" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo de cada cluster: o perfil de maior escore de assinatura</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>cluster_names <span class="op">=</span> signature_scores.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> clusters.<span class="bu">map</span>(cluster_names).rename(<span class="st">"rotulo"</span>)</span>
@@ -1575,7 +1576,7 @@ Name: genes, dtype: int64</code></pre>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>label_sizes <span class="op">=</span> labels.value_counts()</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>label_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="172">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>rotulo
 Estromal    374
 Hormonal    346
@@ -1585,7 +1586,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto no Basal (0,72) e no HER2 (0,33) e está perto de zero no Hormonal (0,08). A proliferação não forma um grupo próprio nestes dados: ela é um gradiente que atravessa os grupos. Já o grupo Estromal é formado por amostras com muito tecido de sustentação ao redor do tumor, e o K-means o separou porque essa mistura muda a expressão de muitos genes ao mesmo tempo. O algoritmo encontra a estrutura de maior variância, que nem sempre é a que esperávamos encontrar. O dicionário serve para traduzir o que foi achado, não para forçar o que deveria ser achado.</p>
-<div id="a4dcebfa" class="cell" data-execution_count="25">
+<div id="ebb3733c" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelos rótulos</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>,</span>
@@ -1614,7 +1615,7 @@ Name: count, dtype: int64</code></pre>
 <section id="uma-árvore-de-decisão-substituta" class="level2">
 <h2 class="anchored" data-anchor-id="uma-árvore-de-decisão-substituta">5.3 Uma árvore de decisão substituta</h2>
 <p>A terceira técnica dispensa qualquer dicionário. Treinamos uma árvore de decisão rasa para prever o rótulo de cada paciente a partir da expressão original dos 505 genes. A árvore não tem a pretensão de prever pacientes novos. Ela é um <strong>modelo substituto</strong> (<em>surrogate model</em>): um modelo simples, que imita o K-means e cujas regras podemos ler.</p>
-<div id="850f9809" class="cell" data-execution_count="26">
+<div id="5c252a31" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="annotated-cell-26"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-26-1"><a href="#annotated-cell-26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de decisão de profundidade 3 imitando a partição do K-means</span></span>
 <span id="annotated-cell-26-2"><a href="#annotated-cell-26-2" aria-hidden="true" tabindex="-1"></a>surrogate_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(expr, labels)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-26" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-26-3" class="code-annotation-target"><a href="#annotated-cell-26-3" aria-hidden="true" tabindex="-1"></a>fidelity <span class="op">=</span> surrogate_tree.score(expr, labels)</span>
@@ -1628,11 +1629,11 @@ Name: count, dtype: int64</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="174">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>0.829</code></pre>
 </div>
 </div>
-<div id="0a458c66" class="cell" data-execution_count="27">
+<div id="6226dcaf" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regras da árvore substituta</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>plot_tree(surrogate_tree, feature_names<span class="op">=</span>expr.columns, class_names<span class="op">=</span>surrogate_tree.classes_,</span>
@@ -1661,7 +1662,7 @@ Name: count, dtype: int64</code></pre>
 \text{razão} = \frac{d_1}{d_2}.
 \]</span></p>
 <p>A razão vai de 0, para um paciente sobre o próprio centroide, a 1, para um paciente equidistante dos dois centroides mais próximos. Adotamos um corte de 0,75: abaixo dele, o rótulo é <strong>confiável</strong>; acima, o paciente é <strong>ambíguo</strong>.</p>
-<div id="3fa3dbc7" class="cell" data-execution_count="28">
+<div id="c67a451d" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="annotated-cell-28"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Razão entre a distância ao centroide mais próximo e ao segundo mais próximo</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-28-2" class="code-annotation-target"><a href="#annotated-cell-28-2" aria-hidden="true" tabindex="-1"></a>centroid_distances <span class="op">=</span> np.sort(kmeans.transform(X_pca), axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-hidden="true" tabindex="-1"></a>distance_ratio <span class="op">=</span> pd.Series(</span>
@@ -1680,14 +1681,14 @@ Name: count, dtype: int64</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="176">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>razao
 True     642
 False    453
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<div id="af76040b" class="cell" data-execution_count="29">
+<div id="31822dc6" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição da razão de distâncias, com o corte de 0,75</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#1F4E79"</span>,</span>
@@ -1708,7 +1709,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Dos 1.095 pacientes, 642 têm rótulo confiável e 453 ficam como ambíguos. A distribuição não tem um vale natural entre os dois tipos. O pico fica logo abaixo do corte, e centenas de pacientes têm razão acima de 0,8, quase equidistantes de dois centroides: os grupos se tocam, como o UMAP já mostrava. O corte de 0,75 é uma escolha, como <span class="math inline">\(k\)</span>. Um corte mais baixo deixa os rótulos mais limpos e o conjunto de treino menor.</p>
-<div id="276269c4" class="cell" data-execution_count="30">
+<div id="5649e563" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pacientes confiáveis e ambíguos em cada rótulo</span></span>
 <span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a>confidence_by_label <span class="op">=</span> (</span>
 <span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a>    pd.crosstab(labels, confident.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"confiável"</span>, <span class="va">False</span>: <span class="st">"ambíguo"</span>}))</span>
@@ -1726,7 +1727,7 @@ Name: count, dtype: int64</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="178">
+<div class="cell-output cell-output-display" data-execution_count="30">
 <div>
 
 
@@ -1781,7 +1782,7 @@ Name: count, dtype: int64</code></pre>
 <section id="treinando-o-classificador" class="level2">
 <h2 class="anchored" data-anchor-id="treinando-o-classificador">6.2 Treinando o classificador</h2>
 <p>Esses rótulos criados pelo próprio modelo, e não por um especialista, são <strong>pseudo-rótulos</strong> (<em>pseudo-labels</em>). Com eles, treinamos uma floresta aleatória (<code>RandomForestClassifier</code>) usando como atributos a expressão original dos 505 genes e, como resposta, os rótulos dos 642 pacientes confiáveis. A floresta combina centenas de árvores de decisão como a do modelo substituto, Cada árvore é treinada em uma reamostragem diferente dos pacientes e, a cada divisão, escolhe entre um sorteio de genes. A floresta decide pela votação de todas as árvores. Antes de usá-la, medimos o seu desempenho com validação cruzada estratificada de 5 dobras:</p>
-<div id="fbcaae75" class="cell" data-execution_count="31">
+<div id="64f828af" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="annotated-cell-31"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validação cruzada da floresta aleatória nos pacientes confiáveis</span></span>
 <span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-hidden="true" tabindex="-1"></a>X_confident <span class="op">=</span> expr[confident]</span>
 <span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-hidden="true" tabindex="-1"></a>y_confident <span class="op">=</span> labels[confident]</span>
@@ -1800,7 +1801,7 @@ Name: count, dtype: int64</code></pre>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="179">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>array([1.   , 0.984, 0.984, 1.   , 0.977])</code></pre>
 </div>
 </div>
@@ -1809,7 +1810,7 @@ Name: count, dtype: int64</code></pre>
 <section id="prevendo-os-pacientes-ambíguos" class="level2">
 <h2 class="anchored" data-anchor-id="prevendo-os-pacientes-ambíguos">6.3 Prevendo os pacientes ambíguos</h2>
 <p>Ajustamos a floresta em todos os pacientes confiáveis e pedimos a ela um rótulo para cada paciente ambíguo. Além da classe prevista, <code>predict_proba</code> devolve, para cada classe, a média das probabilidades atribuídas pelas árvores. Como cada árvore cresce até folhas quase puras, esse valor é praticamente a fração de árvores que votou na classe, e o maior deles funciona como uma medida da confiança da previsão:</p>
-<div id="587ef1a0" class="cell" data-execution_count="32">
+<div id="52ae24c1" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final nos confiáveis e previsão dos ambíguos</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>forest.fit(X_confident, y_confident)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>X_ambiguous <span class="op">=</span> expr[<span class="op">~</span>confident]</span>
@@ -1824,7 +1825,7 @@ Name: count, dtype: int64</code></pre>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="180">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <div>
 
 
@@ -1880,7 +1881,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="55a83e5d" class="cell" data-execution_count="33">
+<div id="f42988d2" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concordância com o K-means e resumo das probabilidades nos ambíguos</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>agreement <span class="op">=</span> ambiguous_predictions[<span class="st">"kmeans"</span>] <span class="op">==</span> ambiguous_predictions[<span class="st">"floresta"</span>]</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> ambiguous_predictions[<span class="st">"probabilidade"</span>]</span>
@@ -1894,7 +1895,7 @@ Name: count, dtype: int64</code></pre>
 <span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
 <span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>ambiguous_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="181">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <pre><code>concordância com o K-means        0.770
 probabilidade mediana             0.600
 fração com probabilidade &lt; 0,5    0.265
@@ -1903,7 +1904,7 @@ dtype: float64</code></pre>
 </div>
 <p>Nos 453 pacientes ambíguos, a floresta concorda com o K-means em 77,0% dos casos. Nos outros 23,0%, ela discorda, e isso não é necessariamente um erro: o K-means decide pela distância nas 15 componentes, enquanto a floresta aprendeu regras nos 505 genes a partir dos casos típicos de cada grupo. A probabilidade mediana é de 0,60, e em 26,5% dos ambíguos nenhuma classe recebe metade dos votos. O classificador não esconde a dúvida. Em um paciente ambíguo, uma probabilidade de 0,45 para HER2 e 0,40 para Hormonal informa mais que um rótulo seco.</p>
 <p>Juntamos os rótulos confiáveis do K-means às previsões da floresta para os ambíguos. Para o gráfico, cada ponto recebe também uma opacidade: 1 para os confiáveis e a probabilidade prevista para os ambíguos.</p>
-<div id="941f4aec" class="cell" data-execution_count="34">
+<div id="499b0752" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="annotated-cell-34"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-34-1"><a href="#annotated-cell-34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo final e opacidade de cada paciente</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-34-2" class="code-annotation-target"><a href="#annotated-cell-34-2" aria-hidden="true" tabindex="-1"></a>final_labels <span class="op">=</span> labels.where(confident, ambiguous_predictions[<span class="st">"floresta"</span>])</span>
 <span id="annotated-cell-34-3"><a href="#annotated-cell-34-3" aria-hidden="true" tabindex="-1"></a>point_alpha <span class="op">=</span> (</span>
@@ -1919,7 +1920,7 @@ dtype: float64</code></pre>
 </dl>
 </div>
 </div>
-<div id="c49a530d" class="cell" data-execution_count="35">
+<div id="37bdeb75" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="annotated-cell-35"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-35-1"><a href="#annotated-cell-35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP antes (clusters com ambíguos em cinza) e depois (previsões da floresta)</span></span>
 <span id="annotated-cell-35-2"><a href="#annotated-cell-35-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {</span>
 <span id="annotated-cell-35-3"><a href="#annotated-cell-35-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>,</span>
@@ -1965,7 +1966,7 @@ dtype: float64</code></pre>
 <section id="os-rótulos-batem-com-a-classificação-oficial" class="level1">
 <h1>7. Os rótulos batem com a classificação oficial?</h1>
 <p>Até aqui, nenhum rótulo externo entrou na análise. Mas, para estes tumores, existe uma classificação de referência, o <strong>PAM50</strong>, que atribui a cada tumor um de cinco subtipos moleculares. Ela foi construída por especialistas a partir de anos de estudos de expressão gênica em tumores de mama. Só agora, com tudo pronto, comparamos as duas classificações:</p>
-<div id="f40368a7" class="cell" data-execution_count="36">
+<div id="042b5c93" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classificação PAM50 oficial, disponível para parte dos pacientes</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>pam50 <span class="op">=</span> (</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"tcga-brca/data/brca_pam50.csv"</span>, index_col<span class="op">=</span><span class="st">"paciente"</span>)[<span class="st">"pam50"</span>]</span>
@@ -1975,7 +1976,7 @@ dtype: float64</code></pre>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>pam50_comparison <span class="op">=</span> pd.crosstab(final_labels.loc[pam50.index], pam50)</span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>pam50_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="184">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <div>
 
 
@@ -2039,12 +2040,12 @@ dtype: float64</code></pre>
 </div>
 <p>O PAM50 está disponível para 842 dos 1.095 pacientes. O grupo Basal reúne 135 dos 139 tumores Basal do PAM50, uma correspondência quase perfeita. O grupo HER2 reúne 62 dos 67 tumores Her2 do PAM50, mas também 13 LumA e 26 LumB. Hormonal e Estromal dividem os tumores luminais: o Estromal é quase todo LumA (240 de 272), e o Hormonal mistura LumA e LumB em proporções parecidas (168 e 150).</p>
 <p>O <strong>índice de Rand ajustado</strong> (ARI) resume a concordância entre duas partições. Ele vale 1 quando elas coincidem e fica perto de 0 quando a concordância não passa do que o acaso produziria, sem se importar com os nomes dos grupos:</p>
-<div id="64f38be0" class="cell" data-execution_count="37">
+<div id="b0de6bf1" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Índice de Rand ajustado entre a partição final e o PAM50</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ari <span class="op">=</span> adjusted_rand_score(pam50, final_labels.loc[pam50.index])</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(ari, <span class="dv">3</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="185">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <pre><code>0.399</code></pre>
 </div>
 </div>

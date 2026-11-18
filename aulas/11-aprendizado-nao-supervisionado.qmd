@@ -15,7 +15,7 @@ execute:
 
 Na regressão linear, cada bairro chegava com a resposta certa: o valor das casas. O modelo aprendia a ir dos atributos até essa resposta, e o erro em dados novos dizia se ele tinha aprendido bem. Esse é o **aprendizado supervisionado**. Mas boa parte dos dados do mundo chega sem resposta nenhuma. Ninguém rotulou os clientes de uma loja por perfil de compra, nem os documentos de um arquivo por assunto, nem os tumores de um hospital por tipo molecular.
 
-Esta aula trabalha com uma tabela assim: 1.095 tumores de mama, cada um descrito pela expressão de 505 genes, e nenhuma coluna de rótulo. Tratamos os genes como atributos numéricos quaisquer, quase anônimos. A biologia entra só no fim, por meio de um dicionário curto que traduz alguns genes em perfis. A pergunta é se os próprios dados se organizam em grupos e, se sim, como dar nome a esses grupos e transformá-los em rótulos para treinar um classificador.
+Esta aula trabalha com uma tabela assim: 1.095 tumores de mama, cada um descrito pela expressão de 505 genes, e nenhuma coluna de rótulo. Tratamos os genes como atributos numéricos quaisquer, quase anônimos. A biologia aparece só em dois momentos: uma contextualização no início e, no fim, um dicionário curto que traduz alguns genes em perfis. A pergunta é se os próprios dados se organizam em grupos e, se sim, como dar nome a esses grupos e transformá-los em rótulos para treinar um classificador.
 
 O caminho tem quatro etapas, todas geométricas: colocar os atributos na mesma escala, projetar 505 dimensões em poucas, particionar as amostras em torno de centroides e, por fim, converter a partição em rótulos confiáveis. É o ciclo completo do aprendizado não supervisionado ao supervisionado.
 
@@ -48,28 +48,51 @@ Do scikit-learn vêm a padronização, a PCA, o K-means, as métricas de agrupam
 # Importa as bibliotecas e define o tema dos gráficos
 import json
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
+import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import f_classif
-from sklearn.metrics import adjusted_rand_score, pairwise_distances, silhouette_score
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.metrics import (
+    adjusted_rand_score,
+    pairwise_distances,
+    silhouette_score,
+)
+from sklearn.model_selection import (
+    StratifiedKFold,
+    cross_val_score,
+)
 from sklearn.preprocessing import StandardScaler
-from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.tree import (
+    DecisionTreeClassifier,
+    plot_tree,
+)
+
 from umap import UMAP
 
 sns.set_theme(style="whitegrid", palette="colorblind")
 
 ```
 
-## 1.1 Conhecendo a base
+## 1.1 O problema: câncer de mama não é uma doença só
 
-Os dados vêm do projeto *The Cancer Genome Atlas* (TCGA), que mediu a expressão de cerca de 60 mil genes em tumores de mama de mais de mil pacientes. A matriz que usamos já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em $\log_2(\text{TPM} + 1)$: TPM conta quantos transcritos do gene há em cada milhão de transcritos da amostra, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.
+O câncer de mama é o tipo de câncer mais incidente entre as mulheres brasileiras em todas as regiões do país, depois do câncer de pele não melanoma, e a primeira causa de morte por câncer entre elas. O Instituto Nacional de Câncer (INCA) estima 73.610 casos novos para 2025. Os números e os fatores de risco estão nas páginas do INCA sobre [o câncer de mama](https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama) e sobre [o conceito e a magnitude da doença](https://www.gov.br/inca/pt-br/assuntos/gestor-e-profissional-de-saude/controle-do-cancer-de-mama/conceito-e-magnitude).
+
+Por trás do mesmo nome, há doenças diferentes. Dois tumores do mesmo tamanho, no mesmo órgão, podem crescer em ritmos muito diferentes e responder a tratamentos diferentes. Na prática clínica, o patologista examina três proteínas na superfície das células tumorais: os receptores de estrogênio e de progesterona e a proteína HER2. Um tumor com receptores hormonais, a maioria dos casos, costuma ser tratado com hormonioterapia. Um tumor HER2-positivo recebe medicamentos dirigidos contra essa proteína. O tumor sem nenhuma das três, chamado de **triplo-negativo**, não responde a esses tratamentos, e por isso depende sobretudo da quimioterapia. O Instituto Oncoguia resume esses grupos em [Câncer de mama não é tudo igual: entenda os subtipos](https://www.oncoguia.org.br/conteudo/cancer-de-mama-nao-e-tudo-igual-entenda-os-subtipos/17947/7/).
+
+Essa divisão ficou mais fina com a medição da **expressão gênica**. Todas as células de uma pessoa têm o mesmo DNA, mas cada uma usa, ou "liga", um conjunto diferente de genes, com intensidades diferentes. Medir quanto RNA cada gene produz revela o que a célula está fazendo naquele momento ([expressão gênica, na Wikipédia](https://pt.wikipedia.org/wiki/Express%C3%A3o_g%C3%A9nica)). No ano 2000, um grupo de pesquisadores mediu a expressão de milhares de genes em tumores de mama e os agrupou **sem usar nenhum rótulo clínico**. Os grupos que surgiram dessa análise se tornaram os **subtipos moleculares** usados até hoje: luminal A, luminal B, HER2-enriquecido e basal, este último formado em sua maioria por tumores triplo-negativos. A revisão [A importância da classificação molecular no prognóstico do câncer de mama](https://doi.org/10.37951/refacer.v10i1.5879) descreve esses subtipos e o que cada um significa para o prognóstico.
+
+Ou seja, os subtipos que orientam o tratamento do câncer de mama nasceram de um problema de aprendizado não supervisionado, o mesmo que esta aula reproduz.
+
+## 1.2 Conhecendo a base
+
+Os dados vêm do projeto *The Cancer Genome Atlas* (TCGA), um consórcio dos institutos nacionais de saúde dos Estados Unidos que caracterizou molecularmente milhares de tumores de 33 tipos de câncer e deixou os dados abertos para pesquisa. Na coorte de mama, o TCGA mediu a expressão de cerca de 60 mil genes em tumores de mais de mil pacientes. Usamos a versão distribuída pelo portal [UCSC Xena](https://xenabrowser.net/) (em inglês). A matriz já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em $\log_2(\text{TPM} + 1)$: TPM conta quantos transcritos do gene há em cada milhão de transcritos da amostra, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.
 
 Dos milhares de genes, ficaram os 500 de maior variância entre pacientes, chamados de **genes altamente variáveis** (HVGs, de *highly variable genes*), e mais cinco genes do dicionário que não estavam entre eles. Um gene que tem a mesma expressão em todos os tumores não ajuda a separá-los, assim como uma coluna constante não ajuda nenhum modelo.
 
@@ -102,7 +125,7 @@ markers_table
 
 ```
 
-Não é preciso conhecer a biologia por trás de cada perfil. Basta saber que, se um grupo de tumores tem os genes de uma linha muito mais expressos que os demais, ele recebe o nome dessa linha.
+Os três primeiros perfis correspondem aos grupos clínicos descritos acima: Hormonal (tumores com receptores hormonais, como os luminais), HER2 e Basal. Proliferativo reúne genes ligados à divisão celular, mais ativos em tumores que crescem rápido. Estromal reúne genes do tecido de sustentação que envolve o tumor, como gordura e fibras, e que inevitavelmente entra na amostra junto com ele. Para a análise, basta uma regra: se um grupo de tumores tem os genes de uma linha muito mais expressos que os demais, ele recebe o nome dessa linha.
 
 # 2. Escala: todos os atributos no mesmo pé
 
@@ -159,7 +182,14 @@ X_scaled = pd.DataFrame(
     columns=expr.columns,
 )
 
-scaled_check = X_scaled.agg(["mean", "std"]).T.describe().loc[["min", "max"]].round(3)
+scaled_check = (
+    X_scaled
+    .agg(["mean", "std"])
+    .T
+    .describe()
+    .loc[["min", "max"]]
+    .round(3)
+)
 
 scaled_check
 
@@ -172,26 +202,28 @@ Para ver o efeito da padronização, ajustamos a PCA nos dados brutos e nos padr
 ```{python}
 
 # PC1 com e sem padronização: variância explicada e genes de maior peso
-pca_inputs = {"sem padronizar": expr, "padronizado": X_scaled}
+pca_by_input = {
+    name: PCA(n_components=15, random_state=42).fit(data)
+    for name, data in {"sem padronizar": expr, "padronizado": X_scaled}.items()
+}
 
 pc1_comparison = pd.DataFrame(
     {
         name: {
-            "variância da PC1": f"{pca.explained_variance_ratio_[0]:.1%}",
+            "variância da PC1": f"{model.explained_variance_ratio_[0]:.1%}",
             "genes de maior peso": ", ".join(
-                pd.Series(np.abs(pca.components_[0]), index=data.columns).nlargest(5).index
+                pd.Series(np.abs(model.components_[0]), index=expr.columns)
+                .nlargest(5)
+                .index
             ),
         }
-        for name, data in pca_inputs.items()
-        for pca in [PCA(n_components=15, random_state=42).fit(data)]  # <1>
+        for name, model in pca_by_input.items()
     }
 ).T
 
 pc1_comparison
 
 ```
-
-1. Um `for` com uma lista de um só elemento é um truque para dar nome (`pca`) a um resultado intermediário dentro da compreensão.
 
 Sem padronizar, a PC1 explica 20,3% da variância e tem como genes de maior peso `TFF1`, `AGR3` e `TFF3`, justamente alguns dos genes de maior desvio-padrão. Padronizada, explica 19,4% e passa a ser liderada por `FOXA1`, `MLPH` e `ESR1`, genes que variam juntos com muitos outros. A direção principal mudou pouco, porque os dois trios de genes acompanham o mesmo eixo de variação, mas a ordem de importância deixou de premiar quem tem a escala maior.
 
@@ -247,11 +279,14 @@ spaces = {
     "ruído puro (505 colunas)": rng.normal(size=X_scaled.shape),
 }
 
+pair_distances = {
+    name: pairwise_distances(data)[np.triu_indices(len(data), k=1)]  # <1>
+    for name, data in spaces.items()
+}
+
 distance_contrast = (
-    pd.Series(
-        {name: pairwise_distances(data)[np.triu_indices(len(data), k=1)] for name, data in spaces.items()}  # <1>
-    )
-    .map(lambda d: d.std() / d.mean())
+    pd.Series(pair_distances)
+    .map(lambda d: d.std() / d.mean())  # <2>
     .round(3)
     .rename("CV das distâncias")
     .to_frame()
@@ -262,6 +297,7 @@ distance_contrast
 ```
 
 1. `pairwise_distances` devolve a matriz de distâncias entre todos os pares. `np.triu_indices(..., k=1)` pega só o triângulo acima da diagonal, para contar cada par uma vez e sem as distâncias de cada ponto a si mesmo.
+2. `lambda d: ...` é uma função anônima de uma linha. O `.map` a aplica ao vetor de distâncias de cada espaço, e ela devolve o desvio-padrão dividido pela média.
 
 No ruído puro, todas as distâncias ficam praticamente iguais (CV de 0,031): nenhum ponto está de fato mais perto de outro. Os genes reais têm estrutura, e o contraste é cinco vezes maior (0,156). Nas 15 componentes, quase dobra (0,284). A PCA descartou dimensões que só somavam ruído às distâncias, e é nesse espaço que o K-means vai trabalhar.
 
@@ -334,12 +370,17 @@ Ela vai de $-1$ a $1$. Valores perto de 1 indicam uma amostra bem dentro do seu 
 
 # Inércia e silhueta para k de 2 a 8, no espaço das 15 componentes
 k_values = range(2, 9)
-kmeans_by_k = {k: KMeans(n_clusters=k, n_init=10, random_state=42).fit(X_pca) for k in k_values}
+kmeans_by_k = {
+    k: KMeans(n_clusters=k, n_init=10, random_state=42).fit(X_pca)
+    for k in k_values
+}
 
 k_selection = pd.DataFrame(
     {
         "inércia": [model.inertia_ for model in kmeans_by_k.values()],
-        "silhueta": [silhouette_score(X_pca, model.labels_) for model in kmeans_by_k.values()],
+        "silhueta": [
+            silhouette_score(X_pca, model.labels_) for model in kmeans_by_k.values()
+        ],
     },
     index=pd.Index(k_values, name="k"),
 ).round(3)
@@ -426,15 +467,38 @@ top_genes
 
 ```
 
-Cada cluster tem o seu conjunto próprio de genes em alta. Os do cluster 3 têm escore-z médio acima de 1,5, o maior de todos, coerente com o grupo mais isolado no UMAP. Uma alternativa estatística é a **ANOVA de um fator** (`f_classif`), que usa os identificadores dos clusters como grupos e calcula, para cada gene, a estatística $F$: a variação entre as médias dos clusters dividida pela variação dentro deles. Os genes de maior $F$ são os que mais separam os quatro grupos ao mesmo tempo:
+Cada cluster tem o seu conjunto próprio de genes em alta. Os do cluster 3 têm escore-z médio acima de 1,5, o maior de todos, coerente com o grupo mais isolado no UMAP.
+
+Esse ranking tem duas limitações. Ele compara cada cluster com a média geral, um de cada vez, e olha só para as médias. Um gene pode ter média alta em um cluster porque alguns poucos pacientes têm valores extremos, enquanto os outros pacientes do mesmo cluster se espalham por toda a escala. Para medir quanto um gene separa os quatro grupos ao mesmo tempo, levando em conta essa dispersão interna, usamos a ANOVA.
+
+### A ANOVA como régua de separação
+
+A **ANOVA de um fator** é o teste clássico para comparar as médias de três ou mais grupos. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A **soma de quadrados entre grupos** ($SQG$) mede quanto as médias dos clusters se afastam da média geral. A **soma de quadrados dentro dos grupos** ($SQR$, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:
+
+$$
+SQG = \sum_{g=1}^{k} n_g (\bar{x}_g - \bar{x})^2,
+\qquad
+SQR = \sum_{g=1}^{k} \sum_{i \in g} (x_i - \bar{x}_g)^2,
+$$
+
+em que $k$ é o número de grupos, $n_g$ e $\bar{x}_g$ são o tamanho e a média do grupo $g$, e $\bar{x}$ é a média geral. A estatística $F$ compara as duas partes, cada uma dividida pelos seus graus de liberdade:
+
+$$
+F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
+$$
+
+Com $N = 1.095$ pacientes e $k = 4$ clusters, os graus de liberdade são 3 e 1.091. Se os clusters não diferissem nesse gene, as médias dos grupos oscilariam só por acaso, e $F$ ficaria perto de 1. Quanto mais as médias se afastam umas das outras em relação à variação dentro de cada grupo, maior o $F$.
+
+No aprendizado de máquina, essa mesma conta é uma ferramenta de **seleção de atributos**. O scikit-learn a oferece como `f_classif`, que roda uma ANOVA para cada coluna de `X` usando as classes de `y` como grupos. Em um problema supervisionado, ela costuma ser usada para reter os atributos que mais separam as classes antes de treinar um modelo. Aqui não temos classes, então usamos os identificadores dos clusters no papel de `y`:
 
 ```{python}
 
-# Estatística F da ANOVA de cada gene, com os clusters como grupos
-f_statistic, _ = f_classif(expr, clusters)
+# Estatística F e p-valor da ANOVA de cada gene, com os clusters como grupos
+f_statistic, p_values = f_classif(expr, clusters)  # <1>
+f_scores = pd.Series(f_statistic, index=expr.columns, name="F")
 
 anova_ranking = (
-    pd.Series(f_statistic, index=expr.columns, name="F")
+    f_scores
     .nlargest(10)
     .round(0)
     .to_frame()
@@ -444,7 +508,60 @@ anova_ranking
 
 ```
 
-`FOXA1` e `MLPH` lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. `FOXC1`, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já `ESR1`, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7). Os $p$-valores aqui seriam todos minúsculos e não teriam valor de prova, porque os grupos foram construídos a partir desses mesmos dados. A estatística $F$ serve apenas como régua para ordenar os genes.
+1. `f_classif` roda uma ANOVA independente para cada uma das 505 colunas e devolve dois vetores com um valor por gene: a estatística $F$ e o $p$-valor.
+
+`FOXA1` e `MLPH` lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. `FOXC1`, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já `ESR1`, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7).
+
+Para ver o que o $F$ mede, comparamos o gene de maior $F$ com o de menor $F$ entre os 505:
+
+```{python}
+
+# Expressão por cluster do gene de maior F e do gene de menor F
+contrast_genes = [f_scores.idxmax(), f_scores.idxmin()]
+cluster_ids = sorted(clusters.unique())
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4), sharey=True)
+for ax, gene in zip(axes, contrast_genes):
+    groups = [expr.loc[clusters == cluster_id, gene] for cluster_id in cluster_ids]
+    ax.boxplot(groups, tick_labels=[f"cluster {c}" for c in cluster_ids],
+               patch_artist=True, boxprops={"facecolor": "#A1C9F4"},
+               medianprops={"color": "#1F4E79", "linewidth": 2},
+               flierprops={"markersize": 2, "markerfacecolor": "#333333"})
+    ax.axhline(expr[gene].mean(), color="#DD8452", linestyle="--",
+               label="média geral")
+    ax.set(title=f"{gene}: F = {f_scores[gene]:.1f}".replace(".", ","))
+axes[0].set(ylabel="Expressão (log2 TPM + 1)")
+axes[0].legend(loc="lower left")
+plt.tight_layout()
+plt.show()
+
+```
+
+À esquerda, as caixas de `FOXA1` ficam bem afastadas da média geral, a linha tracejada: as dos clusters 0, 1 e 2 estão acima dela, estreitas e quase sem sobreposição com a do cluster 3, que fica muito abaixo. Quase toda a variação desse gene está entre os grupos. A fração da variação total explicada pelos clusters, $\eta^2 = SQG / (SQG + SQR)$, é de cerca de 0,86. À direita, `SLC5A8` tem quatro distribuições quase iguais: medianas perto de zero, caixas sobrepostas e, em todos os clusters, alguns pacientes com expressão alta. O gene varia muito entre pacientes, e por isso está entre os HVGs, mas essa variação não acompanha os clusters. O seu $F$ fica perto de 1.
+
+### Por que não ler os $p$-valores
+
+A ANOVA também devolve um $p$-valor por gene. É tentador usá-lo para dizer quais genes diferem "significativamente" entre os clusters:
+
+```{python}
+
+# Quantos genes seriam "significantes" pela ANOVA
+significant_genes = pd.Series(
+    {
+        "p < 0,05": (p_values < 0.05).sum(),
+        "p < 1e-10": (p_values < 1e-10).sum(),
+        "total de genes": len(p_values),
+    },
+    name="genes",
+)
+
+significant_genes
+
+```
+
+Dos 505 genes, 501 têm $p < 0{,}05$, e 472 têm $p$ menor que um em dez bilhões. Esses números não descobrem nada. O K-means escolheu os grupos justamente para que eles fossem o mais diferentes possível nesses mesmos genes, e testar em seguida se os grupos diferem é perguntar aos dados algo que já obrigamos os dados a responder. A hipótese nula, de médias iguais, nunca teve chance. Esse erro é conhecido como *double dipping*, usar os mesmos dados para formar uma hipótese e para testá-la. O $p$-valor só teria o seu significado usual se os grupos viessem de fora, por exemplo, de um diagnóstico clínico.
+
+Por isso, nesta aula, a ANOVA não é um teste de hipótese. A estatística $F$ é só uma régua para ordenar os genes pelo quanto separam os clusters.
 
 ## 5.2 Tradução pelo dicionário
 
@@ -464,11 +581,14 @@ signature_scores.round(2)
 ```{python}
 
 # Mapa de calor dos escores de assinatura
-diverging = LinearSegmentedColormap.from_list("diverging", ["#1F4E79", "#FFFFFF", "#DD8452"])
+diverging = LinearSegmentedColormap.from_list(
+    "diverging", ["#1F4E79", "#FFFFFF", "#DD8452"]
+)
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
 sns.heatmap(signature_scores, cmap=diverging, center=0, vmin=-1.6, vmax=1.6,
-            annot=True, fmt=".2f", linewidths=1, cbar_kws={"label": "escore-z médio"}, ax=ax)
+            annot=True, fmt=".2f", linewidths=1,
+            cbar_kws={"label": "escore-z médio"}, ax=ax)
 ax.set(xlabel="Perfil do dicionário", ylabel="Cluster")
 plt.tight_layout()
 plt.show()
@@ -494,7 +614,12 @@ O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto
 ```{python}
 
 # UMAP colorido pelos rótulos
-label_colors = {"Hormonal": "#1F4E79", "HER2": "#DD8452", "Estromal": "#A1C9F4", "Basal": "#333333"}
+label_colors = {
+    "Hormonal": "#1F4E79",
+    "HER2": "#DD8452",
+    "Estromal": "#A1C9F4",
+    "Basal": "#333333",
+}
 
 fig, ax = plt.subplots(figsize=(7, 5.5))
 for label, color in label_colors.items():
@@ -592,14 +717,16 @@ Dos 1.095 pacientes, 642 têm rótulo confiável e 453 ficam como ambíguos. A d
 # Pacientes confiáveis e ambíguos em cada rótulo
 confidence_by_label = (
     pd.crosstab(labels, confident.map({True: "confiável", False: "ambíguo"}))
-    .assign(fracao_confiavel=lambda df: (df["confiável"] / df.sum(axis=1)).round(2))  # <1>
+    .assign(
+        fracao_confiavel=lambda df: (df["confiável"] / df.sum(axis=1)).round(2)  # <1>
+    )
 )
 
 confidence_by_label
 
 ```
 
-1. `.assign` cria uma coluna nova sem modificar a tabela original, e o `lambda df:` recebe a tabela no ponto da cadeia em que o `.assign` é chamado.
+1. `.assign` cria uma coluna nova sem modificar a tabela original. Dentro dele, o `lambda df:` recebe a tabela no ponto da cadeia em que o `.assign` é chamado.
 
 O grupo Basal, o mais isolado, tem 95% dos pacientes com rótulo confiável. Nos três grupos que dividem a nuvem maior, a fração fica entre 47% e 56%: cerca de metade dos pacientes está perto de alguma fronteira.
 
@@ -615,7 +742,8 @@ y_confident = labels[confident]
 
 forest = RandomForestClassifier(n_estimators=500, random_state=42)
 skfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)  # <1>
-cv_accuracy = cross_val_score(forest, X_confident, y_confident, cv=skfold, scoring="accuracy")
+cv_accuracy = cross_val_score(forest, X_confident, y_confident, cv=skfold,
+                              scoring="accuracy")
 
 cv_accuracy.round(3)
 
@@ -651,11 +779,14 @@ ambiguous_predictions.head()
 ```{python}
 
 # Concordância com o K-means e resumo das probabilidades nos ambíguos
+agreement = ambiguous_predictions["kmeans"] == ambiguous_predictions["floresta"]
+probabilities = ambiguous_predictions["probabilidade"]
+
 ambiguous_summary = pd.Series(
     {
-        "concordância com o K-means": (ambiguous_predictions["kmeans"] == ambiguous_predictions["floresta"]).mean(),
-        "probabilidade mediana": ambiguous_predictions["probabilidade"].median(),
-        "fração com probabilidade < 0,5": (ambiguous_predictions["probabilidade"] < 0.5).mean(),
+        "concordância com o K-means": agreement.mean(),
+        "probabilidade mediana": probabilities.median(),
+        "fração com probabilidade < 0,5": (probabilities < 0.5).mean(),
     }
 ).round(3)
 
@@ -665,16 +796,35 @@ ambiguous_summary
 
 Nos 453 pacientes ambíguos, a floresta concorda com o K-means em 77,0% dos casos. Nos outros 23,0%, ela discorda, e isso não é necessariamente um erro: o K-means decide pela distância nas 15 componentes, enquanto a floresta aprendeu regras nos 505 genes a partir dos casos típicos de cada grupo. A probabilidade mediana é de 0,60, e em 26,5% dos ambíguos nenhuma classe recebe metade dos votos. O classificador não esconde a dúvida. Em um paciente ambíguo, uma probabilidade de 0,45 para HER2 e 0,40 para Hormonal informa mais que um rótulo seco.
 
+Juntamos os rótulos confiáveis do K-means às previsões da floresta para os ambíguos. Para o gráfico, cada ponto recebe também uma opacidade: 1 para os confiáveis e a probabilidade prevista para os ambíguos.
+
+```{python}
+
+# Rótulo final e opacidade de cada paciente
+final_labels = labels.where(confident, ambiguous_predictions["floresta"])  # <1>
+point_alpha = (
+    pd.Series(1.0, index=expr.index)
+    .where(confident, ambiguous_predictions["probabilidade"])
+)
+
+```
+
+1. `.where(condição, outro)` mantém os valores onde a condição é verdadeira e, nos demais, usa os de `outro`, alinhados pelo índice dos pacientes.
+
 ```{python}
 
 # UMAP antes (clusters com ambíguos em cinza) e depois (previsões da floresta)
-final_labels = labels.where(confident, ambiguous_predictions["floresta"])
-point_alpha = pd.Series(1.0, index=expr.index).where(confident, ambiguous_predictions["probabilidade"])
+label_colors = {
+    "Hormonal": "#1F4E79",
+    "HER2": "#DD8452",
+    "Estromal": "#A1C9F4",
+    "Basal": "#333333",
+}
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
 ambiguous_points = embedding[~confident]
-axes[0].scatter(ambiguous_points["UMAP1"], ambiguous_points["UMAP2"], color="#DDDDDD", s=8,
-                label="Ambíguo")
+axes[0].scatter(ambiguous_points["UMAP1"], ambiguous_points["UMAP2"],
+                color="#DDDDDD", s=8, label="Ambíguo")
 for label, color in label_colors.items():
     members = embedding[confident & (labels == label)]
     axes[0].scatter(members["UMAP1"], members["UMAP2"], color=color, s=8, label=label)
@@ -706,6 +856,7 @@ pam50 = (
 )
 
 pam50_comparison = pd.crosstab(final_labels.loc[pam50.index], pam50)
+
 pam50_comparison
 
 ```
@@ -787,6 +938,7 @@ Não. A validação cruzada foi feita só nos pacientes confiáveis, que estão 
 6. Hubert, L.; Arabie, P. Comparing partitions. *Journal of Classification*, 2(1), 193-218, 1985.
 7. Breiman, L. Random forests. *Machine Learning*, 45(1), 5-32, 2001.
 8. Lee, D.-H. Pseudo-label: the simple and efficient semi-supervised learning method for deep neural networks. *ICML Workshop on Challenges in Representation Learning*, 2013.
-9. The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. *Nature*, 490, 61-70, 2012.
-10. Parker, J. S. et al. Supervised risk predictor of breast cancer based on intrinsic subtypes. *Journal of Clinical Oncology*, 27(8), 1160-1167, 2009.
-11. Goldman, M. J. et al. Visualizing and interpreting cancer genomics data via the Xena platform. *Nature Biotechnology*, 38, 675-678, 2020.
+9. Perou, C. M. et al. Molecular portraits of human breast tumours. *Nature*, 406, 747-752, 2000.
+10. The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. *Nature*, 490, 61-70, 2012.
+11. Parker, J. S. et al. Supervised risk predictor of breast cancer based on intrinsic subtypes. *Journal of Clinical Oncology*, 27(8), 1160-1167, 2009.
+12. Goldman, M. J. et al. Visualizing and interpreting cancer genomics data via the Xena platform. *Nature Biotechnology*, 38, 675-678, 2020.

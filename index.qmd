@@ -37,6 +37,9 @@ Este site reúne os roteiros práticos da disciplina de Ciência de Dados. Cada 
 - [Aula 10 - Regressão Linear](aulas/10-regressao-linear.qmd)\
   Início do bloco de aprendizado de máquina: regressão linear simples e múltipla no California Housing, métricas de erro, sobreajuste, teste cego com validação cruzada, diagnóstico de resíduos e regularização.
 
+- [Aula 11 - Aprendizado Não Supervisionado](aulas/11-aprendizado-nao-supervisionado.qmd)\
+  Expressão gênica de tumores de mama como atributos tabulares: padronização, PCA e UMAP, K-means com inércia e silhueta, rotulagem dos grupos e *pseudo-labeling* para treinar um classificador.
+
 ## Recursos
 
 - [Fontes de dados](recursos/fontes-de-dados.qmd)\

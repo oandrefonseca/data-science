@@ -1,0 +1,27 @@
+{
+  "Hormonal": [
+    "ESR1",
+    "PGR",
+    "GATA3",
+    "FOXA1"
+  ],
+  "HER2": [
+    "ERBB2",
+    "GRB7"
+  ],
+  "Basal": [
+    "KRT5",
+    "KRT16",
+    "FOXC1",
+    "EGFR"
+  ],
+  "Proliferativo": [
+    "MKI67",
+    "AURKA"
+  ],
+  "Estromal": [
+    "COL14A1",
+    "C7",
+    "ADH1B"
+  ]
+}

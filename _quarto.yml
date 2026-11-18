@@ -41,6 +41,8 @@ website:
             href: aulas/09-testes-nao-parametricos.qmd
           - text: "10. Regressão Linear"
             href: aulas/10-regressao-linear.qmd
+          - text: "11. Aprendizado Não Supervisionado"
+            href: aulas/11-aprendizado-nao-supervisionado.qmd
       - section: "Recursos"
         contents:
           - text: "Fontes de dados"

@@ -69,7 +69,7 @@ sns.set_theme(style="whitegrid", palette="colorblind")
 
 ## 1.1 Conhecendo a base
 
-Os dados vêm do projeto *The Cancer Genome Atlas* (TCGA), que mediu a expressão de cerca de 60 mil genes em tumores de mama de mais de mil pacientes. A matriz que usamos já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em $\log_2(\text{TPM} + 1)$: TPM mede quantas cópias do gene havia na amostra, por milhão, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.
+Os dados vêm do projeto *The Cancer Genome Atlas* (TCGA), que mediu a expressão de cerca de 60 mil genes em tumores de mama de mais de mil pacientes. A matriz que usamos já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em $\log_2(\text{TPM} + 1)$: TPM conta quantos transcritos do gene há em cada milhão de transcritos da amostra, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.
 
 Dos milhares de genes, ficaram os 500 de maior variância entre pacientes, chamados de **genes altamente variáveis** (HVGs, de *highly variable genes*), e mais cinco genes do dicionário que não estavam entre eles. Um gene que tem a mesma expressão em todos os tumores não ajuda a separá-los, assim como uma coluna constante não ajuda nenhum modelo.
 
@@ -145,7 +145,7 @@ plt.show()
 
 ```
 
-Um detalhe importa aqui. Tanto a PCA quanto a distância euclidiana ignoram a **média** de cada atributo: a PCA centraliza cada coluna antes de começar, e somar a mesma constante a uma coluna não muda a distância entre dois pontos. O que distorce a geometria é a **dispersão**. Sem padronizar, `KRT5`, com desvio de 2,92, puxa as distâncias muito mais que `MKI67`, com 1,24, ainda que as duas variações sejam igualmente informativas.
+Tanto a PCA quanto a distância euclidiana ignoram a **média** de cada atributo: a PCA centraliza cada coluna antes de começar, e somar a mesma constante a uma coluna não muda a distância entre dois pontos. O que distorce a geometria é a **dispersão**. Sem padronizar, `KRT5`, com desvio de 2,92, puxa as distâncias muito mais que `MKI67`, com 1,24, mesmo que a variação de `MKI67` seja tão informativa quanto a de `KRT5`.
 
 O `StandardScaler` resolve isso: subtrai a média de cada gene e divide pelo seu desvio-padrão. Cada coluna passa a ter média 0 e desvio 1, e o valor vira um **escore-z**, que diz a quantos desvios da média do gene um paciente está.
 
@@ -193,7 +193,7 @@ pc1_comparison
 
 1. Um `for` com uma lista de um só elemento é um truque para dar nome (`pca`) a um resultado intermediário dentro da compreensão.
 
-Sem padronizar, a PC1 explica 20,3% da variância e tem como genes de maior peso `TFF1`, `AGR3` e `TFF3`, justamente alguns dos genes de maior desvio-padrão. Padronizada, explica 19,4% e passa a ser liderada por `FOXA1`, `MLPH` e `ESR1`, genes que variam juntos com muitos outros. A direção principal mudou pouco, porque os dois grupos de genes medem o mesmo eixo, mas a ordem de importância deixou de premiar quem tem a escala maior.
+Sem padronizar, a PC1 explica 20,3% da variância e tem como genes de maior peso `TFF1`, `AGR3` e `TFF3`, justamente alguns dos genes de maior desvio-padrão. Padronizada, explica 19,4% e passa a ser liderada por `FOXA1`, `MLPH` e `ESR1`, genes que variam juntos com muitos outros. A direção principal mudou pouco, porque os dois trios de genes acompanham o mesmo eixo de variação, mas a ordem de importância deixou de premiar quem tem a escala maior.
 
 Neste conjunto, o efeito é modesto porque a seleção dos HVGs já deixou de fora os genes de variância muito pequena. Em dados tabulares comuns, com atributos em reais, anos e porcentagens, a diferença costuma ser drástica. A regra prática vale nos dois casos: antes de qualquer método baseado em distância ou variância, padronize.
 
@@ -223,7 +223,7 @@ plt.show()
 
 ```
 
-A curva sobe rápido nas primeiras componentes e depois se arrasta. As 15 primeiras explicam 52,6% da variância, e seriam necessárias 95 para chegar a 80%. Ficamos com 15: elas guardam a estrutura de grande escala, compartilhada por muitos genes, e deixam de fora uma longa cauda de componentes que capturam, cada uma, menos de 0,5% da variância e são em boa parte ruído.
+A curva sobe rápido nas primeiras componentes e depois se arrasta. As 15 primeiras explicam 52,6% da variância, e seriam necessárias 95 para chegar a 80%. Ficamos com 15: elas guardam a estrutura de grande escala, compartilhada por muitos genes, e deixam de fora uma longa cauda de componentes que capturam, cada uma, menos de 1% da variância e são em boa parte ruído.
 
 ```{python}
 
@@ -322,7 +322,7 @@ em que $\mu_{c(i)}$ é o centroide do grupo da amostra $i$. É o mesmo espírito
 
 ## 4.2 Escolhendo $k$
 
-O K-means não descobre quantos grupos existem: $k$ é um hiperparâmetro. Rodamos o algoritmo de $k = 2$ a $k = 8$ e registramos duas medidas. A inércia sempre cai quando $k$ aumenta, porque mais centroides ficam sempre mais perto dos pontos. A **silhueta** compara, para cada amostra, a distância média aos membros do próprio grupo ($a$) com a distância média aos membros do grupo vizinho mais próximo ($b$):
+O K-means não descobre quantos grupos existem: $k$ é um hiperparâmetro. Rodamos o algoritmo de $k = 2$ a $k = 8$ e registramos duas medidas. A inércia sempre cai quando $k$ aumenta, porque, com mais centroides, cada ponto tende a ter um deles mais perto. A **silhueta** compara, para cada amostra, a distância média aos membros do próprio grupo ($a$) com a distância média aos membros do grupo vizinho mais próximo ($b$):
 
 $$
 s = \frac{b - a}{\max(a, b)}.
@@ -364,7 +364,7 @@ plt.show()
 
 A silhueta é máxima em $k = 2$ (0,334). Essa é a divisão mais nítida dos dados: o grupo isolado à esquerda do UMAP contra todo o resto. Depois cai para 0,199 em $k = 3$, sobe a um pico secundário de 0,203 em $k = 4$ e volta a cair. A curva de inércia não tem um cotovelo marcado, mas a queda perde força a partir de $k = 4$.
 
-Escolher $k$ é uma decisão de quem analisa, apoiada nessas medidas e no uso que se vai fazer dos grupos. Com $k = 2$ teríamos a partição mais limpa e também a menos informativa. Ficamos com $k = 4$, o pico secundário da silhueta, que divide a nuvem grande sem fragmentá-la em grupos que a silhueta já não sustenta. Em agrupamento não existe a resposta certa que havia na regressão, e a validação será, em parte, dar nome aos grupos e ver se eles fazem sentido.
+Escolher $k$ é uma decisão de quem analisa, apoiada nessas medidas e no uso que se vai fazer dos grupos. Com $k = 2$, teríamos a partição mais limpa e também a menos informativa. Ficamos com $k = 4$, o pico secundário da silhueta, que divide a nuvem grande sem fragmentá-la em grupos que a silhueta já não sustenta. Em agrupamento não existe a resposta certa que havia na regressão, e a validação será, em parte, dar nome aos grupos e ver se eles fazem sentido.
 
 ## 4.3 O modelo com $k = 4$
 
@@ -489,7 +489,7 @@ label_sizes
 
 ```
 
-O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto no Basal (0,72) e no HER2 (0,33) e está perto de zero no Hormonal (0,08). A proliferação não forma um grupo próprio nestes dados: ela é um gradiente que atravessa os grupos. Já o grupo Estromal é formado por amostras com muito tecido de sustentação ao redor do tumor, e o K-means o separou porque essa mistura muda a expressão de dezenas de genes ao mesmo tempo. O algoritmo encontra a estrutura de maior variância, que nem sempre é a que esperávamos encontrar. O dicionário serve para traduzir o que foi achado, não para forçar o que deveria ser achado.
+O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto no Basal (0,72) e no HER2 (0,33) e está perto de zero no Hormonal (0,08). A proliferação não forma um grupo próprio nestes dados: ela é um gradiente que atravessa os grupos. Já o grupo Estromal é formado por amostras com muito tecido de sustentação ao redor do tumor, e o K-means o separou porque essa mistura muda a expressão de muitos genes ao mesmo tempo. O algoritmo encontra a estrutura de maior variância, que nem sempre é a que esperávamos encontrar. O dicionário serve para traduzir o que foi achado, não para forçar o que deveria ser achado.
 
 ```{python}
 
@@ -536,11 +536,11 @@ plt.show()
 
 Com só três perguntas por paciente, a árvore reproduz o rótulo do K-means em 82,9% dos casos. Ela escolheu os genes sozinha, e quase nenhum deles está no dicionário. A primeira pergunta é `MLPH <= 4.871`. `MLPH` é o segundo gene do ranking da ANOVA, e o ramo de expressão baixa reúne 17,5% dos pacientes, 97,4% deles do grupo Basal. No ramo de expressão alta, `SFRP1` separa o Estromal, com valores altos, do Hormonal e do HER2, e `RERG` separa esses dois. O próprio `ESR1` aparece no último nível, retirando do ramo Estromal um pequeno grupo de tumores HER2.
 
-As regras dão uma descrição alternativa de cada grupo: o cluster Hormonal, por exemplo, é "`MLPH` alto, `SFRP1` baixo e `RERG` alto". Uma árvore mais profunda seria mais fiel e mais difícil de ler. A profundidade 3 é um compromisso entre os dois.
+As regras dão uma descrição alternativa de cada grupo: o cluster Hormonal, por exemplo, é "`MLPH` alto, `SFRP1` baixo e `RERG` alto". Uma árvore mais profunda seria mais fiel e mais difícil de ler. A profundidade 3 é um compromisso entre fidelidade e legibilidade.
 
 # 6. Dos clusters ao classificador
 
-Os rótulos estão prontos, e com eles poderíamos treinar um classificador supervisionado para atribuir um grupo a um paciente novo sem rodar o K-means outra vez. Antes, há um problema. O K-means é categórico: um paciente exatamente na fronteira entre dois centroides recebe um rótulo com a mesma convicção de um paciente no centro do grupo. Treinar com rótulos duvidosos ensina dúvidas ao classificador.
+Os rótulos estão prontos, e com eles poderíamos treinar um classificador supervisionado para atribuir um grupo a um paciente novo sem rodar o K-means outra vez. Antes, há um problema. O K-means é categórico: um paciente exatamente na fronteira entre dois centroides recebe um rótulo com a mesma convicção de um paciente no centro do grupo. Se treinarmos com rótulos duvidosos, o classificador aprende fronteiras igualmente duvidosas.
 
 ## 6.1 Uma margem de confiança
 
@@ -550,7 +550,7 @@ $$
 \text{razão} = \frac{d_1}{d_2}.
 $$
 
-A razão vai de 0, para um paciente em cima do próprio centroide, a 1, para um paciente equidistante dos dois. Adotamos um corte de 0,75: abaixo dele, o rótulo é **confiável**; acima, o paciente é **ambíguo**.
+A razão vai de 0, para um paciente sobre o próprio centroide, a 1, para um paciente equidistante dos dois centroides mais próximos. Adotamos um corte de 0,75: abaixo dele, o rótulo é **confiável**; acima, o paciente é **ambíguo**.
 
 ```{python}
 
@@ -601,11 +601,11 @@ confidence_by_label
 
 1. `.assign` cria uma coluna nova sem modificar a tabela original, e o `lambda df:` recebe a tabela no ponto da cadeia em que o `.assign` é chamado.
 
-O grupo Basal, o mais isolado, tem 95% dos pacientes com rótulo confiável. Nos três grupos que dividem a nuvem maior, a fração fica entre 47% e 56%: metade dos pacientes está perto de alguma fronteira.
+O grupo Basal, o mais isolado, tem 95% dos pacientes com rótulo confiável. Nos três grupos que dividem a nuvem maior, a fração fica entre 47% e 56%: cerca de metade dos pacientes está perto de alguma fronteira.
 
 ## 6.2 Treinando o classificador
 
-Esses rótulos criados pelo próprio modelo, e não por um especialista, são **pseudo-rótulos** (*pseudo-labels*). Com eles, treinamos uma floresta aleatória (`RandomForestClassifier`) usando como atributos a expressão original dos 505 genes e, como resposta, os rótulos dos 642 pacientes confiáveis. A floresta combina centenas de árvores de decisão como a do modelo substituto, cada uma treinada em uma amostra diferente de pacientes e de genes, e decide pela votação entre elas. Antes de usá-la, medimos o seu desempenho com validação cruzada estratificada de 5 dobras:
+Esses rótulos criados pelo próprio modelo, e não por um especialista, são **pseudo-rótulos** (*pseudo-labels*). Com eles, treinamos uma floresta aleatória (`RandomForestClassifier`) usando como atributos a expressão original dos 505 genes e, como resposta, os rótulos dos 642 pacientes confiáveis. A floresta combina centenas de árvores de decisão como a do modelo substituto, Cada árvore é treinada em uma reamostragem diferente dos pacientes e, a cada divisão, escolhe entre um sorteio de genes. A floresta decide pela votação de todas as árvores. Antes de usá-la, medimos o seu desempenho com validação cruzada estratificada de 5 dobras:
 
 ```{python}
 
@@ -623,11 +623,11 @@ cv_accuracy.round(3)
 
 1. A validação **estratificada** mantém em cada dobra a mesma proporção de rótulos do conjunto inteiro, o que evita dobras quase sem pacientes de algum grupo.
 
-A acurácia média é de `{python} f"{cv_accuracy.mean():.1%}".replace(".", ",")`. Esse número parece bom demais, e é. Os pacientes confiáveis foram escolhidos justamente por estarem longe das fronteiras, e as fronteiras são onde um classificador erra. Os rótulos também vieram dos mesmos genes que agora servem de atributos. A validação cruzada confirma que a floresta reproduz o K-means nos casos fáceis, mas não diz nada sobre como ela se sai nos difíceis.LinearSegmentedColormap
+A acurácia média é de `{python} f"{cv_accuracy.mean():.1%}".replace(".", ",")`. Esse número parece bom demais, e é. Os pacientes confiáveis foram escolhidos justamente por estarem longe das fronteiras, e as fronteiras são onde um classificador erra. Os rótulos também vieram dos mesmos genes que agora servem de atributos. A validação cruzada confirma que a floresta reproduz o K-means nos casos fáceis, mas não diz nada sobre como ela se sai nos difíceis.
 
 ## 6.3 Prevendo os pacientes ambíguos
 
-Ajustamos a floresta em todos os pacientes confiáveis e pedimos a ela um rótulo para cada paciente ambíguo. Além da classe prevista, `predict_proba` devolve a fração de árvores que votou em cada classe, e a maior delas funciona como uma medida da confiança da previsão:
+Ajustamos a floresta em todos os pacientes confiáveis e pedimos a ela um rótulo para cada paciente ambíguo. Além da classe prevista, `predict_proba` devolve, para cada classe, a média das probabilidades atribuídas pelas árvores. Como cada árvore cresce até folhas quase puras, esse valor é praticamente a fração de árvores que votou na classe, e o maior deles funciona como uma medida da confiança da previsão:
 
 ```{python}
 
@@ -689,13 +689,13 @@ plt.show()
 
 ```
 
-1. `alpha` aceita um valor por ponto. Os confiáveis ficam opacos, e cada ambíguo fica tão transparente quanto a sua incerteza: probabilidade 1 o deixa opaco, e probabilidade 0,4 o deixa quase apagado.
+1. `alpha` aceita um valor por ponto. Os confiáveis ficam opacos, e cada ambíguo fica tão transparente quanto a sua incerteza: probabilidade 1 o deixa opaco, e probabilidade 0,4 o deixa bem mais claro.
 
 À esquerda, os núcleos dos grupos estão coloridos e as fronteiras, em cinza. À direita, a floresta preenche as fronteiras, e os pontos mais apagados, os de menor probabilidade, se concentram onde dois grupos se encontram. O ciclo está completo: uma tabela sem nenhum rótulo virou um classificador que atribui um grupo, com uma medida de confiança, a qualquer paciente novo cuja expressão seja medida nos mesmos 505 genes.
 
 # 7. Os rótulos batem com a classificação oficial?
 
-Até aqui, nenhum rótulo externo entrou na análise. Mas, para estes tumores, existe uma classificação de referência, o **PAM50**, que atribui a cada tumor um de cinco subtipos moleculares. Ela foi construída por especialistas a partir de anos de estudos clínicos. Só agora, com tudo pronto, comparamos as duas classificações:
+Até aqui, nenhum rótulo externo entrou na análise. Mas, para estes tumores, existe uma classificação de referência, o **PAM50**, que atribui a cada tumor um de cinco subtipos moleculares. Ela foi construída por especialistas a partir de anos de estudos de expressão gênica em tumores de mama. Só agora, com tudo pronto, comparamos as duas classificações:
 
 ```{python}
 
@@ -706,7 +706,6 @@ pam50 = (
 )
 
 pam50_comparison = pd.crosstab(final_labels.loc[pam50.index], pam50)
-
 pam50_comparison
 
 ```
@@ -767,7 +766,7 @@ O UMAP preserva quem é vizinho de quem, mas não as distâncias: ele pode separ
 ::: {.callout-note collapse="true"}
 ## Como pensar sobre isso
 
-Não. A validação cruzada foi feita só nos pacientes confiáveis, que estão longe das fronteiras por construção. Ela mede quanto a floresta reproduz o K-means nos casos fáceis, mas não estima o desempenho nos casos difíceis, que são justamente os ambíguos. Além disso, os pseudo-rótulos vieram dos mesmos dados que servem de atributos, de modo que a floresta aprende a imitar o K-means, e não alguma verdade externa. Só uma referência independente, como o PAM50, pode dizer se os grupos correspondem a algo real.
+Não. A validação cruzada foi feita só nos pacientes confiáveis, que estão longe das fronteiras por construção. Ela mede quanto a floresta reproduz o K-means nos casos fáceis, mas não estima o desempenho nos casos difíceis, que são justamente os ambíguos. E os pseudo-rótulos vieram dos mesmos dados que servem de atributos, de modo que a floresta aprende a imitar o K-means, e não alguma verdade externa. Só uma referência independente, como o PAM50, pode dizer se os grupos correspondem a algo real.
 :::
 
 # Para casa

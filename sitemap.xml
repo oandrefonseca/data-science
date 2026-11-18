@@ -2,54 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://oandrefonseca.github.io/data-science/recursos/web-scraping.html</loc>
-    <lastmod>2026-11-11T10:47:02.908Z</lastmod>
+    <lastmod>2026-11-18T01:16:35.946Z</lastmod>
   </url>
   <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/10-regressao-linear.html</loc>
-    <lastmod>2026-11-11T10:47:02.887Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/08-testes-parametricos.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/06-imputacao-normalizacao-dados.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
-    <lastmod>2026-11-11T10:47:02.907Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
-    <lastmod>2026-11-11T10:47:02.885Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/data-science/aulas/07-inferencia-estatistica.html</loc>
-    <lastmod>2026-11-11T10:47:02.886Z</lastmod>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/11-aprendizado-nao-supervisionado.html</loc>
+    <lastmod>2026-11-18T01:16:35.909Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/data-science/aulas/09-testes-nao-parametricos.html</loc>
-    <lastmod>2026-11-11T10:47:02.887Z</lastmod>
+    <lastmod>2026-11-18T01:16:35.909Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/07-inferencia-estatistica.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/05-estatistica-descritiva.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/03-analise-vendas.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/01-ferramentas-ambiente-versionamento.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/index.html</loc>
+    <lastmod>2026-11-18T01:16:35.945Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/02-introducao-dados-tabulares.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/04-analise-vendas-r.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/06-imputacao-normalizacao-dados.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/08-testes-parametricos.html</loc>
+    <lastmod>2026-11-18T01:16:35.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/data-science/aulas/10-regressao-linear.html</loc>
+    <lastmod>2026-11-18T01:16:35.909Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/data-science/recursos/fontes-de-dados.html</loc>
-    <lastmod>2026-11-11T10:47:02.907Z</lastmod>
+    <lastmod>2026-11-18T01:16:35.945Z</lastmod>
   </url>
 </urlset>

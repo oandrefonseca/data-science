@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Aula 11 - Aprendizado Não Supervisionado – Ciência de Dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8e867490b1e8e5629f6bd70775ef054f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-a235a7eb5fd8fb4dc711da63ddc85ef7.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/11-aprendizado-nao-supervisionado.html">11. Aprendizado Não Supervisionado</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Ciência de Dados</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciência de Dados</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Roteiros de aula</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/01-ferramentas-ambiente-versionamento.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Ferramentas, Ambiente e Versionamento</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/02-introducao-dados-tabulares.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Introdução aos Dados Tabulares</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/03-analise-vendas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Análise de Vendas em Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/04-analise-vendas-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Análise de Vendas em R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/05-estatistica-descritiva.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Estatística Descritiva</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/06-imputacao-normalizacao-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6. Imputação e Normalização de Dados</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/07-inferencia-estatistica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Estatística Inferencial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/08-testes-parametricos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8. Testes Paramétricos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/09-testes-nao-parametricos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">9. Testes Não Paramétricos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/10-regressao-linear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10. Regressão Linear</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../aulas/11-aprendizado-nao-supervisionado.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">11. Aprendizado Não Supervisionado</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Recursos</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recursos/fontes-de-dados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fontes de dados</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../recursos/web-scraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link active" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
+  <li><a href="#preparando-o-ambiente" id="toc-preparando-o-ambiente" class="nav-link" data-scroll-target="#preparando-o-ambiente">1. Preparando o ambiente</a>
+  <ul class="collapse">
+  <li><a href="#conhecendo-a-base" id="toc-conhecendo-a-base" class="nav-link" data-scroll-target="#conhecendo-a-base">1.1 Conhecendo a base</a></li>
+  </ul></li>
+  <li><a href="#escala-todos-os-atributos-no-mesmo-pé" id="toc-escala-todos-os-atributos-no-mesmo-pé" class="nav-link" data-scroll-target="#escala-todos-os-atributos-no-mesmo-pé">2. Escala: todos os atributos no mesmo pé</a>
+  <ul class="collapse">
+  <li><a href="#o-problema" id="toc-o-problema" class="nav-link" data-scroll-target="#o-problema">2.1 O problema</a></li>
+  <li><a href="#o-efeito-na-pca" id="toc-o-efeito-na-pca" class="nav-link" data-scroll-target="#o-efeito-na-pca">2.2 O efeito na PCA</a></li>
+  </ul></li>
+  <li><a href="#redução-de-dimensionalidade" id="toc-redução-de-dimensionalidade" class="nav-link" data-scroll-target="#redução-de-dimensionalidade">3. Redução de dimensionalidade</a>
+  <ul class="collapse">
+  <li><a href="#pca-o-espaço-de-trabalho" id="toc-pca-o-espaço-de-trabalho" class="nav-link" data-scroll-target="#pca-o-espaço-de-trabalho">3.1 PCA: o espaço de trabalho</a></li>
+  <li><a href="#umap-o-espaço-de-visualização" id="toc-umap-o-espaço-de-visualização" class="nav-link" data-scroll-target="#umap-o-espaço-de-visualização">3.2 UMAP: o espaço de visualização</a></li>
+  </ul></li>
+  <li><a href="#agrupamento-com-k-means" id="toc-agrupamento-com-k-means" class="nav-link" data-scroll-target="#agrupamento-com-k-means">4. Agrupamento com K-means</a>
+  <ul class="collapse">
+  <li><a href="#como-o-k-means-funciona" id="toc-como-o-k-means-funciona" class="nav-link" data-scroll-target="#como-o-k-means-funciona">4.1 Como o K-means funciona</a></li>
+  <li><a href="#escolhendo-k" id="toc-escolhendo-k" class="nav-link" data-scroll-target="#escolhendo-k">4.2 Escolhendo <span class="math inline">\(k\)</span></a></li>
+  <li><a href="#o-modelo-com-k-4" id="toc-o-modelo-com-k-4" class="nav-link" data-scroll-target="#o-modelo-com-k-4">4.3 O modelo com <span class="math inline">\(k = 4\)</span></a></li>
+  </ul></li>
+  <li><a href="#dando-nome-aos-clusters" id="toc-dando-nome-aos-clusters" class="nav-link" data-scroll-target="#dando-nome-aos-clusters">5. Dando nome aos clusters</a>
+  <ul class="collapse">
+  <li><a href="#atributos-discriminantes" id="toc-atributos-discriminantes" class="nav-link" data-scroll-target="#atributos-discriminantes">5.1 Atributos discriminantes</a></li>
+  <li><a href="#tradução-pelo-dicionário" id="toc-tradução-pelo-dicionário" class="nav-link" data-scroll-target="#tradução-pelo-dicionário">5.2 Tradução pelo dicionário</a></li>
+  <li><a href="#uma-árvore-de-decisão-substituta" id="toc-uma-árvore-de-decisão-substituta" class="nav-link" data-scroll-target="#uma-árvore-de-decisão-substituta">5.3 Uma árvore de decisão substituta</a></li>
+  </ul></li>
+  <li><a href="#dos-clusters-ao-classificador" id="toc-dos-clusters-ao-classificador" class="nav-link" data-scroll-target="#dos-clusters-ao-classificador">6. Dos clusters ao classificador</a>
+  <ul class="collapse">
+  <li><a href="#uma-margem-de-confiança" id="toc-uma-margem-de-confiança" class="nav-link" data-scroll-target="#uma-margem-de-confiança">6.1 Uma margem de confiança</a></li>
+  <li><a href="#treinando-o-classificador" id="toc-treinando-o-classificador" class="nav-link" data-scroll-target="#treinando-o-classificador">6.2 Treinando o classificador</a></li>
+  <li><a href="#prevendo-os-pacientes-ambíguos" id="toc-prevendo-os-pacientes-ambíguos" class="nav-link" data-scroll-target="#prevendo-os-pacientes-ambíguos">6.3 Prevendo os pacientes ambíguos</a></li>
+  </ul></li>
+  <li><a href="#os-rótulos-batem-com-a-classificação-oficial" id="toc-os-rótulos-batem-com-a-classificação-oficial" class="nav-link" data-scroll-target="#os-rótulos-batem-com-a-classificação-oficial">7. Os rótulos batem com a classificação oficial?</a></li>
+  <li><a href="#síntese" id="toc-síntese" class="nav-link" data-scroll-target="#síntese">Síntese</a></li>
+  <li><a href="#perguntas-para-consolidar" id="toc-perguntas-para-consolidar" class="nav-link" data-scroll-target="#perguntas-para-consolidar">Perguntas para consolidar</a></li>
+  <li><a href="#para-casa" id="toc-para-casa" class="nav-link" data-scroll-target="#para-casa">Para casa</a>
+  <ul class="collapse">
+  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências">Referências</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/11-aprendizado-nao-supervisionado.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="11-aprendizado-nao-supervisionado.ipynb" download="11-aprendizado-nao-supervisionado.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../aulas/01-ferramentas-ambiente-versionamento.html">Roteiros de aula</a></li><li class="breadcrumb-item"><a href="../aulas/11-aprendizado-nao-supervisionado.html">11. Aprendizado Não Supervisionado</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Aula 11 - Aprendizado Não Supervisionado</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18 de novembro de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>Na regressão linear, cada bairro chegava com a resposta certa: o valor das casas. O modelo aprendia a ir dos atributos até essa resposta, e o erro em dados novos dizia se ele tinha aprendido bem. Esse é o <strong>aprendizado supervisionado</strong>. Mas boa parte dos dados do mundo chega sem resposta nenhuma. Ninguém rotulou os clientes de uma loja por perfil de compra, nem os documentos de um arquivo por assunto, nem os tumores de um hospital por tipo molecular.</p>
+<p>Esta aula trabalha com uma tabela assim: 1.095 tumores de mama, cada um descrito pela expressão de 505 genes, e nenhuma coluna de rótulo. Tratamos os genes como atributos numéricos quaisquer, quase anônimos. A biologia entra só no fim, por meio de um dicionário curto que traduz alguns genes em perfis. A pergunta é se os próprios dados se organizam em grupos e, se sim, como dar nome a esses grupos e transformá-los em rótulos para treinar um classificador.</p>
+<p>O caminho tem quatro etapas, todas geométricas: colocar os atributos na mesma escala, projetar 505 dimensões em poucas, particionar as amostras em torno de centroides e, por fim, converter a partição em rótulos confiáveis. É o ciclo completo do aprendizado não supervisionado ao supervisionado.</p>
+<blockquote class="blockquote">
+<p>Dá para criar rótulos a partir de dados que não têm nenhum?</p>
+</blockquote>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de aprendizagem</h2>
+<p>Ao final deste roteiro, você será capaz de:</p>
+<ol type="1">
+<li>Explicar por que a escala dos atributos muda o resultado da PCA e do K-means e padronizá-los com o <code>StandardScaler</code>.</li>
+<li>Reduzir a dimensionalidade com PCA para modelagem e com UMAP para visualização, justificando o papel de cada um.</li>
+<li>Agrupar amostras com K-means e escolher o número de grupos com inércia e silhueta.</li>
+<li>Dar nome aos grupos com atributos discriminantes, um dicionário de assinaturas e uma árvore de decisão substituta.</li>
+<li>Filtrar rótulos pela margem de distância aos centroides e usá-los para treinar um classificador supervisionado (<em>pseudo-labeling</em>).</li>
+<li>Comparar uma partição encontrada sem rótulos com uma classificação de referência pelo índice de Rand ajustado.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como usar este roteiro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A base está em <code>tcga-brca/data/</code>, em três arquivos: a matriz de expressão <code>brca_hvgs_log2.parquet</code>, o dicionário <code>dicionario_marcadores.json</code> e a classificação oficial <code>brca_pam50.csv</code>, que só aparece na última seção. Para ler o Parquet e rodar o UMAP, instale, se ainda não tiver, <code>pip install pyarrow umap-learn</code>. A matriz já vem pré-processada; o script <code>tcga-brca/preparar_dados.py</code> mostra como ela foi gerada, mas não precisa ser executado.</p>
+</div>
+</div>
+</section>
+<section id="preparando-o-ambiente" class="level1">
+<h1>1. Preparando o ambiente</h1>
+<p>Do scikit-learn vêm a padronização, a PCA, o K-means, as métricas de agrupamento e os dois modelos supervisionados do fim da aula. O UMAP vem do pacote <code>umap-learn</code>:</p>
+<div id="61a73ad2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LinearSegmentedColormap</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> f_classif</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> adjusted_rand_score, pairwise_distances, silhouette_score</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_val_score</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, plot_tree</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> umap <span class="im">import</span> UMAP</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="conhecendo-a-base" class="level2">
+<h2 class="anchored" data-anchor-id="conhecendo-a-base">1.1 Conhecendo a base</h2>
+<p>Os dados vêm do projeto <em>The Cancer Genome Atlas</em> (TCGA), que mediu a expressão de cerca de 60 mil genes em tumores de mama de mais de mil pacientes. A matriz que usamos já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em <span class="math inline">\(\log_2(\text{TPM} + 1)\)</span>: TPM mede quantas cópias do gene havia na amostra, por milhão, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.</p>
+<p>Dos milhares de genes, ficaram os 500 de maior variância entre pacientes, chamados de <strong>genes altamente variáveis</strong> (HVGs, de <em>highly variable genes</em>), e mais cinco genes do dicionário que não estavam entre eles. Um gene que tem a mesma expressão em todos os tumores não ajuda a separá-los, assim como uma coluna constante não ajuda nenhum modelo.</p>
+<div id="26c166e5" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a matriz de expressão: pacientes nas linhas, genes nas colunas</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> pd.read_parquet(<span class="st">"tcga-brca/data/brca_hvgs_log2.parquet"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>expr.iloc[:<span class="dv">5</span>, :<span class="dv">8</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="134">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">SCGB2A2</th>
+<th data-quarto-table-cell-role="th">SCGB1D2</th>
+<th data-quarto-table-cell-role="th">TFF1</th>
+<th data-quarto-table-cell-role="th">PIP</th>
+<th data-quarto-table-cell-role="th">CPB1</th>
+<th data-quarto-table-cell-role="th">CLEC3A</th>
+<th data-quarto-table-cell-role="th">S100A7</th>
+<th data-quarto-table-cell-role="th">AGR3</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">paciente</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-3C-AAAU</td>
+<td>13.128</td>
+<td>11.093</td>
+<td>5.102</td>
+<td>11.536</td>
+<td>11.350</td>
+<td>0.487</td>
+<td>0.000</td>
+<td>9.651</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALI</td>
+<td>13.079</td>
+<td>9.195</td>
+<td>6.100</td>
+<td>6.711</td>
+<td>0.833</td>
+<td>7.816</td>
+<td>0.642</td>
+<td>9.822</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALJ</td>
+<td>0.000</td>
+<td>0.935</td>
+<td>6.239</td>
+<td>0.000</td>
+<td>5.978</td>
+<td>0.000</td>
+<td>0.362</td>
+<td>8.771</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALK</td>
+<td>5.586</td>
+<td>5.102</td>
+<td>12.045</td>
+<td>9.772</td>
+<td>2.190</td>
+<td>2.249</td>
+<td>4.635</td>
+<td>7.498</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-4H-AAAK</td>
+<td>12.143</td>
+<td>8.230</td>
+<td>11.101</td>
+<td>6.135</td>
+<td>0.597</td>
+<td>3.853</td>
+<td>0.427</td>
+<td>7.899</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>São 1.095 pacientes e 505 genes, sem valores ausentes. Para o algoritmo, <code>ESR1</code> ou <code>KRT5</code> são apenas nomes de colunas, como <code>MedInc</code> ou <code>HouseAge</code>. O dicionário, que será usado só para dar nome aos grupos, liga alguns genes a cinco perfis moleculares:</p>
+<div id="40267be7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dicionário de assinaturas: perfil -&gt; genes marcadores</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"tcga-brca/data/dicionario_marcadores.json"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    markers <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>markers_table <span class="op">=</span> (</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    pd.Series(markers)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">map</span>(<span class="st">", "</span>.join)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    .rename_axis(<span class="st">"perfil"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    .rename(<span class="st">"genes"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>markers_table</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="135">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">genes</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">perfil</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Hormonal</td>
+<td>ESR1, PGR, GATA3, FOXA1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">HER2</td>
+<td>ERBB2, GRB7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Basal</td>
+<td>KRT5, KRT16, FOXC1, EGFR</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Proliferativo</td>
+<td>MKI67, AURKA</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Estromal</td>
+<td>COL14A1, C7, ADH1B</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Não é preciso conhecer a biologia por trás de cada perfil. Basta saber que, se um grupo de tumores tem os genes de uma linha muito mais expressos que os demais, ele recebe o nome dessa linha.</p>
+</section>
+</section>
+<section id="escala-todos-os-atributos-no-mesmo-pé" class="level1">
+<h1>2. Escala: todos os atributos no mesmo pé</h1>
+<section id="o-problema" class="level2">
+<h2 class="anchored" data-anchor-id="o-problema">2.1 O problema</h2>
+<p>PCA e K-means são métodos geométricos. A PCA procura as direções de maior variância, e o K-means agrupa pontos pela distância euclidiana. Nos dois casos, um atributo com variância grande pesa mais que um com variância pequena, só por causa da sua escala. Mesmo em escala logarítmica, os genes não estão no mesmo pé:</p>
+<div id="ed8a69da" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média e desvio-padrão de cada gene, resumidos sobre os 505 genes</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gene_stats <span class="op">=</span> (</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    expr</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .agg([<span class="st">"mean"</span>, <span class="st">"std"</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .T</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>gene_stats_summary <span class="op">=</span> gene_stats.describe().<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>gene_stats_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="136">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>505.00</td>
+<td>505.00</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>3.69</td>
+<td>2.10</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>1.75</td>
+<td>0.43</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>1.01</td>
+<td>1.14</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>2.38</td>
+<td>1.80</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>3.31</td>
+<td>1.97</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>4.73</td>
+<td>2.28</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>10.09</td>
+<td>4.49</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>As médias vão de 1,01 a 10,09, e os desvios-padrão, de 1,14 a 4,49. Em variância, que é o que a PCA soma, o gene mais disperso pesa cerca de 15 vezes mais que o menos disperso (<span class="math inline">\(4{,}49^2 / 1{,}14^2 \approx 15{,}5\)</span>). Os 50 genes de maior variância, 10% das colunas, concentram 20,5% da variância total.</p>
+<div id="c5d53ac1" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média versus desvio-padrão de cada gene, com alguns marcadores em destaque</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>highlight <span class="op">=</span> [<span class="st">"ESR1"</span>, <span class="st">"KRT5"</span>, <span class="st">"ERBB2"</span>, <span class="st">"MKI67"</span>, <span class="st">"COL14A1"</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ax.scatter(gene_stats[<span class="st">"mean"</span>], gene_stats[<span class="st">"std"</span>], color<span class="op">=</span><span class="st">"#A1C9F4"</span>, s<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ax.scatter(gene_stats.loc[highlight, <span class="st">"mean"</span>], gene_stats.loc[highlight, <span class="st">"std"</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>           color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gene <span class="kw">in</span> highlight:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ax.annotate(gene, gene_stats.loc[gene, [<span class="st">"mean"</span>, <span class="st">"std"</span>]], xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">3</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                textcoords<span class="op">=</span><span class="st">"offset points"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">"#333333"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Média da expressão (log2 TPM + 1)"</span>, ylabel<span class="op">=</span><span class="st">"Desvio-padrão"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-6-output-1.png" width="754" height="416" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Um detalhe importa aqui. Tanto a PCA quanto a distância euclidiana ignoram a <strong>média</strong> de cada atributo: a PCA centraliza cada coluna antes de começar, e somar a mesma constante a uma coluna não muda a distância entre dois pontos. O que distorce a geometria é a <strong>dispersão</strong>. Sem padronizar, <code>KRT5</code>, com desvio de 2,92, puxa as distâncias muito mais que <code>MKI67</code>, com 1,24, ainda que as duas variações sejam igualmente informativas.</p>
+<p>O <code>StandardScaler</code> resolve isso: subtrai a média de cada gene e divide pelo seu desvio-padrão. Cada coluna passa a ter média 0 e desvio 1, e o valor vira um <strong>escore-z</strong>, que diz a quantos desvios da média do gene um paciente está.</p>
+<div id="f6a3400c" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Padroniza cada gene para média 0 e desvio-padrão 1</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    scaler.fit_transform(expr),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>expr.index,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>expr.columns,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>scaled_check <span class="op">=</span> X_scaled.agg([<span class="st">"mean"</span>, <span class="st">"std"</span>]).T.describe().loc[[<span class="st">"min"</span>, <span class="st">"max"</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>scaled_check</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="138">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">min</td>
+<td>-0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="o-efeito-na-pca" class="level2">
+<h2 class="anchored" data-anchor-id="o-efeito-na-pca">2.2 O efeito na PCA</h2>
+<p>Para ver o efeito da padronização, ajustamos a PCA nos dados brutos e nos padronizados e comparamos a primeira componente, a PC1. Para cada versão, listamos a variância que ela explica e os cinco genes com maior peso (<em>loading</em>) em valor absoluto:</p>
+<div id="984d55bc" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PC1 com e sem padronização: variância explicada e genes de maior peso</span></span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>pca_inputs <span class="op">=</span> {<span class="st">"sem padronizar"</span>: expr, <span class="st">"padronizado"</span>: X_scaled}</span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a>pc1_comparison <span class="op">=</span> pd.DataFrame(</span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>        name: {</span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"variância da PC1"</span>: <span class="ss">f"</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss">"</span>,</span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"genes de maior peso"</span>: <span class="st">", "</span>.join(</span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>                pd.Series(np.<span class="bu">abs</span>(pca.components_[<span class="dv">0</span>]), index<span class="op">=</span>data.columns).nlargest(<span class="dv">5</span>).index</span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, data <span class="kw">in</span> pca_inputs.items()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-13" class="code-annotation-target"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> pca <span class="kw">in</span> [PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(data)]</span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>).T</span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>pc1_comparison</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="13" data-code-annotation="1">Um <code>for</code> com uma lista de um só elemento é um truque para dar nome (<code>pca</code>) a um resultado intermediário dentro da compreensão.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="139">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">variância da PC1</th>
+<th data-quarto-table-cell-role="th">genes de maior peso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">sem padronizar</td>
+<td>20.3%</td>
+<td>TFF1, AGR3, TFF3, AGR2, ESR1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">padronizado</td>
+<td>19.4%</td>
+<td>FOXA1, MLPH, ESR1, TBC1D9, AGR3</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Sem padronizar, a PC1 explica 20,3% da variância e tem como genes de maior peso <code>TFF1</code>, <code>AGR3</code> e <code>TFF3</code>, justamente alguns dos genes de maior desvio-padrão. Padronizada, explica 19,4% e passa a ser liderada por <code>FOXA1</code>, <code>MLPH</code> e <code>ESR1</code>, genes que variam juntos com muitos outros. A direção principal mudou pouco, porque os dois grupos de genes medem o mesmo eixo, mas a ordem de importância deixou de premiar quem tem a escala maior.</p>
+<p>Neste conjunto, o efeito é modesto porque a seleção dos HVGs já deixou de fora os genes de variância muito pequena. Em dados tabulares comuns, com atributos em reais, anos e porcentagens, a diferença costuma ser drástica. A regra prática vale nos dois casos: antes de qualquer método baseado em distância ou variância, padronize.</p>
+</section>
+</section>
+<section id="redução-de-dimensionalidade" class="level1">
+<h1>3. Redução de dimensionalidade</h1>
+<section id="pca-o-espaço-de-trabalho" class="level2">
+<h2 class="anchored" data-anchor-id="pca-o-espaço-de-trabalho">3.1 PCA: o espaço de trabalho</h2>
+<p>Cada paciente é um ponto em um espaço de 505 dimensões. Há dois motivos para não agrupar diretamente nesse espaço. O primeiro é que muitos genes variam juntos, e boa parte das 505 colunas é redundante. O segundo é a <strong>maldição da dimensionalidade</strong>: em muitas dimensões, as distâncias entre pontos ficam todas parecidas, e “perto” e “longe” perdem o contraste de que o K-means depende.</p>
+<p>A PCA ajustada com todas as componentes mostra quanto da variância cada uma acumula:</p>
+<div id="31a7e57e" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variância explicada acumulada por todas as componentes</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>).fit(X_scaled)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cumulative_variance <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, <span class="dv">101</span>), cumulative_variance[:<span class="dv">100</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">15</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f"15 PCs: </span><span class="sc">{</span>cumulative_variance[<span class="dv">14</span>]<span class="sc">:.1%}</span><span class="ss">"</span>, (<span class="dv">15</span>, cumulative_variance[<span class="dv">14</span>]),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            xytext<span class="op">=</span>(<span class="dv">8</span>, <span class="op">-</span><span class="dv">18</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Número de componentes"</span>, ylabel<span class="op">=</span><span class="st">"Variância explicada acumulada"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       xlim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">100</span>), ylim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-9-output-1.png" width="849" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A curva sobe rápido nas primeiras componentes e depois se arrasta. As 15 primeiras explicam 52,6% da variância, e seriam necessárias 95 para chegar a 80%. Ficamos com 15: elas guardam a estrutura de grande escala, compartilhada por muitos genes, e deixam de fora uma longa cauda de componentes que capturam, cada uma, menos de 0,5% da variância e são em boa parte ruído.</p>
+<div id="6284c2d1" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta os pacientes nas 15 primeiras componentes principais</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>X_pca.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="141">
+<pre><code>(1095, 15)</code></pre>
+</div>
+</div>
+<p>Para ver a maldição da dimensionalidade em números, comparamos a dispersão das distâncias entre todos os pares de pacientes nos 505 genes padronizados, nas 15 componentes e em uma tabela de ruído puro do mesmo tamanho. A medida é o coeficiente de variação das distâncias, o desvio-padrão dividido pela média: quanto menor, mais parecidas são todas as distâncias.</p>
+<div id="c59104ac" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contraste das distâncias entre pares de pacientes em três espaços</span></span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>spaces <span class="op">=</span> {</span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"505 genes padronizados"</span>: X_scaled,</span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"15 componentes principais"</span>: X_pca,</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ruído puro (505 colunas)"</span>: rng.normal(size<span class="op">=</span>X_scaled.shape),</span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>distance_contrast <span class="op">=</span> (</span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-11" class="code-annotation-target"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a>        {name: pairwise_distances(data)[np.triu_indices(<span class="bu">len</span>(data), k<span class="op">=</span><span class="dv">1</span>)] <span class="cf">for</span> name, data <span class="kw">in</span> spaces.items()}</span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">map</span>(<span class="kw">lambda</span> d: d.std() <span class="op">/</span> d.mean())</span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    .rename(<span class="st">"CV das distâncias"</span>)</span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a>distance_contrast</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="11" data-code-annotation="1"><code>pairwise_distances</code> devolve a matriz de distâncias entre todos os pares. <code>np.triu_indices(..., k=1)</code> pega só o triângulo acima da diagonal, para contar cada par uma vez e sem as distâncias de cada ponto a si mesmo.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="142">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">CV das distâncias</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">505 genes padronizados</td>
+<td>0.156</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15 componentes principais</td>
+<td>0.284</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ruído puro (505 colunas)</td>
+<td>0.031</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>No ruído puro, todas as distâncias ficam praticamente iguais (CV de 0,031): nenhum ponto está de fato mais perto de outro. Os genes reais têm estrutura, e o contraste é cinco vezes maior (0,156). Nas 15 componentes, quase dobra (0,284). A PCA descartou dimensões que só somavam ruído às distâncias, e é nesse espaço que o K-means vai trabalhar.</p>
+</section>
+<section id="umap-o-espaço-de-visualização" class="level2">
+<h2 class="anchored" data-anchor-id="umap-o-espaço-de-visualização">3.2 UMAP: o espaço de visualização</h2>
+<p>Quinze dimensões ainda não cabem em um gráfico. Poderíamos plotar só a PC1 contra a PC2, mas elas resumem pouco mais de um quarto da variância. O <strong>UMAP</strong> (<em>Uniform Manifold Approximation and Projection</em>) é um método não linear que constrói um grafo de vizinhos no espaço original e procura uma disposição em 2D que preserve esses vizinhos. Aplicamos o UMAP às 15 componentes:</p>
+<div id="01195da2" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta as 15 componentes em 2D com o UMAP, apenas para visualização</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-2" class="code-annotation-target"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>umap_model <span class="op">=</span> UMAP(n_neighbors<span class="op">=</span><span class="dv">15</span>, min_dist<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> pd.DataFrame(</span>
+<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-hidden="true" tabindex="-1"></a>    umap_model.fit_transform(X_pca),</span>
+<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>expr.index,</span>
+<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"UMAP1"</span>, <span class="st">"UMAP2"</span>],</span>
+<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-hidden="true" tabindex="-1"></a>embedding.head()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-11" data-code-lines="2" data-code-annotation="1"><code>n_neighbors</code> define quantos vizinhos cada ponto considera: valores pequenos destacam a estrutura local e valores grandes, a global. Com <code>random_state</code> fixo, o UMAP roda em uma única linha de processamento e o resultado é reprodutível, e por isso ele emite um aviso, que suprimimos.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="143">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">UMAP1</th>
+<th data-quarto-table-cell-role="th">UMAP2</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">paciente</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-3C-AAAU</td>
+<td>13.150129</td>
+<td>9.870324</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALI</td>
+<td>9.552567</td>
+<td>6.545767</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALJ</td>
+<td>12.679526</td>
+<td>8.404928</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-3C-AALK</td>
+<td>8.370549</td>
+<td>10.679368</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-4H-AAAK</td>
+<td>8.271001</td>
+<td>10.556375</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="315bc76d" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os mesmos pacientes no plano PC1 x PC2 e no plano do UMAP</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(X_pca[:, <span class="dv">0</span>], X_pca[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"PCA (PC1 x PC2)"</span>, xlabel<span class="op">=</span><span class="st">"PC1"</span>, ylabel<span class="op">=</span><span class="st">"PC2"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(embedding[<span class="st">"UMAP1"</span>], embedding[<span class="st">"UMAP2"</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"UMAP (a partir das 15 PCs)"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-13-output-1.png" width="1041" height="416" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>No plano PC1 x PC2 já se vê um grupo separado à esquerda e uma nuvem maior à direita. O UMAP deixa essa separação mais nítida e sugere subdivisões dentro da nuvem.</p>
+<p>O UMAP tem um preço. Ele preserva quem é vizinho de quem, mas distorce todo o resto: o tamanho aparente de um grupo e a distância entre dois grupos no gráfico não têm significado quantitativo. Por isso, a divisão de trabalho desta aula é rígida. A PCA é o espaço de trabalho, onde se calculam distâncias e se ajusta o K-means. O UMAP é só a tela onde desenhamos os resultados.</p>
+</section>
+</section>
+<section id="agrupamento-com-k-means" class="level1">
+<h1>4. Agrupamento com K-means</h1>
+<section id="como-o-k-means-funciona" class="level2">
+<h2 class="anchored" data-anchor-id="como-o-k-means-funciona">4.1 Como o K-means funciona</h2>
+<p>O <strong>K-means</strong> divide as amostras em <span class="math inline">\(k\)</span> grupos, cada um representado por um <strong>centroide</strong>, o ponto médio do grupo. O algoritmo alterna dois passos até que nada mude:</p>
+<ol type="1">
+<li>Atribuir cada amostra ao centroide mais próximo.</li>
+<li>Mover cada centroide para a média das amostras atribuídas a ele.</li>
+</ol>
+<p>O critério que esses passos reduzem a cada rodada é a <strong>inércia</strong>, a soma das distâncias quadráticas de cada amostra ao seu centroide:</p>
+<p><span class="math display">\[
+\text{inércia} = \sum_{i=1}^{n} \lVert x_i - \mu_{c(i)} \rVert^2,
+\]</span></p>
+<p>em que <span class="math inline">\(\mu_{c(i)}\)</span> é o centroide do grupo da amostra <span class="math inline">\(i\)</span>. É o mesmo espírito dos mínimos quadrados, agora sem uma resposta <span class="math inline">\(y\)</span>: o K-means busca os centros que deixam os resíduos, as distâncias de cada ponto ao seu centro, os menores possíveis. Como o resultado depende dos centroides iniciais, sorteados, o scikit-learn repete o algoritmo <code>n_init</code> vezes e fica com a solução de menor inércia.</p>
+</section>
+<section id="escolhendo-k" class="level2">
+<h2 class="anchored" data-anchor-id="escolhendo-k">4.2 Escolhendo <span class="math inline">\(k\)</span></h2>
+<p>O K-means não descobre quantos grupos existem: <span class="math inline">\(k\)</span> é um hiperparâmetro. Rodamos o algoritmo de <span class="math inline">\(k = 2\)</span> a <span class="math inline">\(k = 8\)</span> e registramos duas medidas. A inércia sempre cai quando <span class="math inline">\(k\)</span> aumenta, porque mais centroides ficam sempre mais perto dos pontos. A <strong>silhueta</strong> compara, para cada amostra, a distância média aos membros do próprio grupo (<span class="math inline">\(a\)</span>) com a distância média aos membros do grupo vizinho mais próximo (<span class="math inline">\(b\)</span>):</p>
+<p><span class="math display">\[
+s = \frac{b - a}{\max(a, b)}.
+\]</span></p>
+<p>Ela vai de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>. Valores perto de 1 indicam uma amostra bem dentro do seu grupo e longe do vizinho; perto de 0, uma amostra na fronteira. A silhueta da partição é a média sobre todas as amostras.</p>
+<div id="711dd9bd" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inércia e silhueta para k de 2 a 8, no espaço das 15 componentes</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">9</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>kmeans_by_k <span class="op">=</span> {k: KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_pca) <span class="cf">for</span> k <span class="kw">in</span> k_values}</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>k_selection <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inércia"</span>: [model.inertia_ <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()],</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"silhueta"</span>: [silhouette_score(X_pca, model.labels_) <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()],</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.Index(k_values, name<span class="op">=</span><span class="st">"k"</span>),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>k_selection</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="145">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">inércia</th>
+<th data-quarto-table-cell-role="th">silhueta</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">k</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>202505.296</td>
+<td>0.334</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>174539.570</td>
+<td>0.199</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>156028.057</td>
+<td>0.203</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>146527.963</td>
+<td>0.172</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>139424.099</td>
+<td>0.172</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>134707.780</td>
+<td>0.162</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>130832.737</td>
+<td>0.155</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="6e2de5a3" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curvas de inércia e silhueta em função de k</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(k_selection.index, k_selection[<span class="st">"inércia"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Inércia"</span>, title<span class="op">=</span><span class="st">"Inércia (cotovelo)"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(k_selection.index, k_selection[<span class="st">"silhueta"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(<span class="dv">4</span>, k_selection.loc[<span class="dv">4</span>, <span class="st">"silhueta"</span>], color<span class="op">=</span><span class="st">"#DD8452"</span>, s<span class="op">=</span><span class="dv">90</span>, zorder<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Silhueta média"</span>, title<span class="op">=</span><span class="st">"Silhueta"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-15-output-1.png" width="1041" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A silhueta é máxima em <span class="math inline">\(k = 2\)</span> (0,334). Essa é a divisão mais nítida dos dados: o grupo isolado à esquerda do UMAP contra todo o resto. Depois cai para 0,199 em <span class="math inline">\(k = 3\)</span>, sobe a um pico secundário de 0,203 em <span class="math inline">\(k = 4\)</span> e volta a cair. A curva de inércia não tem um cotovelo marcado, mas a queda perde força a partir de <span class="math inline">\(k = 4\)</span>.</p>
+<p>Escolher <span class="math inline">\(k\)</span> é uma decisão de quem analisa, apoiada nessas medidas e no uso que se vai fazer dos grupos. Com <span class="math inline">\(k = 2\)</span> teríamos a partição mais limpa e também a menos informativa. Ficamos com <span class="math inline">\(k = 4\)</span>, o pico secundário da silhueta, que divide a nuvem grande sem fragmentá-la em grupos que a silhueta já não sustenta. Em agrupamento não existe a resposta certa que havia na regressão, e a validação será, em parte, dar nome aos grupos e ver se eles fazem sentido.</p>
+</section>
+<section id="o-modelo-com-k-4" class="level2">
+<h2 class="anchored" data-anchor-id="o-modelo-com-k-4">4.3 O modelo com <span class="math inline">\(k = 4\)</span></h2>
+<div id="7fee5fcb" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means com k = 4 e o tamanho de cada grupo</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> kmeans_by_k[<span class="dv">4</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> pd.Series(kmeans.labels_, index<span class="op">=</span>expr.index, name<span class="op">=</span><span class="st">"cluster"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>cluster_sizes <span class="op">=</span> clusters.value_counts().sort_index()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>cluster_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="147">
+<pre><code>cluster
+0    181
+1    374
+2    346
+3    194
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>Os quatro grupos têm 181, 374, 346 e 194 pacientes. Os números de 0 a 3 são apenas identificadores, sem ordem nem significado. Rodar de novo com outro <code>random_state</code> poderia trocar os números entre os grupos sem mudar a partição.</p>
+<div id="10b0e185" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelo identificador bruto do cluster</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cluster_colors <span class="op">=</span> {<span class="dv">0</span>: <span class="st">"#1F4E79"</span>, <span class="dv">1</span>: <span class="st">"#DD8452"</span>, <span class="dv">2</span>: <span class="st">"#A1C9F4"</span>, <span class="dv">3</span>: <span class="st">"#333333"</span>}</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster_id, color <span class="kw">in</span> cluster_colors.items():</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[clusters <span class="op">==</span> cluster_id]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-17-output-1.png" width="656" height="512" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Os grupos foram calculados nas 15 componentes, sem nenhuma informação do UMAP, e mesmo assim ocupam regiões contíguas no gráfico. O cluster isolado à esquerda corresponde ao grupo que a silhueta já separava em <span class="math inline">\(k = 2\)</span>. Os outros três dividem a nuvem maior, com fronteiras que se tocam. Agora precisamos descobrir o que cada um representa.</p>
+</section>
+</section>
+<section id="dando-nome-aos-clusters" class="level1">
+<h1>5. Dando nome aos clusters</h1>
+<p>Um cluster é só uma lista de pacientes. Para torná-lo útil, precisamos saber o que o distingue dos demais. Usamos três técnicas, nenhuma das quais exige conhecer a biologia.</p>
+<section id="atributos-discriminantes" class="level2">
+<h2 class="anchored" data-anchor-id="atributos-discriminantes">5.1 Atributos discriminantes</h2>
+<p>A primeira é olhar, em cada cluster, a média do escore-z de cada gene. Como cada gene tem média 0 no conjunto todo, uma média de <span class="math inline">\(+1\)</span> em um cluster quer dizer que, ali, o gene está em média um desvio-padrão acima do habitual. Os cinco genes de maior escore-z médio em cada cluster:</p>
+<div id="aa4ee948" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore-z médio de cada gene dentro de cada cluster</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cluster_zscores <span class="op">=</span> X_scaled.groupby(clusters).mean()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>top_genes <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>: row.nlargest(<span class="dv">5</span>).index</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> cluster_id, row <span class="kw">in</span> cluster_zscores.iterrows()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.RangeIndex(<span class="dv">1</span>, <span class="dv">6</span>, name<span class="op">=</span><span class="st">"posição"</span>),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>top_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="149">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cluster 0</th>
+<th data-quarto-table-cell-role="th">cluster 1</th>
+<th data-quarto-table-cell-role="th">cluster 2</th>
+<th data-quarto-table-cell-role="th">cluster 3</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">posição</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MAB21L4</td>
+<td>COL14A1</td>
+<td>NKAIN1</td>
+<td>FOXC1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>SPINK8</td>
+<td>MFAP4</td>
+<td>ESR1</td>
+<td>VGLL1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>CLCA2</td>
+<td>C7</td>
+<td>KCNJ3</td>
+<td>EN1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>ABCA12</td>
+<td>COL17A1</td>
+<td>SLC39A6</td>
+<td>PPP1R14C</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>ERBB2</td>
+<td>OGN</td>
+<td>TPSP2</td>
+<td>KRT16</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Cada cluster tem o seu conjunto próprio de genes em alta. Os do cluster 3 têm escore-z médio acima de 1,5, o maior de todos, coerente com o grupo mais isolado no UMAP. Uma alternativa estatística é a <strong>ANOVA de um fator</strong> (<code>f_classif</code>), que usa os identificadores dos clusters como grupos e calcula, para cada gene, a estatística <span class="math inline">\(F\)</span>: a variação entre as médias dos clusters dividida pela variação dentro deles. Os genes de maior <span class="math inline">\(F\)</span> são os que mais separam os quatro grupos ao mesmo tempo:</p>
+<div id="82f9aadd" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estatística F da ANOVA de cada gene, com os clusters como grupos</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>f_statistic, _ <span class="op">=</span> f_classif(expr, clusters)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>anova_ranking <span class="op">=</span> (</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    pd.Series(f_statistic, index<span class="op">=</span>expr.columns, name<span class="op">=</span><span class="st">"F"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    .nlargest(<span class="dv">10</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">0</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>anova_ranking</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="150">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">FOXA1</td>
+<td>2229.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">MLPH</td>
+<td>1521.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">SPDEF</td>
+<td>1079.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">FOXC1</td>
+<td>1034.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ESR1</td>
+<td>949.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">AGR3</td>
+<td>909.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">PRR15</td>
+<td>852.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TBC1D9</td>
+<td>846.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AGR2</td>
+<td>826.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">GATA3</td>
+<td>808.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>FOXA1</code> e <code>MLPH</code> lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. <code>FOXC1</code>, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já <code>ESR1</code>, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7). Os <span class="math inline">\(p\)</span>-valores aqui seriam todos minúsculos e não teriam valor de prova, porque os grupos foram construídos a partir desses mesmos dados. A estatística <span class="math inline">\(F\)</span> serve apenas como régua para ordenar os genes.</p>
+</section>
+<section id="tradução-pelo-dicionário" class="level2">
+<h2 class="anchored" data-anchor-id="tradução-pelo-dicionário">5.2 Tradução pelo dicionário</h2>
+<p>Com os genes de cada cluster em mãos, entra o dicionário. Em vez de procurar os marcadores um a um nas listas de cinco, calculamos para cada cluster um <strong>escore de assinatura</strong>: a média dos escores-z médios dos genes de cada perfil. Assim, todo o dicionário é comparado com todos os clusters de uma vez:</p>
+<div id="4f3392a1" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore de assinatura: média do escore-z dos genes de cada perfil, por cluster</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>signature_scores <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    {profile: cluster_zscores[genes].mean(axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> profile, genes <span class="kw">in</span> markers.items()}</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>).rename_axis(<span class="st">"cluster"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>signature_scores.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="151">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Hormonal</th>
+<th data-quarto-table-cell-role="th">HER2</th>
+<th data-quarto-table-cell-role="th">Basal</th>
+<th data-quarto-table-cell-role="th">Proliferativo</th>
+<th data-quarto-table-cell-role="th">Estromal</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">cluster</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-0.29</td>
+<td>0.81</td>
+<td>-0.29</td>
+<td>0.33</td>
+<td>-0.37</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.45</td>
+<td>-0.00</td>
+<td>0.17</td>
+<td>-0.61</td>
+<td>0.83</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.56</td>
+<td>-0.10</td>
+<td>-0.74</td>
+<td>0.08</td>
+<td>-0.42</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-1.60</td>
+<td>-0.58</td>
+<td>1.27</td>
+<td>0.72</td>
+<td>-0.51</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="b78b3e60" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapa de calor dos escores de assinatura</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>diverging <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"diverging"</span>, [<span class="st">"#1F4E79"</span>, <span class="st">"#FFFFFF"</span>, <span class="st">"#DD8452"</span>])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.5</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>sns.heatmap(signature_scores, cmap<span class="op">=</span>diverging, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="fl">1.6</span>, vmax<span class="op">=</span><span class="fl">1.6</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".2f"</span>, linewidths<span class="op">=</span><span class="dv">1</span>, cbar_kws<span class="op">=</span>{<span class="st">"label"</span>: <span class="st">"escore-z médio"</span>}, ax<span class="op">=</span>ax)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Perfil do dicionário"</span>, ylabel<span class="op">=</span><span class="st">"Cluster"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-21-output-1.png" width="731" height="320" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Cada cluster tem um perfil que se destaca: o 0 é HER2 (0,81), o 1 é Estromal (0,83), o 2 é Hormonal (0,56) e o 3 é Basal (1,27), com o Hormonal em <span class="math inline">\(-1{,}60\)</span>, o valor mais negativo da tabela. O nome de cada cluster é o perfil de maior escore na sua linha:</p>
+<div id="3081dbe5" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo de cada cluster: o perfil de maior escore de assinatura</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cluster_names <span class="op">=</span> signature_scores.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> clusters.<span class="bu">map</span>(cluster_names).rename(<span class="st">"rotulo"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>label_sizes <span class="op">=</span> labels.value_counts()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>label_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="153">
+<pre><code>rotulo
+Estromal    374
+Hormonal    346
+Basal       194
+HER2        181
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto no Basal (0,72) e no HER2 (0,33) e está perto de zero no Hormonal (0,08). A proliferação não forma um grupo próprio nestes dados: ela é um gradiente que atravessa os grupos. Já o grupo Estromal é formado por amostras com muito tecido de sustentação ao redor do tumor, e o K-means o separou porque essa mistura muda a expressão de dezenas de genes ao mesmo tempo. O algoritmo encontra a estrutura de maior variância, que nem sempre é a que esperávamos encontrar. O dicionário serve para traduzir o que foi achado, não para forçar o que deveria ser achado.</p>
+<div id="1babd6a5" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelos rótulos</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {<span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>, <span class="st">"HER2"</span>: <span class="st">"#DD8452"</span>, <span class="st">"Estromal"</span>: <span class="st">"#A1C9F4"</span>, <span class="st">"Basal"</span>: <span class="st">"#333333"</span>}</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[labels <span class="op">==</span> label]</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-23-output-1.png" width="657" height="512" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="uma-árvore-de-decisão-substituta" class="level2">
+<h2 class="anchored" data-anchor-id="uma-árvore-de-decisão-substituta">5.3 Uma árvore de decisão substituta</h2>
+<p>A terceira técnica dispensa qualquer dicionário. Treinamos uma árvore de decisão rasa para prever o rótulo de cada paciente a partir da expressão original dos 505 genes. A árvore não tem a pretensão de prever pacientes novos. Ela é um <strong>modelo substituto</strong> (<em>surrogate model</em>): um modelo simples, que imita o K-means e cujas regras podemos ler.</p>
+<div id="a4072633" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de decisão de profundidade 3 imitando a partição do K-means</span></span>
+<span id="annotated-cell-23-2"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>surrogate_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(expr, labels)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-3" class="code-annotation-target"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>fidelity <span class="op">=</span> surrogate_tree.score(expr, labels)</span>
+<span id="annotated-cell-23-4"><a href="#annotated-cell-23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-23-5"><a href="#annotated-cell-23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(fidelity, <span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-23" data-code-lines="3" data-code-annotation="1">Aqui, <code>.score</code> é medido nos mesmos dados do ajuste, de propósito. Ele mede a <strong>fidelidade</strong> da árvore ao K-means, ou seja, quanto ela consegue reproduzir a partição, e não a capacidade de generalizar.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="155">
+<pre><code>0.829</code></pre>
+</div>
+</div>
+<div id="1191bbf4" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regras da árvore substituta</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plot_tree(surrogate_tree, feature_names<span class="op">=</span>expr.columns, class_names<span class="op">=</span>surrogate_tree.classes_,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>          filled<span class="op">=</span><span class="va">False</span>, impurity<span class="op">=</span><span class="va">False</span>, proportion<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">8</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-25-output-1.png" width="1328" height="561" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Com só três perguntas por paciente, a árvore reproduz o rótulo do K-means em 82,9% dos casos. Ela escolheu os genes sozinha, e quase nenhum deles está no dicionário. A primeira pergunta é <code>MLPH &lt;= 4.871</code>. <code>MLPH</code> é o segundo gene do ranking da ANOVA, e o ramo de expressão baixa reúne 17,5% dos pacientes, 97,4% deles do grupo Basal. No ramo de expressão alta, <code>SFRP1</code> separa o Estromal, com valores altos, do Hormonal e do HER2, e <code>RERG</code> separa esses dois. O próprio <code>ESR1</code> aparece no último nível, retirando do ramo Estromal um pequeno grupo de tumores HER2.</p>
+<p>As regras dão uma descrição alternativa de cada grupo: o cluster Hormonal, por exemplo, é “<code>MLPH</code> alto, <code>SFRP1</code> baixo e <code>RERG</code> alto”. Uma árvore mais profunda seria mais fiel e mais difícil de ler. A profundidade 3 é um compromisso entre os dois.</p>
+</section>
+</section>
+<section id="dos-clusters-ao-classificador" class="level1">
+<h1>6. Dos clusters ao classificador</h1>
+<p>Os rótulos estão prontos, e com eles poderíamos treinar um classificador supervisionado para atribuir um grupo a um paciente novo sem rodar o K-means outra vez. Antes, há um problema. O K-means é categórico: um paciente exatamente na fronteira entre dois centroides recebe um rótulo com a mesma convicção de um paciente no centro do grupo. Treinar com rótulos duvidosos ensina dúvidas ao classificador.</p>
+<section id="uma-margem-de-confiança" class="level2">
+<h2 class="anchored" data-anchor-id="uma-margem-de-confiança">6.1 Uma margem de confiança</h2>
+<p>O método <code>.transform</code> do K-means devolve a distância de cada paciente a cada um dos quatro centroides. Para cada paciente, comparamos a distância ao centroide vencedor, <span class="math inline">\(d_1\)</span>, com a distância ao segundo mais próximo, <span class="math inline">\(d_2\)</span>:</p>
+<p><span class="math display">\[
+\text{razão} = \frac{d_1}{d_2}.
+\]</span></p>
+<p>A razão vai de 0, para um paciente em cima do próprio centroide, a 1, para um paciente equidistante dos dois. Adotamos um corte de 0,75: abaixo dele, o rótulo é <strong>confiável</strong>; acima, o paciente é <strong>ambíguo</strong>.</p>
+<div id="eb33d69e" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="annotated-cell-25"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Razão entre a distância ao centroide mais próximo e ao segundo mais próximo</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-2" class="code-annotation-target"><a href="#annotated-cell-25-2" aria-hidden="true" tabindex="-1"></a>centroid_distances <span class="op">=</span> np.sort(kmeans.transform(X_pca), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-hidden="true" tabindex="-1"></a>distance_ratio <span class="op">=</span> pd.Series(</span>
+<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-hidden="true" tabindex="-1"></a>    centroid_distances[:, <span class="dv">0</span>] <span class="op">/</span> centroid_distances[:, <span class="dv">1</span>],</span>
+<span id="annotated-cell-25-5"><a href="#annotated-cell-25-5" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>expr.index,</span>
+<span id="annotated-cell-25-6"><a href="#annotated-cell-25-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"razao"</span>,</span>
+<span id="annotated-cell-25-7"><a href="#annotated-cell-25-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-25-8"><a href="#annotated-cell-25-8" aria-hidden="true" tabindex="-1"></a>confident <span class="op">=</span> distance_ratio <span class="op">&lt;</span> <span class="fl">0.75</span></span>
+<span id="annotated-cell-25-9"><a href="#annotated-cell-25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-25-10"><a href="#annotated-cell-25-10" aria-hidden="true" tabindex="-1"></a>confident.value_counts()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-25" data-code-lines="2" data-code-annotation="1"><code>kmeans.transform</code> devolve uma matriz de 1.095 linhas por 4 colunas, uma por centroide. Ordenar cada linha com <code>np.sort(..., axis=1)</code> coloca <span class="math inline">\(d_1\)</span> na primeira coluna e <span class="math inline">\(d_2\)</span> na segunda, seja qual for o cluster vencedor.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="157">
+<pre><code>razao
+True     642
+False    453
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<div id="fee012fd" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição da razão de distâncias, com o corte de 0,75</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#1F4E79"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"confiável (razão &lt; 0,75)"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[<span class="op">~</span>confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#DDDDDD"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"ambíguo (razão ≥ 0,75)"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.75</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Razão d1 / d2"</span>, ylabel<span class="op">=</span><span class="st">"Pacientes"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-27-output-1.png" width="849" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dos 1.095 pacientes, 642 têm rótulo confiável e 453 ficam como ambíguos. A distribuição não tem um vale natural entre os dois tipos. O pico fica logo abaixo do corte, e centenas de pacientes têm razão acima de 0,8, quase equidistantes de dois centroides: os grupos se tocam, como o UMAP já mostrava. O corte de 0,75 é uma escolha, como <span class="math inline">\(k\)</span>. Um corte mais baixo deixa os rótulos mais limpos e o conjunto de treino menor.</p>
+<div id="d1d442e5" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="annotated-cell-27"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-27-1"><a href="#annotated-cell-27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pacientes confiáveis e ambíguos em cada rótulo</span></span>
+<span id="annotated-cell-27-2"><a href="#annotated-cell-27-2" aria-hidden="true" tabindex="-1"></a>confidence_by_label <span class="op">=</span> (</span>
+<span id="annotated-cell-27-3"><a href="#annotated-cell-27-3" aria-hidden="true" tabindex="-1"></a>    pd.crosstab(labels, confident.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"confiável"</span>, <span class="va">False</span>: <span class="st">"ambíguo"</span>}))</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-27" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-27-4" class="code-annotation-target"><a href="#annotated-cell-27-4" aria-hidden="true" tabindex="-1"></a>    .assign(fracao_confiavel<span class="op">=</span><span class="kw">lambda</span> df: (df[<span class="st">"confiável"</span>] <span class="op">/</span> df.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">round</span>(<span class="dv">2</span>))</span>
+<span id="annotated-cell-27-5"><a href="#annotated-cell-27-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-27-6"><a href="#annotated-cell-27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-27-7"><a href="#annotated-cell-27-7" aria-hidden="true" tabindex="-1"></a>confidence_by_label</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-27" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-27" data-code-lines="4" data-code-annotation="1"><code>.assign</code> cria uma coluna nova sem modificar a tabela original, e o <code>lambda df:</code> recebe a tabela no ponto da cadeia em que o <code>.assign</code> é chamado.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="159">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">razao</th>
+<th data-quarto-table-cell-role="th">ambíguo</th>
+<th data-quarto-table-cell-role="th">confiável</th>
+<th data-quarto-table-cell-role="th">fracao_confiavel</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">rotulo</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Basal</td>
+<td>9</td>
+<td>185</td>
+<td>0.95</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Estromal</td>
+<td>166</td>
+<td>208</td>
+<td>0.56</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">HER2</td>
+<td>96</td>
+<td>85</td>
+<td>0.47</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Hormonal</td>
+<td>182</td>
+<td>164</td>
+<td>0.47</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>O grupo Basal, o mais isolado, tem 95% dos pacientes com rótulo confiável. Nos três grupos que dividem a nuvem maior, a fração fica entre 47% e 56%: metade dos pacientes está perto de alguma fronteira.</p>
+</section>
+<section id="treinando-o-classificador" class="level2">
+<h2 class="anchored" data-anchor-id="treinando-o-classificador">6.2 Treinando o classificador</h2>
+<p>Esses rótulos criados pelo próprio modelo, e não por um especialista, são <strong>pseudo-rótulos</strong> (<em>pseudo-labels</em>). Com eles, treinamos uma floresta aleatória (<code>RandomForestClassifier</code>) usando como atributos a expressão original dos 505 genes e, como resposta, os rótulos dos 642 pacientes confiáveis. A floresta combina centenas de árvores de decisão como a do modelo substituto, cada uma treinada em uma amostra diferente de pacientes e de genes, e decide pela votação entre elas. Antes de usá-la, medimos o seu desempenho com validação cruzada estratificada de 5 dobras:</p>
+<div id="f486baab" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="annotated-cell-28"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validação cruzada da floresta aleatória nos pacientes confiáveis</span></span>
+<span id="annotated-cell-28-2"><a href="#annotated-cell-28-2" aria-hidden="true" tabindex="-1"></a>X_confident <span class="op">=</span> expr[confident]</span>
+<span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-hidden="true" tabindex="-1"></a>y_confident <span class="op">=</span> labels[confident]</span>
+<span id="annotated-cell-28-4"><a href="#annotated-cell-28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-28-5"><a href="#annotated-cell-28-5" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-28-6" class="code-annotation-target"><a href="#annotated-cell-28-6" aria-hidden="true" tabindex="-1"></a>skfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="annotated-cell-28-7"><a href="#annotated-cell-28-7" aria-hidden="true" tabindex="-1"></a>cv_accuracy <span class="op">=</span> cross_val_score(forest, X_confident, y_confident, cv<span class="op">=</span>skfold, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span>
+<span id="annotated-cell-28-8"><a href="#annotated-cell-28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-28-9"><a href="#annotated-cell-28-9" aria-hidden="true" tabindex="-1"></a>cv_accuracy.<span class="bu">round</span>(<span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-28" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-28" data-code-lines="6" data-code-annotation="1">A validação <strong>estratificada</strong> mantém em cada dobra a mesma proporção de rótulos do conjunto inteiro, o que evita dobras quase sem pacientes de algum grupo.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="160">
+<pre><code>array([1.   , 0.984, 0.984, 1.   , 0.977])</code></pre>
+</div>
+</div>
+<p>A acurácia média é de 98,9%. Esse número parece bom demais, e é. Os pacientes confiáveis foram escolhidos justamente por estarem longe das fronteiras, e as fronteiras são onde um classificador erra. Os rótulos também vieram dos mesmos genes que agora servem de atributos. A validação cruzada confirma que a floresta reproduz o K-means nos casos fáceis, mas não diz nada sobre como ela se sai nos difíceis.LinearSegmentedColormap</p>
+</section>
+<section id="prevendo-os-pacientes-ambíguos" class="level2">
+<h2 class="anchored" data-anchor-id="prevendo-os-pacientes-ambíguos">6.3 Prevendo os pacientes ambíguos</h2>
+<p>Ajustamos a floresta em todos os pacientes confiáveis e pedimos a ela um rótulo para cada paciente ambíguo. Além da classe prevista, <code>predict_proba</code> devolve a fração de árvores que votou em cada classe, e a maior delas funciona como uma medida da confiança da previsão:</p>
+<div id="dcd49f4a" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final nos confiáveis e previsão dos ambíguos</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>forest.fit(X_confident, y_confident)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>X_ambiguous <span class="op">=</span> expr[<span class="op">~</span>confident]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"kmeans"</span>: labels[<span class="op">~</span>confident],</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"floresta"</span>: forest.predict(X_ambiguous),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade"</span>: forest.predict_proba(X_ambiguous).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_ambiguous.index,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="161">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">kmeans</th>
+<th data-quarto-table-cell-role="th">floresta</th>
+<th data-quarto-table-cell-role="th">probabilidade</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">paciente</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-5L-AAT1</td>
+<td>Estromal</td>
+<td>Estromal</td>
+<td>0.738</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-A1-A0SG</td>
+<td>Estromal</td>
+<td>Estromal</td>
+<td>0.492</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-A1-A0SH</td>
+<td>Estromal</td>
+<td>Estromal</td>
+<td>0.584</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">TCGA-A1-A0SI</td>
+<td>HER2</td>
+<td>Estromal</td>
+<td>0.488</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">TCGA-A1-A0SJ</td>
+<td>Estromal</td>
+<td>Estromal</td>
+<td>0.654</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="30120041" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concordância com o K-means e resumo das probabilidades nos ambíguos</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ambiguous_summary <span class="op">=</span> pd.Series(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"concordância com o K-means"</span>: (ambiguous_predictions[<span class="st">"kmeans"</span>] <span class="op">==</span> ambiguous_predictions[<span class="st">"floresta"</span>]).mean(),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade mediana"</span>: ambiguous_predictions[<span class="st">"probabilidade"</span>].median(),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fração com probabilidade &lt; 0,5"</span>: (ambiguous_predictions[<span class="st">"probabilidade"</span>] <span class="op">&lt;</span> <span class="fl">0.5</span>).mean(),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>ambiguous_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="162">
+<pre><code>concordância com o K-means        0.770
+probabilidade mediana             0.600
+fração com probabilidade &lt; 0,5    0.265
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Nos 453 pacientes ambíguos, a floresta concorda com o K-means em 77,0% dos casos. Nos outros 23,0%, ela discorda, e isso não é necessariamente um erro: o K-means decide pela distância nas 15 componentes, enquanto a floresta aprendeu regras nos 505 genes a partir dos casos típicos de cada grupo. A probabilidade mediana é de 0,60, e em 26,5% dos ambíguos nenhuma classe recebe metade dos votos. O classificador não esconde a dúvida. Em um paciente ambíguo, uma probabilidade de 0,45 para HER2 e 0,40 para Hormonal informa mais que um rótulo seco.</p>
+<div id="ea234d80" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="annotated-cell-31"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP antes (clusters com ambíguos em cinza) e depois (previsões da floresta)</span></span>
+<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-hidden="true" tabindex="-1"></a>final_labels <span class="op">=</span> labels.where(confident, ambiguous_predictions[<span class="st">"floresta"</span>])</span>
+<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-hidden="true" tabindex="-1"></a>point_alpha <span class="op">=</span> pd.Series(<span class="fl">1.0</span>, index<span class="op">=</span>expr.index).where(confident, ambiguous_predictions[<span class="st">"probabilidade"</span>])</span>
+<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-hidden="true" tabindex="-1"></a>ambiguous_points <span class="op">=</span> embedding[<span class="op">~</span>confident]</span>
+<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(ambiguous_points[<span class="st">"UMAP1"</span>], ambiguous_points[<span class="st">"UMAP2"</span>], color<span class="op">=</span><span class="st">"#DDDDDD"</span>, s<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">"Ambíguo"</span>)</span>
+<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
+<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[confident <span class="op">&amp;</span> (labels <span class="op">==</span> label)]</span>
+<span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
+<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-hidden="true" tabindex="-1"></a>    predicted <span class="op">=</span> final_labels <span class="op">==</span> label</span>
+<span id="annotated-cell-31-13"><a href="#annotated-cell-31-13" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].scatter(embedding.loc[predicted, <span class="st">"UMAP1"</span>], embedding.loc[predicted, <span class="st">"UMAP2"</span>],</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-14" class="code-annotation-target"><a href="#annotated-cell-31-14" aria-hidden="true" tabindex="-1"></a>                    color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span>point_alpha[predicted], label<span class="op">=</span>label)</span>
+<span id="annotated-cell-31-15"><a href="#annotated-cell-31-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Antes: pseudo-rótulos confiáveis"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="annotated-cell-31-16"><a href="#annotated-cell-31-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Depois: floresta preenche as fronteiras"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>)</span>
+<span id="annotated-cell-31-17"><a href="#annotated-cell-31-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="annotated-cell-31-18"><a href="#annotated-cell-31-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-31-19"><a href="#annotated-cell-31-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-31" data-code-lines="14" data-code-annotation="1"><code>alpha</code> aceita um valor por ponto. Os confiáveis ficam opacos, e cada ambíguo fica tão transparente quanto a sua incerteza: probabilidade 1 o deixa opaco, e probabilidade 0,4 o deixa quase apagado.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-32-output-1.png" width="1137" height="464" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>À esquerda, os núcleos dos grupos estão coloridos e as fronteiras, em cinza. À direita, a floresta preenche as fronteiras, e os pontos mais apagados, os de menor probabilidade, se concentram onde dois grupos se encontram. O ciclo está completo: uma tabela sem nenhum rótulo virou um classificador que atribui um grupo, com uma medida de confiança, a qualquer paciente novo cuja expressão seja medida nos mesmos 505 genes.</p>
+</section>
+</section>
+<section id="os-rótulos-batem-com-a-classificação-oficial" class="level1">
+<h1>7. Os rótulos batem com a classificação oficial?</h1>
+<p>Até aqui, nenhum rótulo externo entrou na análise. Mas, para estes tumores, existe uma classificação de referência, o <strong>PAM50</strong>, que atribui a cada tumor um de cinco subtipos moleculares. Ela foi construída por especialistas a partir de anos de estudos clínicos. Só agora, com tudo pronto, comparamos as duas classificações:</p>
+<div id="69708dc0" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classificação PAM50 oficial, disponível para parte dos pacientes</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>pam50 <span class="op">=</span> (</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"tcga-brca/data/brca_pam50.csv"</span>, index_col<span class="op">=</span><span class="st">"paciente"</span>)[<span class="st">"pam50"</span>]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    .dropna()</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>pam50_comparison <span class="op">=</span> pd.crosstab(final_labels.loc[pam50.index], pam50)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>pam50_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="164">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">pam50</th>
+<th data-quarto-table-cell-role="th">Basal</th>
+<th data-quarto-table-cell-role="th">Her2</th>
+<th data-quarto-table-cell-role="th">LumA</th>
+<th data-quarto-table-cell-role="th">LumB</th>
+<th data-quarto-table-cell-role="th">Normal</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">rotulo</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Basal</td>
+<td>135</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Estromal</td>
+<td>1</td>
+<td>1</td>
+<td>240</td>
+<td>16</td>
+<td>14</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">HER2</td>
+<td>3</td>
+<td>62</td>
+<td>13</td>
+<td>26</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Hormonal</td>
+<td>0</td>
+<td>3</td>
+<td>168</td>
+<td>150</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>O PAM50 está disponível para 842 dos 1.095 pacientes. O grupo Basal reúne 135 dos 139 tumores Basal do PAM50, uma correspondência quase perfeita. O grupo HER2 reúne 62 dos 67 tumores Her2 do PAM50, mas também 13 LumA e 26 LumB. Hormonal e Estromal dividem os tumores luminais: o Estromal é quase todo LumA (240 de 272), e o Hormonal mistura LumA e LumB em proporções parecidas (168 e 150).</p>
+<p>O <strong>índice de Rand ajustado</strong> (ARI) resume a concordância entre duas partições. Ele vale 1 quando elas coincidem e fica perto de 0 quando a concordância não passa do que o acaso produziria, sem se importar com os nomes dos grupos:</p>
+<div id="1e662a3b" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Índice de Rand ajustado entre a partição final e o PAM50</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ari <span class="op">=</span> adjusted_rand_score(pam50, final_labels.loc[pam50.index])</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(ari, <span class="dv">3</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="165">
+<pre><code>0.399</code></pre>
+</div>
+</div>
+<p>Um ARI de 0,40 indica uma concordância moderada, bem acima do acaso e bem abaixo da coincidência. O resultado é bom, considerando que o PAM50 usa genes escolhidos a dedo e o nosso K-means não recebeu nenhuma orientação. A divergência também é informativa. A partição mais forte nestes dados separa os tumores pela quantidade de tecido normal ao redor deles (o grupo Estromal) antes de separá-los pela proliferação (LumA contra LumB). Um algoritmo não supervisionado responde à pergunta “qual é a estrutura de maior variância?”, e essa nem sempre é a pergunta que o especialista faria.</p>
+</section>
+<section id="síntese" class="level1">
+<h1>Síntese</h1>
+<ul>
+<li>Métodos geométricos, como a PCA e o K-means, dependem da escala dos atributos. A média não interfere, mas a dispersão sim, e o <code>StandardScaler</code> coloca todos os atributos com o mesmo peso.</li>
+<li>A PCA reduz 505 atributos a 15 componentes que guardam a estrutura compartilhada e descartam ruído, devolvendo contraste às distâncias. É o espaço de trabalho.</li>
+<li>O UMAP projeta as componentes em 2D preservando vizinhanças, mas distorce tamanhos e distâncias entre grupos. É só o espaço de visualização.</li>
+<li>O K-means particiona as amostras em torno de <span class="math inline">\(k\)</span> centroides, minimizando a inércia. O valor de <span class="math inline">\(k\)</span> é escolhido com a inércia, a silhueta e o propósito da análise.</li>
+<li>Dar nome a um cluster é um problema de seleção de atributos: escore-z médio, ANOVA, escores de assinatura de um dicionário e uma árvore substituta legível.</li>
+<li>A razão <span class="math inline">\(d_1 / d_2\)</span> separa pseudo-rótulos confiáveis de ambíguos. Um classificador treinado nos confiáveis rotula os ambíguos com uma probabilidade, completando o ciclo do não supervisionado ao supervisionado.</li>
+<li>Uma classificação externa, quando existe, valida a partição pelo ARI. As divergências mostram que o algoritmo encontra a estrutura de maior variância, que pode não ser a esperada.</li>
+</ul>
+</section>
+<section id="perguntas-para-consolidar" class="level1">
+<h1>Perguntas para consolidar</h1>
+<ol type="1">
+<li>Se, em vez de padronizar, apenas centralizássemos cada gene (subtraindo a média sem dividir pelo desvio-padrão), o resultado do K-means mudaria em relação aos dados brutos?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Não. A distância euclidiana entre dois pacientes não muda quando se soma a mesma constante a uma coluna, porque a constante se cancela na diferença. E a PCA já centraliza cada coluna por conta própria. Só a divisão pelo desvio-padrão altera a geometria, porque muda o peso relativo de cada gene. É por isso que dizemos que a dispersão, e não a média, é o que distorce os métodos baseados em distância.</p>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>A silhueta foi máxima em <span class="math inline">\(k = 2\)</span>. Por que não ficar com dois grupos?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Porque a silhueta mede a nitidez da partição, e não a sua utilidade. Com dois grupos, a separação é nítida (o grupo Basal contra o resto), mas a nuvem maior, com mais de 900 pacientes, ficaria inteira em um só grupo, escondendo diferenças reais, como mostrou a comparação com o PAM50. Escolher <span class="math inline">\(k\)</span> combina as métricas com o objetivo da análise. Um pico secundário da silhueta, como o de <span class="math inline">\(k = 4\)</span>, é um bom candidato quando se quer mais detalhe sem criar grupos que os dados não sustentam.</p>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Por que ajustamos o K-means nas 15 componentes, e não nas duas coordenadas do UMAP, onde os grupos parecem mais separados?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>O UMAP preserva quem é vizinho de quem, mas não as distâncias: ele pode separar visualmente grupos que estão próximos e aproximar grupos que estão distantes, e o resultado muda com <code>n_neighbors</code> e <code>min_dist</code>. O K-means depende exatamente das distâncias. Agrupar no UMAP seria agrupar uma imagem distorcida dos dados, cujas fronteiras refletiriam em parte as escolhas do próprio UMAP. A PCA é uma projeção linear que preserva as distâncias das direções que mantém.</p>
+</div>
+</div>
+</div>
+<ol start="4" type="1">
+<li>A floresta aleatória teve acurácia de quase 100% na validação cruzada. Isso garante que os rótulos dos pacientes ambíguos estão corretos?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Como pensar sobre isso
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Não. A validação cruzada foi feita só nos pacientes confiáveis, que estão longe das fronteiras por construção. Ela mede quanto a floresta reproduz o K-means nos casos fáceis, mas não estima o desempenho nos casos difíceis, que são justamente os ambíguos. Além disso, os pseudo-rótulos vieram dos mesmos dados que servem de atributos, de modo que a floresta aprende a imitar o K-means, e não alguma verdade externa. Só uma referência independente, como o PAM50, pode dizer se os grupos correspondem a algo real.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="para-casa" class="level1">
+<h1>Para casa</h1>
+<ol type="1">
+<li>Repita a análise sem o <code>StandardScaler</code>, ajustando a PCA e o K-means nos dados brutos. Use <code>adjusted_rand_score</code> para comparar a nova partição com a original. Quantos pacientes mudam de grupo?</li>
+<li>Varie o número de componentes principais (5, 15, 30 e 50) e, para cada valor, compare a partição com <span class="math inline">\(k = 4\)</span> com a original pelo ARI. A partição é estável?</li>
+<li>Rode o K-means com <span class="math inline">\(k = 5\)</span> e recalcule os escores de assinatura. O novo grupo corresponde a algum perfil do dicionário, como o Proliferativo, ou divide um grupo existente?</li>
+<li>Troque o corte da razão de distâncias para 0,6 e para 0,9. Como mudam o tamanho do conjunto confiável, a concordância da floresta com o K-means nos ambíguos e o ARI final com o PAM50?</li>
+<li>Antes de considerar o notebook pronto, use Restart Kernel and Run All.</li>
+</ol>
+<section id="referências" class="level2">
+<h2 class="anchored" data-anchor-id="referências">Referências</h2>
+<ol type="1">
+<li>James, G.; Witten, D.; Hastie, T.; Tibshirani, R. <em>An Introduction to Statistical Learning: with Applications in Python</em>. Springer, 2023. Capítulo 12: Unsupervised Learning.</li>
+<li>Jolliffe, I. T.; Cadima, J. Principal component analysis: a review and recent developments. <em>Philosophical Transactions of the Royal Society A</em>, 374(2065), 20150202, 2016.</li>
+<li>McInnes, L.; Healy, J.; Melville, J. UMAP: Uniform Manifold Approximation and Projection for dimension reduction. <em>arXiv:1802.03426</em>, 2018.</li>
+<li>Lloyd, S. Least squares quantization in PCM. <em>IEEE Transactions on Information Theory</em>, 28(2), 129-137, 1982.</li>
+<li>Rousseeuw, P. J. Silhouettes: a graphical aid to the interpretation and validation of cluster analysis. <em>Journal of Computational and Applied Mathematics</em>, 20, 53-65, 1987.</li>
+<li>Hubert, L.; Arabie, P. Comparing partitions. <em>Journal of Classification</em>, 2(1), 193-218, 1985.</li>
+<li>Breiman, L. Random forests. <em>Machine Learning</em>, 45(1), 5-32, 2001.</li>
+<li>Lee, D.-H. Pseudo-label: the simple and efficient semi-supervised learning method for deep neural networks. <em>ICML Workshop on Challenges in Representation Learning</em>, 2013.</li>
+<li>The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. <em>Nature</em>, 490, 61-70, 2012.</li>
+<li>Parker, J. S. et al.&nbsp;Supervised risk predictor of breast cancer based on intrinsic subtypes. <em>Journal of Clinical Oncology</em>, 27(8), 1160-1167, 2009.</li>
+<li>Goldman, M. J. et al.&nbsp;Visualizing and interpreting cancer genomics data via the Xena platform. <em>Nature Biotechnology</em>, 38, 675-678, 2020.</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/data-science\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/data-science/blob/main/aulas/11-aprendizado-nao-supervisionado.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/data-science/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>

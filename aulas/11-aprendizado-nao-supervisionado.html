@@ -296,7 +296,8 @@ window.Quarto = {
   <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de aprendizagem</a></li>
   <li><a href="#preparando-o-ambiente" id="toc-preparando-o-ambiente" class="nav-link" data-scroll-target="#preparando-o-ambiente">1. Preparando o ambiente</a>
   <ul class="collapse">
-  <li><a href="#conhecendo-a-base" id="toc-conhecendo-a-base" class="nav-link" data-scroll-target="#conhecendo-a-base">1.1 Conhecendo a base</a></li>
+  <li><a href="#o-problema-câncer-de-mama-não-é-uma-doença-só" id="toc-o-problema-câncer-de-mama-não-é-uma-doença-só" class="nav-link" data-scroll-target="#o-problema-câncer-de-mama-não-é-uma-doença-só">1.1 O problema: câncer de mama não é uma doença só</a></li>
+  <li><a href="#conhecendo-a-base" id="toc-conhecendo-a-base" class="nav-link" data-scroll-target="#conhecendo-a-base">1.2 Conhecendo a base</a></li>
   </ul></li>
   <li><a href="#escala-todos-os-atributos-no-mesmo-pé" id="toc-escala-todos-os-atributos-no-mesmo-pé" class="nav-link" data-scroll-target="#escala-todos-os-atributos-no-mesmo-pé">2. Escala: todos os atributos no mesmo pé</a>
   <ul class="collapse">
@@ -316,7 +317,11 @@ window.Quarto = {
   </ul></li>
   <li><a href="#dando-nome-aos-clusters" id="toc-dando-nome-aos-clusters" class="nav-link" data-scroll-target="#dando-nome-aos-clusters">5. Dando nome aos clusters</a>
   <ul class="collapse">
-  <li><a href="#atributos-discriminantes" id="toc-atributos-discriminantes" class="nav-link" data-scroll-target="#atributos-discriminantes">5.1 Atributos discriminantes</a></li>
+  <li><a href="#atributos-discriminantes" id="toc-atributos-discriminantes" class="nav-link" data-scroll-target="#atributos-discriminantes">5.1 Atributos discriminantes</a>
+  <ul class="collapse">
+  <li><a href="#a-anova-como-régua-de-separação" id="toc-a-anova-como-régua-de-separação" class="nav-link" data-scroll-target="#a-anova-como-régua-de-separação">A ANOVA como régua de separação</a></li>
+  <li><a href="#por-que-não-ler-os-p-valores" id="toc-por-que-não-ler-os-p-valores" class="nav-link" data-scroll-target="#por-que-não-ler-os-p-valores">Por que não ler os <span class="math inline">\(p\)</span>-valores</a></li>
+  </ul></li>
   <li><a href="#tradução-pelo-dicionário" id="toc-tradução-pelo-dicionário" class="nav-link" data-scroll-target="#tradução-pelo-dicionário">5.2 Tradução pelo dicionário</a></li>
   <li><a href="#uma-árvore-de-decisão-substituta" id="toc-uma-árvore-de-decisão-substituta" class="nav-link" data-scroll-target="#uma-árvore-de-decisão-substituta">5.3 Uma árvore de decisão substituta</a></li>
   </ul></li>
@@ -367,7 +372,7 @@ window.Quarto = {
 <section id="motivação" class="level2">
 <h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
 <p>Na regressão linear, cada bairro chegava com a resposta certa: o valor das casas. O modelo aprendia a ir dos atributos até essa resposta, e o erro em dados novos dizia se ele tinha aprendido bem. Esse é o <strong>aprendizado supervisionado</strong>. Mas boa parte dos dados do mundo chega sem resposta nenhuma. Ninguém rotulou os clientes de uma loja por perfil de compra, nem os documentos de um arquivo por assunto, nem os tumores de um hospital por tipo molecular.</p>
-<p>Esta aula trabalha com uma tabela assim: 1.095 tumores de mama, cada um descrito pela expressão de 505 genes, e nenhuma coluna de rótulo. Tratamos os genes como atributos numéricos quaisquer, quase anônimos. A biologia entra só no fim, por meio de um dicionário curto que traduz alguns genes em perfis. A pergunta é se os próprios dados se organizam em grupos e, se sim, como dar nome a esses grupos e transformá-los em rótulos para treinar um classificador.</p>
+<p>Esta aula trabalha com uma tabela assim: 1.095 tumores de mama, cada um descrito pela expressão de 505 genes, e nenhuma coluna de rótulo. Tratamos os genes como atributos numéricos quaisquer, quase anônimos. A biologia aparece só em dois momentos: uma contextualização no início e, no fim, um dicionário curto que traduz alguns genes em perfis. A pergunta é se os próprios dados se organizam em grupos e, se sim, como dar nome a esses grupos e transformá-los em rótulos para treinar um classificador.</p>
 <p>O caminho tem quatro etapas, todas geométricas: colocar os atributos na mesma escala, projetar 505 dimensões em poucas, particionar as amostras em torno de centroides e, por fim, converter a partição em rótulos confiáveis. É o ciclo completo do aprendizado não supervisionado ao supervisionado.</p>
 <blockquote class="blockquote">
 <p>Dá para criar rótulos a partir de dados que não têm nenhum?</p>
@@ -401,37 +406,57 @@ Como usar este roteiro
 <section id="preparando-o-ambiente" class="level1">
 <h1>1. Preparando o ambiente</h1>
 <p>Do scikit-learn vêm a padronização, a PCA, o K-means, as métricas de agrupamento e os dois modelos supervisionados do fim da aula. O UMAP vem do pacote <code>umap-learn</code>:</p>
-<div id="6ed6b34a" class="cell" data-execution_count="1">
+<div id="c5c9411e" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importa as bibliotecas e define o tema dos gráficos</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LinearSegmentedColormap</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> f_classif</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> adjusted_rand_score, pairwise_distances, silhouette_score</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_val_score</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, plot_tree</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> umap <span class="im">import</span> UMAP</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LinearSegmentedColormap</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> f_classif</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    adjusted_rand_score,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    pairwise_distances,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    silhouette_score,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> (</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    StratifiedKFold,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    cross_val_score,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> (</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    DecisionTreeClassifier,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    plot_tree,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> umap <span class="im">import</span> UMAP</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, palette<span class="op">=</span><span class="st">"colorblind"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="o-problema-câncer-de-mama-não-é-uma-doença-só" class="level2">
+<h2 class="anchored" data-anchor-id="o-problema-câncer-de-mama-não-é-uma-doença-só">1.1 O problema: câncer de mama não é uma doença só</h2>
+<p>O câncer de mama é o tipo de câncer mais incidente entre as mulheres brasileiras em todas as regiões do país, depois do câncer de pele não melanoma, e a primeira causa de morte por câncer entre elas. O Instituto Nacional de Câncer (INCA) estima 73.610 casos novos para 2025. Os números e os fatores de risco estão nas páginas do INCA sobre <a href="https://www.gov.br/inca/pt-br/assuntos/cancer/tipos/mama">o câncer de mama</a> e sobre <a href="https://www.gov.br/inca/pt-br/assuntos/gestor-e-profissional-de-saude/controle-do-cancer-de-mama/conceito-e-magnitude">o conceito e a magnitude da doença</a>.</p>
+<p>Por trás do mesmo nome, há doenças diferentes. Dois tumores do mesmo tamanho, no mesmo órgão, podem crescer em ritmos muito diferentes e responder a tratamentos diferentes. Na prática clínica, o patologista examina três proteínas na superfície das células tumorais: os receptores de estrogênio e de progesterona e a proteína HER2. Um tumor com receptores hormonais, a maioria dos casos, costuma ser tratado com hormonioterapia. Um tumor HER2-positivo recebe medicamentos dirigidos contra essa proteína. O tumor sem nenhuma das três, chamado de <strong>triplo-negativo</strong>, não responde a esses tratamentos, e por isso depende sobretudo da quimioterapia. O Instituto Oncoguia resume esses grupos em <a href="https://www.oncoguia.org.br/conteudo/cancer-de-mama-nao-e-tudo-igual-entenda-os-subtipos/17947/7/">Câncer de mama não é tudo igual: entenda os subtipos</a>.</p>
+<p>Essa divisão ficou mais fina com a medição da <strong>expressão gênica</strong>. Todas as células de uma pessoa têm o mesmo DNA, mas cada uma usa, ou “liga”, um conjunto diferente de genes, com intensidades diferentes. Medir quanto RNA cada gene produz revela o que a célula está fazendo naquele momento (<a href="https://pt.wikipedia.org/wiki/Express%C3%A3o_g%C3%A9nica">expressão gênica, na Wikipédia</a>). No ano 2000, um grupo de pesquisadores mediu a expressão de milhares de genes em tumores de mama e os agrupou <strong>sem usar nenhum rótulo clínico</strong>. Os grupos que surgiram dessa análise se tornaram os <strong>subtipos moleculares</strong> usados até hoje: luminal A, luminal B, HER2-enriquecido e basal, este último formado em sua maioria por tumores triplo-negativos. A revisão <a href="https://doi.org/10.37951/refacer.v10i1.5879">A importância da classificação molecular no prognóstico do câncer de mama</a> descreve esses subtipos e o que cada um significa para o prognóstico.</p>
+<p>Ou seja, os subtipos que orientam o tratamento do câncer de mama nasceram de um problema de aprendizado não supervisionado, o mesmo que esta aula reproduz.</p>
+</section>
 <section id="conhecendo-a-base" class="level2">
-<h2 class="anchored" data-anchor-id="conhecendo-a-base">1.1 Conhecendo a base</h2>
-<p>Os dados vêm do projeto <em>The Cancer Genome Atlas</em> (TCGA), que mediu a expressão de cerca de 60 mil genes em tumores de mama de mais de mil pacientes. A matriz que usamos já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em <span class="math inline">\(\log_2(\text{TPM} + 1)\)</span>: TPM conta quantos transcritos do gene há em cada milhão de transcritos da amostra, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.</p>
+<h2 class="anchored" data-anchor-id="conhecendo-a-base">1.2 Conhecendo a base</h2>
+<p>Os dados vêm do projeto <em>The Cancer Genome Atlas</em> (TCGA), um consórcio dos institutos nacionais de saúde dos Estados Unidos que caracterizou molecularmente milhares de tumores de 33 tipos de câncer e deixou os dados abertos para pesquisa. Na coorte de mama, o TCGA mediu a expressão de cerca de 60 mil genes em tumores de mais de mil pacientes. Usamos a versão distribuída pelo portal <a href="https://xenabrowser.net/">UCSC Xena</a> (em inglês). A matriz já passou por toda a bioinformática básica. Cada linha é um paciente, com um único tumor primário. Cada coluna é um gene, e o valor é a sua expressão em <span class="math inline">\(\log_2(\text{TPM} + 1)\)</span>: TPM conta quantos transcritos do gene há em cada milhão de transcritos da amostra, e o logaritmo comprime a escala, que de outro modo iria de zero a dezenas de milhares.</p>
 <p>Dos milhares de genes, ficaram os 500 de maior variância entre pacientes, chamados de <strong>genes altamente variáveis</strong> (HVGs, de <em>highly variable genes</em>), e mais cinco genes do dicionário que não estavam entre eles. Um gene que tem a mesma expressão em todos os tumores não ajuda a separá-los, assim como uma coluna constante não ajuda nenhum modelo.</p>
-<div id="76e8b7ae" class="cell" data-execution_count="2">
+<div id="51b30a31" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega a matriz de expressão: pacientes nas linhas, genes nas colunas</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> pd.read_parquet(<span class="st">"tcga-brca/data/brca_hvgs_log2.parquet"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>expr.iloc[:<span class="dv">5</span>, :<span class="dv">8</span>]</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="68">
+<div class="cell-output cell-output-display" data-execution_count="74">
 <div>
 
 
@@ -523,7 +548,7 @@ Como usar este roteiro
 </div>
 </div>
 <p>São 1.095 pacientes e 505 genes, sem valores ausentes. Para o algoritmo, <code>ESR1</code> ou <code>KRT5</code> são apenas nomes de colunas, como <code>MedInc</code> ou <code>HouseAge</code>. O dicionário, que será usado só para dar nome aos grupos, liga alguns genes a cinco perfis moleculares:</p>
-<div id="ed4170b9" class="cell" data-execution_count="3">
+<div id="99b9cfa6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dicionário de assinaturas: perfil -&gt; genes marcadores</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"tcga-brca/data/dicionario_marcadores.json"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    markers <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
@@ -537,7 +562,7 @@ Como usar este roteiro
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>markers_table</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="69">
+<div class="cell-output cell-output-display" data-execution_count="75">
 <div>
 
 
@@ -579,7 +604,7 @@ Como usar este roteiro
 </div>
 </div>
 </div>
-<p>Não é preciso conhecer a biologia por trás de cada perfil. Basta saber que, se um grupo de tumores tem os genes de uma linha muito mais expressos que os demais, ele recebe o nome dessa linha.</p>
+<p>Os três primeiros perfis correspondem aos grupos clínicos descritos acima: Hormonal (tumores com receptores hormonais, como os luminais), HER2 e Basal. Proliferativo reúne genes ligados à divisão celular, mais ativos em tumores que crescem rápido. Estromal reúne genes do tecido de sustentação que envolve o tumor, como gordura e fibras, e que inevitavelmente entra na amostra junto com ele. Para a análise, basta uma regra: se um grupo de tumores tem os genes de uma linha muito mais expressos que os demais, ele recebe o nome dessa linha.</p>
 </section>
 </section>
 <section id="escala-todos-os-atributos-no-mesmo-pé" class="level1">
@@ -587,7 +612,7 @@ Como usar este roteiro
 <section id="o-problema" class="level2">
 <h2 class="anchored" data-anchor-id="o-problema">2.1 O problema</h2>
 <p>PCA e K-means são métodos geométricos. A PCA procura as direções de maior variância, e o K-means agrupa pontos pela distância euclidiana. Nos dois casos, um atributo com variância grande pesa mais que um com variância pequena, só por causa da sua escala. Mesmo em escala logarítmica, os genes não estão no mesmo pé:</p>
-<div id="aa016eb5" class="cell" data-execution_count="4">
+<div id="b4a80c25" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média e desvio-padrão de cada gene, resumidos sobre os 505 genes</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gene_stats <span class="op">=</span> (</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    expr</span>
@@ -598,7 +623,7 @@ Como usar este roteiro
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>gene_stats_summary <span class="op">=</span> gene_stats.describe().<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>gene_stats_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="70">
+<div class="cell-output cell-output-display" data-execution_count="76">
 <div>
 
 
@@ -658,7 +683,7 @@ Como usar este roteiro
 </div>
 </div>
 <p>As médias vão de 1,01 a 10,09, e os desvios-padrão, de 1,14 a 4,49. Em variância, que é o que a PCA soma, o gene mais disperso pesa cerca de 15 vezes mais que o menos disperso (<span class="math inline">\(4{,}49^2 / 1{,}14^2 \approx 15{,}5\)</span>). Os 50 genes de maior variância, 10% das colunas, concentram 20,5% da variância total.</p>
-<div id="c3164c54" class="cell" data-execution_count="5">
+<div id="97d31398" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Média versus desvio-padrão de cada gene, com alguns marcadores em destaque</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>highlight <span class="op">=</span> [<span class="st">"ESR1"</span>, <span class="st">"KRT5"</span>, <span class="st">"ERBB2"</span>, <span class="st">"MKI67"</span>, <span class="st">"COL14A1"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -682,7 +707,7 @@ Como usar este roteiro
 </div>
 <p>Tanto a PCA quanto a distância euclidiana ignoram a <strong>média</strong> de cada atributo: a PCA centraliza cada coluna antes de começar, e somar a mesma constante a uma coluna não muda a distância entre dois pontos. O que distorce a geometria é a <strong>dispersão</strong>. Sem padronizar, <code>KRT5</code>, com desvio de 2,92, puxa as distâncias muito mais que <code>MKI67</code>, com 1,24, mesmo que a variação de <code>MKI67</code> seja tão informativa quanto a de <code>KRT5</code>.</p>
 <p>O <code>StandardScaler</code> resolve isso: subtrai a média de cada gene e divide pelo seu desvio-padrão. Cada coluna passa a ter média 0 e desvio 1, e o valor vira um <strong>escore-z</strong>, que diz a quantos desvios da média do gene um paciente está.</p>
-<div id="4f6fddf1" class="cell" data-execution_count="6">
+<div id="7104dde4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Padroniza cada gene para média 0 e desvio-padrão 1</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> pd.DataFrame(</span>
@@ -691,10 +716,17 @@ Como usar este roteiro
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>expr.columns,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>scaled_check <span class="op">=</span> X_scaled.agg([<span class="st">"mean"</span>, <span class="st">"std"</span>]).T.describe().loc[[<span class="st">"min"</span>, <span class="st">"max"</span>]].<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>scaled_check</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="72">
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>scaled_check <span class="op">=</span> (</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    X_scaled</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    .agg([<span class="st">"mean"</span>, <span class="st">"std"</span>])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    .T</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    .describe()</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .loc[[<span class="st">"min"</span>, <span class="st">"max"</span>]]</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>scaled_check</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="78">
 <div>
 
 
@@ -727,33 +759,29 @@ Como usar este roteiro
 <section id="o-efeito-na-pca" class="level2">
 <h2 class="anchored" data-anchor-id="o-efeito-na-pca">2.2 O efeito na PCA</h2>
 <p>Para ver o efeito da padronização, ajustamos a PCA nos dados brutos e nos padronizados e comparamos a primeira componente, a PC1. Para cada versão, listamos a variância que ela explica e os cinco genes com maior peso (<em>loading</em>) em valor absoluto:</p>
-<div id="b86f8105" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PC1 com e sem padronização: variância explicada e genes de maior peso</span></span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>pca_inputs <span class="op">=</span> {<span class="st">"sem padronizar"</span>: expr, <span class="st">"padronizado"</span>: X_scaled}</span>
-<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a>pc1_comparison <span class="op">=</span> pd.DataFrame(</span>
-<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>        name: {</span>
-<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"variância da PC1"</span>: <span class="ss">f"</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss">"</span>,</span>
-<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"genes de maior peso"</span>: <span class="st">", "</span>.join(</span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>                pd.Series(np.<span class="bu">abs</span>(pca.components_[<span class="dv">0</span>]), index<span class="op">=</span>data.columns).nlargest(<span class="dv">5</span>).index</span>
-<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, data <span class="kw">in</span> pca_inputs.items()</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-13" class="code-annotation-target"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> pca <span class="kw">in</span> [PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(data)]</span>
-<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>).T</span>
-<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>pc1_comparison</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-7" data-code-lines="13" data-code-annotation="1">Um <code>for</code> com uma lista de um só elemento é um truque para dar nome (<code>pca</code>) a um resultado intermediário dentro da compreensão.</span>
-</dd>
-</dl>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="73">
+<div id="164f71a7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PC1 com e sem padronização: variância explicada e genes de maior peso</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pca_by_input <span class="op">=</span> {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    name: PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(data)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, data <span class="kw">in</span> {<span class="st">"sem padronizar"</span>: expr, <span class="st">"padronizado"</span>: X_scaled}.items()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>pc1_comparison <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        name: {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"variância da PC1"</span>: <span class="ss">f"</span><span class="sc">{</span>model<span class="sc">.</span>explained_variance_ratio_[<span class="dv">0</span>]<span class="sc">:.1%}</span><span class="ss">"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"genes de maior peso"</span>: <span class="st">", "</span>.join(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                pd.Series(np.<span class="bu">abs</span>(model.components_[<span class="dv">0</span>]), index<span class="op">=</span>expr.columns)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                .nlargest(<span class="dv">5</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                .index</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, model <span class="kw">in</span> pca_by_input.items()</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>).T</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>pc1_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="79">
 <div>
 
 
@@ -792,20 +820,20 @@ Como usar este roteiro
 <h2 class="anchored" data-anchor-id="pca-o-espaço-de-trabalho">3.1 PCA: o espaço de trabalho</h2>
 <p>Cada paciente é um ponto em um espaço de 505 dimensões. Há dois motivos para não agrupar diretamente nesse espaço. O primeiro é que muitos genes variam juntos, e boa parte das 505 colunas é redundante. O segundo é a <strong>maldição da dimensionalidade</strong>: em muitas dimensões, as distâncias entre pontos ficam todas parecidas, e “perto” e “longe” perdem o contraste de que o K-means depende.</p>
 <p>A PCA ajustada com todas as componentes mostra quanto da variância cada uma acumula:</p>
-<div id="d613acc1" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variância explicada acumulada por todas as componentes</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>).fit(X_scaled)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cumulative_variance <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, <span class="dv">101</span>), cumulative_variance[:<span class="dv">100</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">15</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f"15 PCs: </span><span class="sc">{</span>cumulative_variance[<span class="dv">14</span>]<span class="sc">:.1%}</span><span class="ss">"</span>, (<span class="dv">15</span>, cumulative_variance[<span class="dv">14</span>]),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            xytext<span class="op">=</span>(<span class="dv">8</span>, <span class="op">-</span><span class="dv">18</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Número de componentes"</span>, ylabel<span class="op">=</span><span class="st">"Variância explicada acumulada"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       xlim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">100</span>), ylim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0d179d10" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variância explicada acumulada por todas as componentes</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>).fit(X_scaled)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cumulative_variance <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, <span class="dv">101</span>), cumulative_variance[:<span class="dv">100</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">15</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f"15 PCs: </span><span class="sc">{</span>cumulative_variance[<span class="dv">14</span>]<span class="sc">:.1%}</span><span class="ss">"</span>, (<span class="dv">15</span>, cumulative_variance[<span class="dv">14</span>]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            xytext<span class="op">=</span>(<span class="dv">8</span>, <span class="op">-</span><span class="dv">18</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Número de componentes"</span>, ylabel<span class="op">=</span><span class="st">"Variância explicada acumulada"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       xlim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">100</span>), ylim<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -815,18 +843,18 @@ Como usar este roteiro
 </div>
 </div>
 <p>A curva sobe rápido nas primeiras componentes e depois se arrasta. As 15 primeiras explicam 52,6% da variância, e seriam necessárias 95 para chegar a 80%. Ficamos com 15: elas guardam a estrutura de grande escala, compartilhada por muitos genes, e deixam de fora uma longa cauda de componentes que capturam, cada uma, menos de 1% da variância e são em boa parte ruído.</p>
-<div id="78846fc0" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta os pacientes nas 15 primeiras componentes principais</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X_scaled)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>X_pca.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="75">
+<div id="46beaccf" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta os pacientes nas 15 primeiras componentes principais</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">15</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>X_pca.shape</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="81">
 <pre><code>(1095, 15)</code></pre>
 </div>
 </div>
 <p>Para ver a maldição da dimensionalidade em números, comparamos a dispersão das distâncias entre todos os pares de pacientes nos 505 genes padronizados, nas 15 componentes e em uma tabela de ruído puro do mesmo tamanho. A medida é o coeficiente de variação das distâncias, o desvio-padrão dividido pela média: quanto menor, mais parecidas são todas as distâncias.</p>
-<div id="b8539cfb" class="cell" data-execution_count="10">
+<div id="036a424a" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Contraste das distâncias entre pares de pacientes em três espaços</span></span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>spaces <span class="op">=</span> {</span>
@@ -835,26 +863,33 @@ Como usar este roteiro
 <span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ruído puro (505 colunas)"</span>: rng.normal(size<span class="op">=</span>X_scaled.shape),</span>
 <span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>distance_contrast <span class="op">=</span> (</span>
-<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>    pd.Series(</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-11" class="code-annotation-target"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a>        {name: pairwise_distances(data)[np.triu_indices(<span class="bu">len</span>(data), k<span class="op">=</span><span class="dv">1</span>)] <span class="cf">for</span> name, data <span class="kw">in</span> spaces.items()}</span>
-<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">map</span>(<span class="kw">lambda</span> d: d.std() <span class="op">/</span> d.mean())</span>
-<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    .rename(<span class="st">"CV das distâncias"</span>)</span>
-<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
-<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a>distance_contrast</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>pair_distances <span class="op">=</span> {</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-10" class="code-annotation-target"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>    name: pairwise_distances(data)[np.triu_indices(<span class="bu">len</span>(data), k<span class="op">=</span><span class="dv">1</span>)]</span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, data <span class="kw">in</span> spaces.items()</span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>distance_contrast <span class="op">=</span> (</span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    pd.Series(pair_distances)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-10-16" class="code-annotation-target"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">map</span>(<span class="kw">lambda</span> d: d.std() <span class="op">/</span> d.mean())</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a>    .rename(<span class="st">"CV das distâncias"</span>)</span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-22"><a href="#annotated-cell-10-22" aria-hidden="true" tabindex="-1"></a>distance_contrast</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-10" data-code-lines="11" data-code-annotation="1"><code>pairwise_distances</code> devolve a matriz de distâncias entre todos os pares. <code>np.triu_indices(..., k=1)</code> pega só o triângulo acima da diagonal, para contar cada par uma vez e sem as distâncias de cada ponto a si mesmo.</span>
+<span data-code-cell="annotated-cell-10" data-code-lines="10" data-code-annotation="1"><code>pairwise_distances</code> devolve a matriz de distâncias entre todos os pares. <code>np.triu_indices(..., k=1)</code> pega só o triângulo acima da diagonal, para contar cada par uma vez e sem as distâncias de cada ponto a si mesmo.</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="16" data-code-annotation="2"><code>lambda d: ...</code> é uma função anônima de uma linha. O <code>.map</code> a aplica ao vetor de distâncias de cada espaço, e ela devolve o desvio-padrão dividido pela média.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="76">
+<div class="cell-output cell-output-display" data-execution_count="82">
 <div>
 
 
@@ -889,7 +924,7 @@ Como usar este roteiro
 <section id="umap-o-espaço-de-visualização" class="level2">
 <h2 class="anchored" data-anchor-id="umap-o-espaço-de-visualização">3.2 UMAP: o espaço de visualização</h2>
 <p>Quinze dimensões ainda não cabem em um gráfico. Poderíamos plotar só a PC1 contra a PC2, mas elas resumem pouco mais de um quarto da variância. O <strong>UMAP</strong> (<em>Uniform Manifold Approximation and Projection</em>) é um método não linear que constrói um grafo de vizinhos no espaço original e procura uma disposição em 2D que preserve esses vizinhos. Aplicamos o UMAP às 15 componentes:</p>
-<div id="8fed580e" class="cell" data-execution_count="11">
+<div id="11c94466" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Projeta as 15 componentes em 2D com o UMAP, apenas para visualização</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-2" class="code-annotation-target"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>umap_model <span class="op">=</span> UMAP(n_neighbors<span class="op">=</span><span class="dv">15</span>, min_dist<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> pd.DataFrame(</span>
@@ -907,7 +942,7 @@ Como usar este roteiro
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="77">
+<div class="cell-output cell-output-display" data-execution_count="83">
 <div>
 
 
@@ -956,15 +991,15 @@ Como usar este roteiro
 </div>
 </div>
 </div>
-<div id="9ac2a5cc" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os mesmos pacientes no plano PC1 x PC2 e no plano do UMAP</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(X_pca[:, <span class="dv">0</span>], X_pca[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"PCA (PC1 x PC2)"</span>, xlabel<span class="op">=</span><span class="st">"PC1"</span>, ylabel<span class="op">=</span><span class="st">"PC2"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(embedding[<span class="st">"UMAP1"</span>], embedding[<span class="st">"UMAP2"</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"UMAP (a partir das 15 PCs)"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="880b295b" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Os mesmos pacientes no plano PC1 x PC2 e no plano do UMAP</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(X_pca[:, <span class="dv">0</span>], X_pca[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"PCA (PC1 x PC2)"</span>, xlabel<span class="op">=</span><span class="st">"PC1"</span>, ylabel<span class="op">=</span><span class="st">"PC2"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(embedding[<span class="st">"UMAP1"</span>], embedding[<span class="st">"UMAP2"</span>], color<span class="op">=</span><span class="st">"#1F4E79"</span>, s<span class="op">=</span><span class="dv">6</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"UMAP (a partir das 15 PCs)"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -999,21 +1034,26 @@ Como usar este roteiro
 s = \frac{b - a}{\max(a, b)}.
 \]</span></p>
 <p>Ela vai de <span class="math inline">\(-1\)</span> a <span class="math inline">\(1\)</span>. Valores perto de 1 indicam uma amostra bem dentro do seu grupo e longe do vizinho; perto de 0, uma amostra na fronteira. A silhueta da partição é a média sobre todas as amostras.</p>
-<div id="73fbd84e" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inércia e silhueta para k de 2 a 8, no espaço das 15 componentes</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">9</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>kmeans_by_k <span class="op">=</span> {k: KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_pca) <span class="cf">for</span> k <span class="kw">in</span> k_values}</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>k_selection <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inércia"</span>: [model.inertia_ <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()],</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"silhueta"</span>: [silhouette_score(X_pca, model.labels_) <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()],</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.Index(k_values, name<span class="op">=</span><span class="st">"k"</span>),</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>k_selection</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="79">
+<div id="9c094476" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inércia e silhueta para k de 2 a 8, no espaço das 15 componentes</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">9</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>kmeans_by_k <span class="op">=</span> {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    k: KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_pca)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> k_values</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>k_selection <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inércia"</span>: [model.inertia_ <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()],</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"silhueta"</span>: [</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            silhouette_score(X_pca, model.labels_) <span class="cf">for</span> model <span class="kw">in</span> kmeans_by_k.values()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.Index(k_values, name<span class="op">=</span><span class="st">"k"</span>),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>k_selection</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="85">
 <div>
 
 
@@ -1072,16 +1112,16 @@ s = \frac{b - a}{\max(a, b)}.
 </div>
 </div>
 </div>
-<div id="4135bdaf" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curvas de inércia e silhueta em função de k</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(k_selection.index, k_selection[<span class="st">"inércia"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Inércia"</span>, title<span class="op">=</span><span class="st">"Inércia (cotovelo)"</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(k_selection.index, k_selection[<span class="st">"silhueta"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(<span class="dv">4</span>, k_selection.loc[<span class="dv">4</span>, <span class="st">"silhueta"</span>], color<span class="op">=</span><span class="st">"#DD8452"</span>, s<span class="op">=</span><span class="dv">90</span>, zorder<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Silhueta média"</span>, title<span class="op">=</span><span class="st">"Silhueta"</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="41bc2bfd" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Curvas de inércia e silhueta em função de k</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(k_selection.index, k_selection[<span class="st">"inércia"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Inércia"</span>, title<span class="op">=</span><span class="st">"Inércia (cotovelo)"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(k_selection.index, k_selection[<span class="st">"silhueta"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F4E79"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(<span class="dv">4</span>, k_selection.loc[<span class="dv">4</span>, <span class="st">"silhueta"</span>], color<span class="op">=</span><span class="st">"#DD8452"</span>, s<span class="op">=</span><span class="dv">90</span>, zorder<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"k"</span>, ylabel<span class="op">=</span><span class="st">"Silhueta média"</span>, title<span class="op">=</span><span class="st">"Silhueta"</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1095,15 +1135,15 @@ s = \frac{b - a}{\max(a, b)}.
 </section>
 <section id="o-modelo-com-k-4" class="level2">
 <h2 class="anchored" data-anchor-id="o-modelo-com-k-4">4.3 O modelo com <span class="math inline">\(k = 4\)</span></h2>
-<div id="d0405c6b" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means com k = 4 e o tamanho de cada grupo</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> kmeans_by_k[<span class="dv">4</span>]</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> pd.Series(kmeans.labels_, index<span class="op">=</span>expr.index, name<span class="op">=</span><span class="st">"cluster"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>cluster_sizes <span class="op">=</span> clusters.value_counts().sort_index()</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>cluster_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="81">
+<div id="6420e260" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means com k = 4 e o tamanho de cada grupo</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> kmeans_by_k[<span class="dv">4</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> pd.Series(kmeans.labels_, index<span class="op">=</span>expr.index, name<span class="op">=</span><span class="st">"cluster"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>cluster_sizes <span class="op">=</span> clusters.value_counts().sort_index()</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>cluster_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="87">
 <pre><code>cluster
 0    181
 1    374
@@ -1113,19 +1153,19 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Os quatro grupos têm 181, 374, 346 e 194 pacientes. Os números de 0 a 3 são apenas identificadores, sem ordem nem significado. Rodar de novo com outro <code>random_state</code> poderia trocar os números entre os grupos sem mudar a partição.</p>
-<div id="3b91ce4b" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelo identificador bruto do cluster</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cluster_colors <span class="op">=</span> {<span class="dv">0</span>: <span class="st">"#1F4E79"</span>, <span class="dv">1</span>: <span class="st">"#DD8452"</span>, <span class="dv">2</span>: <span class="st">"#A1C9F4"</span>, <span class="dv">3</span>: <span class="st">"#333333"</span>}</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster_id, color <span class="kw">in</span> cluster_colors.items():</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[clusters <span class="op">==</span> cluster_id]</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="84305bbe" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelo identificador bruto do cluster</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cluster_colors <span class="op">=</span> {<span class="dv">0</span>: <span class="st">"#1F4E79"</span>, <span class="dv">1</span>: <span class="st">"#DD8452"</span>, <span class="dv">2</span>: <span class="st">"#A1C9F4"</span>, <span class="dv">3</span>: <span class="st">"#333333"</span>}</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster_id, color <span class="kw">in</span> cluster_colors.items():</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[clusters <span class="op">==</span> cluster_id]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1143,20 +1183,20 @@ Name: count, dtype: int64</code></pre>
 <section id="atributos-discriminantes" class="level2">
 <h2 class="anchored" data-anchor-id="atributos-discriminantes">5.1 Atributos discriminantes</h2>
 <p>A primeira é olhar, em cada cluster, a média do escore-z de cada gene. Como cada gene tem média 0 no conjunto todo, uma média de <span class="math inline">\(+1\)</span> em um cluster quer dizer que, ali, o gene está em média um desvio-padrão acima do habitual. Os cinco genes de maior escore-z médio em cada cluster:</p>
-<div id="e502b25e" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore-z médio de cada gene dentro de cada cluster</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cluster_zscores <span class="op">=</span> X_scaled.groupby(clusters).mean()</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>top_genes <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>: row.nlargest(<span class="dv">5</span>).index</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> cluster_id, row <span class="kw">in</span> cluster_zscores.iterrows()</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.RangeIndex(<span class="dv">1</span>, <span class="dv">6</span>, name<span class="op">=</span><span class="st">"posição"</span>),</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>top_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="83">
+<div id="6ca21f00" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore-z médio de cada gene dentro de cada cluster</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cluster_zscores <span class="op">=</span> X_scaled.groupby(clusters).mean()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>top_genes <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"cluster </span><span class="sc">{</span>cluster_id<span class="sc">}</span><span class="ss">"</span>: row.nlargest(<span class="dv">5</span>).index</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> cluster_id, row <span class="kw">in</span> cluster_zscores.iterrows()</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>pd.RangeIndex(<span class="dv">1</span>, <span class="dv">6</span>, name<span class="op">=</span><span class="st">"posição"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>top_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="89">
 <div>
 
 
@@ -1219,20 +1259,44 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>Cada cluster tem o seu conjunto próprio de genes em alta. Os do cluster 3 têm escore-z médio acima de 1,5, o maior de todos, coerente com o grupo mais isolado no UMAP. Uma alternativa estatística é a <strong>ANOVA de um fator</strong> (<code>f_classif</code>), que usa os identificadores dos clusters como grupos e calcula, para cada gene, a estatística <span class="math inline">\(F\)</span>: a variação entre as médias dos clusters dividida pela variação dentro deles. Os genes de maior <span class="math inline">\(F\)</span> são os que mais separam os quatro grupos ao mesmo tempo:</p>
-<div id="7fc4c51a" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estatística F da ANOVA de cada gene, com os clusters como grupos</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>f_statistic, _ <span class="op">=</span> f_classif(expr, clusters)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>anova_ranking <span class="op">=</span> (</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    pd.Series(f_statistic, index<span class="op">=</span>expr.columns, name<span class="op">=</span><span class="st">"F"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    .nlargest(<span class="dv">10</span>)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">0</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>anova_ranking</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="84">
+<p>Cada cluster tem o seu conjunto próprio de genes em alta. Os do cluster 3 têm escore-z médio acima de 1,5, o maior de todos, coerente com o grupo mais isolado no UMAP.</p>
+<p>Esse ranking tem duas limitações. Ele compara cada cluster com a média geral, um de cada vez, e olha só para as médias. Um gene pode ter média alta em um cluster porque alguns poucos pacientes têm valores extremos, enquanto os outros pacientes do mesmo cluster se espalham por toda a escala. Para medir quanto um gene separa os quatro grupos ao mesmo tempo, levando em conta essa dispersão interna, usamos a ANOVA.</p>
+<section id="a-anova-como-régua-de-separação" class="level3">
+<h3 class="anchored" data-anchor-id="a-anova-como-régua-de-separação">A ANOVA como régua de separação</h3>
+<p>A <strong>ANOVA de um fator</strong> é o teste clássico para comparar as médias de três ou mais grupos. A hipótese nula é que todos os grupos têm a mesma média. Para um gene, a ANOVA divide a variação total da expressão em duas partes. A <strong>soma de quadrados entre grupos</strong> (<span class="math inline">\(SQG\)</span>) mede quanto as médias dos clusters se afastam da média geral. A <strong>soma de quadrados dentro dos grupos</strong> (<span class="math inline">\(SQR\)</span>, de resíduos) mede quanto os pacientes se espalham em torno da média do próprio cluster:</p>
+<p><span class="math display">\[
+SQG = \sum_{g=1}^{k} n_g (\bar{x}_g - \bar{x})^2,
+\qquad
+SQR = \sum_{g=1}^{k} \sum_{i \in g} (x_i - \bar{x}_g)^2,
+\]</span></p>
+<p>em que <span class="math inline">\(k\)</span> é o número de grupos, <span class="math inline">\(n_g\)</span> e <span class="math inline">\(\bar{x}_g\)</span> são o tamanho e a média do grupo <span class="math inline">\(g\)</span>, e <span class="math inline">\(\bar{x}\)</span> é a média geral. A estatística <span class="math inline">\(F\)</span> compara as duas partes, cada uma dividida pelos seus graus de liberdade:</p>
+<p><span class="math display">\[
+F = \frac{SQG / (k - 1)}{SQR / (N - k)}.
+\]</span></p>
+<p>Com <span class="math inline">\(N = 1.095\)</span> pacientes e <span class="math inline">\(k = 4\)</span> clusters, os graus de liberdade são 3 e 1.091. Se os clusters não diferissem nesse gene, as médias dos grupos oscilariam só por acaso, e <span class="math inline">\(F\)</span> ficaria perto de 1. Quanto mais as médias se afastam umas das outras em relação à variação dentro de cada grupo, maior o <span class="math inline">\(F\)</span>.</p>
+<p>No aprendizado de máquina, essa mesma conta é uma ferramenta de <strong>seleção de atributos</strong>. O scikit-learn a oferece como <code>f_classif</code>, que roda uma ANOVA para cada coluna de <code>X</code> usando as classes de <code>y</code> como grupos. Em um problema supervisionado, ela costuma ser usada para reter os atributos que mais separam as classes antes de treinar um modelo. Aqui não temos classes, então usamos os identificadores dos clusters no papel de <code>y</code>:</p>
+<div id="ced47225" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="annotated-cell-18"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estatística F e p-valor da ANOVA de cada gene, com os clusters como grupos</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-2" class="code-annotation-target"><a href="#annotated-cell-18-2" aria-hidden="true" tabindex="-1"></a>f_statistic, p_values <span class="op">=</span> f_classif(expr, clusters)</span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3" aria-hidden="true" tabindex="-1"></a>f_scores <span class="op">=</span> pd.Series(f_statistic, index<span class="op">=</span>expr.columns, name<span class="op">=</span><span class="st">"F"</span>)</span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-18-5"><a href="#annotated-cell-18-5" aria-hidden="true" tabindex="-1"></a>anova_ranking <span class="op">=</span> (</span>
+<span id="annotated-cell-18-6"><a href="#annotated-cell-18-6" aria-hidden="true" tabindex="-1"></a>    f_scores</span>
+<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7" aria-hidden="true" tabindex="-1"></a>    .nlargest(<span class="dv">10</span>)</span>
+<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">0</span>)</span>
+<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9" aria-hidden="true" tabindex="-1"></a>    .to_frame()</span>
+<span id="annotated-cell-18-10"><a href="#annotated-cell-18-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-18-11"><a href="#annotated-cell-18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12" aria-hidden="true" tabindex="-1"></a>anova_ranking</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="2" data-code-annotation="1"><code>f_classif</code> roda uma ANOVA independente para cada uma das 505 colunas e devolve dois vetores com um valor por gene: a estatística <span class="math inline">\(F\)</span> e o <span class="math inline">\(p\)</span>-valor.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="90">
 <div>
 
 
@@ -1290,19 +1354,74 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p><code>FOXA1</code> e <code>MLPH</code> lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. <code>FOXC1</code>, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já <code>ESR1</code>, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7). Os <span class="math inline">\(p\)</span>-valores aqui seriam todos minúsculos e não teriam valor de prova, porque os grupos foram construídos a partir desses mesmos dados. A estatística <span class="math inline">\(F\)</span> serve apenas como régua para ordenar os genes.</p>
+<p><code>FOXA1</code> e <code>MLPH</code> lideram o ranking. Os dois têm expressão média entre 6,7 e 8,4 nos clusters 0, 1 e 2 e abaixo de 2,6 no cluster 3, e separam esse grupo de todos os outros. <code>FOXC1</code>, o quarto, faz o mesmo na direção oposta: é o primeiro gene do cluster 3. Já <code>ESR1</code>, o quinto, varia também entre os clusters da nuvem maior, mais baixo no cluster 0 (4,3) que nos clusters 1 e 2 (6,8 e 7,7).</p>
+<p>Para ver o que o <span class="math inline">\(F\)</span> mede, comparamos o gene de maior <span class="math inline">\(F\)</span> com o de menor <span class="math inline">\(F\)</span> entre os 505:</p>
+<div id="c2463d6b" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expressão por cluster do gene de maior F e do gene de menor F</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>contrast_genes <span class="op">=</span> [f_scores.idxmax(), f_scores.idxmin()]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>cluster_ids <span class="op">=</span> <span class="bu">sorted</span>(clusters.unique())</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">4</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, gene <span class="kw">in</span> <span class="bu">zip</span>(axes, contrast_genes):</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> [expr.loc[clusters <span class="op">==</span> cluster_id, gene] <span class="cf">for</span> cluster_id <span class="kw">in</span> cluster_ids]</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    ax.boxplot(groups, tick_labels<span class="op">=</span>[<span class="ss">f"cluster </span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> c <span class="kw">in</span> cluster_ids],</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>               patch_artist<span class="op">=</span><span class="va">True</span>, boxprops<span class="op">=</span>{<span class="st">"facecolor"</span>: <span class="st">"#A1C9F4"</span>},</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>               medianprops<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"#1F4E79"</span>, <span class="st">"linewidth"</span>: <span class="dv">2</span>},</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>               flierprops<span class="op">=</span>{<span class="st">"markersize"</span>: <span class="dv">2</span>, <span class="st">"markerfacecolor"</span>: <span class="st">"#333333"</span>})</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    ax.axhline(expr[gene].mean(), color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span><span class="st">"média geral"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>gene<span class="sc">}</span><span class="ss">: F = </span><span class="sc">{</span>f_scores[gene]<span class="sc">:.1f}</span><span class="ss">"</span>.replace(<span class="st">"."</span>, <span class="st">","</span>))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(ylabel<span class="op">=</span><span class="st">"Expressão (log2 TPM + 1)"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-20-output-1.png" width="1042" height="368" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>À esquerda, as caixas de <code>FOXA1</code> ficam bem afastadas da média geral, a linha tracejada: as dos clusters 0, 1 e 2 estão acima dela, estreitas e quase sem sobreposição com a do cluster 3, que fica muito abaixo. Quase toda a variação desse gene está entre os grupos. A fração da variação total explicada pelos clusters, <span class="math inline">\(\eta^2 = SQG / (SQG + SQR)\)</span>, é de cerca de 0,86. À direita, <code>SLC5A8</code> tem quatro distribuições quase iguais: medianas perto de zero, caixas sobrepostas e, em todos os clusters, alguns pacientes com expressão alta. O gene varia muito entre pacientes, e por isso está entre os HVGs, mas essa variação não acompanha os clusters. O seu <span class="math inline">\(F\)</span> fica perto de 1.</p>
+</section>
+<section id="por-que-não-ler-os-p-valores" class="level3">
+<h3 class="anchored" data-anchor-id="por-que-não-ler-os-p-valores">Por que não ler os <span class="math inline">\(p\)</span>-valores</h3>
+<p>A ANOVA também devolve um <span class="math inline">\(p\)</span>-valor por gene. É tentador usá-lo para dizer quais genes diferem “significativamente” entre os clusters:</p>
+<div id="a79fd777" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantos genes seriam "significantes" pela ANOVA</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>significant_genes <span class="op">=</span> pd.Series(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p &lt; 0,05"</span>: (p_values <span class="op">&lt;</span> <span class="fl">0.05</span>).<span class="bu">sum</span>(),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"p &lt; 1e-10"</span>: (p_values <span class="op">&lt;</span> <span class="fl">1e-10</span>).<span class="bu">sum</span>(),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total de genes"</span>: <span class="bu">len</span>(p_values),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"genes"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>significant_genes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="92">
+<pre><code>p &lt; 0,05          501
+p &lt; 1e-10         472
+total de genes    505
+Name: genes, dtype: int64</code></pre>
+</div>
+</div>
+<p>Dos 505 genes, 501 têm <span class="math inline">\(p &lt; 0{,}05\)</span>, e 472 têm <span class="math inline">\(p\)</span> menor que um em dez bilhões. Esses números não descobrem nada. O K-means escolheu os grupos justamente para que eles fossem o mais diferentes possível nesses mesmos genes, e testar em seguida se os grupos diferem é perguntar aos dados algo que já obrigamos os dados a responder. A hipótese nula, de médias iguais, nunca teve chance. Esse erro é conhecido como <em>double dipping</em>, usar os mesmos dados para formar uma hipótese e para testá-la. O <span class="math inline">\(p\)</span>-valor só teria o seu significado usual se os grupos viessem de fora, por exemplo, de um diagnóstico clínico.</p>
+<p>Por isso, nesta aula, a ANOVA não é um teste de hipótese. A estatística <span class="math inline">\(F\)</span> é só uma régua para ordenar os genes pelo quanto separam os clusters.</p>
+</section>
 </section>
 <section id="tradução-pelo-dicionário" class="level2">
 <h2 class="anchored" data-anchor-id="tradução-pelo-dicionário">5.2 Tradução pelo dicionário</h2>
 <p>Com os genes de cada cluster em mãos, entra o dicionário. Em vez de procurar os marcadores um a um nas listas de cinco, calculamos para cada cluster um <strong>escore de assinatura</strong>: a média dos escores-z médios dos genes de cada perfil. Assim, todo o dicionário é comparado com todos os clusters de uma vez:</p>
-<div id="ebaa01a6" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore de assinatura: média do escore-z dos genes de cada perfil, por cluster</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>signature_scores <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    {profile: cluster_zscores[genes].mean(axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> profile, genes <span class="kw">in</span> markers.items()}</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>).rename_axis(<span class="st">"cluster"</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>signature_scores.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="85">
+<div id="fa2c78f5" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escore de assinatura: média do escore-z dos genes de cada perfil, por cluster</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>signature_scores <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    {profile: cluster_zscores[genes].mean(axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> profile, genes <span class="kw">in</span> markers.items()}</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>).rename_axis(<span class="st">"cluster"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>signature_scores.<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="93">
 <div>
 
 
@@ -1364,34 +1483,37 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="d41b4b86" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapa de calor dos escores de assinatura</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>diverging <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"diverging"</span>, [<span class="st">"#1F4E79"</span>, <span class="st">"#FFFFFF"</span>, <span class="st">"#DD8452"</span>])</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.5</span>))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>sns.heatmap(signature_scores, cmap<span class="op">=</span>diverging, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="fl">1.6</span>, vmax<span class="op">=</span><span class="fl">1.6</span>,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".2f"</span>, linewidths<span class="op">=</span><span class="dv">1</span>, cbar_kws<span class="op">=</span>{<span class="st">"label"</span>: <span class="st">"escore-z médio"</span>}, ax<span class="op">=</span>ax)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Perfil do dicionário"</span>, ylabel<span class="op">=</span><span class="st">"Cluster"</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9ebcb68f" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapa de calor dos escores de assinatura</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>diverging <span class="op">=</span> LinearSegmentedColormap.from_list(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diverging"</span>, [<span class="st">"#1F4E79"</span>, <span class="st">"#FFFFFF"</span>, <span class="st">"#DD8452"</span>]</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.5</span>))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>sns.heatmap(signature_scores, cmap<span class="op">=</span>diverging, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="fl">1.6</span>, vmax<span class="op">=</span><span class="fl">1.6</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>            annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".2f"</span>, linewidths<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>            cbar_kws<span class="op">=</span>{<span class="st">"label"</span>: <span class="st">"escore-z médio"</span>}, ax<span class="op">=</span>ax)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Perfil do dicionário"</span>, ylabel<span class="op">=</span><span class="st">"Cluster"</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-21-output-1.png" width="731" height="320" class="figure-img"></p>
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-23-output-1.png" width="731" height="320" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Cada cluster tem um perfil que se destaca: o 0 é HER2 (0,81), o 1 é Estromal (0,83), o 2 é Hormonal (0,56) e o 3 é Basal (1,27), com o Hormonal em <span class="math inline">\(-1{,}60\)</span>, o valor mais negativo da tabela. O nome de cada cluster é o perfil de maior escore na sua linha:</p>
-<div id="b6e4ccef" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo de cada cluster: o perfil de maior escore de assinatura</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cluster_names <span class="op">=</span> signature_scores.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> clusters.<span class="bu">map</span>(cluster_names).rename(<span class="st">"rotulo"</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>label_sizes <span class="op">=</span> labels.value_counts()</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>label_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="87">
+<div id="10a83bae" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo de cada cluster: o perfil de maior escore de assinatura</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cluster_names <span class="op">=</span> signature_scores.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> clusters.<span class="bu">map</span>(cluster_names).rename(<span class="st">"rotulo"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>label_sizes <span class="op">=</span> labels.value_counts()</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>label_sizes</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="95">
 <pre><code>rotulo
 Estromal    374
 Hormonal    346
@@ -1401,22 +1523,27 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>O perfil Proliferativo não deu nome a nenhum cluster. O seu escore é mais alto no Basal (0,72) e no HER2 (0,33) e está perto de zero no Hormonal (0,08). A proliferação não forma um grupo próprio nestes dados: ela é um gradiente que atravessa os grupos. Já o grupo Estromal é formado por amostras com muito tecido de sustentação ao redor do tumor, e o K-means o separou porque essa mistura muda a expressão de muitos genes ao mesmo tempo. O algoritmo encontra a estrutura de maior variância, que nem sempre é a que esperávamos encontrar. O dicionário serve para traduzir o que foi achado, não para forçar o que deveria ser achado.</p>
-<div id="81974bc4" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelos rótulos</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {<span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>, <span class="st">"HER2"</span>: <span class="st">"#DD8452"</span>, <span class="st">"Estromal"</span>: <span class="st">"#A1C9F4"</span>, <span class="st">"Basal"</span>: <span class="st">"#333333"</span>}</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[labels <span class="op">==</span> label]</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c5c11670" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP colorido pelos rótulos</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HER2"</span>: <span class="st">"#DD8452"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Estromal"</span>: <span class="st">"#A1C9F4"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Basal"</span>: <span class="st">"#333333"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">5.5</span>))</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[labels <span class="op">==</span> label]</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    ax.scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.01</span>, <span class="dv">1</span>))</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-23-output-1.png" width="657" height="512" class="figure-img"></p>
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-25-output-1.png" width="657" height="512" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1425,35 +1552,35 @@ Name: count, dtype: int64</code></pre>
 <section id="uma-árvore-de-decisão-substituta" class="level2">
 <h2 class="anchored" data-anchor-id="uma-árvore-de-decisão-substituta">5.3 Uma árvore de decisão substituta</h2>
 <p>A terceira técnica dispensa qualquer dicionário. Treinamos uma árvore de decisão rasa para prever o rótulo de cada paciente a partir da expressão original dos 505 genes. A árvore não tem a pretensão de prever pacientes novos. Ela é um <strong>modelo substituto</strong> (<em>surrogate model</em>): um modelo simples, que imita o K-means e cujas regras podemos ler.</p>
-<div id="dc82b8f0" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="annotated-cell-23"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-23-1"><a href="#annotated-cell-23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de decisão de profundidade 3 imitando a partição do K-means</span></span>
-<span id="annotated-cell-23-2"><a href="#annotated-cell-23-2" aria-hidden="true" tabindex="-1"></a>surrogate_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(expr, labels)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-23" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-23-3" class="code-annotation-target"><a href="#annotated-cell-23-3" aria-hidden="true" tabindex="-1"></a>fidelity <span class="op">=</span> surrogate_tree.score(expr, labels)</span>
-<span id="annotated-cell-23-4"><a href="#annotated-cell-23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-23-5"><a href="#annotated-cell-23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(fidelity, <span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2d9bf83c" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="annotated-cell-25"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de decisão de profundidade 3 imitando a partição do K-means</span></span>
+<span id="annotated-cell-25-2"><a href="#annotated-cell-25-2" aria-hidden="true" tabindex="-1"></a>surrogate_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(expr, labels)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-3" class="code-annotation-target"><a href="#annotated-cell-25-3" aria-hidden="true" tabindex="-1"></a>fidelity <span class="op">=</span> surrogate_tree.score(expr, labels)</span>
+<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-25-5"><a href="#annotated-cell-25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(fidelity, <span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-23" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-23" data-code-lines="3" data-code-annotation="1">Aqui, <code>.score</code> é medido nos mesmos dados do ajuste, de propósito. Ele mede a <strong>fidelidade</strong> da árvore ao K-means, ou seja, quanto ela consegue reproduzir a partição, e não a capacidade de generalizar.</span>
+<span data-code-cell="annotated-cell-25" data-code-lines="3" data-code-annotation="1">Aqui, <code>.score</code> é medido nos mesmos dados do ajuste, de propósito. Ele mede a <strong>fidelidade</strong> da árvore ao K-means, ou seja, quanto ela consegue reproduzir a partição, e não a capacidade de generalizar.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="89">
+<div class="cell-output cell-output-display" data-execution_count="97">
 <pre><code>0.829</code></pre>
 </div>
 </div>
-<div id="4f2ed0eb" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regras da árvore substituta</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plot_tree(surrogate_tree, feature_names<span class="op">=</span>expr.columns, class_names<span class="op">=</span>surrogate_tree.classes_,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>          filled<span class="op">=</span><span class="va">False</span>, impurity<span class="op">=</span><span class="va">False</span>, proportion<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">8</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b1aba95f" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regras da árvore substituta</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>plot_tree(surrogate_tree, feature_names<span class="op">=</span>expr.columns, class_names<span class="op">=</span>surrogate_tree.classes_,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>          filled<span class="op">=</span><span class="va">False</span>, impurity<span class="op">=</span><span class="va">False</span>, proportion<span class="op">=</span><span class="va">True</span>, fontsize<span class="op">=</span><span class="dv">8</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-25-output-1.png" width="1328" height="561" class="figure-img"></p>
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-27-output-1.png" width="1328" height="561" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1472,70 +1599,72 @@ Name: count, dtype: int64</code></pre>
 \text{razão} = \frac{d_1}{d_2}.
 \]</span></p>
 <p>A razão vai de 0, para um paciente sobre o próprio centroide, a 1, para um paciente equidistante dos dois centroides mais próximos. Adotamos um corte de 0,75: abaixo dele, o rótulo é <strong>confiável</strong>; acima, o paciente é <strong>ambíguo</strong>.</p>
-<div id="cb8b581e" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="annotated-cell-25"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Razão entre a distância ao centroide mais próximo e ao segundo mais próximo</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-25-2" class="code-annotation-target"><a href="#annotated-cell-25-2" aria-hidden="true" tabindex="-1"></a>centroid_distances <span class="op">=</span> np.sort(kmeans.transform(X_pca), axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-hidden="true" tabindex="-1"></a>distance_ratio <span class="op">=</span> pd.Series(</span>
-<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-hidden="true" tabindex="-1"></a>    centroid_distances[:, <span class="dv">0</span>] <span class="op">/</span> centroid_distances[:, <span class="dv">1</span>],</span>
-<span id="annotated-cell-25-5"><a href="#annotated-cell-25-5" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>expr.index,</span>
-<span id="annotated-cell-25-6"><a href="#annotated-cell-25-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"razao"</span>,</span>
-<span id="annotated-cell-25-7"><a href="#annotated-cell-25-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="annotated-cell-25-8"><a href="#annotated-cell-25-8" aria-hidden="true" tabindex="-1"></a>confident <span class="op">=</span> distance_ratio <span class="op">&lt;</span> <span class="fl">0.75</span></span>
-<span id="annotated-cell-25-9"><a href="#annotated-cell-25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-25-10"><a href="#annotated-cell-25-10" aria-hidden="true" tabindex="-1"></a>confident.value_counts()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6039914c" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="annotated-cell-27"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-27-1"><a href="#annotated-cell-27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Razão entre a distância ao centroide mais próximo e ao segundo mais próximo</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-27" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-27-2" class="code-annotation-target"><a href="#annotated-cell-27-2" aria-hidden="true" tabindex="-1"></a>centroid_distances <span class="op">=</span> np.sort(kmeans.transform(X_pca), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="annotated-cell-27-3"><a href="#annotated-cell-27-3" aria-hidden="true" tabindex="-1"></a>distance_ratio <span class="op">=</span> pd.Series(</span>
+<span id="annotated-cell-27-4"><a href="#annotated-cell-27-4" aria-hidden="true" tabindex="-1"></a>    centroid_distances[:, <span class="dv">0</span>] <span class="op">/</span> centroid_distances[:, <span class="dv">1</span>],</span>
+<span id="annotated-cell-27-5"><a href="#annotated-cell-27-5" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>expr.index,</span>
+<span id="annotated-cell-27-6"><a href="#annotated-cell-27-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"razao"</span>,</span>
+<span id="annotated-cell-27-7"><a href="#annotated-cell-27-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-27-8"><a href="#annotated-cell-27-8" aria-hidden="true" tabindex="-1"></a>confident <span class="op">=</span> distance_ratio <span class="op">&lt;</span> <span class="fl">0.75</span></span>
+<span id="annotated-cell-27-9"><a href="#annotated-cell-27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-27-10"><a href="#annotated-cell-27-10" aria-hidden="true" tabindex="-1"></a>confident.value_counts()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-27" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-25" data-code-lines="2" data-code-annotation="1"><code>kmeans.transform</code> devolve uma matriz de 1.095 linhas por 4 colunas, uma por centroide. Ordenar cada linha com <code>np.sort(..., axis=1)</code> coloca <span class="math inline">\(d_1\)</span> na primeira coluna e <span class="math inline">\(d_2\)</span> na segunda, seja qual for o cluster vencedor.</span>
+<span data-code-cell="annotated-cell-27" data-code-lines="2" data-code-annotation="1"><code>kmeans.transform</code> devolve uma matriz de 1.095 linhas por 4 colunas, uma por centroide. Ordenar cada linha com <code>np.sort(..., axis=1)</code> coloca <span class="math inline">\(d_1\)</span> na primeira coluna e <span class="math inline">\(d_2\)</span> na segunda, seja qual for o cluster vencedor.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="91">
+<div class="cell-output cell-output-display" data-execution_count="99">
 <pre><code>razao
 True     642
 False    453
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<div id="74575465" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição da razão de distâncias, com o corte de 0,75</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#1F4E79"</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"confiável (razão &lt; 0,75)"</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[<span class="op">~</span>confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#DDDDDD"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"ambíguo (razão ≥ 0,75)"</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.75</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Razão d1 / d2"</span>, ylabel<span class="op">=</span><span class="st">"Pacientes"</span>)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="41d8614f" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribuição da razão de distâncias, com o corte de 0,75</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#1F4E79"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"confiável (razão &lt; 0,75)"</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>ax.hist(distance_ratio[<span class="op">~</span>confident], bins<span class="op">=</span>np.arange(<span class="dv">0</span>, <span class="fl">1.02</span>, <span class="fl">0.025</span>), color<span class="op">=</span><span class="st">"#DDDDDD"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"ambíguo (razão ≥ 0,75)"</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="fl">0.75</span>, color<span class="op">=</span><span class="st">"#DD8452"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Razão d1 / d2"</span>, ylabel<span class="op">=</span><span class="st">"Pacientes"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-27-output-1.png" width="849" height="368" class="figure-img"></p>
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-29-output-1.png" width="849" height="368" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Dos 1.095 pacientes, 642 têm rótulo confiável e 453 ficam como ambíguos. A distribuição não tem um vale natural entre os dois tipos. O pico fica logo abaixo do corte, e centenas de pacientes têm razão acima de 0,8, quase equidistantes de dois centroides: os grupos se tocam, como o UMAP já mostrava. O corte de 0,75 é uma escolha, como <span class="math inline">\(k\)</span>. Um corte mais baixo deixa os rótulos mais limpos e o conjunto de treino menor.</p>
-<div id="ea22bdf1" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="annotated-cell-27"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-27-1"><a href="#annotated-cell-27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pacientes confiáveis e ambíguos em cada rótulo</span></span>
-<span id="annotated-cell-27-2"><a href="#annotated-cell-27-2" aria-hidden="true" tabindex="-1"></a>confidence_by_label <span class="op">=</span> (</span>
-<span id="annotated-cell-27-3"><a href="#annotated-cell-27-3" aria-hidden="true" tabindex="-1"></a>    pd.crosstab(labels, confident.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"confiável"</span>, <span class="va">False</span>: <span class="st">"ambíguo"</span>}))</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-27" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-27-4" class="code-annotation-target"><a href="#annotated-cell-27-4" aria-hidden="true" tabindex="-1"></a>    .assign(fracao_confiavel<span class="op">=</span><span class="kw">lambda</span> df: (df[<span class="st">"confiável"</span>] <span class="op">/</span> df.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">round</span>(<span class="dv">2</span>))</span>
-<span id="annotated-cell-27-5"><a href="#annotated-cell-27-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="annotated-cell-27-6"><a href="#annotated-cell-27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-27-7"><a href="#annotated-cell-27-7" aria-hidden="true" tabindex="-1"></a>confidence_by_label</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ae7d96be" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pacientes confiáveis e ambíguos em cada rótulo</span></span>
+<span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a>confidence_by_label <span class="op">=</span> (</span>
+<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a>    pd.crosstab(labels, confident.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"confiável"</span>, <span class="va">False</span>: <span class="st">"ambíguo"</span>}))</span>
+<span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-29" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-29-5" class="code-annotation-target"><a href="#annotated-cell-29-5" aria-hidden="true" tabindex="-1"></a>        fracao_confiavel<span class="op">=</span><span class="kw">lambda</span> df: (df[<span class="st">"confiável"</span>] <span class="op">/</span> df.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-29-7"><a href="#annotated-cell-29-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="annotated-cell-29-8"><a href="#annotated-cell-29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-9"><a href="#annotated-cell-29-9" aria-hidden="true" tabindex="-1"></a>confidence_by_label</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-27" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-29" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-27" data-code-lines="4" data-code-annotation="1"><code>.assign</code> cria uma coluna nova sem modificar a tabela original, e o <code>lambda df:</code> recebe a tabela no ponto da cadeia em que o <code>.assign</code> é chamado.</span>
+<span data-code-cell="annotated-cell-29" data-code-lines="5" data-code-annotation="1"><code>.assign</code> cria uma coluna nova sem modificar a tabela original. Dentro dele, o <code>lambda df:</code> recebe a tabela no ponto da cadeia em que o <code>.assign</code> é chamado.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="93">
+<div class="cell-output cell-output-display" data-execution_count="101">
 <div>
 
 
@@ -1590,25 +1719,26 @@ Name: count, dtype: int64</code></pre>
 <section id="treinando-o-classificador" class="level2">
 <h2 class="anchored" data-anchor-id="treinando-o-classificador">6.2 Treinando o classificador</h2>
 <p>Esses rótulos criados pelo próprio modelo, e não por um especialista, são <strong>pseudo-rótulos</strong> (<em>pseudo-labels</em>). Com eles, treinamos uma floresta aleatória (<code>RandomForestClassifier</code>) usando como atributos a expressão original dos 505 genes e, como resposta, os rótulos dos 642 pacientes confiáveis. A floresta combina centenas de árvores de decisão como a do modelo substituto, Cada árvore é treinada em uma reamostragem diferente dos pacientes e, a cada divisão, escolhe entre um sorteio de genes. A floresta decide pela votação de todas as árvores. Antes de usá-la, medimos o seu desempenho com validação cruzada estratificada de 5 dobras:</p>
-<div id="86db221d" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="annotated-cell-28"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validação cruzada da floresta aleatória nos pacientes confiáveis</span></span>
-<span id="annotated-cell-28-2"><a href="#annotated-cell-28-2" aria-hidden="true" tabindex="-1"></a>X_confident <span class="op">=</span> expr[confident]</span>
-<span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-hidden="true" tabindex="-1"></a>y_confident <span class="op">=</span> labels[confident]</span>
-<span id="annotated-cell-28-4"><a href="#annotated-cell-28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-5"><a href="#annotated-cell-28-5" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-28" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-28-6" class="code-annotation-target"><a href="#annotated-cell-28-6" aria-hidden="true" tabindex="-1"></a>skfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="annotated-cell-28-7"><a href="#annotated-cell-28-7" aria-hidden="true" tabindex="-1"></a>cv_accuracy <span class="op">=</span> cross_val_score(forest, X_confident, y_confident, cv<span class="op">=</span>skfold, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span>
-<span id="annotated-cell-28-8"><a href="#annotated-cell-28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-9"><a href="#annotated-cell-28-9" aria-hidden="true" tabindex="-1"></a>cv_accuracy.<span class="bu">round</span>(<span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d4dc9d35" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="annotated-cell-30"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-30-1"><a href="#annotated-cell-30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validação cruzada da floresta aleatória nos pacientes confiáveis</span></span>
+<span id="annotated-cell-30-2"><a href="#annotated-cell-30-2" aria-hidden="true" tabindex="-1"></a>X_confident <span class="op">=</span> expr[confident]</span>
+<span id="annotated-cell-30-3"><a href="#annotated-cell-30-3" aria-hidden="true" tabindex="-1"></a>y_confident <span class="op">=</span> labels[confident]</span>
+<span id="annotated-cell-30-4"><a href="#annotated-cell-30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-30-5"><a href="#annotated-cell-30-5" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-30" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-30-6" class="code-annotation-target"><a href="#annotated-cell-30-6" aria-hidden="true" tabindex="-1"></a>skfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="annotated-cell-30-7"><a href="#annotated-cell-30-7" aria-hidden="true" tabindex="-1"></a>cv_accuracy <span class="op">=</span> cross_val_score(forest, X_confident, y_confident, cv<span class="op">=</span>skfold,</span>
+<span id="annotated-cell-30-8"><a href="#annotated-cell-30-8" aria-hidden="true" tabindex="-1"></a>                              scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span>
+<span id="annotated-cell-30-9"><a href="#annotated-cell-30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-30-10"><a href="#annotated-cell-30-10" aria-hidden="true" tabindex="-1"></a>cv_accuracy.<span class="bu">round</span>(<span class="dv">3</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-28" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-30" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-28" data-code-lines="6" data-code-annotation="1">A validação <strong>estratificada</strong> mantém em cada dobra a mesma proporção de rótulos do conjunto inteiro, o que evita dobras quase sem pacientes de algum grupo.</span>
+<span data-code-cell="annotated-cell-30" data-code-lines="6" data-code-annotation="1">A validação <strong>estratificada</strong> mantém em cada dobra a mesma proporção de rótulos do conjunto inteiro, o que evita dobras quase sem pacientes de algum grupo.</span>
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="94">
+<div class="cell-output cell-output-display" data-execution_count="102">
 <pre><code>array([1.   , 0.984, 0.984, 1.   , 0.977])</code></pre>
 </div>
 </div>
@@ -1617,22 +1747,22 @@ Name: count, dtype: int64</code></pre>
 <section id="prevendo-os-pacientes-ambíguos" class="level2">
 <h2 class="anchored" data-anchor-id="prevendo-os-pacientes-ambíguos">6.3 Prevendo os pacientes ambíguos</h2>
 <p>Ajustamos a floresta em todos os pacientes confiáveis e pedimos a ela um rótulo para cada paciente ambíguo. Além da classe prevista, <code>predict_proba</code> devolve, para cada classe, a média das probabilidades atribuídas pelas árvores. Como cada árvore cresce até folhas quase puras, esse valor é praticamente a fração de árvores que votou na classe, e o maior deles funciona como uma medida da confiança da previsão:</p>
-<div id="3155c01a" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final nos confiáveis e previsão dos ambíguos</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>forest.fit(X_confident, y_confident)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>X_ambiguous <span class="op">=</span> expr[<span class="op">~</span>confident]</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"kmeans"</span>: labels[<span class="op">~</span>confident],</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"floresta"</span>: forest.predict(X_ambiguous),</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade"</span>: forest.predict_proba(X_ambiguous).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_ambiguous.index,</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="95">
+<div id="4a02e0a8" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajuste final nos confiáveis e previsão dos ambíguos</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>forest.fit(X_confident, y_confident)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>X_ambiguous <span class="op">=</span> expr[<span class="op">~</span>confident]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"kmeans"</span>: labels[<span class="op">~</span>confident],</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"floresta"</span>: forest.predict(X_ambiguous),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade"</span>: forest.predict_proba(X_ambiguous).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_ambiguous.index,</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>ambiguous_predictions.head()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="103">
 <div>
 
 
@@ -1688,18 +1818,21 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<div id="fbf15fdc" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concordância com o K-means e resumo das probabilidades nos ambíguos</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ambiguous_summary <span class="op">=</span> pd.Series(</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"concordância com o K-means"</span>: (ambiguous_predictions[<span class="st">"kmeans"</span>] <span class="op">==</span> ambiguous_predictions[<span class="st">"floresta"</span>]).mean(),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade mediana"</span>: ambiguous_predictions[<span class="st">"probabilidade"</span>].median(),</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fração com probabilidade &lt; 0,5"</span>: (ambiguous_predictions[<span class="st">"probabilidade"</span>] <span class="op">&lt;</span> <span class="fl">0.5</span>).mean(),</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>ambiguous_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="96">
+<div id="ee736f7d" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Concordância com o K-means e resumo das probabilidades nos ambíguos</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>agreement <span class="op">=</span> ambiguous_predictions[<span class="st">"kmeans"</span>] <span class="op">==</span> ambiguous_predictions[<span class="st">"floresta"</span>]</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> ambiguous_predictions[<span class="st">"probabilidade"</span>]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ambiguous_summary <span class="op">=</span> pd.Series(</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"concordância com o K-means"</span>: agreement.mean(),</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"probabilidade mediana"</span>: probabilities.median(),</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fração com probabilidade &lt; 0,5"</span>: (probabilities <span class="op">&lt;</span> <span class="fl">0.5</span>).mean(),</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>ambiguous_summary</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="104">
 <pre><code>concordância com o K-means        0.770
 probabilidade mediana             0.600
 fração com probabilidade &lt; 0,5    0.265
@@ -1707,38 +1840,59 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>Nos 453 pacientes ambíguos, a floresta concorda com o K-means em 77,0% dos casos. Nos outros 23,0%, ela discorda, e isso não é necessariamente um erro: o K-means decide pela distância nas 15 componentes, enquanto a floresta aprendeu regras nos 505 genes a partir dos casos típicos de cada grupo. A probabilidade mediana é de 0,60, e em 26,5% dos ambíguos nenhuma classe recebe metade dos votos. O classificador não esconde a dúvida. Em um paciente ambíguo, uma probabilidade de 0,45 para HER2 e 0,40 para Hormonal informa mais que um rótulo seco.</p>
-<div id="de37911c" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="annotated-cell-31"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP antes (clusters com ambíguos em cinza) e depois (previsões da floresta)</span></span>
-<span id="annotated-cell-31-2"><a href="#annotated-cell-31-2" aria-hidden="true" tabindex="-1"></a>final_labels <span class="op">=</span> labels.where(confident, ambiguous_predictions[<span class="st">"floresta"</span>])</span>
-<span id="annotated-cell-31-3"><a href="#annotated-cell-31-3" aria-hidden="true" tabindex="-1"></a>point_alpha <span class="op">=</span> pd.Series(<span class="fl">1.0</span>, index<span class="op">=</span>expr.index).where(confident, ambiguous_predictions[<span class="st">"probabilidade"</span>])</span>
-<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-31-5"><a href="#annotated-cell-31-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="annotated-cell-31-6"><a href="#annotated-cell-31-6" aria-hidden="true" tabindex="-1"></a>ambiguous_points <span class="op">=</span> embedding[<span class="op">~</span>confident]</span>
-<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(ambiguous_points[<span class="st">"UMAP1"</span>], ambiguous_points[<span class="st">"UMAP2"</span>], color<span class="op">=</span><span class="st">"#DDDDDD"</span>, s<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="st">"Ambíguo"</span>)</span>
-<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
-<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[confident <span class="op">&amp;</span> (labels <span class="op">==</span> label)]</span>
-<span id="annotated-cell-31-11"><a href="#annotated-cell-31-11" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
-<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12" aria-hidden="true" tabindex="-1"></a>    predicted <span class="op">=</span> final_labels <span class="op">==</span> label</span>
-<span id="annotated-cell-31-13"><a href="#annotated-cell-31-13" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].scatter(embedding.loc[predicted, <span class="st">"UMAP1"</span>], embedding.loc[predicted, <span class="st">"UMAP2"</span>],</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-31-14" class="code-annotation-target"><a href="#annotated-cell-31-14" aria-hidden="true" tabindex="-1"></a>                    color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span>point_alpha[predicted], label<span class="op">=</span>label)</span>
-<span id="annotated-cell-31-15"><a href="#annotated-cell-31-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Antes: pseudo-rótulos confiáveis"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
-<span id="annotated-cell-31-16"><a href="#annotated-cell-31-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Depois: floresta preenche as fronteiras"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>)</span>
-<span id="annotated-cell-31-17"><a href="#annotated-cell-31-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
-<span id="annotated-cell-31-18"><a href="#annotated-cell-31-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="annotated-cell-31-19"><a href="#annotated-cell-31-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Juntamos os rótulos confiáveis do K-means às previsões da floresta para os ambíguos. Para o gráfico, cada ponto recebe também uma opacidade: 1 para os confiáveis e a probabilidade prevista para os ambíguos.</p>
+<div id="be54001c" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="annotated-cell-33"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-33-1"><a href="#annotated-cell-33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rótulo final e opacidade de cada paciente</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-33" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-33-2" class="code-annotation-target"><a href="#annotated-cell-33-2" aria-hidden="true" tabindex="-1"></a>final_labels <span class="op">=</span> labels.where(confident, ambiguous_predictions[<span class="st">"floresta"</span>])</span>
+<span id="annotated-cell-33-3"><a href="#annotated-cell-33-3" aria-hidden="true" tabindex="-1"></a>point_alpha <span class="op">=</span> (</span>
+<span id="annotated-cell-33-4"><a href="#annotated-cell-33-4" aria-hidden="true" tabindex="-1"></a>    pd.Series(<span class="fl">1.0</span>, index<span class="op">=</span>expr.index)</span>
+<span id="annotated-cell-33-5"><a href="#annotated-cell-33-5" aria-hidden="true" tabindex="-1"></a>    .where(confident, ambiguous_predictions[<span class="st">"probabilidade"</span>])</span>
+<span id="annotated-cell-33-6"><a href="#annotated-cell-33-6" aria-hidden="true" tabindex="-1"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-33" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-31" data-code-lines="14" data-code-annotation="1"><code>alpha</code> aceita um valor por ponto. Os confiáveis ficam opacos, e cada ambíguo fica tão transparente quanto a sua incerteza: probabilidade 1 o deixa opaco, e probabilidade 0,4 o deixa bem mais claro.</span>
+<span data-code-cell="annotated-cell-33" data-code-lines="2" data-code-annotation="1"><code>.where(condição, outro)</code> mantém os valores onde a condição é verdadeira e, nos demais, usa os de <code>outro</code>, alinhados pelo índice dos pacientes.</span>
+</dd>
+</dl>
+</div>
+</div>
+<div id="19df66a6" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="annotated-cell-34"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-34-1"><a href="#annotated-cell-34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP antes (clusters com ambíguos em cinza) e depois (previsões da floresta)</span></span>
+<span id="annotated-cell-34-2"><a href="#annotated-cell-34-2" aria-hidden="true" tabindex="-1"></a>label_colors <span class="op">=</span> {</span>
+<span id="annotated-cell-34-3"><a href="#annotated-cell-34-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hormonal"</span>: <span class="st">"#1F4E79"</span>,</span>
+<span id="annotated-cell-34-4"><a href="#annotated-cell-34-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HER2"</span>: <span class="st">"#DD8452"</span>,</span>
+<span id="annotated-cell-34-5"><a href="#annotated-cell-34-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Estromal"</span>: <span class="st">"#A1C9F4"</span>,</span>
+<span id="annotated-cell-34-6"><a href="#annotated-cell-34-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Basal"</span>: <span class="st">"#333333"</span>,</span>
+<span id="annotated-cell-34-7"><a href="#annotated-cell-34-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="annotated-cell-34-8"><a href="#annotated-cell-34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-34-9"><a href="#annotated-cell-34-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-34-10"><a href="#annotated-cell-34-10" aria-hidden="true" tabindex="-1"></a>ambiguous_points <span class="op">=</span> embedding[<span class="op">~</span>confident]</span>
+<span id="annotated-cell-34-11"><a href="#annotated-cell-34-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(ambiguous_points[<span class="st">"UMAP1"</span>], ambiguous_points[<span class="st">"UMAP2"</span>],</span>
+<span id="annotated-cell-34-12"><a href="#annotated-cell-34-12" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span><span class="st">"#DDDDDD"</span>, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span><span class="st">"Ambíguo"</span>)</span>
+<span id="annotated-cell-34-13"><a href="#annotated-cell-34-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, color <span class="kw">in</span> label_colors.items():</span>
+<span id="annotated-cell-34-14"><a href="#annotated-cell-34-14" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> embedding[confident <span class="op">&amp;</span> (labels <span class="op">==</span> label)]</span>
+<span id="annotated-cell-34-15"><a href="#annotated-cell-34-15" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].scatter(members[<span class="st">"UMAP1"</span>], members[<span class="st">"UMAP2"</span>], color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, label<span class="op">=</span>label)</span>
+<span id="annotated-cell-34-16"><a href="#annotated-cell-34-16" aria-hidden="true" tabindex="-1"></a>    predicted <span class="op">=</span> final_labels <span class="op">==</span> label</span>
+<span id="annotated-cell-34-17"><a href="#annotated-cell-34-17" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].scatter(embedding.loc[predicted, <span class="st">"UMAP1"</span>], embedding.loc[predicted, <span class="st">"UMAP2"</span>],</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-34" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-34-18" class="code-annotation-target"><a href="#annotated-cell-34-18" aria-hidden="true" tabindex="-1"></a>                    color<span class="op">=</span>color, s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span>point_alpha[predicted], label<span class="op">=</span>label)</span>
+<span id="annotated-cell-34-19"><a href="#annotated-cell-34-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Antes: pseudo-rótulos confiáveis"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>, ylabel<span class="op">=</span><span class="st">"UMAP2"</span>)</span>
+<span id="annotated-cell-34-20"><a href="#annotated-cell-34-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Depois: floresta preenche as fronteiras"</span>, xlabel<span class="op">=</span><span class="st">"UMAP1"</span>)</span>
+<span id="annotated-cell-34-21"><a href="#annotated-cell-34-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(markerscale<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="annotated-cell-34-22"><a href="#annotated-cell-34-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="annotated-cell-34-23"><a href="#annotated-cell-34-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-34" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-34" data-code-lines="18" data-code-annotation="1"><code>alpha</code> aceita um valor por ponto. Os confiáveis ficam opacos, e cada ambíguo fica tão transparente quanto a sua incerteza: probabilidade 1 o deixa opaco, e probabilidade 0,4 o deixa bem mais claro.</span>
 </dd>
 </dl>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-32-output-1.png" width="1137" height="464" class="figure-img"></p>
+<p><img src="11-aprendizado-nao-supervisionado_files/figure-html/cell-35-output-1.png" width="1137" height="464" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1749,16 +1903,17 @@ dtype: float64</code></pre>
 <section id="os-rótulos-batem-com-a-classificação-oficial" class="level1">
 <h1>7. Os rótulos batem com a classificação oficial?</h1>
 <p>Até aqui, nenhum rótulo externo entrou na análise. Mas, para estes tumores, existe uma classificação de referência, o <strong>PAM50</strong>, que atribui a cada tumor um de cinco subtipos moleculares. Ela foi construída por especialistas a partir de anos de estudos de expressão gênica em tumores de mama. Só agora, com tudo pronto, comparamos as duas classificações:</p>
-<div id="a0c4947e" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classificação PAM50 oficial, disponível para parte dos pacientes</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>pam50 <span class="op">=</span> (</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"tcga-brca/data/brca_pam50.csv"</span>, index_col<span class="op">=</span><span class="st">"paciente"</span>)[<span class="st">"pam50"</span>]</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    .dropna()</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>pam50_comparison <span class="op">=</span> pd.crosstab(final_labels.loc[pam50.index], pam50)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>pam50_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="98">
+<div id="50d7e015" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classificação PAM50 oficial, disponível para parte dos pacientes</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>pam50 <span class="op">=</span> (</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    pd.read_csv(<span class="st">"tcga-brca/data/brca_pam50.csv"</span>, index_col<span class="op">=</span><span class="st">"paciente"</span>)[<span class="st">"pam50"</span>]</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    .dropna()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>pam50_comparison <span class="op">=</span> pd.crosstab(final_labels.loc[pam50.index], pam50)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>pam50_comparison</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="107">
 <div>
 
 
@@ -1822,12 +1977,12 @@ dtype: float64</code></pre>
 </div>
 <p>O PAM50 está disponível para 842 dos 1.095 pacientes. O grupo Basal reúne 135 dos 139 tumores Basal do PAM50, uma correspondência quase perfeita. O grupo HER2 reúne 62 dos 67 tumores Her2 do PAM50, mas também 13 LumA e 26 LumB. Hormonal e Estromal dividem os tumores luminais: o Estromal é quase todo LumA (240 de 272), e o Hormonal mistura LumA e LumB em proporções parecidas (168 e 150).</p>
 <p>O <strong>índice de Rand ajustado</strong> (ARI) resume a concordância entre duas partições. Ele vale 1 quando elas coincidem e fica perto de 0 quando a concordância não passa do que o acaso produziria, sem se importar com os nomes dos grupos:</p>
-<div id="bc915aae" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Índice de Rand ajustado entre a partição final e o PAM50</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ari <span class="op">=</span> adjusted_rand_score(pam50, final_labels.loc[pam50.index])</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(ari, <span class="dv">3</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="99">
+<div id="2002a25f" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Índice de Rand ajustado entre a partição final e o PAM50</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ari <span class="op">=</span> adjusted_rand_score(pam50, final_labels.loc[pam50.index])</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(ari, <span class="dv">3</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="108">
 <pre><code>0.399</code></pre>
 </div>
 </div>
@@ -1944,6 +2099,7 @@ Como pensar sobre isso
 <li>Hubert, L.; Arabie, P. Comparing partitions. <em>Journal of Classification</em>, 2(1), 193-218, 1985.</li>
 <li>Breiman, L. Random forests. <em>Machine Learning</em>, 45(1), 5-32, 2001.</li>
 <li>Lee, D.-H. Pseudo-label: the simple and efficient semi-supervised learning method for deep neural networks. <em>ICML Workshop on Challenges in Representation Learning</em>, 2013.</li>
+<li>Perou, C. M. et al.&nbsp;Molecular portraits of human breast tumours. <em>Nature</em>, 406, 747-752, 2000.</li>
 <li>The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. <em>Nature</em>, 490, 61-70, 2012.</li>
 <li>Parker, J. S. et al.&nbsp;Supervised risk predictor of breast cancer based on intrinsic subtypes. <em>Journal of Clinical Oncology</em>, 27(8), 1160-1167, 2009.</li>
 <li>Goldman, M. J. et al.&nbsp;Visualizing and interpreting cancer genomics data via the Xena platform. <em>Nature Biotechnology</em>, 38, 675-678, 2020.</li>
